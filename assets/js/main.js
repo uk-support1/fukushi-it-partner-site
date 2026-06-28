@@ -93,38 +93,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // スクリーンショット拡大用ライトボックス
-  var lightbox = document.querySelector("[data-lightbox]");
-  if (lightbox) {
-    var lightboxImg = lightbox.querySelector("[data-lightbox-img]");
-
-    document.querySelectorAll(".js-lightbox-trigger").forEach(function (trigger) {
-      trigger.addEventListener("click", function () {
-        var src = trigger.getAttribute("data-full-src");
-        if (src && lightboxImg) {
-          lightboxImg.setAttribute("src", src);
-          lightbox.classList.add("is-open");
-          document.body.style.overflow = "hidden";
-        }
-      });
-    });
-
-    lightbox.addEventListener("click", function (e) {
-      if (e.target === lightbox) {
-        closeModal(lightbox);
-      }
-    });
-    var lightboxCloseBtn = lightbox.querySelector("[data-lightbox-close]");
-    if (lightboxCloseBtn) {
-      lightboxCloseBtn.addEventListener("click", function () {
-        closeModal(lightbox);
-      });
-    }
-  }
-
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
-      document.querySelectorAll(".modal-overlay.is-open, .lightbox-overlay.is-open").forEach(function (el) {
+      document.querySelectorAll(".modal-overlay.is-open").forEach(function (el) {
         closeModal(el);
       });
     }
