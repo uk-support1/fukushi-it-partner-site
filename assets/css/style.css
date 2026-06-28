@@ -190,8 +190,10 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 24px;
-  max-width: var(--container-width);
+  flex-wrap: nowrap;
+  gap: 20px;
+  padding: 15px 24px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
@@ -200,11 +202,12 @@ section {
   align-items: center;
   gap: 10px;
   line-height: 1.3;
+  flex-shrink: 0;
 }
 
 .brand-logo {
-  height: 38px;
-  width: 38px;
+  height: 54px;
+  width: 54px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -212,6 +215,7 @@ section {
 .brand-text {
   display: flex;
   flex-direction: column;
+  white-space: nowrap;
 }
 
 .brand-name {
@@ -228,22 +232,34 @@ section {
 
 @media (max-width: 480px) {
   .brand-logo {
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
   }
   .brand-name {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
+  .brand-sub {
+    font-size: 0.65rem;
+  }
+}
+
+.nav-bar nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: 22px;
 }
 
 .nav-links a {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: var(--text-900);
   position: relative;
@@ -268,11 +284,13 @@ section {
 
 .nav-cta {
   display: flex;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .nav-cta .btn {
-  padding: 10px 20px;
+  padding: 10px 18px;
   font-size: 0.85rem;
 }
 
@@ -736,10 +754,12 @@ section {
 }
 
 .footer-logo {
-  height: 56px;
-  width: 56px;
+  display: block;
+  width: 100%;
+  max-width: 160px;
+  height: auto;
   object-fit: contain;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .footer-brand p {
@@ -751,8 +771,7 @@ section {
 
 @media (max-width: 480px) {
   .footer-logo {
-    height: 48px;
-    width: 48px;
+    max-width: 130px;
   }
 }
 
