@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://uk-support1.github.io/fukushi-it-partner-site/sitemap.xml
