@@ -910,6 +910,11 @@ section {
   min-height: 260px;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
+}
+
+.blog-featured:hover .blog-featured-thumb img {
+  transform: scale(1.04);
 }
 
 .blog-featured-body {
@@ -993,6 +998,11 @@ section {
   min-height: 160px;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
+}
+
+.blog-list-item:hover .blog-list-thumb img {
+  transform: scale(1.04);
 }
 
 .blog-list-body {
@@ -1037,6 +1047,22 @@ section {
 
 .article-eyecatch img {
   width: 100%;
+  display: block;
+}
+
+/* 記事詳細：本文中の補助写真 */
+.article-photo {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  margin: 32px 0;
+}
+
+.article-photo img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   display: block;
 }
 
