@@ -4,8 +4,7 @@
 // ココナラのプロフィールURL・Googleフォームの埋め込みURLが決まったら、
 // この2箇所だけ書き換えれば全ページに反映されます。
 var SITE_CONFIG = {
-  // 例: "https://coconala.com/services/0000000"
-  coconalaUrl: "#",
+  coconalaUrl: "https://coconala.com/services/4285270",
   // Googleフォームの「埋め込み」用URL（フォームの送信ボタン > 埋め込み <> から取得）
   // 未設定（空文字）の間はcontact.htmlにダミー表示のままになります。
   googleFormUrl: ""
