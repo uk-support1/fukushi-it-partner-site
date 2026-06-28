@@ -25,6 +25,25 @@ document.addEventListener("DOMContentLoaded", function () {
       '" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>';
   }
 
+  // GA4イベント送信（ココナラ・無料相談ボタンのクリック計測）
+  function sendGaEvent(eventName) {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", eventName);
+    }
+  }
+
+  document.querySelectorAll(".js-coconala-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      sendGaEvent("coconala_click");
+    });
+  });
+
+  document.querySelectorAll(".js-consult-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      sendGaEvent("free_consultation_click");
+    });
+  });
+
   // モバイルナビ開閉
   var toggle = document.querySelector(".nav-toggle");
   var navLinks = document.querySelector(".nav-links");
