@@ -63,6 +63,73 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // 制作実績の詳細モーダル開閉
+  document.querySelectorAll("[data-modal-open]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var modal = document.getElementById(btn.getAttribute("data-modal-open"));
+      if (modal) {
+        modal.classList.add("is-open");
+        document.body.style.overflow = "hidden";
+      }
+    });
+  });
+
+  function closeModal(modal) {
+    modal.classList.remove("is-open");
+    document.body.style.overflow = "";
+  }
+
+  document.querySelectorAll("[data-modal]").forEach(function (modal) {
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) {
+        closeModal(modal);
+      }
+    });
+    var closeBtn = modal.querySelector("[data-modal-close]");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function () {
+        closeModal(modal);
+      });
+    }
+  });
+
+  // スクリーンショット拡大用ライトボックス
+  var lightbox = document.querySelector("[data-lightbox]");
+  if (lightbox) {
+    var lightboxImg = lightbox.querySelector("[data-lightbox-img]");
+
+    document.querySelectorAll(".js-lightbox-trigger").forEach(function (trigger) {
+      trigger.addEventListener("click", function () {
+        var src = trigger.getAttribute("data-full-src");
+        if (src && lightboxImg) {
+          lightboxImg.setAttribute("src", src);
+          lightbox.classList.add("is-open");
+          document.body.style.overflow = "hidden";
+        }
+      });
+    });
+
+    lightbox.addEventListener("click", function (e) {
+      if (e.target === lightbox) {
+        closeModal(lightbox);
+      }
+    });
+    var lightboxCloseBtn = lightbox.querySelector("[data-lightbox-close]");
+    if (lightboxCloseBtn) {
+      lightboxCloseBtn.addEventListener("click", function () {
+        closeModal(lightbox);
+      });
+    }
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      document.querySelectorAll(".modal-overlay.is-open, .lightbox-overlay.is-open").forEach(function (el) {
+        closeModal(el);
+      });
+    }
+  });
+
   // スクロールでふわっと表示
   var revealEls = document.querySelectorAll(".reveal");
 
