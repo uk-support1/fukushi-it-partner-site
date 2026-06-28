@@ -1,6 +1,31 @@
 // 福祉ITパートナー｜main.js
 
+// ===== サイト共通設定 =====
+// ココナラのプロフィールURL・Googleフォームの埋め込みURLが決まったら、
+// この2箇所だけ書き換えれば全ページに反映されます。
+var SITE_CONFIG = {
+  // 例: "https://coconala.com/services/0000000"
+  coconalaUrl: "#",
+  // Googleフォームの「埋め込み」用URL（フォームの送信ボタン > 埋め込み <> から取得）
+  // 未設定（空文字）の間はcontact.htmlにダミー表示のままになります。
+  googleFormUrl: ""
+};
+
 document.addEventListener("DOMContentLoaded", function () {
+  // ココナラリンクの一括反映
+  document.querySelectorAll(".js-coconala-link").forEach(function (link) {
+    link.setAttribute("href", SITE_CONFIG.coconalaUrl);
+  });
+
+  // Googleフォームの埋め込み（URLが設定されている場合のみiframeを表示）
+  var formEmbed = document.getElementById("google-form-embed");
+  if (formEmbed && SITE_CONFIG.googleFormUrl) {
+    formEmbed.innerHTML =
+      '<iframe src="' +
+      SITE_CONFIG.googleFormUrl +
+      '" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>';
+  }
+
   // モバイルナビ開閉
   var toggle = document.querySelector(".nav-toggle");
   var navLinks = document.querySelector(".nav-links");

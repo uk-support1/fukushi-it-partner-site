@@ -39,13 +39,13 @@
         <li><a href="contact.html" class="active">お問い合わせ</a></li>
         <li class="nav-cta-mobile">
           <a href="contact.html" class="btn btn-primary">無料相談はこちら</a>
-          <a href="#" class="btn btn-accent">ココナラで依頼する</a>
+          <a href="#" class="btn btn-accent js-coconala-link">ココナラで依頼する</a>
         </li>
       </ul>
     </nav>
     <div class="nav-cta">
       <a href="contact.html" class="btn btn-primary">無料相談はこちら</a>
-      <a href="#" class="btn btn-accent">ココナラで依頼する</a>
+      <a href="#" class="btn btn-accent js-coconala-link">ココナラで依頼する</a>
     </div>
     <button class="nav-toggle" aria-label="メニューを開く">
       <span></span><span></span><span></span>
@@ -68,14 +68,16 @@
       <div class="contact-grid">
 
         <div class="reveal">
-          <!-- Googleフォーム埋め込み用プレースホルダー -->
-          <div class="form-placeholder">
+          <!--
+            Googleフォーム埋め込み枠
+            assets/js/main.js の SITE_CONFIG.googleFormUrl にフォームの埋め込みURLを設定すると、
+            このdiv内に自動でiframeが挿入されます（このHTMLは編集不要です）。
+          -->
+          <div id="google-form-embed" class="form-placeholder">
             <div>
               <p style="font-weight:700; color: var(--green-900); margin-bottom: 12px;">Googleフォーム埋め込み枠</p>
               <p>
-                ここにGoogleフォームの埋め込みコード（&lt;iframe&gt;）を設置します。<br>
-                例：<br>
-                &lt;iframe src="GoogleフォームのURL" width="100%" height="600"&gt;&lt;/iframe&gt;
+                現在準備中です。Googleフォームの設定が完了すると、ここに自動で表示されます。
               </p>
             </div>
           </div>
@@ -91,7 +93,7 @@
             まずはホームページのご相談、IT・AI活用のご相談など、お気軽にお声がけください。
           </p>
           <div class="btn-group">
-            <a href="#" class="btn btn-accent">ココナラで依頼する</a>
+            <a href="#" class="btn btn-accent js-coconala-link">ココナラで依頼する</a>
             <a href="#contact-note" class="btn btn-outline">無料相談はこちら</a>
           </div>
           <p id="contact-note" style="margin-top: 24px; font-size: 0.85rem;">
@@ -127,7 +129,7 @@
         <h4>お問い合わせ</h4>
         <ul>
           <li><a href="contact.html">無料相談はこちら</a></li>
-          <li><a href="#">ココナラで依頼する</a></li>
+          <li><a href="#" class="js-coconala-link">ココナラで依頼する</a></li>
         </ul>
       </div>
     </div>
