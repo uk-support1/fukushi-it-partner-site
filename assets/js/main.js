@@ -76,12 +76,20 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" }
     );
 
     revealEls.forEach(function (el) {
       observer.observe(el);
     });
+
+    // 本文が長い記事など、何らかの理由でintersectionが発生しない場合の
+    // セーフティネット。一定時間後にまだ非表示のreveal要素を強制的に表示する。
+    setTimeout(function () {
+      revealEls.forEach(function (el) {
+        el.classList.add("is-visible");
+      });
+    }, 1500);
   } else {
     revealEls.forEach(function (el) {
       el.classList.add("is-visible");
