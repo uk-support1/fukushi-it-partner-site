@@ -7,7 +7,7 @@ var SITE_CONFIG = {
   coconalaUrl: "https://coconala.com/services/4285270",
   // Googleフォームの「埋め込み」用URL（フォームの送信ボタン > 埋め込み <> から取得）
   // 未設定（空文字）の間はcontact.htmlにダミー表示のままになります。
-  googleFormUrl: ""
+  googleFormUrl: "https://forms.gle/3rC6CovbkbumCqgr9"
 };
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -19,10 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Googleフォームの埋め込み（URLが設定されている場合のみiframeを表示）
   var formEmbed = document.getElementById("google-form-embed");
   if (formEmbed && SITE_CONFIG.googleFormUrl) {
+    formEmbed.classList.remove("form-placeholder");
+    formEmbed.classList.add("google-form-embed");
     formEmbed.innerHTML =
       '<iframe src="' +
       SITE_CONFIG.googleFormUrl +
-      '" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>';
+      '" title="お問い合わせフォーム" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>';
   }
 
   // GA4イベント送信（ココナラ・無料相談ボタンのクリック計測）

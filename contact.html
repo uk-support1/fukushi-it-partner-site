@@ -43,13 +43,13 @@
         <li><a href="profile.html">プロフィール</a></li>
         <li><a href="contact.html" class="active">お問い合わせ</a></li>
         <li class="nav-cta-mobile">
-          <a href="contact.html" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+          <a href="#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
           <a href="#" class="btn btn-accent js-coconala-link">ココナラで依頼する</a>
         </li>
       </ul>
     </nav>
     <div class="nav-cta">
-      <a href="contact.html" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+      <a href="#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
       <a href="#" class="btn btn-accent js-coconala-link">ココナラで依頼する</a>
     </div>
     <button class="nav-toggle" aria-label="メニューを開く">
@@ -75,8 +75,8 @@
         <div class="reveal">
           <!--
             Googleフォーム埋め込み枠
-            assets/js/main.js の SITE_CONFIG.googleFormUrl にフォームの埋め込みURLを設定すると、
-            このdiv内に自動でiframeが挿入されます（このHTMLは編集不要です）。
+            assets/js/main.js の SITE_CONFIG.googleFormUrl に設定されたURLが、
+            このdiv内に自動でiframeとして挿入されます（このHTMLは編集不要です）。
           -->
           <div id="google-form-embed" class="form-placeholder">
             <div>
@@ -99,11 +99,8 @@
           </p>
           <div class="btn-group">
             <a href="#" class="btn btn-accent js-coconala-link">ココナラで依頼する</a>
-            <a href="#contact-note" class="btn btn-outline js-consult-link">無料相談はこちら</a>
+            <a href="#google-form-embed" class="btn btn-outline js-consult-link">無料相談はこちら</a>
           </div>
-          <p id="contact-note" style="margin-top: 24px; font-size: 0.85rem;">
-            ※ 現在はフォーム設置の準備中です。上記Googleフォーム枠よりご連絡ください。
-          </p>
         </div>
 
       </div>
@@ -134,7 +131,7 @@
       <div class="footer-col">
         <h4>お問い合わせ</h4>
         <ul>
-          <li><a href="contact.html" class="js-consult-link">無料相談はこちら</a></li>
+          <li><a href="#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>
           <li><a href="#" class="js-coconala-link">ココナラで依頼する</a></li>
           <li><a href="privacy.html">プライバシーポリシー</a></li>
         </ul>
