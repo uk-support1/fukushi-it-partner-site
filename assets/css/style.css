@@ -369,9 +369,17 @@ section {
 /* ===== Hero ===== */
 .hero {
   position: relative;
-  background: linear-gradient(160deg, var(--green-100) 0%, var(--white) 60%, var(--cream-100) 100%);
+  background:
+    linear-gradient(to right,
+      rgba(232, 244, 238, 0.97) 0%,
+      rgba(232, 244, 238, 0.93) 26%,
+      rgba(232, 244, 238, 0.50) 50%,
+      rgba(232, 244, 238, 0.06) 68%,
+      transparent 82%),
+    url('../images/hero-fukushi-it-partner.jpg') right center / cover no-repeat;
   padding: 88px 0 80px;
   overflow: hidden;
+  min-height: 540px;
 }
 
 .hero-grid {
@@ -408,11 +416,17 @@ section {
   max-width: 480px;
 }
 
-.hero-illust {
-  position: relative;
-}
-
 @media (max-width: 900px) {
+  .hero {
+    background:
+      linear-gradient(to bottom,
+        rgba(232, 244, 238, 0.10) 0%,
+        rgba(232, 244, 238, 0.90) 52%,
+        rgba(232, 244, 238, 1.00) 66%),
+      url('../images/hero-fukushi-it-partner.jpg') 65% top / cover no-repeat;
+    padding: 210px 0 56px;
+    min-height: auto;
+  }
   .hero-grid {
     grid-template-columns: 1fr;
     text-align: center;
@@ -420,11 +434,6 @@ section {
   .hero-message {
     margin-left: auto;
     margin-right: auto;
-  }
-  .hero-illust {
-    order: -1;
-    max-width: 320px;
-    margin: 0 auto;
   }
   .btn-group {
     justify-content: center;
@@ -593,9 +602,15 @@ section {
 .work-thumb {
   height: 180px;
   background: linear-gradient(135deg, var(--green-100), var(--cream-100));
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+}
+
+.work-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
 }
 
 .work-body {
