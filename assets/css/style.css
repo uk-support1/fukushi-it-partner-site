@@ -1537,6 +1537,83 @@ section {
   }
 }
 
+/* ===== 制作までの流れ ===== */
+.flow-steps {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.flow-step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+}
+
+.flow-step-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flow-step-num {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--green-900);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.flow-step-line {
+  width: 2px;
+  flex: 1;
+  min-height: 24px;
+  background: var(--border-soft);
+  margin-top: 6px;
+}
+
+.flow-step-body {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 22px 26px;
+  margin-bottom: 24px;
+}
+
+.flow-step-body h3 {
+  color: var(--green-900);
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.flow-step-body p {
+  color: var(--text-600);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .flow-step {
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+  }
+  .flow-step-num {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .flow-step-body {
+    padding: 18px 20px;
+  }
+}
+
 /* ===== 実績詳細モーダル ===== */
 .modal-overlay {
   position: fixed;
