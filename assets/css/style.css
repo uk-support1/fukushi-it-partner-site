@@ -1404,6 +1404,139 @@ section {
   }
 }
 
+/* ===== 制作サンプル（2万円プラン） ===== */
+.sample-feature {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: stretch;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 14px 36px rgba(31, 77, 60, 0.12);
+  border: 1px solid var(--border-soft);
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.sample-feature-media {
+  position: relative;
+  padding: 24px;
+  background: linear-gradient(135deg, var(--green-100), var(--cream-100));
+  display: flex;
+  align-items: center;
+}
+
+.sample-feature-media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.sample-price-badge {
+  position: absolute;
+  top: 36px;
+  left: 36px;
+  z-index: 2;
+  background: var(--orange-500);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 20px rgba(217, 127, 63, 0.35);
+}
+
+.sample-price-badge small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.sample-feature-body {
+  padding: 36px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sample-feature-body h3 {
+  color: var(--green-900);
+  font-size: 1.3rem;
+  line-height: 1.5;
+  margin: 4px 0 10px;
+}
+
+.sample-feature-body > p {
+  color: var(--text-600);
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.sample-price-box {
+  background: var(--green-100);
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+
+.sample-price-main {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sample-price-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-600);
+}
+
+.sample-price-amount {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--green-900);
+}
+
+.sample-price-amount small {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.sample-price-note {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--text-600);
+  opacity: 0.85;
+}
+
+.sample-feature-list {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 800px) {
+  .sample-feature {
+    grid-template-columns: 1fr;
+  }
+  .sample-feature-media {
+    padding: 24px 24px 0;
+  }
+  .sample-price-badge {
+    top: 34px;
+    left: 34px;
+    font-size: 1.05rem;
+    padding: 8px 14px;
+  }
+  .sample-feature-body {
+    padding: 28px;
+  }
+}
+
 /* ===== 実績詳細モーダル ===== */
 .modal-overlay {
   position: fixed;
