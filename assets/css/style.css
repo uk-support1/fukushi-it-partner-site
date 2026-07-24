@@ -1538,79 +1538,84 @@ section {
 }
 
 /* ===== 制作までの流れ ===== */
+.page-hero-compact {
+  padding-bottom: 8px;
+}
+
+.flow-steps-section {
+  padding-top: 0;
+}
+
 .flow-steps {
-  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  max-width: 980px;
   margin: 0 auto;
 }
 
 .flow-step {
   display: grid;
-  grid-template-columns: 48px 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 44px;
+  align-items: center;
 }
 
-.flow-step-marker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.flow-step-media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
 }
 
 .flow-step-num {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: var(--green-900);
   color: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-weight: 800;
-  font-size: 1.1rem;
-  box-shadow: var(--shadow-soft);
-}
-
-.flow-step-line {
-  width: 2px;
-  flex: 1;
-  min-height: 24px;
-  background: var(--border-soft);
-  margin-top: 6px;
-}
-
-.flow-step-body {
-  background: var(--white);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
-  padding: 22px 26px;
-  margin-bottom: 24px;
+  font-size: 1rem;
+  margin-bottom: 16px;
 }
 
 .flow-step-body h3 {
   color: var(--green-900);
-  font-size: 1.05rem;
-  margin-bottom: 6px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
 }
 
 .flow-step-body p {
   color: var(--text-600);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   margin: 0;
 }
 
-@media (max-width: 600px) {
+.flow-step:nth-child(even) .flow-step-media {
+  order: 2;
+}
+
+.flow-step:nth-child(even) .flow-step-body {
+  order: 1;
+}
+
+@media (max-width: 768px) {
+  .flow-steps {
+    gap: 40px;
+  }
   .flow-step {
-    grid-template-columns: 40px 1fr;
-    gap: 14px;
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
-  .flow-step-num {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
+  .flow-step-media,
   .flow-step-body {
-    padding: 18px 20px;
+    order: 0;
   }
 }
 
