@@ -920,12 +920,6 @@ section {
   margin-bottom: 28px;
 }
 
-.service-detail .card-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 20px;
-}
-
 .service-detail h3 {
   color: var(--green-900);
   font-size: 1.3rem;
@@ -965,10 +959,6 @@ section {
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-.service-detail.has-photo .service-content .card-icon {
-  margin-bottom: 16px;
 }
 
 @media (max-width: 700px) {
@@ -1914,6 +1904,73 @@ section {
   }
   .plan-notes {
     padding: 16px 18px;
+  }
+}
+
+/* ===== 対応可能な事業所・団体 ===== */
+.target-section {
+  background: var(--cream-100);
+}
+
+.target-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.target-category {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 28px;
+}
+
+.target-category-title {
+  color: var(--green-900);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.target-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  display: inline-block;
+  background: var(--green-100);
+  color: var(--green-900);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+.target-note {
+  max-width: 700px;
+  margin: 40px auto 0;
+  text-align: center;
+  color: var(--text-600);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 800px) {
+  .target-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .target-category {
+    padding: 22px;
   }
 }
 
