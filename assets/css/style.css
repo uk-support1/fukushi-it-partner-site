@@ -841,6 +841,19 @@ section {
   margin: 0 auto;
 }
 
+.page-hero--contact h1 {
+  margin-bottom: 24px;
+}
+
+.page-hero .contact-hero-text {
+  max-width: 640px;
+  line-height: 1.9;
+}
+
+.contact-hero-text + .contact-hero-text {
+  margin-top: 14px;
+}
+
 /* ===== Service detail blocks ===== */
 .service-detail {
   display: grid;
@@ -1297,7 +1310,14 @@ section {
 .contact-other-list {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 32px;
+}
+
+.contact-other-item-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .contact-other-item {
@@ -1336,6 +1356,22 @@ section {
   color: var(--green-700);
 }
 
+.contact-other-hours {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-600);
+  margin-top: 2px;
+}
+
+.contact-other-note {
+  margin: 0;
+  padding-left: 58px;
+  max-width: 360px;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--text-600);
+}
+
 @media (max-width: 600px) {
   .contact-other {
     padding: 28px;
@@ -1344,6 +1380,10 @@ section {
   .contact-other-list {
     flex-direction: column;
     gap: 20px;
+  }
+
+  .contact-other-note {
+    max-width: none;
   }
 }
 
