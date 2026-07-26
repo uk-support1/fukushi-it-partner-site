@@ -937,6 +937,10 @@ section {
   margin-bottom: 10px;
 }
 
+.service-content .btn {
+  margin-top: 8px;
+}
+
 @media (max-width: 700px) {
   .service-detail {
     grid-template-columns: 1fr;
@@ -1728,6 +1732,188 @@ section {
   }
   .sample-feature-body {
     padding: 28px;
+  }
+}
+
+/* ===== ホームページ制作 料金プラン：入口カード ===== */
+.plan-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.plan-intro-card {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.plan-intro-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(31, 77, 60, 0.12);
+}
+
+.plan-intro-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.plan-intro-foot {
+  padding: 20px 24px;
+}
+
+.plan-intro-foot .btn {
+  width: 100%;
+}
+
+@media (max-width: 800px) {
+  .plan-intro-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ===== ホームページ制作 料金プラン：詳細 ===== */
+.plan-detail-section {
+  scroll-margin-top: 90px;
+}
+
+.plan-detail-section + .plan-detail-section {
+  padding-top: 0;
+}
+
+.plan-detail {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 40px;
+}
+
+.plan-detail--featured {
+  border: 2px solid var(--orange-500);
+  box-shadow: 0 16px 40px rgba(217, 127, 63, 0.18);
+}
+
+.plan-recommend-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 2;
+  margin-bottom: 0;
+  background: var(--orange-500);
+  color: var(--white);
+}
+
+.plan-name {
+  color: var(--green-900);
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+}
+
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.plan-price-amount {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--green-900);
+  line-height: 1;
+}
+
+.plan-detail--featured .plan-price-amount {
+  color: var(--orange-600);
+}
+
+.plan-price-yen {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.plan-price-tax {
+  font-size: 0.85rem;
+  color: var(--text-600);
+}
+
+.plan-desc {
+  color: var(--text-600);
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.plan-subhead {
+  color: var(--green-900);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 24px 0 10px;
+}
+
+.plan-list {
+  margin: 0 0 4px;
+}
+
+.plan-card-foot {
+  margin-top: 28px;
+}
+
+.plan-card-foot .btn {
+  width: 100%;
+}
+
+.plan-btn-note {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: var(--text-600);
+  text-align: center;
+}
+
+.plan-notes {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px 24px;
+  background: var(--cream-100);
+  border-radius: var(--radius-md);
+}
+
+.plan-notes p {
+  font-size: 0.78rem;
+  color: var(--text-600);
+  line-height: 1.7;
+  margin-bottom: 4px;
+}
+
+.plan-notes p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .plan-detail {
+    padding: 24px 20px;
+  }
+  .plan-price-amount {
+    font-size: 1.8rem;
+  }
+  .plan-recommend-badge {
+    top: 20px;
+    right: 20px;
+  }
+  .plan-notes {
+    padding: 16px 18px;
   }
 }
 
