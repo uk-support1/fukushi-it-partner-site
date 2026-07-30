@@ -2360,6 +2360,18 @@ section {
   margin-bottom: 16px;
 }
 
+.cw-page strong {
+  color: var(--green-900);
+  font-weight: 800;
+}
+
+.cw-hl {
+  background: linear-gradient(180deg, transparent 62%, rgba(250, 204, 21, 0.4) 62%);
+  font-weight: 800;
+  color: var(--green-900);
+  padding: 0 2px;
+}
+
 .cw-section ul {
   margin: 0 0 16px;
 }
@@ -2463,8 +2475,8 @@ section {
 
 .cw-matrix-table th,
 .cw-matrix-table td {
-  padding: 16px 18px;
-  text-align: center;
+  padding: 16px 20px;
+  text-align: left;
   font-size: 0.85rem;
   line-height: 1.65;
   color: var(--text-600);
@@ -2519,13 +2531,40 @@ section {
 .cw-matrix-symbol {
   display: inline-block;
   font-weight: 800;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: var(--green-900);
+  letter-spacing: -0.02em;
 }
 
 .cw-matrix-table td.cw-matrix-text {
-  text-align: left;
   font-size: 0.82rem;
+}
+
+/* 項目内で最も優れているセルの強調 */
+.cw-matrix-table td.cw-matrix-best {
+  background: rgba(74, 140, 111, 0.1);
+  position: relative;
+}
+
+.cw-matrix-table td.cw-matrix-best::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--orange-500);
+}
+
+.cw-matrix-table td.cw-matrix-best .cw-matrix-symbol {
+  color: var(--orange-600);
+  font-size: 1.3rem;
+}
+
+.cw-matrix-table td.cw-matrix-best.cw-matrix-text {
+  font-weight: 800;
+  color: var(--orange-600);
 }
 
 .cw-legend {
