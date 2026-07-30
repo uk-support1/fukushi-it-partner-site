@@ -2567,6 +2567,91 @@ section {
   color: var(--orange-600);
 }
 
+/* スマホ・タブレット：比較項目列と各社列を詰めて3～4社を同時に見せる */
+@media (max-width: 860px) {
+  .cw-matrix-wrap {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .cw-matrix-table {
+    table-layout: fixed;
+    width: auto;
+    min-width: 0;
+  }
+
+  .cw-matrix-table th,
+  .cw-matrix-table td {
+    padding: 10px 8px;
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .cw-matrix-table thead th {
+    min-height: 52px;
+    padding-bottom: 8px;
+  }
+
+  .cw-matrix-table th[scope="row"],
+  .cw-matrix-table thead th:first-child {
+    width: 88px;
+    min-width: 88px;
+    max-width: 88px;
+  }
+
+  .cw-matrix-table th[scope="row"] {
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+    font-size: 0.74rem;
+    line-height: 1.4;
+  }
+
+  .cw-matrix-table th[scope="col"]:not(:first-child),
+  .cw-matrix-table td {
+    width: 77px;
+    min-width: 77px;
+    max-width: 77px;
+  }
+
+  .cw-matrix-name {
+    font-size: 0.78rem;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .cw-matrix-type {
+    font-size: 0.6rem;
+    margin-top: 2px;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .cw-matrix-symbol {
+    font-size: 1.05rem;
+    letter-spacing: -0.03em;
+  }
+
+  .cw-matrix-table td.cw-matrix-text {
+    font-size: 0.7rem;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .cw-matrix-table td.cw-matrix-best {
+    padding-left: 10px;
+  }
+
+  .cw-matrix-table td.cw-matrix-best::before {
+    top: 6px;
+    bottom: 6px;
+  }
+
+  .cw-matrix-table td.cw-matrix-best .cw-matrix-symbol {
+    font-size: 1.15rem;
+  }
+}
+
 .cw-legend {
   display: flex;
   flex-wrap: wrap;
