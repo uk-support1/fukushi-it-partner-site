@@ -2149,3 +2149,614 @@ section {
   }
 }
 
+/* ===== 独立ページ：比較・解説特集（welfare-website-comparison.html） ===== */
+.cw-page {
+  background: var(--white);
+}
+
+.cw-page .container {
+  max-width: 1300px;
+}
+
+[id] {
+  scroll-margin-top: 24px;
+}
+
+.cw-hero {
+  background:
+    repeating-linear-gradient(90deg, rgba(31, 77, 60, 0.025) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(0deg, rgba(31, 77, 60, 0.025) 0 1px, transparent 1px 42px),
+    radial-gradient(circle at 8% 12%, rgba(130, 180, 225, 0.14), transparent 42%),
+    radial-gradient(circle at 95% 85%, rgba(74, 140, 111, 0.12), transparent 45%),
+    linear-gradient(180deg, var(--green-100) 0%, var(--white) 100%);
+  padding: 48px 0;
+}
+
+/* 横長バナー（見出し画像）共通：画像は3:1のまま全体表示。右にイラスト、左に余白がある構図の画像を使用 */
+.cw-banner {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.cw-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.cw-banner--plain {
+  margin: 24px 0 8px;
+}
+
+.cw-banner--overlay .cw-banner-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.6) 42%, rgba(255, 255, 255, 0) 68%);
+}
+
+.cw-banner--overlay .cw-banner-text {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  margin-right: auto;
+  max-width: 50%;
+  padding: 20px 20px 20px 40px;
+}
+
+.cw-banner-text .cw-kicker {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--green-700);
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  padding: 5px 16px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.cw-banner-text h1,
+.cw-banner-text h2 {
+  color: var(--green-900);
+  margin: 0 0 10px;
+  line-height: 1.5;
+  border: none;
+  padding: 0;
+}
+
+.cw-hero .cw-banner-text h1 {
+  font-size: clamp(1.4rem, 1.05rem + 1.8vw, 2.2rem);
+}
+
+.cw-banner-text .cw-hero-lead {
+  color: var(--green-900);
+  font-weight: 700;
+  font-size: 1rem;
+  margin: 0 0 6px;
+}
+
+.cw-banner-text .cw-hero-note {
+  color: var(--text-600);
+  font-size: 0.82rem;
+  margin: 0 0 20px;
+}
+
+.cw-banner-text .btn {
+  padding: 12px 26px;
+  font-size: 0.9rem;
+}
+
+.cw-chapter-banner .cw-banner-text h2 {
+  font-size: clamp(1.2rem, 0.8rem + 1vw, 1.55rem);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  /* スマホでは画像を全体表示し、タイトルは画像の直下に配置する */
+  .cw-banner--overlay .cw-banner-scrim {
+    display: none;
+  }
+  .cw-banner--overlay .cw-banner-text {
+    position: static;
+    display: block;
+    max-width: 100%;
+    margin: 0;
+    padding: 18px 4px 4px;
+    text-align: left;
+  }
+  .cw-banner-text .btn {
+    margin-top: 4px;
+  }
+  .cw-hero .cw-banner-text h1 {
+    font-size: 1.4rem;
+  }
+  .cw-chapter-banner .cw-banner-text h2 {
+    white-space: normal;
+    font-size: 1.5rem;
+    line-height: 1.35;
+  }
+}
+
+.cw-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.cw-wrap-wide {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.cw-section {
+  padding: 56px 0;
+  position: relative;
+}
+
+.cw-section--tight {
+  padding: 8px 0 40px;
+}
+
+/* ページ全体の雰囲気づくり：さりげない背景装飾 */
+.cw-bg-a {
+  background:
+    radial-gradient(rgba(31, 77, 60, 0.05) 1px, transparent 1.6px) 0 0 / 26px 26px,
+    radial-gradient(circle at 4% 10%, rgba(130, 180, 225, 0.10), transparent 40%),
+    radial-gradient(circle at 96% 90%, rgba(74, 140, 111, 0.08), transparent 42%),
+    radial-gradient(circle at 85% 12%, rgba(74, 140, 111, 0.35) 3px, transparent 4px),
+    radial-gradient(circle at 12% 85%, rgba(130, 180, 225, 0.4) 2px, transparent 3px),
+    var(--white);
+}
+
+.cw-bg-b {
+  background:
+    repeating-linear-gradient(45deg, rgba(74, 140, 111, 0.045) 0 1px, transparent 1px 16px),
+    radial-gradient(circle at 92% 15%, rgba(74, 140, 111, 0.09), transparent 42%),
+    radial-gradient(circle at 6% 88%, rgba(130, 180, 225, 0.10), transparent 40%),
+    radial-gradient(circle at 30% 10%, rgba(74, 140, 111, 0.3) 2px, transparent 3px),
+    radial-gradient(circle at 70% 92%, rgba(130, 180, 225, 0.35) 3px, transparent 4px),
+    var(--cream-100);
+}
+
+.cw-bg-c {
+  background:
+    radial-gradient(rgba(44, 107, 84, 0.07) 1px, transparent 1.6px) 0 0 / 30px 30px,
+    radial-gradient(circle at 10% 20%, rgba(74, 140, 111, 0.12), transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(130, 180, 225, 0.12), transparent 45%),
+    radial-gradient(circle at 50% 8%, rgba(74, 140, 111, 0.3) 2px, transparent 3px),
+    var(--green-100);
+}
+
+.cw-section h2 {
+  color: var(--green-900);
+  font-size: 1.4rem;
+  margin: 0 0 12px;
+}
+
+.cw-section-lead {
+  color: var(--text-600);
+  font-size: 0.95rem;
+  margin: 0 0 28px;
+}
+
+.cw-section h3 {
+  color: var(--green-900);
+  font-size: 1.05rem;
+  margin: 28px 0 12px;
+}
+
+.cw-section p {
+  color: var(--text-600);
+  margin-bottom: 16px;
+}
+
+.cw-section ul {
+  margin: 0 0 16px;
+}
+
+.cw-section ul li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 8px;
+  color: var(--text-600);
+}
+
+.cw-section ul li::before {
+  content: "・";
+  position: absolute;
+  left: 0;
+  color: var(--green-700);
+}
+
+/* 目次 */
+.cw-toc-title {
+  text-align: left;
+  color: var(--green-900);
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 32px 0 12px;
+}
+
+.cw-toc-box {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 8px 20px;
+  margin: 0 0 8px;
+  text-align: left;
+}
+
+.cw-toc {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.cw-toc a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 4px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--green-900);
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+  transition: background var(--transition), padding-left var(--transition);
+}
+
+.cw-toc a:last-child {
+  border-bottom: none;
+}
+
+.cw-toc a:hover {
+  background: var(--green-100);
+  padding-left: 10px;
+}
+
+.cw-toc .num {
+  flex-shrink: 0;
+  color: var(--green-900);
+  font-weight: 800;
+  font-size: 0.95rem;
+  min-width: 1.8em;
+}
+
+.cw-toc .label {
+  flex: 1;
+  text-align: left;
+}
+
+.cw-toc .arrow {
+  color: var(--green-700);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* 比較マトリクス表 */
+.cw-matrix-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 14px 36px rgba(31, 77, 60, 0.1);
+  margin: 28px 0 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cw-matrix-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  background: var(--white);
+}
+
+.cw-matrix-table th,
+.cw-matrix-table td {
+  padding: 16px 18px;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--text-600);
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: middle;
+}
+
+.cw-matrix-table thead th {
+  background: var(--white);
+  border-bottom: 2px solid var(--green-900);
+  vertical-align: bottom;
+  padding-bottom: 14px;
+}
+
+.cw-matrix-name {
+  display: block;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--green-900);
+}
+
+.cw-matrix-type {
+  display: block;
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--text-600);
+  margin-top: 3px;
+}
+
+.cw-matrix-table th[scope="row"] {
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--green-900);
+  background: var(--cream-100);
+  white-space: nowrap;
+}
+
+.cw-matrix-table thead th:first-child,
+.cw-matrix-table th[scope="row"] {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  box-shadow: 2px 0 6px rgba(31, 77, 60, 0.06);
+}
+
+.cw-matrix-table thead th:first-child {
+  z-index: 3;
+  background: var(--white);
+}
+
+.cw-matrix-symbol {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--green-900);
+}
+
+.cw-matrix-table td.cw-matrix-text {
+  text-align: left;
+  font-size: 0.82rem;
+}
+
+.cw-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  font-size: 0.82rem;
+  color: var(--text-600);
+  margin-bottom: 10px;
+}
+
+.cw-legend strong {
+  color: var(--green-900);
+  margin-right: 4px;
+}
+
+/* 目的別カード */
+.cw-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.cw-pick-card {
+  display: block;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 26px 28px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+a.cw-pick-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(31, 77, 60, 0.14);
+}
+
+.cw-pick-card h3 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.cw-pick-label {
+  display: inline-block;
+  font-weight: 800;
+  color: var(--green-900);
+  background: var(--green-100);
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.cw-pick-card p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  .cw-pick-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 会社プロフィールカード */
+.cw-company {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 36px 40px 32px;
+  margin-bottom: 28px;
+}
+
+.cw-company-type {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--green-700);
+  background: var(--green-100);
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.cw-company h2 {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+}
+
+.cw-company-lead {
+  color: var(--text-600);
+  margin-bottom: 20px !important;
+}
+
+.cw-spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  background: var(--cream-100);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.cw-spec-item .cw-spec-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-600);
+  margin-bottom: 4px;
+}
+
+.cw-spec-item .cw-spec-value {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--green-900);
+}
+
+@media (max-width: 500px) {
+  .cw-spec-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .cw-company {
+    padding: 28px 22px;
+  }
+}
+
+.cw-btn-row {
+  margin: 24px 0 4px;
+}
+
+/* 注意点／注記ボックス */
+.cw-note {
+  background: var(--cream-100);
+  border-left: 4px solid var(--orange-500);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.cw-note p {
+  margin-bottom: 0;
+  color: var(--text-600);
+  font-size: 0.9rem;
+}
+
+.cw-note p + p {
+  margin-top: 8px;
+}
+
+/* 選び方：カードグリッド */
+.cw-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.cw-guide-card {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-left: 4px solid var(--green-700);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 22px 26px;
+}
+
+.cw-guide-card h3 {
+  margin-top: 0;
+}
+
+.cw-guide-card p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  .cw-guide-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 写真：画像＋文章の2カラム */
+.cw-photo-split {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.cw-photo-split img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  display: block;
+}
+
+.cw-photo-split p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  .cw-photo-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ページ最下部：開示ブロック */
+.cw-disclosure {
+  background: var(--cream-100);
+  border-top: 1px solid var(--border-soft);
+  padding: 48px 0 72px;
+}
+
+.cw-disclosure h2 {
+  color: var(--green-900);
+  font-size: 1.1rem;
+  margin: 0 0 20px;
+}
+
+.cw-disclosure-box p {
+  font-size: 0.85rem;
+  color: var(--text-600);
+  margin-bottom: 10px;
+}
+
+.cw-disclosure-box p:last-child {
+  margin-bottom: 0;
+}
