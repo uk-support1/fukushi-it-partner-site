@@ -172,7 +172,7 @@
             <div class="cw-purpose-recommend">
               <span class="cw-purpose-recommend-label">おすすめ事業者：</span>
               <span class="cw-purpose-links">
-                <a class="cw-purpose-btn" href="#fukushi-it-partner">福祉ITパートナー</a>
+                <a class="cw-purpose-btn js-ga-fkp" href="#fukushi-it-partner" data-ga-location="purpose_card" data-ga-text="福祉ITパートナー">福祉ITパートナー</a>
                 <a class="cw-purpose-btn" href="#coconala">ココナラ</a>
               </span>
             </div>
@@ -203,7 +203,7 @@
             <div class="cw-purpose-recommend">
               <span class="cw-purpose-recommend-label">おすすめ事業者：</span>
               <span class="cw-purpose-links">
-                <a class="cw-purpose-btn" href="#fukushi-it-partner">福祉ITパートナー</a>
+                <a class="cw-purpose-btn js-ga-fkp" href="#fukushi-it-partner" data-ga-location="purpose_card" data-ga-text="福祉ITパートナー">福祉ITパートナー</a>
               </span>
             </div>
             <p class="cw-purpose-desc">福祉事業への理解と、相談しやすさを重視したい方に向いています。</p>
@@ -324,7 +324,7 @@
         <div class="cw-company reveal" id="fukushi-it-partner">
           <span class="cw-company-type">福祉特化型</span>
           <h2>福祉ITパートナー</h2>
-          <a class="cw-site-shot" href="homepage-plan.html">
+          <a class="cw-site-shot js-ga-fkp" href="homepage-plan.html" data-ga-location="company_screenshot" data-ga-text="公式サイトを見る ↗">
             <img src="assets/images/comparison/sites/fukushi-it-partner-hero.png" alt="福祉ITパートナー公式サイトのトップページ画面">
             <span class="cw-site-shot-caption">公式サイトを見る ↗</span>
           </a>
@@ -365,7 +365,7 @@
           <p>福祉を理解した相手に相談しながら、必要十分なホームページを低予算で作りたい方</p>
 
           <div class="cw-btn-row">
-            <a href="homepage-plan.html" class="btn btn-outline">制作プランを見る</a>
+            <a href="homepage-plan.html" class="btn btn-outline js-ga-fkp" data-ga-location="company_button" data-ga-text="制作プランを見る">制作プランを見る</a>
           </div>
         </div>
 
@@ -591,5 +591,21 @@
 </main>
 
 <script src="assets/js/main.js"></script>
+<script>
+  // 福祉ITパートナーへの導線クリックをGA4で計測（比較ページ専用）
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".js-ga-fkp").forEach(function (link) {
+      link.addEventListener("click", function () {
+        if (typeof window.gtag === "function") {
+          window.gtag("event", "select_fukushi_it_partner", {
+            link_location: link.getAttribute("data-ga-location") || "",
+            link_text: link.getAttribute("data-ga-text") || link.textContent.trim(),
+            destination: link.getAttribute("href") || ""
+          });
+        }
+      });
+    });
+  });
+</script>
 </body>
 </html>
