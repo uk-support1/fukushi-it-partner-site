@@ -1230,7 +1230,7 @@ section {
 /* ===== Profile page ===== */
 .profile-main {
   display: grid;
-  grid-template-columns: 0.4fr 1fr;
+  grid-template-columns: minmax(240px, 280px) 1fr;
   gap: 48px;
   align-items: start;
 }
@@ -1240,8 +1240,46 @@ section {
     grid-template-columns: 1fr;
     text-align: center;
   }
-  .profile-main .profile-photo {
+  .profile-main .profile-portrait-wrap {
     margin: 0 auto;
+  }
+}
+
+/* 代表者紹介写真（丸ロゴから写真への差し替え分） */
+.profile-portrait-wrap {
+  width: 100%;
+  max-width: 280px;
+}
+
+.profile-portrait {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-soft);
+  background: var(--white);
+}
+
+.profile-portrait-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 15%;
+}
+
+.profile-portrait-caption {
+  margin: 12px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--green-900);
+}
+
+@media (max-width: 480px) {
+  .profile-portrait-wrap {
+    max-width: 78%;
   }
 }
 
