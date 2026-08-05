@@ -1269,34 +1269,79 @@ section {
   object-position: 50% 15%;
 }
 
-.profile-portrait-caption {
-  margin: 12px 0 0;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--green-900);
-}
-
 @media (max-width: 480px) {
   .profile-portrait-wrap {
     max-width: 78%;
   }
 }
 
-.profile-logo {
-  display: block;
+/* 写真下の氏名・資格（名刺のようなシンプル表記） */
+.profile-id {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.profile-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green-900);
+}
+
+.profile-qualifications {
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-600);
+}
+
+.profile-id-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
   width: 100%;
-  max-width: 220px;
-  height: auto;
-  margin: 0 auto 40px;
-  object-fit: contain;
+}
+
+.profile-id-row > :first-child {
+  text-align: right;
+}
+
+.profile-id-row > :last-child {
+  text-align: left;
+}
+
+.profile-id-center {
+  width: 20px;
+  text-align: center;
+}
+
+/* 代表挨拶文（本文エリアの読みやすさ調整） */
+.profile-bio {
+  max-width: 640px;
+}
+
+.profile-bio p {
+  margin-bottom: 20px;
+}
+
+.profile-intro {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--green-900);
+  line-height: 1.6;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 480px) {
-  .profile-logo {
-    max-width: 170px;
-    margin-bottom: 28px;
+  .profile-intro {
+    font-size: 18px;
   }
+}
+
+.profile-catch {
+  font-weight: 700;
+  color: var(--green-900);
 }
 
 .qualification-box {
