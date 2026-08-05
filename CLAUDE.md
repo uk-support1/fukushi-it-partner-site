@@ -4,7 +4,7 @@
 
 - **対象フォルダ：** `C:\Users\kenta\Desktop\ホームページ\fukushi-it-partner-site`
 - **GitHubリポジトリ：** `https://github.com/uk-support1/fukushi-it-partner-site.git`
-- **公開URL：** `https://uk-support1.github.io/fukushi-it-partner-site/`
+- **公開URL：** `https://fukushi-it-partner.com/`
 - **ブランチ：** `main`
 
 ---
