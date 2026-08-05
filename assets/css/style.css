@@ -1654,9 +1654,9 @@ section {
 
 .sample-feature-media img {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: center top;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
   display: block;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
