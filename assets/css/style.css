@@ -1277,43 +1277,25 @@ section {
 
 /* 写真下の氏名・資格（名刺のようなシンプル表記） */
 .profile-id {
-  margin-top: 16px;
+  margin-top: 8px;
   text-align: center;
 }
 
 .profile-name {
-  font-size: 18px;
+  margin: 0;
+  font-size: 21px;
   font-weight: 700;
   color: var(--green-900);
+  line-height: 1.4;
 }
 
 .profile-qualifications {
-  margin-top: 6px;
-  padding-top: 8px;
-  border-top: 1px solid var(--border-soft);
+  margin: 4px 0 0;
+  padding: 0;
+  border-top: none;
   font-size: 13px;
-  line-height: 1.8;
+  line-height: 1.5;
   color: var(--text-600);
-}
-
-.profile-id-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  width: 100%;
-}
-
-.profile-id-row > :first-child {
-  text-align: right;
-}
-
-.profile-id-row > :last-child {
-  text-align: left;
-}
-
-.profile-id-center {
-  width: 20px;
-  text-align: center;
 }
 
 /* 代表挨拶文（本文エリアの読みやすさ調整） */
