@@ -897,13 +897,24 @@ section {
   margin-bottom: 24px;
 }
 
-.page-hero .contact-hero-text {
-  max-width: 640px;
-  line-height: 1.9;
+.contact-hero-list {
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: left;
 }
 
-.contact-hero-text + .contact-hero-text {
-  margin-top: 14px;
+.contact-hero-list li {
+  margin-bottom: 16px;
+  line-height: 1.8;
+}
+
+.contact-hero-list li:last-child {
+  margin-bottom: 0;
+}
+
+.contact-hero-list strong {
+  color: var(--green-900);
+  font-weight: 700;
 }
 
 /* ===== Service detail blocks ===== */
@@ -1339,74 +1350,67 @@ section {
 }
 
 /* ===== Contact ===== */
-.contact-methods {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  align-items: stretch;
-  margin-bottom: 40px;
+.contact-hero-btn {
+  margin: 8px 0 24px;
 }
 
-@media (max-width: 900px) {
-  .contact-methods {
-    grid-template-columns: 1fr;
-  }
+.contact-secondary-section {
+  padding-top: 48px;
 }
 
-.contact-method-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--white);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
-  padding: 40px;
-}
-
-.contact-method-card h3 {
-  color: var(--green-900);
-  font-size: 1.2rem;
-  margin-bottom: 12px;
-}
-
-.contact-method-card p {
-  color: var(--text-600);
-  margin-bottom: 24px;
-  flex-grow: 1;
-}
-
-.contact-method-card .btn {
-  align-self: flex-start;
-}
-
-.contact-card-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  background: var(--green-100);
+.contact-coconala-banner {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  margin-bottom: 20px;
-}
-
-.contact-method-card--muted {
-  background: var(--cream-100);
-  box-shadow: none;
-}
-
-.contact-card-icon--muted {
+  gap: 16px;
+  max-width: 380px;
+  margin: 0 0 0 auto;
   background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 14px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.contact-coconala-banner:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(31, 77, 60, 0.12);
+}
+
+.contact-coconala-banner-img {
+  width: 88px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.contact-coconala-banner-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-coconala-banner-title {
+  font-weight: 700;
+  color: var(--green-900);
+  font-size: 0.9rem;
+}
+
+.contact-coconala-banner-text {
+  font-size: 0.78rem;
+  color: var(--text-600);
 }
 
 @media (max-width: 700px) {
-  .contact-method-card {
-    padding: 28px;
+  .contact-coconala-banner {
+    margin: 24px auto 0;
+    max-width: 100%;
   }
 }
 
 .contact-other {
+  margin-top: 56px;
   background: var(--cream-100);
   border-radius: var(--radius-lg);
   padding: 32px 40px;
@@ -1459,7 +1463,7 @@ section {
   display: block;
   font-weight: 700;
   color: var(--green-900);
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   transition: color var(--transition);
 }
 
