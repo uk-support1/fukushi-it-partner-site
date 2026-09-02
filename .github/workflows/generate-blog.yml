@@ -5,7 +5,7 @@ name: Generate Blog
 # 自動生成・更新する。
 # content/articles/**以外の変更（＝このワークフロー自身が作る生成物への
 # commitを含む）ではトリガーされないため、自動commitによる無限ループは
-# 発生しない（generate-news-index.ymlと同じ設計）。
+# 発生しない。
 
 on:
   push:

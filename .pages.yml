@@ -3,40 +3,6 @@ media:
   output: /assets/images/cms-uploads
 
 content:
-  - name: cms_test
-    label: "CMSテスト"
-    type: file
-    path: data/cms-test.json
-    format: json
-    fields:
-      - name: vacancy
-        label: "空室数"
-        type: number
-
-  - name: news
-    label: "お知らせテスト"
-    type: collection
-    path: content/news
-    format: yaml-frontmatter
-    extension: md
-    fields:
-      - name: title
-        label: "タイトル"
-        type: string
-      - name: date
-        label: "投稿日"
-        type: date
-      - name: image
-        label: "画像"
-        type: image
-      - name: published
-        label: "公開する"
-        type: boolean
-        default: false
-      - name: body
-        label: "本文"
-        type: rich-text
-
   - name: articles
     label: "お知らせ・コラム"
     description: "公式サイトの「お知らせ・コラム」ページに公開する記事を管理します。保存すると自動的にサイトへ反映されます。"
