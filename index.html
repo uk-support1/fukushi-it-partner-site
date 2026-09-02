@@ -275,6 +275,17 @@
     </div>
   </section>
 
+  <!-- ===== お知らせ（GitHub Actionsが生成するdata/news-index.jsonを新しい順に最大3件表示） ===== -->
+  <section class="news-section" id="news-section" style="display: none;">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">お知らせ</span>
+        <h2 class="section-title">お知らせ</h2>
+      </div>
+      <div class="blog-list" id="news-list"></div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -312,6 +323,7 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/news.js"></script>
 <script>
 (function () {
   fetch('data/cms-test.json?_=' + Date.now(), { cache: 'no-store' })
