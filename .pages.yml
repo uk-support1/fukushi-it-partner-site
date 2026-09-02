@@ -36,3 +36,75 @@ content:
       - name: body
         label: "本文"
         type: rich-text
+
+  - name: articles
+    label: "お知らせ・コラム"
+    description: "公式サイトの「お知らせ・コラム」ページに公開する記事を管理します。保存すると自動的にサイトへ反映されます。"
+    type: collection
+    path: content/articles
+    filename: "{fields.slug}.md"
+    format: yaml-frontmatter
+    extension: md
+    fields:
+      - name: type
+        label: "記事種別"
+        description: "一覧ページでの表示ラベル（バッジ）に使われます。"
+        type: select
+        options:
+          - { label: "お知らせ", value: "news" }
+          - { label: "コラム", value: "column" }
+        default: "column"
+
+      - name: title
+        label: "タイトル"
+        description: "記事のタイトルです。ページの見出し（H1）や検索結果のタイトルにそのまま使われます。"
+        type: string
+
+      - name: date
+        label: "投稿日"
+        description: "記事一覧の並び順（新しい順）に使われます。"
+        type: date
+
+      - name: image
+        label: "メイン画像"
+        description: "記事冒頭に表示される画像です。一覧のサムネイルやSNSシェア時の画像としても使われます。"
+        type: image
+
+      - name: image_alt
+        label: "画像の説明文（alt）"
+        description: "目の不自由な方向けの読み上げや、検索エンジンが画像内容を理解するための説明文です。「〇〇の様子」のように具体的に入力してください。"
+        type: string
+
+      - name: body
+        label: "本文"
+        description: "太字・見出し・リンク・箇条書き・画像などを挿入できます。"
+        type: rich-text
+
+      - name: published
+        label: "公開する"
+        description: "オフのままだと下書きとして保存され、サイトには表示されません。"
+        type: boolean
+        default: false
+
+      - name: description
+        label: "SEO用説明文"
+        description: "検索結果やSNSでシェアされた際に表示される説明文です。120字程度を推奨します。"
+        type: text
+
+      - name: slug
+        label: "URL（スラッグ）"
+        description: "記事ページのURL（例：blog/このスラッグ.html）に使われます。通常は変更しないでください。保存後に変更すると、記事のURLが変わり、検索結果や他ページ・SNSからのリンクが無効になるおそれがあります。"
+        type: string
+
+      - name: related
+        label: "関連記事（2件推奨）"
+        description: "記事の下部に「関連記事」として表示する記事を選んでください。目安は2件です。"
+        type: reference
+        collection: articles
+        multiple: true
+
+      - name: excerpt
+        label: "一覧用の抜粋（任意）"
+        description: "記事一覧に表示する紹介文です。空欄の場合は本文の冒頭が自動的に使われます。"
+        type: text
+        required: false
