@@ -314,7 +314,7 @@
 <script src="assets/js/main.js"></script>
 <script>
 (function () {
-  fetch('data/cms-test.json')
+  fetch('data/cms-test.json?_=' + Date.now(), { cache: 'no-store' })
     .then(function (res) { return res.ok ? res.json() : Promise.reject(); })
     .then(function (data) {
       var el = document.getElementById('cms-test-vacancy');
