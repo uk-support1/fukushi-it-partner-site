@@ -1,8 +1,7 @@
 ---
-title: "お知らせテスト用サンプル記事"
+title: お知らせテスト用サンプル記事
 date: 2026-09-02
-image: ""
-published: false
+published: true
 ---
 これはPages CMSの「お知らせテスト」collectionの動作確認用サンプル記事です。
 
