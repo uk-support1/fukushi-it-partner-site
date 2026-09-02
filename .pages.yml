@@ -1,3 +1,7 @@
+media:
+  input: assets/images/cms-uploads
+  output: /assets/images/cms-uploads
+
 content:
   - name: cms_test
     label: "CMSテスト"
@@ -8,3 +12,27 @@ content:
       - name: vacancy
         label: "空室数"
         type: number
+
+  - name: news
+    label: "お知らせテスト"
+    type: collection
+    path: content/news
+    format: yaml-frontmatter
+    extension: md
+    fields:
+      - name: title
+        label: "タイトル"
+        type: string
+      - name: date
+        label: "投稿日"
+        type: date
+      - name: image
+        label: "画像"
+        type: image
+      - name: published
+        label: "公開する"
+        type: boolean
+        default: false
+      - name: body
+        label: "本文"
+        type: rich-text
