@@ -1,0 +1,10 @@
+content:
+  - name: cms_test
+    label: "CMSテスト"
+    type: file
+    path: data/cms-test.json
+    format: json
+    fields:
+      - name: vacancy
+        label: "空室数"
+        type: number

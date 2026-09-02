@@ -265,6 +265,16 @@
     </div>
   </section>
 
+  <!-- ===== CMSテスト（Decap CMS動作確認用／data/cms-test.jsonから読み込み） ===== -->
+  <section style="padding: 40px 0;">
+    <div class="container" style="max-width: 640px;">
+      <div class="qualification-box">
+        <h4>CMSテスト</h4>
+        <p id="cms-test-vacancy">現在の空室：2室</p>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -302,5 +312,20 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script>
+(function () {
+  fetch('data/cms-test.json')
+    .then(function (res) { return res.ok ? res.json() : Promise.reject(); })
+    .then(function (data) {
+      var el = document.getElementById('cms-test-vacancy');
+      if (el && typeof data.vacancy !== 'undefined') {
+        el.textContent = '現在の空室：' + data.vacancy + '室';
+      }
+    })
+    .catch(function () {
+      /* 読み込みに失敗した場合はHTMLの初期表示のまま */
+    });
+})();
+</script>
 </body>
 </html>
