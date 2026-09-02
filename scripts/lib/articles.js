@@ -296,6 +296,12 @@ function getLegacyArticleMeta(slug) {
   };
 }
 
+// バッジ等に表示するカテゴリ文言。category_labelが指定されていれば
+// それを優先し、無ければtypeから既定のラベルを解決する。
+function categoryLabelOf(data) {
+  return (data && (data.category_label || TYPE_LABELS[data.type] || data.type)) || "";
+}
+
 module.exports = {
   ARTICLES_DIR: ARTICLES_DIR,
   BLOG_DIR: BLOG_DIR,
@@ -309,4 +315,5 @@ module.exports = {
   toSiteImagePath: toSiteImagePath,
   loadArticles: loadArticles,
   getLegacyArticleMeta: getLegacyArticleMeta,
+  categoryLabelOf: categoryLabelOf,
 };

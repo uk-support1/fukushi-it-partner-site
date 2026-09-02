@@ -74,11 +74,17 @@ content:
         type: string
 
       - name: related
-        label: "関連記事（2件推奨）"
-        description: "記事の下部に「関連記事」として表示する記事を選んでください。目安は2件です。"
+        label: "関連記事（任意・最大2件）"
+        description: "記事の下部に「関連記事」として表示したい記事を、タイトルで検索して選んでください。1件だけでも構いません。空欄のままにした場合は、同じカテゴリの記事を優先して自動的に表示されます。"
         type: reference
-        collection: articles
-        multiple: true
+        required: false
+        options:
+          collection: articles
+          multiple: true
+          max: 2
+          search: "title"
+          value: "{fields.slug}"
+          label: "{fields.title}"
 
       - name: excerpt
         label: "一覧用の抜粋（任意）"

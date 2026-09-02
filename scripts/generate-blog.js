@@ -56,8 +56,7 @@ function buildRelatedCardHtml(slug, articlesBySlug) {
   if (cms) {
     title = cms.data.title;
     dateDisplay = formatDateDisplay(cms.data.date);
-    categoryLabel =
-      cms.data.category_label || lib.TYPE_LABELS[cms.data.type] || cms.data.type || "";
+    categoryLabel = lib.categoryLabelOf(cms.data);
     image = cms.data.image;
     imageAlt = cms.data.image_alt || "";
     excerpt =
@@ -112,18 +111,61 @@ function buildRelatedCardHtml(slug, articlesBySlug) {
   );
 }
 
-function renderArticlePage(article, articlesBySlug) {
+const MAX_RELATED = 2;
+
+// 「関連記事」の表示対象slugを決める。
+// - Pages CMSで手動選択されていれば、それを使う（自分自身は除外。1件のみでもよい）
+// - 何も選択されていない場合のみ、他の公開記事から自動で最大2件補完する
+//   （同じカテゴリを優先し、足りなければ投稿日が新しい記事から補う）
+function resolveRelatedSlugs(article, published) {
+  const selfSlug = article.slug;
+  const manual = (Array.isArray(article.data.related) ? article.data.related : [])
+    .filter(function (s) {
+      return s && s !== selfSlug;
+    })
+    .filter(function (s, i, arr) {
+      return arr.indexOf(s) === i; // 重複除去
+    })
+    .slice(0, MAX_RELATED);
+
+  if (manual.length > 0) return manual;
+
+  const myCategory = lib.categoryLabelOf(article.data);
+  const others = published
+    .filter(function (a) {
+      return a.slug !== selfSlug;
+    })
+    .slice()
+    .sort(function (a, b) {
+      return String(b.data.date).localeCompare(String(a.data.date));
+    });
+
+  const sameCategory = others.filter(function (a) {
+    return lib.categoryLabelOf(a.data) === myCategory;
+  });
+  const otherCategory = others.filter(function (a) {
+    return lib.categoryLabelOf(a.data) !== myCategory;
+  });
+
+  return sameCategory
+    .concat(otherCategory)
+    .slice(0, MAX_RELATED)
+    .map(function (a) {
+      return a.slug;
+    });
+}
+
+function renderArticlePage(article, articlesBySlug, published) {
   const data = article.data;
   const slug = article.slug;
-  const categoryLabel =
-    data.category_label || lib.TYPE_LABELS[data.type] || data.type || "";
+  const categoryLabel = lib.categoryLabelOf(data);
   const dateDisplay = formatDateDisplay(data.date);
   const imageSrc = lib.toSiteImagePath(data.image, "blog");
   const bodyHtml = lib.markdownBodyToHtml(article.body, "blog");
   const description = lib.escapeHtml(data.description || "");
   const title = lib.escapeHtml(data.title);
 
-  const related = Array.isArray(data.related) ? data.related : [];
+  const related = resolveRelatedSlugs(article, published);
   const relatedHtml = related
     .map(function (relSlug) {
       return buildRelatedCardHtml(relSlug, articlesBySlug);
@@ -318,8 +360,7 @@ function buildBlogIndex(publishedArticles) {
     .map(function (a) {
       return {
         type: a.data.type || "",
-        category_label:
-          a.data.category_label || lib.TYPE_LABELS[a.data.type] || a.data.type || "",
+        category_label: lib.categoryLabelOf(a.data),
         title: a.data.title,
         date: a.data.date,
         image: a.data.image || null,
@@ -624,7 +665,7 @@ function main() {
   // ② blog/<slug>.html（content/articlesへ移行済みの記事のみ）
   published.forEach(function (article) {
     const outPath = path.join(BLOG_DIR, article.slug + ".html");
-    const html = renderArticlePage(article, articlesBySlug);
+    const html = renderArticlePage(article, articlesBySlug, published);
     fs.writeFileSync(outPath, html, "utf8");
     console.log("generated " + outPath);
   });
