@@ -3,8 +3,12 @@
  * Pages CMSの「お知らせ・コラム」collection（content/articles/*.md）から、
  *   ① data/blog-index.json      … 一覧用データ（published:trueのみ、新しい順）
  *   ② blog/<slug>.html          … 記事詳細ページ（既存記事と同じURL・同じCSS構造）
- *   ③ sitemap.xml               … 固定ページ＋記事URLを反映
+ *   ③ blog.html                 … 記事一覧ページ（注目記事＋時系列一覧）
+ *   ④ sitemap.xml               … 固定ページ＋記事URLを反映
  * をまとめて生成する。
+ *
+ * 注目記事は、公開中の記事のうち投稿日が最も新しい1件を自動採用する
+ * （Pages CMS側に「注目記事」フラグの入力・管理を追加しないための方針）。
  *
  * 生成対象のblog/<slug>.htmlは、content/articles/<slug>.mdが存在する
  * 記事のみ（＝Pages CMSへ移行済みの記事のみ）。まだ移行していない
@@ -23,6 +27,7 @@ const lib = require("./lib/articles");
 const ROOT = path.join(__dirname, "..");
 const BLOG_INDEX_FILE = path.join(ROOT, "data", "blog-index.json");
 const BLOG_DIR = path.join(ROOT, "blog");
+const BLOG_HTML_FILE = path.join(ROOT, "blog.html");
 const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 
 // sitemap.xmlの固定ページ（現在のsitemap.xmlの記事URL以外の部分をそのまま維持）
@@ -313,6 +318,8 @@ function buildBlogIndex(publishedArticles) {
     .map(function (a) {
       return {
         type: a.data.type || "",
+        category_label:
+          a.data.category_label || lib.TYPE_LABELS[a.data.type] || a.data.type || "",
         title: a.data.title,
         date: a.data.date,
         image: a.data.image || null,
@@ -325,6 +332,221 @@ function buildBlogIndex(publishedArticles) {
         slug: a.slug,
       };
     });
+}
+
+// blog.htmlの「注目記事」カード・時系列一覧カード（共通のDOM構造、
+// 画像・記事詳細へのリンクはサイトルート基準のパス）
+function buildBlogCardHtml(entry, variant) {
+  const isFeatured = variant === "featured";
+  const linkClass = isFeatured ? "blog-featured" : "blog-list-item";
+  const thumbClass = isFeatured ? "blog-featured-thumb" : "blog-list-thumb";
+  const bodyClass = isFeatured ? "blog-featured-body" : "blog-list-body";
+  const headingTag = isFeatured ? "h2" : "h3";
+  const indent = isFeatured ? "      " : "        ";
+
+  return (
+    indent +
+    '<a class="' +
+    linkClass +
+    ' reveal" href="blog/' +
+    entry.slug +
+    '.html">\n' +
+    indent +
+    '  <div class="' +
+    thumbClass +
+    '">\n' +
+    indent +
+    '    <img src="' +
+    lib.toSiteImagePath(entry.image, "root") +
+    '" alt="' +
+    lib.escapeHtml(entry.image_alt) +
+    '">\n' +
+    indent +
+    "  </div>\n" +
+    indent +
+    '  <div class="' +
+    bodyClass +
+    '">\n' +
+    indent +
+    '    <div class="meta-row">\n' +
+    indent +
+    '      <span class="category-badge">' +
+    lib.escapeHtml(entry.category_label) +
+    "</span>\n" +
+    indent +
+    '      <span class="blog-date">' +
+    lib.escapeHtml(formatDateDisplay(entry.date)) +
+    "</span>\n" +
+    indent +
+    "    </div>\n" +
+    indent +
+    "    <" +
+    headingTag +
+    ">" +
+    lib.escapeHtml(entry.title) +
+    "</" +
+    headingTag +
+    ">\n" +
+    indent +
+    '    <p class="excerpt">' +
+    lib.escapeHtml(entry.excerpt) +
+    "</p>\n" +
+    indent +
+    '    <span class="read-more">続きを読む</span>\n' +
+    indent +
+    "  </div>\n" +
+    indent +
+    "</a>"
+  );
+}
+
+function buildBlogHtml(blogIndex) {
+  const featured = blogIndex[0];
+  const rest = blogIndex.slice(1);
+  const featuredHtml = featured ? buildBlogCardHtml(featured, "featured") : "";
+  const listHtml = rest.map((e) => buildBlogCardHtml(e, "list")).join("\n\n");
+
+  return (
+    "<!DOCTYPE html>\n" +
+    '<html lang="ja">\n' +
+    "<head>\n" +
+    '<meta charset="UTF-8">\n' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+    '<meta name="google-site-verification" content="nfXiE9TQ6FSj5KBW42sQfUnjAfDYocSnfIRQKvavYdE" />\n' +
+    "<title>お知らせ・コラム｜福祉ITパートナー・ホームページ制作・IT支援</title>\n" +
+    '<meta name="description" content="福祉事業所のホームページづくり、IT活用、Googleサービス、AI活用などに関する情報を発信しています。福祉ITパートナーのお知らせ・コラム一覧です。">\n' +
+    '<link rel="canonical" href="https://fukushi-it-partner.com/blog.html">\n' +
+    "\n" +
+    '<meta property="og:type" content="website">\n' +
+    '<meta property="og:title" content="お知らせ・コラム｜福祉ITパートナー">\n' +
+    '<meta property="og:description" content="福祉事業所のホームページづくり、IT活用、Googleサービス、AI活用などに関する情報を発信しています。">\n' +
+    '<meta property="og:url" content="https://fukushi-it-partner.com/blog.html">\n' +
+    '<meta property="og:site_name" content="福祉ITパートナー">\n' +
+    '<meta property="og:image" content="assets/images/logo.png">\n' +
+    '<meta name="twitter:card" content="summary_large_image">\n' +
+    "\n" +
+    '<link rel="icon" href="favicon.ico" sizes="any">\n' +
+    '<link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">\n' +
+    '<link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">\n' +
+    '<link rel="icon" type="image/png" sizes="192x192" href="assets/images/android-chrome-192x192.png">\n' +
+    '<link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">\n' +
+    '<link rel="manifest" href="site.webmanifest">\n' +
+    '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
+    '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">\n' +
+    '<link rel="stylesheet" href="assets/css/style.css">\n' +
+    '<script src="assets/js/ga4.js"></script>\n' +
+    "</head>\n" +
+    "<body>\n" +
+    "\n" +
+    '<header class="site-header">\n' +
+    '  <div class="nav-bar">\n' +
+    '    <a href="index.html" class="brand">\n' +
+    '      <img src="assets/images/logo-mark.png" alt="福祉ITパートナー ロゴ" class="brand-logo">\n' +
+    '      <span class="brand-text">\n' +
+    '        <span class="brand-name">福祉ITパートナー</span>\n' +
+    '        <span class="brand-sub">上原健太</span>\n' +
+    "      </span>\n" +
+    "    </a>\n" +
+    "    <nav>\n" +
+    '      <ul class="nav-links">\n' +
+    '        <li><a href="index.html">HOME</a></li>\n' +
+    '        <li><a href="services.html">サービス</a></li>\n' +
+    '        <li><a href="works.html">制作実績</a></li>\n' +
+    '        <li><a href="flow.html">制作までの流れ</a></li>\n' +
+    '        <li><a href="blog.html" class="active">ブログ</a></li>\n' +
+    '        <li><a href="profile.html">プロフィール</a></li>\n' +
+    '        <li><a href="contact.html">お問い合わせ</a></li>\n' +
+    '        <li class="nav-cta-mobile">\n' +
+    '          <a href="contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>\n' +
+    "        </li>\n" +
+    "      </ul>\n" +
+    "    </nav>\n" +
+    '    <div class="nav-cta">\n' +
+    '      <a href="contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>\n' +
+    "    </div>\n" +
+    '    <button class="nav-toggle" aria-label="メニューを開く">\n' +
+    "      <span></span><span></span><span></span>\n" +
+    "    </button>\n" +
+    "  </div>\n" +
+    "</header>\n" +
+    "\n" +
+    "<main>\n" +
+    "\n" +
+    '  <section class="page-hero">\n' +
+    '    <div class="container reveal">\n' +
+    '      <span class="section-tag">お知らせ・コラム</span>\n' +
+    "      <h1>お知らせ・コラム</h1>\n" +
+    "      <p>福祉事業所のホームページづくり、IT活用、Googleサービス、AI活用などに関する情報を発信しています。</p>\n" +
+    "    </div>\n" +
+    "  </section>\n" +
+    "\n" +
+    "  <section>\n" +
+    '    <div class="container">\n' +
+    "\n" +
+    "      <!-- 注目記事：公開中の記事のうち投稿日が最も新しい1件を自動採用（data/blog-index.jsonの先頭） -->\n" +
+    featuredHtml +
+    "\n" +
+    "\n" +
+    "      <!-- 記事一覧（時系列）：data/blog-index.jsonから自動生成 -->\n" +
+    '      <div class="blog-list">\n' +
+    "\n" +
+    listHtml +
+    "\n" +
+    "\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </section>\n" +
+    "\n" +
+    '  <section class="cta-section">\n' +
+    '    <div class="container reveal">\n' +
+    "      <h2>まずはお気軽にご相談ください。</h2>\n" +
+    '      <div class="btn-group">\n' +
+    '        <a href="contact.html#google-form-embed" class="btn btn-accent js-consult-link">無料相談はこちら</a>\n' +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </section>\n" +
+    "\n" +
+    "</main>\n" +
+    "\n" +
+    '<footer class="site-footer">\n' +
+    '  <div class="container">\n' +
+    '    <div class="footer-grid">\n' +
+    '      <div class="footer-brand">\n' +
+    '        <img src="assets/images/logo.png" alt="福祉ITパートナー ロゴ" class="footer-logo">\n' +
+    '        <span class="brand-name">福祉ITパートナー</span>\n' +
+    "        <p>福祉の現場に、ITという安心を。<br>福祉事業所・団体のホームページ制作・IT支援を行っています。</p>\n" +
+    "      </div>\n" +
+    '      <div class="footer-col">\n' +
+    "        <h4>サイトメニュー</h4>\n" +
+    "        <ul>\n" +
+    '          <li><a href="index.html">HOME</a></li>\n' +
+    '          <li><a href="services.html">サービス</a></li>\n' +
+    '          <li><a href="works.html">制作実績</a></li>\n' +
+    '          <li><a href="blog.html">ブログ</a></li>\n' +
+    '          <li><a href="profile.html">プロフィール</a></li>\n' +
+    '          <li><a href="contact.html">お問い合わせ</a></li>\n' +
+    "        </ul>\n" +
+    "      </div>\n" +
+    '      <div class="footer-col">\n' +
+    "        <h4>お問い合わせ</h4>\n" +
+    "        <ul>\n" +
+    '          <li><a href="contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>\n' +
+    '          <li><a href="privacy.html">プライバシーポリシー</a></li>\n' +
+    '          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer">YouTube｜ぶひおの3分福祉</a></li>\n' +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    '    <div class="footer-bottom">\n' +
+    "      &copy; 2026 福祉ITパートナー｜上原健太\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</footer>\n" +
+    "\n" +
+    '<script src="assets/js/main.js"></script>\n' +
+    "</body>\n" +
+    "</html>\n"
+  );
 }
 
 function buildSitemap(publishedArticles) {
@@ -394,12 +616,9 @@ function main() {
   });
 
   // ① data/blog-index.json
+  const blogIndex = buildBlogIndex(published);
   fs.mkdirSync(path.dirname(BLOG_INDEX_FILE), { recursive: true });
-  fs.writeFileSync(
-    BLOG_INDEX_FILE,
-    JSON.stringify(buildBlogIndex(published), null, 2) + "\n",
-    "utf8"
-  );
+  fs.writeFileSync(BLOG_INDEX_FILE, JSON.stringify(blogIndex, null, 2) + "\n", "utf8");
   console.log("generated " + BLOG_INDEX_FILE + " (" + published.length + " article(s))");
 
   // ② blog/<slug>.html（content/articlesへ移行済みの記事のみ）
@@ -410,7 +629,11 @@ function main() {
     console.log("generated " + outPath);
   });
 
-  // ③ sitemap.xml
+  // ③ blog.html（注目記事＋時系列一覧）
+  fs.writeFileSync(BLOG_HTML_FILE, buildBlogHtml(blogIndex), "utf8");
+  console.log("generated " + BLOG_HTML_FILE);
+
+  // ④ sitemap.xml
   fs.writeFileSync(SITEMAP_FILE, buildSitemap(published), "utf8");
   console.log("updated " + SITEMAP_FILE);
 }

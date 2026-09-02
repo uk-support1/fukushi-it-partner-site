@@ -1,6 +1,7 @@
 [
   {
     "type": "column",
+    "category_label": "ホームページ制作",
     "title": "障害者グループホームの入居者募集｜ホームページで空室を減らすためにできること",
     "date": "2026-08-27",
     "image": "assets/images/services/service-homepage.jpg",
@@ -11,6 +12,7 @@
   },
   {
     "type": "column",
+    "category_label": "ホームページ制作",
     "title": "福祉事業所のGoogleマップ活用｜Googleビジネスプロフィールを登録するメリット",
     "date": "2026-07-12",
     "image": "assets/images/services/service-google-support.jpg",
@@ -21,6 +23,7 @@
   },
   {
     "type": "column",
+    "category_label": "ホームページ制作",
     "title": "福祉事業所のホームページ制作、いくらかかる？2つのプランと選び方",
     "date": "2026-06-05",
     "image": "assets/images/blog/consultation-laptop-discussion.jpg",
@@ -31,6 +34,7 @@
   },
   {
     "type": "column",
+    "category_label": "ホームページ制作",
     "title": "障害者グループホームのホームページに何を載せる？入居希望者と家族に伝えたい内容",
     "date": "2026-05-11",
     "image": "assets/images/blog/laptop-blog-layout.jpg",
@@ -41,6 +45,7 @@
   },
   {
     "type": "column",
+    "category_label": "ホームページ制作",
     "title": "福祉事業所にホームページが必要な5つの理由",
     "date": "2026-04-05",
     "image": "assets/images/blog/laptop-website-wireframe.jpg",
@@ -51,6 +56,7 @@
   },
   {
     "type": "column",
+    "category_label": "ホームページ制作",
     "title": "就労継続支援B型のホームページで伝えるべき5つのこと",
     "date": "2026-03-12",
     "image": "assets/images/blog/handicraft-workshop-support.jpg",
@@ -61,6 +67,7 @@
   },
   {
     "type": "column",
+    "category_label": "AI活用",
     "title": "福祉現場でAIを活用する第一歩",
     "date": "2026-02-07",
     "image": "assets/images/blog/staff-laptop-support.jpg",
@@ -71,6 +78,7 @@
   },
   {
     "type": "news",
+    "category_label": "お知らせ",
     "title": "福祉ITパートナーの情報発信を始めます",
     "date": "2026-01-15",
     "image": "assets/images/blog/calm-writing-desk.jpg",
