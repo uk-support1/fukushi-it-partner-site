@@ -50,9 +50,13 @@ content:
         label: "記事種別"
         description: "記事の分類です。一覧ページでの表示バッジは、下の「カテゴリ表示（任意）」が空欄の場合にここから自動で決まります。"
         type: select
+        required: true
         options:
-          - { label: "お知らせ", value: "news" }
-          - { label: "コラム", value: "column" }
+          values:
+            - name: news
+              label: "お知らせ"
+            - name: column
+              label: "コラム"
         default: "column"
 
       - name: category_label
