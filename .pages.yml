@@ -77,9 +77,10 @@ content:
         type: image
 
       - name: image_alt
-        label: "画像の説明文（alt）"
-        description: "目の不自由な方向けの読み上げや、検索エンジンが画像内容を理解するための説明文です。「〇〇の様子」のように具体的に入力してください。"
+        label: "画像の説明（任意）"
+        description: "画像の内容を簡単に入力してください。例：「施設の外観」「明るい居室の様子」\n※検索エンジンが画像の内容を理解するために使われ、SEO対策にもつながります。"
         type: string
+        required: false
 
       - name: body
         label: "本文"
