@@ -48,12 +48,18 @@ content:
     fields:
       - name: type
         label: "記事種別"
-        description: "一覧ページでの表示ラベル（バッジ）に使われます。"
+        description: "記事の分類です。一覧ページでの表示バッジは、下の「カテゴリ表示（任意）」が空欄の場合にここから自動で決まります。"
         type: select
         options:
           - { label: "お知らせ", value: "news" }
           - { label: "コラム", value: "column" }
         default: "column"
+
+      - name: category_label
+        label: "カテゴリ表示（任意）"
+        description: "一覧・記事ページのバッジに表示する文言を個別に指定したい場合に入力してください（例：「AI活用」）。空欄の場合は「記事種別」から自動で決まります。"
+        type: string
+        required: false
 
       - name: title
         label: "タイトル"
@@ -107,4 +113,16 @@ content:
         label: "一覧用の抜粋（任意）"
         description: "記事一覧に表示する紹介文です。空欄の場合は本文の冒頭が自動的に使われます。"
         type: text
+        required: false
+
+      - name: cta_heading
+        label: "記事下部の見出し（任意）"
+        description: "記事の一番下に表示する相談案内の見出しです。空欄の場合は「まずはお気軽にご相談ください。」が使われます。"
+        type: string
+        required: false
+
+      - name: cta_button_text
+        label: "記事下部のボタン文言（任意）"
+        description: "記事の一番下に表示するボタンの文言です。空欄の場合は「無料相談はこちら」が使われます。"
+        type: string
         required: false

@@ -1,12 +1,82 @@
 [
   {
+    "type": "column",
+    "title": "障害者グループホームの入居者募集｜ホームページで空室を減らすためにできること",
+    "date": "2026-08-27",
+    "image": "assets/images/services/service-homepage.jpg",
+    "image_alt": "福祉向けのやさしいデザインでホームページを制作している画面",
+    "description": "空室はあるのに問い合わせにつながらない、そんなグループホームに向けて、ホームページで空室情報を分かりやすく伝えるための工夫をご紹介します。",
+    "excerpt": "空室情報の書き方、更新日の重要性、写真や料金の見せ方など、入居希望者や家族が判断しやすいホームページの整え方をご紹介します。",
+    "slug": "group-home-vacancy-information"
+  },
+  {
+    "type": "column",
+    "title": "福祉事業所のGoogleマップ活用｜Googleビジネスプロフィールを登録するメリット",
+    "date": "2026-07-12",
+    "image": "assets/images/services/service-google-support.jpg",
+    "image_alt": "Googleマップを使ったアクセス情報をホームページに組み込んでいる画面",
+    "description": "福祉事業所がGoogleビジネスプロフィールに登録するメリットを分かりやすく解説。Googleマップから見つけてもらいやすくなる仕組みと、ホームページとの組み合わせ方をご紹介します。",
+    "excerpt": "Googleビジネスプロフィールの基本と、福祉事業所が登録することで得られるメリットを分かりやすくご紹介します。",
+    "slug": "google-business-profile-for-welfare"
+  },
+  {
+    "type": "column",
+    "title": "福祉事業所のホームページ制作、いくらかかる？2つのプランと選び方",
+    "date": "2026-06-05",
+    "image": "assets/images/blog/consultation-laptop-discussion.jpg",
+    "image_alt": "ノートパソコンを見ながらホームページ制作のプランについて相談している様子",
+    "description": "福祉事業所・団体のホームページ制作費用は、ページ数や内容によって変わります。福祉ITパートナーの「おまかせライト制作（19,800円）」「標準ホームページ制作（55,000円）」の内容と、選び方の基準をご紹介します。",
+    "excerpt": "ホームページ制作の費用はページ数や内容によって変わります。福祉ITパートナーの2つの制作プランの内容と、選び方の基準をご紹介します。",
+    "slug": "website-pricing-two-plans"
+  },
+  {
+    "type": "column",
+    "title": "障害者グループホームのホームページに何を載せる？入居希望者と家族に伝えたい内容",
+    "date": "2026-05-11",
+    "image": "assets/images/blog/laptop-blog-layout.jpg",
+    "image_alt": "ノートパソコンでホームページの掲載内容を編集している様子",
+    "description": "障害者グループホームのホームページに掲載したい内容を解説。入居希望者やご家族が確認したい情報、居室・生活支援・夜間体制の伝え方、入居者募集や職員採用への活用方法、写真掲載時の配慮点をご紹介します。",
+    "excerpt": "入居希望者やご家族が確認したい情報から、居室の見せ方、生活支援・夜間体制の伝え方、入居者募集や職員採用への活用方法まで分かりやすくご紹介します。",
+    "slug": "group-home-website-content"
+  },
+  {
+    "type": "column",
+    "title": "福祉事業所にホームページが必要な5つの理由",
+    "date": "2026-04-05",
+    "image": "assets/images/blog/laptop-website-wireframe.jpg",
+    "image_alt": "ノートパソコンでホームページのデザインを考えている様子",
+    "description": "福祉事業所にホームページが必要な理由を5つに分けて解説。利用者・ご家族・支援機関への情報発信、見学体験申込み、採用にも役立つ理由をご紹介します。",
+    "excerpt": "利用者・ご家族・支援機関への情報発信から、見学体験申込み、採用にも役立つ理由を5つに分けてご紹介します。",
+    "slug": "why-homepage-5-reasons"
+  },
+  {
+    "type": "column",
+    "title": "就労継続支援B型のホームページで伝えるべき5つのこと",
+    "date": "2026-03-12",
+    "image": "assets/images/blog/handicraft-workshop-support.jpg",
+    "image_alt": "作業を見守りながら一緒に取り組むスタッフと利用者の様子",
+    "description": "就労継続支援B型事業所のホームページで伝えるべき5つのことを解説。利用対象者、作業内容、利用までの流れ、工賃や通所のイメージ、事業所が大切にしていることをご紹介します。",
+    "excerpt": "利用対象者・作業内容・利用までの流れなど、利用を検討する方に伝えておきたい5つの内容をご紹介します。",
+    "slug": "b-type-homepage-5-things"
+  },
+  {
+    "type": "column",
+    "title": "福祉現場でAIを活用する第一歩",
+    "date": "2026-02-07",
+    "image": "assets/images/blog/staff-laptop-support.jpg",
+    "image_alt": "ノートパソコンを使いながら相談に応じるスタッフの様子",
+    "description": "忙しい福祉現場でも無理なく始められる、生成AIの活用方法をご紹介します。",
+    "excerpt": "忙しい現場でも無理なく始められる、生成AIの活用方法をご紹介します。",
+    "slug": "post-03-ai-first-step"
+  },
+  {
     "type": "news",
     "title": "福祉ITパートナーの情報発信を始めます",
     "date": "2026-01-15",
     "image": "assets/images/blog/calm-writing-desk.jpg",
     "image_alt": "窓辺の落ち着いた光の中で開かれたノートとコーヒー",
     "description": "福祉ITパートナーが、福祉事業所・団体向けのホームページづくりやIT活用に関する情報発信を始めました。今後発信していくテーマと、福祉のことを理解したIT支援への想いをお伝えします。",
-    "excerpt": "はじめまして。福祉ITパートナーの上原健太です。 このたび、福祉事業所・団体の皆さまに向けて、ホームページづくりやIT活用に関する情報をお届けするため、公式サイ…",
+    "excerpt": "福祉事業所・団体に向けたホームページづくりやIT活用に関する情報発信を始めました。今後発信していくテーマをご紹介します。",
     "slug": "welcome-message"
   }
 ]

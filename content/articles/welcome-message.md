@@ -8,6 +8,7 @@ published: true
 description: 福祉ITパートナーが、福祉事業所・団体向けのホームページづくりやIT活用に関する情報発信を始めました。今後発信していくテーマと、福祉のことを理解したIT支援への想いをお伝えします。
 slug: welcome-message
 related: ["why-homepage-5-reasons", "b-type-homepage-5-things"]
+excerpt: 福祉事業所・団体に向けたホームページづくりやIT活用に関する情報発信を始めました。今後発信していくテーマをご紹介します。
 ---
 はじめまして。福祉ITパートナーの上原健太です。
 

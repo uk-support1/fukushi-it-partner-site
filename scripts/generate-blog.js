@@ -51,7 +51,8 @@ function buildRelatedCardHtml(slug, articlesBySlug) {
   if (cms) {
     title = cms.data.title;
     dateDisplay = formatDateDisplay(cms.data.date);
-    categoryLabel = lib.TYPE_LABELS[cms.data.type] || cms.data.type || "";
+    categoryLabel =
+      cms.data.category_label || lib.TYPE_LABELS[cms.data.type] || cms.data.type || "";
     image = cms.data.image;
     imageAlt = cms.data.image_alt || "";
     excerpt =
@@ -109,7 +110,8 @@ function buildRelatedCardHtml(slug, articlesBySlug) {
 function renderArticlePage(article, articlesBySlug) {
   const data = article.data;
   const slug = article.slug;
-  const categoryLabel = lib.TYPE_LABELS[data.type] || data.type || "";
+  const categoryLabel =
+    data.category_label || lib.TYPE_LABELS[data.type] || data.type || "";
   const dateDisplay = formatDateDisplay(data.date);
   const imageSrc = lib.toSiteImagePath(data.image, "blog");
   const bodyHtml = lib.markdownBodyToHtml(article.body, "blog");
@@ -250,9 +252,13 @@ function renderArticlePage(article, articlesBySlug) {
     "\n" +
     '  <section class="cta-section">\n' +
     '    <div class="container reveal">\n' +
-    "      <h2>まずはお気軽にご相談ください。</h2>\n" +
+    "      <h2>" +
+    lib.escapeHtml(data.cta_heading || "まずはお気軽にご相談ください。") +
+    "</h2>\n" +
     '      <div class="btn-group">\n' +
-    '        <a href="../contact.html#google-form-embed" class="btn btn-accent js-consult-link">無料相談はこちら</a>\n' +
+    '        <a href="../contact.html#google-form-embed" class="btn btn-accent js-consult-link">' +
+    lib.escapeHtml(data.cta_button_text || "無料相談はこちら") +
+    "</a>\n" +
     "      </div>\n" +
     "    </div>\n" +
     "  </section>\n" +

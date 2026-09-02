@@ -97,11 +97,15 @@ function excerptFromMarkdown(md, len) {
 
 // 見出し・太字・リンクなど最低限のMarkdownをHTMLへ変換する。
 // 外部npmパッケージ（marked等）は使わず、既存記事に登場する範囲の
-// 記法（見出し#/##/###、**太字**、[リンク](url)、- 箇条書き、
-// 単独行の画像![alt](url)）のみを対象にした簡易コンバータ。
+// 記法（見出し#/##/###、**太字**、==強調（オレンジ文字）==、
+// [リンク](url)、- 箇条書き、単独行の画像![alt](url)）のみを
+// 対象にした簡易コンバータ。
+// ==text== は、料金・期日などを既存記事のオレンジ文字（--orange-600）で
+// 強調する既存デザインを再現するための拡張記法。
 function inlineMarkdown(escapedText) {
   return escapedText
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/==([^=]+)==/g, '<span style="color: var(--orange-600);">$1</span>')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 }
 
@@ -122,6 +126,14 @@ function markdownBodyToHtml(body, depth) {
 
   return blocks
     .map(function (block) {
+      // すでに完結したHTMLブロック（例：qualification-boxのような
+      // 案内ボックス）はそのまま出力する。Pages CMSの本文で
+      // Markdownとして表現しにくい既存デザインを、記事の移行時に
+      // そのまま引き継げるようにするための最小限の拡張。
+      if (/^<[a-zA-Z][^>]*>[\s\S]*<\/[a-zA-Z][^>]*>$/.test(block)) {
+        return block;
+      }
+
       const imageOnly = block.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
       if (imageOnly) {
         const alt = escapeHtml(imageOnly[1]);
@@ -160,8 +172,20 @@ function markdownBodyToHtml(body, depth) {
       const h1 = block.match(/^#\s+(.*)$/);
       if (h1) return "<h2>" + inlineMarkdown(escapeHtml(h1[1])) + "</h2>";
 
-      const paragraphText = lines.join(" ");
-      return "      <p>\n        " + inlineMarkdown(escapeHtml(paragraphText)) + "\n      </p>";
+      // 行末の "\" は、既存記事の <br> による改行（例：空室状況の
+      // 2行表示）を再現するための明示的な改行マーカー。
+      // マーカーがない行同士は、ソース上の折り返しとして1つの
+      // 文へ連結する（既存記事の書式に合わせるための挙動）。
+      let paragraphHtml = "";
+      lines.forEach(function (line, i) {
+        const hasBreak = /\\$/.test(line);
+        const clean = line.replace(/\\$/, "");
+        paragraphHtml += inlineMarkdown(escapeHtml(clean));
+        if (i < lines.length - 1) {
+          paragraphHtml += hasBreak ? "<br>\n        " : " ";
+        }
+      });
+      return "      <p>\n        " + paragraphHtml + "\n      </p>";
     })
     .join("\n\n");
 }
