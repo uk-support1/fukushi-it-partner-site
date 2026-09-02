@@ -95,6 +95,27 @@ function excerptFromMarkdown(md, len) {
   return text.length > len ? text.slice(0, len) + "…" : text;
 }
 
+function truncate(text, len) {
+  const t = String(text || "").trim();
+  return t.length > len ? t.slice(0, len) + "…" : t;
+}
+
+// 一覧・関連記事カードに表示する抜粋を決める優先順位。
+// 1. excerpt（個別指定、上級者向け・通常は空欄）
+// 2. description（SEO用説明文）
+// 3. 本文冒頭からの自動生成
+function excerptOf(data, body, len) {
+  if (data.excerpt && String(data.excerpt).trim()) {
+    // 個別指定（上級者向け）の抜粋は、既存の挙動を維持するため
+    // 文字数を切り詰めずそのまま使う。
+    return String(data.excerpt).trim();
+  }
+  if (data.description && String(data.description).trim()) {
+    return truncate(data.description, len);
+  }
+  return excerptFromMarkdown(body, len);
+}
+
 // 見出し・太字・リンクなど最低限のMarkdownをHTMLへ変換する。
 // 外部npmパッケージ（marked等）は使わず、既存記事に登場する範囲の
 // 記法（見出し#/##/###、**太字**、==強調（オレンジ文字）==、
@@ -310,6 +331,7 @@ module.exports = {
   escapeHtml: escapeHtml,
   stripMarkdown: stripMarkdown,
   excerptFromMarkdown: excerptFromMarkdown,
+  excerptOf: excerptOf,
   inlineMarkdown: inlineMarkdown,
   markdownBodyToHtml: markdownBodyToHtml,
   toSiteImagePath: toSiteImagePath,

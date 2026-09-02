@@ -59,10 +59,7 @@ function buildRelatedCardHtml(slug, articlesBySlug) {
     categoryLabel = lib.categoryLabelOf(cms.data);
     image = cms.data.image;
     imageAlt = cms.data.image_alt || "";
-    excerpt =
-      cms.data.excerpt && String(cms.data.excerpt).trim()
-        ? cms.data.excerpt
-        : lib.excerptFromMarkdown(cms.body, 60);
+    excerpt = lib.excerptOf(cms.data, cms.body, 60);
   } else {
     const legacy = lib.getLegacyArticleMeta(slug);
     if (!legacy) {
@@ -366,10 +363,7 @@ function buildBlogIndex(publishedArticles) {
         image: a.data.image || null,
         image_alt: a.data.image_alt || "",
         description: a.data.description || "",
-        excerpt:
-          a.data.excerpt && String(a.data.excerpt).trim()
-            ? a.data.excerpt
-            : lib.excerptFromMarkdown(a.body, 80),
+        excerpt: lib.excerptOf(a.data, a.body, 80),
         slug: a.slug,
       };
     });
