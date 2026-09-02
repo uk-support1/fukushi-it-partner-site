@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "sample-news",
+    "title": "お知らせテスト用サンプル記事",
+    "date": "2026-09-02",
+    "image": null,
+    "excerpt": "これはPages CMSの「お知らせテスト」collectionの動作確認用サンプル記事です。 本文には太字や見出し、リンク、画像などをPages CMS上のリ…"
+  }
+]
