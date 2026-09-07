@@ -33,7 +33,6 @@ const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 // sitemap.xmlの固定ページ（現在のsitemap.xmlの記事URL以外の部分をそのまま維持）
 const STATIC_PAGES = [
   "https://fukushi-it-partner.com/",
-  "https://fukushi-it-partner.com/services.html",
   "https://fukushi-it-partner.com/works.html",
   "https://fukushi-it-partner.com/flow.html",
   "https://fukushi-it-partner.com/homepage-plan.html",
@@ -228,7 +227,7 @@ function renderArticlePage(article, articlesBySlug, published) {
     "    <nav>\n" +
     '      <ul class="nav-links">\n' +
     '        <li><a href="../index.html">HOME</a></li>\n' +
-    '        <li><a href="../services.html">サービス</a></li>\n' +
+    '        <li><a href="../index.html#services">サービス</a></li>\n' +
     '        <li><a href="../works.html">制作実績</a></li>\n' +
     '        <li><a href="../flow.html">制作までの流れ</a></li>\n' +
     '        <li><a href="../blog.html" class="active">ブログ</a></li>\n' +
@@ -320,7 +319,7 @@ function renderArticlePage(article, articlesBySlug, published) {
     "        <h4>サイトメニュー</h4>\n" +
     "        <ul>\n" +
     '          <li><a href="../index.html">HOME</a></li>\n' +
-    '          <li><a href="../services.html">サービス</a></li>\n' +
+    '          <li><a href="../index.html#services">サービス</a></li>\n' +
     '          <li><a href="../works.html">制作実績</a></li>\n' +
     '          <li><a href="../blog.html">ブログ</a></li>\n' +
     '          <li><a href="../profile.html">プロフィール</a></li>\n' +
@@ -486,7 +485,7 @@ function buildBlogHtml(blogIndex) {
     "    <nav>\n" +
     '      <ul class="nav-links">\n' +
     '        <li><a href="index.html">HOME</a></li>\n' +
-    '        <li><a href="services.html">サービス</a></li>\n' +
+    '        <li><a href="index.html#services">サービス</a></li>\n' +
     '        <li><a href="works.html">制作実績</a></li>\n' +
     '        <li><a href="flow.html">制作までの流れ</a></li>\n' +
     '        <li><a href="blog.html" class="active">ブログ</a></li>\n' +
@@ -556,7 +555,7 @@ function buildBlogHtml(blogIndex) {
     "        <h4>サイトメニュー</h4>\n" +
     "        <ul>\n" +
     '          <li><a href="index.html">HOME</a></li>\n' +
-    '          <li><a href="services.html">サービス</a></li>\n' +
+    '          <li><a href="index.html#services">サービス</a></li>\n' +
     '          <li><a href="works.html">制作実績</a></li>\n' +
     '          <li><a href="blog.html">ブログ</a></li>\n' +
     '          <li><a href="profile.html">プロフィール</a></li>\n' +

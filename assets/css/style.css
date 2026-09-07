@@ -602,6 +602,39 @@ section {
   font-size: 0.95rem;
 }
 
+.card-cta {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.card-cta .btn {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 0.9rem;
+}
+
+/* 「補助金活用支援」カードだけ少し目立たせる */
+.card--featured {
+  position: relative;
+  border-color: var(--orange-500);
+  background: var(--orange-100);
+}
+
+.card-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  background: var(--orange-500);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 10px rgba(217, 127, 63, 0.35);
+}
+
 @media (max-width: 600px) {
   .cards-grid {
     gap: 14px;
@@ -623,6 +656,22 @@ section {
   .card p {
     font-size: 0.76rem;
     line-height: 1.5;
+  }
+
+  .card-cta {
+    padding-top: 12px;
+  }
+
+  .card-cta .btn {
+    padding: 10px 14px;
+    font-size: 0.8rem;
+  }
+
+  .card-badge {
+    top: 8px;
+    right: 8px;
+    font-size: 0.64rem;
+    padding: 3px 9px;
   }
 }
 
@@ -980,6 +1029,112 @@ section {
 
   .service-photo {
     aspect-ratio: 16 / 9;
+  }
+
+  .service-content {
+    min-width: 0;
+  }
+
+  .service-content .btn {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* ===== サービスページ：4サービス簡易ナビ ===== */
+.service-quicknav-section {
+  padding: 0 0 48px;
+}
+
+.service-quicknav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.service-quicknav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  background: var(--green-100);
+  border-radius: var(--radius-md);
+  color: var(--green-900);
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+.service-quicknav-item:hover {
+  background: var(--green-900);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.service-quicknav-item .num {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--green-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: background var(--transition), color var(--transition);
+}
+
+.service-quicknav-item:hover .num {
+  background: var(--orange-500);
+  color: var(--white);
+}
+
+@media (max-width: 700px) {
+  .service-quicknav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .service-quicknav {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== サービスページ：セクションごとの区切り =====
+   各サービスをそれぞれ独立した<section>にし、背景を交互に切り替えることで
+   スクロール時にサービスの切れ目が視覚的に分かるようにする。 */
+.service-section {
+  padding: 64px 0;
+}
+
+.service-section.is-alt {
+  background: var(--cream-100);
+}
+
+.service-section .service-detail {
+  margin-bottom: 0;
+}
+
+/* sticky headerで見出しが隠れないよう、アンカー移動時の余白を確保する */
+#homepage,
+#marketing,
+#subsidy,
+#ai-it {
+  scroll-margin-top: 96px;
+}
+
+@media (max-width: 700px) {
+  .service-section {
+    padding: 40px 0;
+  }
+  #homepage,
+  #marketing,
+  #subsidy,
+  #ai-it {
+    scroll-margin-top: 80px;
   }
 }
 
@@ -1440,6 +1595,11 @@ section {
   display: flex;
   align-items: center;
   gap: 14px;
+  min-width: 0;
+}
+
+.contact-other-item > span:last-child {
+  min-width: 0;
 }
 
 .contact-other-icon {
@@ -1465,6 +1625,7 @@ section {
   font-weight: 700;
   color: var(--green-900);
   font-size: 1.1rem;
+  overflow-wrap: anywhere;
   transition: color var(--transition);
 }
 

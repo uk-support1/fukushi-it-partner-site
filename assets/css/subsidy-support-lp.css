@@ -1,0 +1,1209 @@
+/* ===========================================================
+   福祉ITパートナー｜補助金活用型ホームページ・集客支援LP
+   subsidy-support-lp.css
+   ※ style.css は変更せず、LP専用のスタイルのみをここに追加する。
+   　 クラス名はすべて "jlp-" プレフィックスで既存スタイルと分離する。
+=========================================================== */
+
+/* ===== LP専用カラー調整 =====
+   公式サイト本体（style.css の :root）は変更せず、
+   このLPページ（body.jlp-body）の中でのみ、
+   少しシャープで専門性を感じる配色に上書きする。
+=========================================================== */
+body.jlp-body {
+  --green-900: #163a2f;
+  --green-700: #1d5f49;
+  --green-500: #3c7c62;
+  --green-100: #e7f0ea;
+  --orange-500: #d9782f;
+  --orange-600: #b6631f;
+  --orange-100: #fbeade;
+  --text-900: #22282a;
+  --text-600: #545e5a;
+  --border-soft: #dde6e0;
+}
+
+/* インパクトセクション専用のアクセントカラー（濃色背景向け） */
+.jlp-impact {
+  --jlp-impact-accent: #f0a15c;
+}
+
+/* ===========================================================
+   専用ヘッダー（公式サイトの site-header とは別物）
+   ・公式サイトのヘッダーは白背景＋下線ホバーの水平ナビ
+   ・本LPは下端にアクセントカラーの太いボーダーを引き、
+     ロゴ横に専用サービス名のピルバッジを添えることで
+     「補助金活用支援の専門サイト」に見せる
+=========================================================== */
+.jlp-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 3px solid var(--orange-500);
+  box-shadow: 0 2px 14px rgba(22, 58, 47, 0.08);
+}
+
+.jlp-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.jlp-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.jlp-header-logo {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.jlp-header-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.jlp-header-brand-name {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--green-900);
+}
+
+.jlp-header-brand-service {
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 2px 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--green-900);
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.jlp-header-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.jlp-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+
+.jlp-nav-links a {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-900);
+  white-space: nowrap;
+  transition: background var(--transition), color var(--transition);
+}
+
+.jlp-nav-links a:hover {
+  background: var(--green-100);
+  color: var(--green-900);
+}
+
+.jlp-nav-official-mobile,
+.jlp-nav-cta-mobile {
+  display: none;
+}
+
+.jlp-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.jlp-header-official-link {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-600);
+  white-space: nowrap;
+}
+
+.jlp-header-official-link:hover {
+  color: var(--green-700);
+  text-decoration: underline;
+}
+
+.jlp-header-cta {
+  white-space: nowrap;
+  padding: 12px 22px;
+  font-size: 0.88rem;
+}
+
+.jlp-nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  flex-shrink: 0;
+}
+
+.jlp-nav-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--green-900);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+.jlp-nav-toggle.is-active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.jlp-nav-toggle.is-active span:nth-child(2) {
+  opacity: 0;
+}
+.jlp-nav-toggle.is-active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+  .jlp-header-nav {
+    flex: none;
+  }
+  .jlp-header-actions {
+    display: none;
+  }
+  .jlp-nav-toggle {
+    display: flex;
+  }
+  .jlp-nav-links {
+    position: fixed;
+    top: 65px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--white);
+    padding: 8px 24px 24px;
+    border-bottom: 1px solid var(--border-soft);
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-110%);
+    opacity: 0;
+    transition: transform var(--transition), opacity var(--transition);
+  }
+  .jlp-nav-links.open {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .jlp-nav-links li {
+    width: 100%;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .jlp-nav-links li:last-child {
+    border-bottom: none;
+  }
+  .jlp-nav-links a {
+    padding: 14px 6px;
+    border-radius: 0;
+    width: 100%;
+  }
+  .jlp-nav-official-mobile {
+    display: block;
+    padding-top: 10px;
+  }
+  .jlp-nav-official-mobile a {
+    color: var(--text-600);
+    font-weight: 600;
+  }
+  .jlp-nav-cta-mobile {
+    display: block;
+    padding: 16px 0 4px;
+    border-bottom: none !important;
+  }
+  .jlp-nav-cta-mobile .btn {
+    width: 100%;
+  }
+}
+
+/* ===== 共通レイアウト ===== */
+
+/* ヘッダーがsticky固定のため、アンカースクロール時に見出しが隠れないよう余白を確保する */
+#about-subsidy,
+#usecases,
+#support,
+#flow,
+#faq {
+  scroll-margin-top: 84px;
+}
+
+.jlp-section {
+  padding: 88px 0;
+}
+
+@media (max-width: 768px) {
+  .jlp-section {
+    padding: 56px 0;
+  }
+}
+
+.jlp-section--cream { background: var(--cream-100); }
+.jlp-section--green { background: var(--green-100); }
+.jlp-section--white { background: var(--white); }
+.jlp-section--dark {
+  background: var(--green-900);
+  color: rgba(255, 255, 255, 0.92);
+}
+.jlp-section--dark .jlp-head-title { color: var(--white); }
+.jlp-section--dark .jlp-head-lead { color: rgba(255, 255, 255, 0.78); }
+
+.jlp-head {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 48px;
+}
+
+.jlp-head-tag {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--green-700);
+  background: var(--white);
+  padding: 6px 16px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+}
+
+.jlp-section--dark .jlp-head-tag {
+  color: var(--green-900);
+}
+
+.jlp-head-title {
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.2rem);
+  font-weight: 800;
+  color: var(--green-900);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.jlp-head-lead {
+  color: var(--text-600);
+  font-size: 1rem;
+}
+
+/* ===== プレースホルダー画像 ===== */
+.jlp-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--green-100),
+    var(--green-100) 12px,
+    var(--white) 12px,
+    var(--white) 24px
+  );
+  border: 2px dashed var(--green-500);
+  border-radius: var(--radius-md);
+  color: var(--green-700);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 24px;
+  min-height: 160px;
+  width: 100%;
+  min-width: 0;
+}
+
+.jlp-placeholder--wide { aspect-ratio: 16 / 9; min-height: 220px; }
+.jlp-placeholder--square { aspect-ratio: 1 / 1; }
+.jlp-placeholder--tall { aspect-ratio: 3 / 4; }
+
+/* ===== ファーストビュー（採用写真の全面背景） ===== */
+.jlp-hero {
+  position: relative;
+  background:
+    linear-gradient(to right,
+      rgba(255, 255, 255, 0.97) 0%,
+      rgba(255, 255, 255, 0.93) 28%,
+      rgba(255, 255, 255, 0.58) 48%,
+      rgba(255, 255, 255, 0.10) 66%,
+      rgba(255, 255, 255, 0) 80%),
+    url('../img/subsidy-support/hero-consultation.jpg') right 20% / cover no-repeat;
+  padding: 56px 0 130px;
+  min-height: 600px;
+}
+
+.jlp-hero-inner {
+  display: flex;
+  align-items: flex-start;
+  min-height: inherit;
+}
+
+.jlp-hero-copy {
+  max-width: 560px;
+  min-width: 0;
+  padding-top: 32px;
+}
+
+@media (max-width: 900px) {
+  .jlp-hero {
+    background:
+      linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.92) 54%,
+        rgba(255, 255, 255, 1) 68%),
+      url('../img/subsidy-support/hero-consultation.jpg') 72% top / cover no-repeat;
+    padding: 224px 0 56px;
+    min-height: auto;
+  }
+  .jlp-hero-copy {
+    max-width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 0;
+  }
+  .jlp-hero .btn-group {
+    justify-content: center;
+  }
+  .jlp-price-badge {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+  }
+}
+
+/* 画面幅=画像幅としてカバーし、アスペクト比(≒0.563)に応じて画像分の余白を確保する */
+@media (max-width: 600px) {
+  .jlp-hero {
+    background:
+      linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.02) 0%,
+        rgba(255, 255, 255, 0.90) 58%,
+        rgba(255, 255, 255, 1) 74%),
+      url('../img/subsidy-support/hero-consultation.jpg') center top / 100% auto no-repeat;
+    padding-top: calc(100vw * 0.563 + 28px);
+    padding-bottom: 40px;
+  }
+}
+
+.jlp-hero-eyebrow {
+  display: inline-block;
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 7px 18px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+  letter-spacing: 0.03em;
+}
+
+.jlp-hero-title {
+  font-size: clamp(1.7rem, 1.1rem + 2.6vw, 2.6rem);
+  font-weight: 800;
+  color: var(--green-900);
+  line-height: 1.45;
+  margin-bottom: 18px;
+}
+
+.jlp-hero-title .jlp-big-num {
+  font-size: 1.25em;
+  color: var(--orange-600);
+}
+
+.jlp-hero-title .accent {
+  color: var(--orange-600);
+}
+
+/* 480px以下でのみ「ホームページ制作＋／集客支援」の間で改行し、単語の途中で折り返さないようにする */
+.jlp-break-sm {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .jlp-break-sm {
+    display: inline;
+  }
+}
+
+.jlp-hero-sub {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-900);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.jlp-hero-note {
+  font-size: 0.78rem;
+  color: var(--text-600);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+/* ===== 補助金メリット・価格バッジ（ヒーロー内）
+   写真の上に直接乗せるため、箱を作らず左のアクセント線のみで区切る軽い見せ方にする ===== */
+.jlp-price-badge {
+  border-left: 3px solid var(--orange-500);
+  padding-left: 16px;
+  margin-bottom: 28px;
+}
+
+.jlp-price-badge-tag {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--green-700);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.jlp-price-badge-amount {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--green-900);
+  margin-bottom: 6px;
+}
+
+.jlp-price-badge-amount .arrow {
+  color: var(--text-600);
+  font-weight: 700;
+  margin: 0 2px;
+}
+
+.jlp-price-badge-amount strong {
+  color: var(--orange-600);
+  font-size: 1.15em;
+}
+
+.jlp-price-badge-note {
+  font-size: 0.72rem;
+  color: var(--text-600);
+  line-height: 1.6;
+  max-width: 360px;
+}
+
+/* ===== お悩みリスト ===== */
+.jlp-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+.jlp-problem-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+.jlp-problem-item .icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--orange-500);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.jlp-problem-item p {
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+@media (max-width: 780px) {
+  .jlp-problem-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+}
+
+/* ===== インパクトセクション（お悩み→補助金の橋渡し） ===== */
+.jlp-impact {
+  background: var(--green-900);
+  padding: 100px 0;
+  text-align: center;
+}
+
+.jlp-impact .container {
+  max-width: 720px;
+}
+
+.jlp-impact-main {
+  font-size: clamp(1.7rem, 1.2rem + 2.2vw, 2.6rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.jlp-impact-main .accent {
+  color: var(--jlp-impact-accent);
+}
+
+.jlp-impact-sub {
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.86);
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+.jlp-impact-sub strong {
+  color: var(--white);
+  border-bottom: 2px solid var(--jlp-impact-accent);
+}
+
+.jlp-impact-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.jlp-impact-arrow span {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-right: 2px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  transform: rotate(45deg);
+}
+
+.jlp-impact-arrow span:nth-child(2) { opacity: 0.65; }
+.jlp-impact-arrow span:nth-child(3) { opacity: 0.35; }
+
+@media (max-width: 600px) {
+  .jlp-impact { padding: 72px 0; }
+}
+
+/* ===== 制度説明ボックス ===== */
+.jlp-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 980px;
+  margin: 0 auto 32px;
+}
+
+.jlp-info-box {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 26px 22px;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.jlp-info-box .num {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--green-700);
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+
+.jlp-info-box .val {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--green-900);
+  margin-bottom: 6px;
+}
+
+.jlp-info-box .desc {
+  font-size: 0.85rem;
+  color: var(--text-600);
+}
+
+@media (max-width: 768px) {
+  .jlp-info-grid { grid-template-columns: 1fr; max-width: 480px; }
+}
+
+.jlp-alert-box {
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--orange-100);
+  border: 1px solid var(--orange-500);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.jlp-alert-box .mark {
+  flex-shrink: 0;
+  font-weight: 800;
+  color: var(--orange-600);
+  font-size: 1.1rem;
+}
+
+.jlp-alert-box p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-900);
+}
+
+.jlp-alert-box strong { color: var(--orange-600); }
+
+/* ===== 補助率シミュレーション ===== */
+.jlp-sim-box {
+  max-width: 880px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 40px 32px;
+}
+
+.jlp-sim-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.jlp-sim-cell .label {
+  font-size: 0.82rem;
+  color: var(--text-600);
+  margin-bottom: 8px;
+}
+
+.jlp-sim-cell .amount {
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 1.9rem);
+  font-weight: 800;
+  color: var(--green-900);
+}
+
+.jlp-sim-cell.is-final .amount {
+  color: var(--orange-600);
+  font-size: clamp(1.8rem, 1.3rem + 2vw, 2.6rem);
+}
+
+.jlp-sim-op {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-600);
+}
+
+@media (max-width: 700px) {
+  .jlp-sim-row {
+    grid-template-columns: 1fr;
+  }
+  .jlp-sim-op { transform: rotate(90deg); }
+}
+
+.jlp-sim-note {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-600);
+  margin-top: 24px;
+  line-height: 1.7;
+}
+
+/* ===== 活用してできることカード ===== */
+.jlp-use-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.jlp-use-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 24px 18px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition);
+}
+
+.jlp-use-card:hover { transform: translateY(-4px); }
+
+.jlp-use-card .ico {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--green-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.jlp-use-card h3 {
+  font-size: 0.98rem;
+  color: var(--green-900);
+  margin-bottom: 6px;
+}
+
+.jlp-use-card p {
+  font-size: 0.82rem;
+  color: var(--text-600);
+}
+
+@media (max-width: 900px) {
+  .jlp-use-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .jlp-use-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== 支援内容／立ち位置 ===== */
+.jlp-support-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.jlp-support-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.jlp-support-list li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.jlp-support-list .check {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--green-700);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.jlp-support-note {
+  background: var(--cream-100);
+  border-radius: var(--radius-md);
+  padding: 24px 26px;
+}
+
+.jlp-support-note h4 {
+  color: var(--green-900);
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.jlp-support-note ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.jlp-support-note li {
+  font-size: 0.85rem;
+  color: var(--text-600);
+  padding-left: 18px;
+  position: relative;
+}
+
+.jlp-support-note li::before {
+  content: "×";
+  position: absolute;
+  left: 0;
+  color: var(--orange-600);
+  font-weight: 800;
+}
+
+.jlp-support-note .ok {
+  font-size: 0.85rem;
+  color: var(--green-700);
+  font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .jlp-support-grid { grid-template-columns: 1fr; gap: 28px; }
+}
+
+/* ===== 選ばれる理由 ===== */
+.jlp-reason-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.jlp-reason-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 22px 16px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.jlp-reason-card .n {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--orange-600);
+  margin-bottom: 8px;
+}
+
+.jlp-reason-card h3 {
+  font-size: 0.92rem;
+  color: var(--green-900);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.jlp-reason-card p {
+  font-size: 0.78rem;
+  color: var(--text-600);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .jlp-reason-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .jlp-reason-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== 2つの補助金カード ===== */
+.jlp-subsidy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  max-width: 980px;
+  margin: 0 auto 32px;
+}
+
+.jlp-subsidy-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 32px 28px;
+  border-top: 6px solid var(--green-700);
+}
+
+.jlp-subsidy-card--alt {
+  border-top-color: var(--orange-500);
+}
+
+.jlp-subsidy-card .tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--green-100);
+  color: var(--green-700);
+  margin-bottom: 14px;
+}
+
+.jlp-subsidy-card--alt .tag {
+  background: var(--orange-100);
+  color: var(--orange-600);
+}
+
+.jlp-subsidy-card h3 {
+  font-size: 1.2rem;
+  color: var(--green-900);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.jlp-subsidy-card .lead {
+  font-size: 0.88rem;
+  color: var(--text-600);
+  margin-bottom: 16px;
+}
+
+.jlp-target-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.jlp-target-tags span {
+  font-size: 0.78rem;
+  background: var(--cream-100);
+  color: var(--text-900);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.jlp-subsidy-warn {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  background: var(--orange-100);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 0.8rem;
+  color: var(--text-900);
+  line-height: 1.7;
+}
+
+.jlp-subsidy-warn strong { color: var(--orange-600); }
+
+@media (max-width: 800px) {
+  .jlp-subsidy-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== 利用の流れ ===== */
+.jlp-flow-list {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.jlp-flow-step {
+  display: flex;
+  gap: 20px;
+  position: relative;
+  padding-bottom: 36px;
+}
+
+.jlp-flow-step:last-child { padding-bottom: 0; }
+
+.jlp-flow-step::before {
+  content: "";
+  position: absolute;
+  left: 21px;
+  top: 44px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-soft);
+}
+
+.jlp-flow-step:last-child::before { display: none; }
+
+.jlp-flow-num {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--green-900);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.05rem;
+  z-index: 1;
+}
+
+.jlp-flow-step--self .jlp-flow-num {
+  background: var(--orange-500);
+}
+
+.jlp-flow-body h3 {
+  font-size: 1rem;
+  color: var(--green-900);
+  margin-bottom: 4px;
+  padding-top: 8px;
+}
+
+.jlp-flow-body p {
+  font-size: 0.85rem;
+  color: var(--text-600);
+}
+
+.jlp-flow-body .badge-self {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--orange-600);
+  background: var(--orange-100);
+  padding: 2px 10px;
+  border-radius: 999px;
+  margin-left: 8px;
+}
+
+/* ===== FAQ ===== */
+.jlp-faq-list {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.jlp-faq-item {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.jlp-faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 20px 24px;
+  font-weight: 700;
+  color: var(--green-900);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  position: relative;
+}
+
+.jlp-faq-item summary::-webkit-details-marker { display: none; }
+
+.jlp-faq-item summary .q {
+  flex-shrink: 0;
+  color: var(--orange-600);
+  font-weight: 800;
+}
+
+.jlp-faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 22px;
+  top: 18px;
+  font-size: 1.3rem;
+  color: var(--text-600);
+  font-weight: 400;
+}
+
+.jlp-faq-item[open] summary::after {
+  content: "−";
+}
+
+.jlp-faq-body {
+  padding: 0 24px 22px 54px;
+  font-size: 0.9rem;
+  color: var(--text-600);
+  line-height: 1.8;
+}
+
+/* ===== 最終CTA ===== */
+.jlp-final-cta {
+  background: var(--green-900);
+  color: var(--white);
+  text-align: center;
+  padding: 80px 0;
+}
+
+.jlp-final-cta h2 {
+  font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2rem);
+  margin-bottom: 16px;
+  color: var(--white);
+}
+
+.jlp-final-cta p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 32px;
+  font-size: 0.95rem;
+}
+
+.jlp-final-cta .btn-group {
+  justify-content: center;
+}
+
+/* ===== 補助金トリビア/繰り返しCTAバナー ===== */
+.jlp-inline-cta {
+  max-width: 760px;
+  margin: 40px auto 0;
+  text-align: center;
+  background: var(--cream-100);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+}
+
+.jlp-inline-cta p {
+  font-weight: 700;
+  color: var(--green-900);
+  margin-bottom: 18px;
+  font-size: 1rem;
+}
+
+.jlp-inline-cta .btn-group {
+  justify-content: center;
+}
+
+.jlp-footer-note {
+  color: var(--text-600);
+  font-size: 0.9rem;
+}
+
+/* このLPのフッターは「運営」列を1つ追加しているため、共通フッターの3カラム指定を4カラムに調整する */
+@media (min-width: 769px) {
+  body.jlp-body .footer-grid {
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  }
+}
+
+/* ===== モバイル固定CTAバー ===== */
+.jlp-sticky-cta {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body.jlp-body { padding-bottom: 76px; }
+
+  .jlp-sticky-cta {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    background: var(--white);
+    box-shadow: 0 -6px 20px rgba(31, 77, 60, 0.14);
+    padding: 10px 16px;
+    gap: 10px;
+  }
+
+  .jlp-sticky-cta .btn {
+    flex: 1;
+    padding: 14px 10px;
+    font-size: 0.88rem;
+  }
+}
+
+/* 長いCTA文言のボタンは、狭い画面で折り返して横あふれを防ぐ */
+.jlp-hero .btn,
+.jlp-inline-cta .btn,
+.jlp-final-cta .btn {
+  white-space: normal;
+  text-align: center;
+  min-width: 0;
+  max-width: 100%;
+}
