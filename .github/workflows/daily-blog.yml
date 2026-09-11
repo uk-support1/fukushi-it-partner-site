@@ -6,7 +6,7 @@ on:
     - cron: '0 21 * * *'
   workflow_dispatch: {}
 
-# Topic selection only: no repository writes or deployment permissions.
+# Draft creation only: no commit, push or deployment permissions.
 permissions:
   contents: read
 
@@ -36,14 +36,19 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
         run: node scripts/daily-blog.js
-      - name: Verify no repository files were changed
-        if: always()
+      - name: Verify only one draft Markdown was created
         shell: bash
         run: |
-          if [ -n "$(git status --porcelain --untracked-files=all)" ]; then
-            echo 'Unexpected repository changes; stopping.' >&2
+          if [ -n "$(git diff --name-only)" ]; then
+            echo 'Tracked repository files changed unexpectedly; stopping.' >&2
+            exit 1
+          fi
+          mapfile -t new_files < <(git ls-files --others --exclude-standard)
+          if [ "${#new_files[@]}" -ne 1 ] || [[ "${new_files[0]}" != content/articles/*.md ]]; then
+            echo 'Expected exactly one new draft under content/articles; stopping.' >&2
+            printf 'New file: %s\n' "${new_files[@]}" >&2
             exit 1
           fi
 
-      # Future: after validated article creation, run build/artifact/deploy in
-      # this workflow. Do not rely on a GITHUB_TOKEN push starting Generate Blog.
+      # Future: persist the validated draft, then run build/artifact/deploy in this
+      # workflow. Do not rely on a GITHUB_TOKEN push starting Generate Blog.

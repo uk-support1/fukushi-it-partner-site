@@ -154,4 +154,4 @@ async function selectTopic({apiKey, model, localDate, request = requestGemini, l
   validateReview(review,articles);
   return {topic,existingArticlesCount:articles.length};
 }
-module.exports={TopicError,existingArticleInfo,validateTopic,validateReview,requestGemini,selectTopic,topicSchema,reviewSchema,resolveGeminiModel,DEFAULT_GEMINI_MODEL,ALLOWED_GEMINI_MODELS};
+module.exports={TopicError,CATEGORIES,existingArticleInfo,validateTopic,validateReview,requestGemini,selectTopic,topicSchema,reviewSchema,resolveGeminiModel,DEFAULT_GEMINI_MODEL,ALLOWED_GEMINI_MODELS};

@@ -1,8 +1,9 @@
 "use strict";
-const test=require("node:test"),assert=require("node:assert/strict"),fs=require("fs"),path=require("path"),cp=require("child_process"),crypto=require("crypto");
+const test=require("node:test"),assert=require("node:assert/strict"),fs=require("fs"),path=require("path"),cp=require("child_process"),crypto=require("crypto"),os=require("os");
 const {existingArticleInfo,validateTopic,validateReview,requestGemini,selectTopic,topicSchema,DEFAULT_GEMINI_MODEL}=require("../scripts/topic-selector");
 const {prepareDailyBlog,failureReport}=require("../scripts/daily-blog");
 const {generateArticle,validateArticle,articleSchema}=require("../scripts/article-generator");
+const {baseSlugFor,buildArticleMarkdown,saveArticleDraft}=require("../scripts/article-writer");
 const YAML=require("yaml");
 const ROOT=path.resolve(__dirname,"..");
 const articles=[{slug:"vacancy",title:"グループホームの空室情報をホームページで伝える方法",category:"空室対策",summary:"空室情報を掲載して入居相談を増やす",headings:["掲載すべき情報"]}];
@@ -22,6 +23,11 @@ const articleBody=[
   "応募フォームは、一度に作り直す必要はありません。質問を一つ減らす、案内文を分かりやすくするなど、確認できた課題から順番に整えることが、応募しやすい入口づくりにつながります。".repeat(4)
 ].join("\n\n");
 const generatedArticle={title:topic.title,description:"福祉事業所の採用応募フォームについて、入力負担を減らし応募しやすい入口を整える実務的なポイントを紹介します。",bodyMarkdown:articleBody};
+function temporaryArticles(t) {
+  const directory=fs.mkdtempSync(path.join(os.tmpdir(),"fukushi-daily-articles-"));
+  t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+  return directory;
+}
 test("1/2: published Markdown context includes title/category/body/headings; drafts excluded",()=>{
   const real=existingArticleInfo();assert.ok(real.length>=9);assert.ok(real.every(a=>a.title&&a.category&&a.summary&&Array.isArray(a.headings)));
   const row={slug:"one",data:{published:true,title:"Title",type:"column"},body:"## Heading\n\nBody"};
@@ -36,6 +42,8 @@ test("Workflow keeps 06:00 JST schedule, manual trigger, read-only token and sec
   const select=workflow.jobs.start.steps.find(step=>step.name==="Select today's topic");
   assert.equal(select.env.GEMINI_API_KEY,"${{ secrets.GEMINI_API_KEY }}");
   assert.equal(select.env.GEMINI_MODEL,"${{ vars.GEMINI_MODEL }}");
+  const verify=workflow.jobs.start.steps.find(step=>step.name==="Verify only one draft Markdown was created");
+  assert.match(verify.run,/git diff --name-only/);assert.match(verify.run,/content\/articles\/\*\.md/);
 });
 test("Missing key stops safely; missing model defaults to Flash-Lite",async()=>{
   let called=false;const request=async()=>{called=true;},load=()=>{called=true;return articles;};
@@ -62,14 +70,60 @@ test("Gemini 3.5 Flash can be selected and 2.5/unapproved models are rejected",a
     assert.equal(called,false);
   }
 });
-test("Topic selection flows into article generation and never publishes",async()=>{
+test("Topic selection flows into article generation, saves one draft and never publishes",async t=>{
+  const directory=temporaryArticles(t);
   const requests=[];const result=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,request:async args=>{
     requests.push(args);return requests.length===1?JSON.stringify(topic):requests.length===2?review(articles):JSON.stringify(generatedArticle);
-  }});
+  },articlesDir:directory});
   assert.equal(result.localDate,"2026-09-12");assert.deepEqual(result.topic,topic);assert.deepEqual(result.article,generatedArticle);
-  assert.equal(result.status,"article_generated");assert.equal(result.shouldPublish,false);assert.equal(result.articlesCreated,0);
+  assert.equal(result.status,"draft_saved");assert.equal(result.shouldPublish,false);assert.equal(result.articlesCreated,1);
+  assert.equal(result.draft.filename,result.draft.slug+".md");assert.ok(fs.existsSync(path.join(directory,result.draft.filename)));
   assert.equal(requests.length,3);assert.deepEqual(requests[0].input.existingArticles,articles);assert.deepEqual(requests[1].input.candidate,topic);
   assert.deepEqual(requests[2].input.topic,topic);assert.deepEqual(requests[2].schema,articleSchema);
+});
+test("Generated article is saved with compatible front matter and body",t=>{
+  const directory=temporaryArticles(t),date="2026-09-12";
+  const saved=saveArticleDraft({article:generatedArticle,topic,date,directory});
+  const raw=fs.readFileSync(saved.filePath,"utf8");
+  const parsed=require("../scripts/lib/articles").parseFrontmatter(raw);
+  assert.deepEqual(parsed.data,{
+    type:"column",category_label:topic.category,title:generatedArticle.title,date,
+    image:"assets/images/services/service-homepage.jpg",
+    image_alt:"福祉事業所のホームページ活用を支援するイメージ",
+    published:false,description:generatedArticle.description,slug:saved.slug
+  });
+  assert.equal(parsed.body.trim(),generatedArticle.bodyMarkdown);
+  assert.match(saved.slug,/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/);
+  assert.equal(saved.slug,baseSlugFor(generatedArticle.title,date));
+});
+test("YAML serialization safely preserves special characters",()=>{
+  const specialTopic={...topic,title:'福祉事業所の「採用: 改善」#入門'};
+  const specialArticle={...generatedArticle,title:specialTopic.title,description:'説明: 「安全」#確認'};
+  const slug=baseSlugFor(specialArticle.title,"2026-09-12");
+  const built=buildArticleMarkdown({article:specialArticle,topic:specialTopic,date:"2026-09-12",slug});
+  const parsed=require("../scripts/lib/articles").parseFrontmatter(built.markdown);
+  assert.equal(parsed.data.title,specialArticle.title);assert.equal(parsed.data.description,specialArticle.description);
+});
+test("Duplicate slugs never overwrite an existing Markdown file",t=>{
+  const directory=temporaryArticles(t),date="2026-09-12";
+  const first=saveArticleDraft({article:generatedArticle,topic,date,directory});
+  const original=fs.readFileSync(first.filePath,"utf8");
+  const second=saveArticleDraft({article:generatedArticle,topic,date,directory});
+  assert.equal(second.slug,first.slug+"-2");assert.notEqual(second.filePath,first.filePath);
+  assert.equal(fs.readFileSync(first.filePath,"utf8"),original);
+  assert.equal(fs.readdirSync(directory).filter(name=>name.endsWith(".md")).length,2);
+});
+test("Save failure keeps articlesCreated at zero and shouldPublish false",async()=>{
+  const missingDirectory=path.join(os.tmpdir(),"missing-draft-directory-"+crypto.randomUUID());
+  assert.throws(()=>saveArticleDraft({article:generatedArticle,topic,date:"2026-09-12",directory:missingDirectory}),
+    {code:"ARTICLE_DIRECTORY_INVALID"});
+  let requests=0,caught;
+  try {
+    await prepareDailyBlog({env,load:()=>articles,request:async()=>++requests===1?JSON.stringify(topic):requests===2?review(articles):JSON.stringify(generatedArticle),
+      save:()=>{throw new (require("../scripts/topic-selector").TopicError)("ARTICLE_SAVE_FAILED");}});
+  } catch(error) { caught=error; }
+  assert.equal(caught.code,"ARTICLE_SAVE_FAILED");
+  assert.deepEqual(failureReport(caught),{status:"failed",error:"ARTICLE_SAVE_FAILED",articlesCreated:0,shouldPublish:false});
 });
 test("Article JSON returns title, description and bodyMarkdown",async()=>{
   const requests=[];
@@ -161,11 +215,13 @@ test("Abnormal finishReason and prompt blockReason are reported safely",async()=
     const report=failureReport(error);return report.error==="GEMINI_BLOCKED"&&report.blockReason==="SAFETY"&&!JSON.stringify(report).includes("secret-value");
   });
 });
-test("7/8: real articles + mocked API do not write tracked or untracked files",async()=>{
+test("Existing articles and public files are unchanged when a draft is tested in a temporary directory",async t=>{
+  const directory=temporaryArticles(t);
   const files=cp.execFileSync("git",["ls-files","-z"],{cwd:ROOT,encoding:"utf8"}).split("\0").filter(Boolean);
   const hashes=()=>files.map(f=>crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT,f))).digest("hex"));
   const status=()=>cp.execFileSync("git",["status","--porcelain","--untracked-files=all"],{cwd:ROOT,encoding:"utf8"});
   const before=hashes(),beforeStatus=status();let count=0;
-  await prepareDailyBlog({env,request:async args=>++count===1?JSON.stringify(topic):count===2?review(args.input.existingArticles):JSON.stringify(generatedArticle)});
+  const result=await prepareDailyBlog({env,articlesDir:directory,request:async args=>++count===1?JSON.stringify(topic):count===2?review(args.input.existingArticles):JSON.stringify(generatedArticle)});
+  assert.equal(result.articlesCreated,1);assert.equal(result.shouldPublish,false);
   assert.deepEqual(hashes(),before);assert.equal(status(),beforeStatus);
 });
