@@ -31,16 +31,19 @@ content:
         label: "タイトル"
         description: "記事のタイトルです。ページの見出しや検索結果のタイトルにそのまま使われます。"
         type: string
+        required: true
 
       - name: date
         label: "投稿日"
         description: "記事一覧の並び順（新しい順）に使われます。"
         type: date
+        required: true
 
       - name: image
         label: "メイン画像"
         description: "記事冒頭に表示される画像です。一覧のサムネイルやSNSシェア時の画像としても使われます。"
         type: image
+        required: true
 
       - name: image_alt
         label: "画像の説明（任意）"
@@ -52,6 +55,7 @@ content:
         label: "本文"
         description: "太字・見出し・リンク・箇条書き・画像などを挿入できます。"
         type: rich-text
+        required: true
 
       - name: published
         label: "公開する"

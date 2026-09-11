@@ -3,13 +3,14 @@
  * 共通ロジック。data/blog-index.json生成・blog/<slug>.html生成・
  * sitemap.xml更新の3スクリプトから読み込んで使う。
  *
- * Node.js標準モジュールのみに依存（外部npmパッケージなし）。
+ * YAML解析はyamlパッケージを使用（npm ciで導入）。
  */
 
 "use strict";
 
 const fs = require("fs");
 const path = require("path");
+const YAML = require("yaml");
 
 const ARTICLES_DIR = path.join(__dirname, "..", "..", "content", "articles");
 const BLOG_DIR = path.join(__dirname, "..", "..", "blog");
@@ -21,55 +22,18 @@ const TYPE_LABELS = {
 
 function parseFrontmatter(raw) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-  if (!match) return null;
-
-  const data = {};
-  match[1].split(/\r?\n/).forEach(function (line) {
-    const kv = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
-    if (!kv) return;
-    const key = kv[1];
-    let value = kv[2].trim();
-    if (
-      (value.charAt(0) === '"' && value.charAt(value.length - 1) === '"') ||
-      (value.charAt(0) === "'" && value.charAt(value.length - 1) === "'")
-    ) {
-      value = value.slice(1, -1);
-    }
-    if (value === "true") value = true;
-    else if (value === "false") value = false;
-    // YAMLのインラインリスト（例: related: [a, b]）を簡易対応
-    else if (value.charAt(0) === "[" && value.charAt(value.length - 1) === "]") {
-      value = value
-        .slice(1, -1)
-        .split(",")
-        .map(function (v) {
-          return v.trim().replace(/^["']|["']$/g, "");
-        })
-        .filter(Boolean);
-    }
-    data[key] = value;
-  });
-
-  // "related:" の下にYAMLブロックリスト（- item）が続く形式にも対応
-  const blockListMatch = fmBlockList(match[1], "related");
-  if (blockListMatch) data.related = blockListMatch;
-
-  return { data: data, body: match[2] };
+  if (!match) throw new Error("Missing YAML frontmatter");
+  const doc = YAML.parseDocument(match[1], { uniqueKeys: true });
+  if (doc.errors.length) throw new Error(doc.errors.map(e => e.message).join("; "));
+  const data = doc.toJS({ maxAliasCount: 50 });
+  if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("Invalid article metadata");
+  return { data, body: match[2] };
 }
 
-function fmBlockList(fmText, key) {
-  const lines = fmText.split(/\r?\n/);
-  const startIndex = lines.findIndex(function (l) {
-    return new RegExp("^" + key + ":\\s*$").test(l);
-  });
-  if (startIndex === -1) return null;
-  const items = [];
-  for (let i = startIndex + 1; i < lines.length; i++) {
-    const m = lines[i].match(/^\s*-\s*(.+)$/);
-    if (!m) break;
-    items.push(m[1].trim().replace(/^["']|["']$/g, ""));
-  }
-  return items.length ? items : null;
+// Preserve explicitly supplied descriptions; only blank descriptions use body text.
+function descriptionOf(data, body) {
+  if (typeof data.description === "string" && data.description.trim()) return data.description;
+  return excerptFromMarkdown(String(body || "").replace(/<[^>]*>/g, ""), 120);
 }
 
 function escapeHtml(str) {
@@ -212,49 +176,31 @@ function markdownBodyToHtml(body, depth) {
 }
 
 function loadArticles() {
-  let filenames = [];
-  try {
-    filenames = fs.readdirSync(ARTICLES_DIR).filter(function (f) {
-      return /\.md$/i.test(f);
-    });
-  } catch (err) {
-    return [];
-  }
-
-  const articles = [];
-  filenames.forEach(function (filename) {
-    try {
-      const filePath = path.join(ARTICLES_DIR, filename);
-      const raw = fs.readFileSync(filePath, "utf8");
-      const parsed = parseFrontmatter(raw);
-      if (!parsed) {
-        console.warn("[skip] " + filename + ": frontmatterの形式が不正です");
-        return;
-      }
-      const data = parsed.data;
-      const slug = filename.replace(/\.md$/i, "");
-
-      if (typeof data.title !== "string" || !data.title) {
-        console.warn("[skip] " + filename + ": titleがありません");
-        return;
-      }
-      if (typeof data.date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(data.date)) {
-        console.warn("[skip] " + filename + ": dateがYYYY-MM-DD形式ではありません");
-        return;
-      }
-
-      articles.push({
-        slug: data.slug && typeof data.slug === "string" ? data.slug : slug,
-        filenameSlug: slug,
-        data: data,
-        body: parsed.body,
-      });
-    } catch (err) {
-      console.warn("[skip] " + filename + ": 予期しないエラーのためスキップします (" + err.message + ")");
+  // Validate every managed article before any generated file is written/deleted.
+  return fs.readdirSync(ARTICLES_DIR).filter(f => /\.md$/i.test(f)).map(filename => {
+    const parsed = parseFrontmatter(fs.readFileSync(path.join(ARTICLES_DIR, filename), "utf8"));
+    const data = parsed.data;
+    const slug = filename.replace(/\.md$/i, "");
+    // A custom slug must match its source filename: never delete another page.
+    if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(slug) || (data.slug != null && data.slug !== slug)) {
+      throw new Error(filename + ": unsafe or mismatched slug");
     }
+    if (data.published == null) data.published = false;
+    if (typeof data.published !== "boolean") throw new Error(filename + ": published must be boolean");
+    if (typeof data.title !== "string" || !data.title.trim()) throw new Error(filename + ": title is required");
+    if (typeof data.date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(data.date) ||
+        !Number.isFinite(Date.parse(data.date)) || new Date(data.date).toISOString().slice(0,10) !== data.date) {
+      throw new Error(filename + ": date must be a valid YYYY-MM-DD date");
+    }
+    if (data.description != null && typeof data.description !== "string") throw new Error(filename + ": description must be text");
+    if (data.published && (!TYPE_LABELS[data.type] || typeof data.image !== "string" || !data.image.trim() || !parsed.body.trim())) {
+      throw new Error(filename + ": published articles require type, image and body");
+    }
+    if (data.related != null && (!Array.isArray(data.related) || data.related.some(s => typeof s !== "string"))) {
+      throw new Error(filename + ": related must be a list of slugs");
+    }
+    return { slug, filenameSlug: slug, data, body: parsed.body };
   });
-
-  return articles;
 }
 
 // content/articlesにまだ移行していない、既存の手書きblog/<slug>.htmlから
@@ -328,6 +274,7 @@ module.exports = {
   BLOG_DIR: BLOG_DIR,
   TYPE_LABELS: TYPE_LABELS,
   parseFrontmatter: parseFrontmatter,
+  descriptionOf: descriptionOf,
   escapeHtml: escapeHtml,
   stripMarkdown: stripMarkdown,
   excerptFromMarkdown: excerptFromMarkdown,

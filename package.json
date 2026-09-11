@@ -1,0 +1,14 @@
+{
+  "name": "fukushi-it-partner-site",
+  "private": true,
+  "scripts": {
+    "build:blog": "node scripts/generate-blog.js",
+    "test": "node --test tests/blog.test.js"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "yaml": "2.9.0"
+  }
+}

@@ -1,58 +1,69 @@
 name: Generate Blog
 
-# Pages CMSがcontent/articles/配下へcommitした際に、
-# data/blog-index.json・blog/<slug>.html・blog.html・sitemap.xmlを
-# 自動生成・更新する。
-# content/articles/**以外の変更（＝このワークフロー自身が作る生成物への
-# commitを含む）ではトリガーされないため、自動commitによる無限ループは
-# 発生しない。
-
+# All main pushes also deploy non-blog pages after switching Pages to Actions.
 on:
   push:
-    branches:
-      - main
-    paths:
-      - "content/articles/**"
+    branches: [main]
   workflow_dispatch: {}
 
-# 生成物をmainへpushするために必要な最小限の権限のみ付与
 permissions:
-  contents: write
+  contents: read
 
-# content/articles/への連続pushで実行が重なった場合に、commit競合が起きないよう直列化する
 concurrency:
-  group: generate-blog-${{ github.ref }}
+  group: github-pages
   cancel-in-progress: false
 
 jobs:
   build-blog:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
         with:
-          node-version: "20"
-
-      - name: Generate blog-index.json / blog/*.html / blog.html / sitemap.xml
-        run: node scripts/generate-blog.js
-
-      - name: Check for changes
-        id: diff
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+        env:
+          # CMS edits intentionally differ from the previous generated files.
+          BLOG_BASELINE_COMPARE: "0"
+      - run: node scripts/generate-blog.js
+      # Abort on concurrent CMS/manual edits; never force-push over them.
+      - name: Check current main
         run: |
-          if [ -n "$(git status --porcelain -- data/blog-index.json blog blog.html sitemap.xml)" ]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=false" >> "$GITHUB_OUTPUT"
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+      - name: Commit generated files only
+        run: |
+          git add -- data/blog-index.json blog blog.html sitemap.xml
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git commit -m 'chore: update blog articles [skip ci]'
+            git push origin HEAD:main
           fi
+      - name: Prepare public files only
+        run: node scripts/prepare-pages.js "$RUNNER_TEMP/fukushi-pages"
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/fukushi-pages
 
-      - name: Commit and push generated files
-        if: steps.diff.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/blog-index.json blog blog.html sitemap.xml
-          git commit -m "chore: update blog articles [skip ci]"
-          git push
+  deploy:
+    needs: build-blog
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Deploy generated site
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -14,7 +14,7 @@
  * 記事のみ（＝Pages CMSへ移行済みの記事のみ）。まだ移行していない
  * 既存の手書きblog/*.htmlには一切触れない。
  *
- * Node.js標準モジュールのみに依存（外部npmパッケージなし）。
+ * YAML解析はyamlパッケージを使用（npm ciで導入）。
  * 実行例: node scripts/generate-blog.js
  */
 
@@ -51,28 +51,13 @@ function formatDateDisplay(isoDate) {
 
 function buildRelatedCardHtml(slug, articlesBySlug) {
   const cms = articlesBySlug[slug];
-  let title, dateDisplay, categoryLabel, image, imageAlt, excerpt;
-
-  if (cms) {
-    title = cms.data.title;
-    dateDisplay = formatDateDisplay(cms.data.date);
-    categoryLabel = lib.categoryLabelOf(cms.data);
-    image = cms.data.image;
-    imageAlt = cms.data.image_alt || "";
-    excerpt = lib.excerptOf(cms.data, cms.body, 60);
-  } else {
-    const legacy = lib.getLegacyArticleMeta(slug);
-    if (!legacy) {
-      console.warn("[warn] 関連記事 " + slug + " が見つかりません（スキップ）");
-      return "";
-    }
-    title = legacy.title;
-    dateDisplay = legacy.dateDisplay;
-    categoryLabel = legacy.categoryLabel;
-    image = legacy.image;
-    imageAlt = legacy.imageAlt;
-    excerpt = legacy.excerpt;
-  }
+  if (!cms || cms.data.published !== true) return "";
+  const title = cms.data.title;
+  const dateDisplay = formatDateDisplay(cms.data.date);
+  const categoryLabel = lib.categoryLabelOf(cms.data);
+  const image = cms.data.image;
+  const imageAlt = cms.data.image_alt || "";
+  const excerpt = lib.excerptOf(cms.data, cms.body, 60);
 
   const imgSrc = lib.toSiteImagePath(image, "blog");
 
@@ -116,9 +101,10 @@ const MAX_RELATED = 2;
 //   （同じカテゴリを優先し、足りなければ投稿日が新しい記事から補う）
 function resolveRelatedSlugs(article, published) {
   const selfSlug = article.slug;
+  const publicSlugs = new Set(published.filter(a => a.data.published === true).map(a => a.slug));
   const manual = (Array.isArray(article.data.related) ? article.data.related : [])
     .filter(function (s) {
-      return s && s !== selfSlug;
+      return s && s !== selfSlug && publicSlugs.has(s);
     })
     .filter(function (s, i, arr) {
       return arr.indexOf(s) === i; // 重複除去
@@ -130,7 +116,7 @@ function resolveRelatedSlugs(article, published) {
   const myCategory = lib.categoryLabelOf(article.data);
   const others = published
     .filter(function (a) {
-      return a.slug !== selfSlug;
+      return a.slug !== selfSlug && a.data.published === true;
     })
     .slice()
     .sort(function (a, b) {
@@ -159,7 +145,7 @@ function renderArticlePage(article, articlesBySlug, published) {
   const dateDisplay = formatDateDisplay(data.date);
   const imageSrc = lib.toSiteImagePath(data.image, "blog");
   const bodyHtml = lib.markdownBodyToHtml(article.body, "blog");
-  const description = lib.escapeHtml(data.description || "");
+  const description = lib.escapeHtml(lib.descriptionOf(data, article.body));
   const title = lib.escapeHtml(data.title);
 
   const related = resolveRelatedSlugs(article, published);
@@ -362,7 +348,7 @@ function buildBlogIndex(publishedArticles) {
         date: a.data.date,
         image: a.data.image || null,
         image_alt: a.data.image_alt || "",
-        description: a.data.description || "",
+        description: lib.descriptionOf(a.data, a.body),
         excerpt: lib.excerptOf(a.data, a.body, 80),
         slug: a.slug,
       };
@@ -584,9 +570,9 @@ function buildBlogHtml(blogIndex) {
   );
 }
 
-function buildSitemap(publishedArticles) {
+function buildSitemap(publishedArticles, managedArticles) {
   const cmsSlugs = {};
-  publishedArticles.forEach(function (a) {
+  managedArticles.forEach(function (a) {
     cmsSlugs[a.slug] = true;
   });
 
@@ -645,10 +631,20 @@ function main() {
     return a.data.published === true;
   });
 
-  const articlesBySlug = {};
+  const articlesBySlug = Object.create(null);
   articles.forEach(function (a) {
     articlesBySlug[a.slug] = a;
   });
+
+  // Only the exact output of a validated, existing CMS source may be removed.
+  fs.mkdirSync(BLOG_DIR, { recursive: true });
+  const unpublishedPaths = articles.filter(a => a.data.published !== true).map(a => path.join(BLOG_DIR, a.slug + ".html"));
+  for (const outPath of unpublishedPaths) {
+    if (fs.existsSync(outPath) && !fs.lstatSync(outPath).isFile()) throw new Error("Unsafe output: " + outPath);
+  }
+  for (const outPath of unpublishedPaths) {
+    if (fs.existsSync(outPath)) fs.unlinkSync(outPath);
+  }
 
   // ① data/blog-index.json
   const blogIndex = buildBlogIndex(published);
@@ -669,7 +665,7 @@ function main() {
   console.log("generated " + BLOG_HTML_FILE);
 
   // ④ sitemap.xml
-  fs.writeFileSync(SITEMAP_FILE, buildSitemap(published), "utf8");
+  fs.writeFileSync(SITEMAP_FILE, buildSitemap(published, articles), "utf8");
   console.log("updated " + SITEMAP_FILE);
 }
 
