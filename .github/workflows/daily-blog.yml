@@ -1,0 +1,41 @@
+name: Daily Blog
+
+on:
+  schedule:
+    # UTC 21:00 = next day 06:00 Asia/Tokyo. GitHub may delay scheduled runs.
+    - cron: '0 21 * * *'
+  workflow_dispatch: {}
+
+# Placeholder only: no repository writes, AI credentials, or deployment permissions.
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-blog-main
+  cancel-in-progress: false
+
+jobs:
+  start:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Start daily blog preparation (placeholder)
+        run: node scripts/daily-blog.js
+      - name: Verify no repository files were changed
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain --untracked-files=all)" ]; then
+            echo 'Unexpected repository changes; stopping.' >&2
+            exit 1
+          fi
+
+      # Future: after validated article creation, run the build and artifact steps
+      # here and add a deploy job with needs: start. Do not rely on a bot push
+      # starting Generate Blog. No build/deploy is connected in this version.
