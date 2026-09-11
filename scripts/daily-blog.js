@@ -1,4 +1,5 @@
 "use strict";
+const fs = require("fs");
 const { selectTopic, TopicError } = require("./topic-selector");
 const { generateArticle } = require("./article-generator");
 const { saveArticleDraft } = require("./article-writer");
@@ -27,12 +28,25 @@ function failureReport(error) {
   return report;
 }
 
+function writeResultFile(result, resultFile) {
+  if (!resultFile) return;
+  try {
+    fs.writeFileSync(resultFile, JSON.stringify(result, null, 2) + "\n",
+      { encoding: "utf8", flag: "wx" });
+  } catch {
+    throw new TopicError("DAILY_RESULT_SAVE_FAILED");
+  }
+}
+
 if(require.main === module) {
-  prepareDailyBlog().then(result=>console.log(JSON.stringify(result,null,2))).catch(error=>{
+  prepareDailyBlog().then(result=>{
+    writeResultFile(result,process.env.DAILY_BLOG_RESULT_FILE);
+    console.log(JSON.stringify(result,null,2));
+  }).catch(error=>{
     // The report is an explicit allowlist. Never print raw responses, headers,
     // request options, article contents, API keys, or arbitrary exceptions.
     console.error(JSON.stringify(failureReport(error)));
     process.exitCode=1;
   });
 }
-module.exports={prepareDailyBlog,failureReport};
+module.exports={prepareDailyBlog,failureReport,writeResultFile};

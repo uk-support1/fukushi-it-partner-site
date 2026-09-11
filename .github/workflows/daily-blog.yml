@@ -6,9 +6,9 @@ on:
     - cron: '0 21 * * *'
   workflow_dispatch: {}
 
-# Draft creation only: no commit, push or deployment permissions.
+# Draft creation and one-file persistence only. No deployment permissions.
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: daily-blog-main
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          persist-credentials: true
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -35,20 +35,12 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+          DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
         run: node scripts/daily-blog.js
-      - name: Verify only one draft Markdown was created
-        shell: bash
-        run: |
-          if [ -n "$(git diff --name-only)" ]; then
-            echo 'Tracked repository files changed unexpectedly; stopping.' >&2
-            exit 1
-          fi
-          mapfile -t new_files < <(git ls-files --others --exclude-standard)
-          if [ "${#new_files[@]}" -ne 1 ] || [[ "${new_files[0]}" != content/articles/*.md ]]; then
-            echo 'Expected exactly one new draft under content/articles; stopping.' >&2
-            printf 'New file: %s\n' "${new_files[@]}" >&2
-            exit 1
-          fi
+      - name: Commit and push only the generated draft
+        env:
+          DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
+        run: node scripts/commit-draft.js
 
-      # Future: persist the validated draft, then run build/artifact/deploy in this
+      # Future: run build/artifact/deploy in this
       # workflow. Do not rely on a GITHUB_TOKEN push starting Generate Blog.

@@ -1,7 +1,7 @@
 "use strict";
 const test=require("node:test"),assert=require("node:assert/strict"),fs=require("fs"),path=require("path"),cp=require("child_process"),crypto=require("crypto"),os=require("os");
 const {existingArticleInfo,validateTopic,validateReview,requestGemini,selectTopic,topicSchema,DEFAULT_GEMINI_MODEL}=require("../scripts/topic-selector");
-const {prepareDailyBlog,failureReport}=require("../scripts/daily-blog");
+const {prepareDailyBlog,failureReport,writeResultFile}=require("../scripts/daily-blog");
 const {generateArticle,validateArticle,articleSchema}=require("../scripts/article-generator");
 const {baseSlugFor,buildArticleMarkdown,saveArticleDraft}=require("../scripts/article-writer");
 const YAML=require("yaml");
@@ -34,16 +34,22 @@ test("1/2: published Markdown context includes title/category/body/headings; dra
   const data=existingArticleInfo([row,{...row,slug:"draft",data:{...row.data,published:false}}]);
   assert.equal(data.length,1);assert.ok(data[0].summary.includes("Body"));assert.deepEqual(data[0].headings,["Heading"]);
 });
-test("Workflow keeps 06:00 JST schedule, manual trigger, read-only token and secret/variable wiring",()=>{
+test("Workflow keeps 06:00 JST schedule, manual trigger and scoped write permission",()=>{
   const workflow=YAML.parse(fs.readFileSync(path.join(ROOT,".github/workflows/daily-blog.yml"),"utf8"));
   assert.equal(workflow.on.schedule[0].cron,"0 21 * * *");
   assert.deepEqual(workflow.on.workflow_dispatch,{});
-  assert.deepEqual(workflow.permissions,{contents:"read"});
+  assert.deepEqual(workflow.permissions,{contents:"write"});
+  const checkout=workflow.jobs.start.steps.find(step=>step.uses==="actions/checkout@v4");
+  assert.equal(checkout.with["persist-credentials"],true);
   const select=workflow.jobs.start.steps.find(step=>step.name==="Select today's topic");
   assert.equal(select.env.GEMINI_API_KEY,"${{ secrets.GEMINI_API_KEY }}");
   assert.equal(select.env.GEMINI_MODEL,"${{ vars.GEMINI_MODEL }}");
-  const verify=workflow.jobs.start.steps.find(step=>step.name==="Verify only one draft Markdown was created");
-  assert.match(verify.run,/git diff --name-only/);assert.match(verify.run,/content\/articles\/\*\.md/);
+  assert.equal(select.env.DAILY_BLOG_RESULT_FILE,"${{ runner.temp }}/daily-blog-result.json");
+  const commit=workflow.jobs.start.steps.find(step=>step.name==="Commit and push only the generated draft");
+  assert.equal(commit.run,"node scripts/commit-draft.js");
+  assert.equal(commit.env.DAILY_BLOG_RESULT_FILE,"${{ runner.temp }}/daily-blog-result.json");
+  const commands=workflow.jobs.start.steps.map(step=>step.run||"").join("\n");
+  assert.doesNotMatch(commands,/generate-blog|prepare-pages|deploy-pages/);
 });
 test("Missing key stops safely; missing model defaults to Flash-Lite",async()=>{
   let called=false;const request=async()=>{called=true;},load=()=>{called=true;return articles;};
@@ -124,6 +130,13 @@ test("Save failure keeps articlesCreated at zero and shouldPublish false",async(
   } catch(error) { caught=error; }
   assert.equal(caught.code,"ARTICLE_SAVE_FAILED");
   assert.deepEqual(failureReport(caught),{status:"failed",error:"ARTICLE_SAVE_FAILED",articlesCreated:0,shouldPublish:false});
+});
+test("Daily result is written once outside the article tree for the commit step",t=>{
+  const directory=temporaryArticles(t),resultFile=path.join(directory,"result.json");
+  const result={status:"draft_saved",articlesCreated:1,shouldPublish:false};
+  writeResultFile(result,resultFile);
+  assert.deepEqual(JSON.parse(fs.readFileSync(resultFile,"utf8")),result);
+  assert.throws(()=>writeResultFile(result,resultFile),{code:"DAILY_RESULT_SAVE_FAILED"});
 });
 test("Article JSON returns title, description and bodyMarkdown",async()=>{
   const requests=[];

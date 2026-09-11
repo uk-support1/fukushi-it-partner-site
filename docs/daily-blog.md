@@ -12,7 +12,7 @@ GitHub Actionsのスケジュールは定刻を保証せず、混雑による遅
 公開リポジトリでは60日間活動がないとスケジュールが自動無効化される点にも注意してください。
 
 起動 → checkout → Node.js 24 → 依存導入 → 模擬APIテスト → scripts/daily-blog.js
-→ 新規下書き1件だけであることを確認 → 正常終了です。スクリプトは公開中の記事からタイトル・カテゴリ・
+→ 新規下書き1件だけを検証・commit・push → 正常終了です。スクリプトは公開中の記事からタイトル・カテゴリ・
 概要・見出しを読み、Gemini APIのgenerateContentでテーマ選定と独立した重複確認を行います。
 重複がなければ、選定テーマを使って記事本文を生成・検証し、既存形式の下書きMarkdownを
 `content/articles/` に保存します。成功結果を標準出力（Actionsログ）へ表示します。
@@ -25,11 +25,11 @@ APIキー未設定、API失敗、JSON不正、必須項目不足、既存記事�
 失敗終了します。記事の本文が空、短すぎる、長すぎる、見出し構成が不正、タイトルが
 選定テーマと異なる場合も失敗します。エラーログにはキー、API本文、既存記事本文を出しません。
 
-既存記事再生成・commit・push・デプロイは実施しません。保存する記事は必ず
-`published: false` とし、公開ページの生成処理には接続しません。
-GitHub Actions上のファイルは現段階では実行用checkout内だけに作られ、ジョブ終了後には
-残りません。GitHubへ永続化する処理は、後続のcommit・競合確認と一緒に追加します。
-GITHUB_TOKENはcontents:readだけです。
+既存記事再生成・公開ファイルのcommit・デプロイは実施しません。保存する記事は必ず
+`published: false` とし、公開ページの生成処理には接続しません。生成結果はrunnerの
+一時ファイルを介して `scripts/commit-draft.js` へ渡し、その実行で作成された新規Markdown
+1件だけをmainへcommit・pushします。GITHUB_TOKENはDaily Blogワークフローだけ
+`contents: write` とし、他のワークフローの権限は変更しません。
 generate-blog.yml、公開サイト、独自ドメイン設定は変更しません。
 
 ローカル確認は `npm test`。実APIを使う場合は `GEMINI_API_KEY` を環境変数に設定し、
@@ -68,16 +68,32 @@ hashは正規化したタイトルのSHA-256先頭12桁です。同じslugが存
 `-3` の順に空いている名前を選び、排他的な新規作成によって既存ファイルを上書きしません。
 保存後にだけ `articlesCreated` は1となり、`shouldPublish` はfalseのままです。
 
+## 下書きの永続保存
+
+`scripts/commit-draft.js` は、結果JSONが示すファイルと実際の新規ファイルを照合します。
+保存先、拡張子、slug、本文、front matterの `published: false`、未追跡状態を検査し、
+既存のtracked変更や事前にstageされたファイルがあれば停止します。stageには生成された
+相対パス1件だけを明示し、stage後とcommit後にも対象がその1件だけであることを検査します。
+commitメッセージは `blog: add daily draft YYYY-MM-DD` です。
+
+push前にはorigin/mainをfetchし、下書きcommitの親が最新のorigin/mainと一致する場合だけ
+`git push origin HEAD:main` を実行します。mainが更新されていた場合や通常pushが拒否された
+場合は失敗終了し、force push、merge、rebaseは行いません。成功時の最終結果は
+`status: draft_committed`、`articlesCreated: 1`、`shouldPublish: false` です。
+GITHUB_TOKENによるpushは後続のGenerate Blogワークフローを起動しないため、この段階では
+HTML、一覧、sitemap、Pagesの更新は行われません。
+
 ## 後続処理との接続設計
 
 `scripts/daily-blog.js` はテーマ選定、記事生成、検証、下書き保存を順番に呼び出します。
-保存失敗時は例外として終了し、`articlesCreated: 0`、`shouldPublish: false`を報告します。
+保存・commit・pushのいずれかに失敗した場合は成功扱いにせず、
+`articlesCreated: 0`、`shouldPublish: false`を報告します。
 
 最終的には同じDaily Blogワークフロー内で、次の順に明示的に実行します。
 
 1. テーマ選定 → AI生成 → 内容検証 → content/articles/<slug>.md保存。
-2. 有効な記事がある場合だけ、npm ci → scripts/generate-blog.jsでHTML等を生成。
-3. mainとの競合確認 → 今回の原稿と生成物だけをcommit・push。
+2. mainとの競合確認 → 今回の下書き1件だけをcommit・push。
+3. 公開が承認された記事がある場合だけ、scripts/generate-blog.jsでHTML等を生成。
 4. scripts/prepare-pages.js → upload-pages-artifact。
 5. needsで前段成功を条件にしたdeployジョブ → deploy-pages。
 
@@ -86,7 +102,6 @@ GITHUB_TOKENによるpushでは通常、別のpushワークフローは起動し
 生成からデプロイまで完結させます。失敗時は後続へ進めず、0件なら公開を省略します。
 既存スクリプトは再利用し、既存Generate BlogはCMS更新用の入口として維持します。
 
-実際に書き込みを追加する段階で、公開処理とのconcurrencyをgithub-pagesに統一し、
-重複実行防止・main競合検知・必要なジョブだけへの権限追加を実装・テストします。
-現時点のdaily-blog-mainは読み取り専用の入口を直列化するためだけに使用します。
-認証・AI・公開の実装は別途承認後に行います。
+公開処理を接続する段階で、公開処理とのconcurrencyをgithub-pagesに統一します。
+現時点のdaily-blog-mainは下書き作成と永続保存だけを直列化します。
+公開の実装は別途承認後に行います。
