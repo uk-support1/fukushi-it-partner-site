@@ -5,7 +5,7 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, l
   const localDate = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
   }).format(now);
-  const result = await selectTopic({apiKey:env.OPENAI_API_KEY,model:env.OPENAI_MODEL,localDate,request,load});
+  const result = await selectTopic({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,request,load});
   return {startedAt:now.toISOString(),localDate,timeZone:"Asia/Tokyo",status:"topic_selected",
     articlesCreated:0,shouldPublish:false,...result};
 }
@@ -13,11 +13,10 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, l
 function failureReport(error) {
   const report = {status:"failed",error:error instanceof TopicError ? error.code : "TOPIC_SELECTION_FAILED",
     articlesCreated:0,shouldPublish:false};
-  if (error instanceof TopicError && error.code === "OPENAI_HTTP_ERROR" && error.diagnostic) {
-    report.httpStatus = error.diagnostic.httpStatus;
-    report.apiErrorType = error.diagnostic.apiErrorType;
-    report.apiErrorCode = error.diagnostic.apiErrorCode;
-    report.message = error.diagnostic.message;
+  if (error instanceof TopicError && error.diagnostic) {
+    for (const key of ["httpStatus","apiErrorStatus","apiErrorCode","message","finishReason","blockReason"]) {
+      if (error.diagnostic[key] !== undefined) report[key] = error.diagnostic[key];
+    }
   }
   return report;
 }

@@ -13,27 +13,31 @@ GitHub Actionsのスケジュールは定刻を保証せず、混雑による遅
 
 起動 → checkout → Node.js 24 → 依存導入 → 模擬APIテスト → scripts/daily-blog.js
 → 無変更確認 → 正常終了です。スクリプトは公開中の記事からタイトル・カテゴリ・
-概要・見出しを読み、OpenAI Responses APIでテーマ選定と独立した重複確認を行います。
+概要・見出しを読み、Gemini APIのgenerateContentでテーマ選定と独立した重複確認を行います。
 成功時はテーマJSONを標準出力（Actionsログ）へ表示します。
 
-APIキーはRepository Secretの `OPENAI_API_KEY`、モデルはRepository Variableの
-`OPENAI_MODEL` から取得します。値はコードへ保存しません。どちらかが未設定、
-API失敗、JSON不正、必須項目不足、既存記事との重複がある場合は失敗終了します。
-エラーログにはキー、API本文、既存記事本文を出しません。
+APIキーはRepository Secretの `GEMINI_API_KEY`、モデルはRepository Variableの
+`GEMINI_MODEL` から取得します。基本モデルは `gemini-2.5-flash-lite` で、Variableが
+未設定の場合もこのモデルを使用します。必要な場合はVariableを `gemini-2.5-flash`
+へ変更して切り替えます。この2モデル以外は拒否します。値はコードへ保存しません。
+APIキー未設定、API失敗、JSON不正、必須項目不足、既存記事との重複がある場合は
+失敗終了します。エラーログにはキー、API本文、既存記事本文を出しません。
 
 Markdown作成・既存記事再生成・commit・push・デプロイは実施しません。
 GITHUB_TOKENはcontents:readだけです。
 generate-blog.yml、公開サイト、独自ドメイン設定は変更しません。
 
-ローカル確認は `npm test`。実APIを使う場合のみ `OPENAI_API_KEY` と
-`OPENAI_MODEL` を環境変数に設定して `node scripts/daily-blog.js` を実行します。
+ローカル確認は `npm test`。実APIを使う場合は `GEMINI_API_KEY` を環境変数に設定し、
+必要に応じて `GEMINI_MODEL` も設定して `node scripts/daily-blog.js` を実行します。
+GitHub ActionsではSettings → Secrets and variables → Actionsで、Repository Secretに
+`GEMINI_API_KEY`、Repository Variableに必要なら `GEMINI_MODEL` を設定します。
 実APIテストは費用が発生するため、この段階では行いません。
 
 ## テーマJSON
 
 `title`、`category`、`target`、`keyword`、`reason`、`angle`、`service` を必須にします。
 カテゴリは許可済み一覧に限定し、余分な項目、不正文字、長すぎる値を拒否します。
-OpenAI APIには `store: false` と厳密なJSON Schemaを指定します。
+Gemini APIには `application/json` とJSON Schemaを指定し、返却後も同じローカル検証を行います。
 
 重複回避は二段階です。最初の選定で既存記事の本文概要・見出しまで比較し、
 次に別のAPI要求で候補と全既存記事を1件ずつ比較します。表現だけ違う同じ問い・

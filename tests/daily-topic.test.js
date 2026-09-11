@@ -1,14 +1,14 @@
 "use strict";
 const test=require("node:test"),assert=require("node:assert/strict"),fs=require("fs"),path=require("path"),cp=require("child_process"),crypto=require("crypto");
-const {existingArticleInfo,validateTopic,validateReview,requestOpenAI,selectTopic,topicSchema}=require("../scripts/topic-selector");
+const {existingArticleInfo,validateTopic,validateReview,requestGemini,selectTopic,topicSchema,DEFAULT_GEMINI_MODEL}=require("../scripts/topic-selector");
 const {prepareDailyBlog,failureReport}=require("../scripts/daily-blog");
 const YAML=require("yaml");
 const ROOT=path.resolve(__dirname,"..");
 const articles=[{slug:"vacancy",title:"グループホームの空室情報をホームページで伝える方法",category:"空室対策",summary:"空室情報を掲載して入居相談を増やす",headings:["掲載すべき情報"]}];
 const topic={title:"福祉事業所の採用応募フォームで入力負担を減らす設計",category:"採用",target:"福祉事業所の採用担当者",keyword:"福祉 採用 応募フォーム",reason:"空室案内ではなく職員応募時の離脱に着目",angle:"応募入力項目を減らし途中離脱を抑える",service:"ホームページ改善支援"};
-const env={OPENAI_API_KEY:"test-only-not-a-real-key",OPENAI_MODEL:"mock-model"};
+const env={GEMINI_API_KEY:"test-only-not-a-real-key",GEMINI_MODEL:"gemini-2.5-flash-lite"};
 const review=rows=>JSON.stringify({comparisons:rows.map(a=>({slug:a.slug,duplicate:false,reason:"解決する課題が異なる"}))});
-const ok=text=>({ok:true,text:async()=>JSON.stringify({status:"completed",output:[{type:"message",content:[{type:"output_text",text}]}]})});
+const ok=text=>({ok:true,status:200,text:async()=>JSON.stringify({candidates:[{finishReason:"STOP",content:{parts:[{text}]}}]})});
 test("1/2: published Markdown context includes title/category/body/headings; drafts excluded",()=>{
   const real=existingArticleInfo();assert.ok(real.length>=9);assert.ok(real.every(a=>a.title&&a.category&&a.summary&&Array.isArray(a.headings)));
   const row={slug:"one",data:{published:true,title:"Title",type:"column"},body:"## Heading\n\nBody"};
@@ -21,15 +21,31 @@ test("Workflow keeps 06:00 JST schedule, manual trigger, read-only token and sec
   assert.deepEqual(workflow.on.workflow_dispatch,{});
   assert.deepEqual(workflow.permissions,{contents:"read"});
   const select=workflow.jobs.start.steps.find(step=>step.name==="Select today's topic");
-  assert.equal(select.env.OPENAI_API_KEY,"${{ secrets.OPENAI_API_KEY }}");
-  assert.equal(select.env.OPENAI_MODEL,"${{ vars.OPENAI_MODEL }}");
+  assert.equal(select.env.GEMINI_API_KEY,"${{ secrets.GEMINI_API_KEY }}");
+  assert.equal(select.env.GEMINI_MODEL,"${{ vars.GEMINI_MODEL }}");
 });
-test("3: missing key/model stops before reading articles or calling API",async()=>{
+test("Missing key stops safely; missing model defaults to Flash-Lite",async()=>{
   let called=false;const request=async()=>{called=true;},load=()=>{called=true;return articles;};
-  await assert.rejects(selectTopic({apiKey:"",model:"mock",request,load}),{code:"OPENAI_API_KEY_MISSING"});
-  await assert.rejects(selectTopic({apiKey:"dummy",model:"",request,load}),{code:"OPENAI_MODEL_MISSING_OR_INVALID"});assert.equal(called,false);
-  const result=cp.spawnSync(process.execPath,["scripts/daily-blog.js"],{cwd:ROOT,encoding:"utf8",env:{...process.env,OPENAI_API_KEY:"",OPENAI_MODEL:""}});
-  assert.equal(result.status,1);assert.equal(result.stdout,"");assert.equal(JSON.parse(result.stderr).error,"OPENAI_API_KEY_MISSING");
+  await assert.rejects(selectTopic({apiKey:"",model:"gemini-2.5-flash-lite",request,load}),{code:"GEMINI_API_KEY_MISSING"});
+  assert.equal(called,false);
+  let selectedModel;
+  let count=0;
+  await selectTopic({apiKey:"dummy",model:"",load:()=>articles,request:async args=>{
+    selectedModel=args.model;return ++count===1?JSON.stringify(topic):review(articles);
+  }});
+  assert.equal(selectedModel,DEFAULT_GEMINI_MODEL);
+  const result=cp.spawnSync(process.execPath,["scripts/daily-blog.js"],{cwd:ROOT,encoding:"utf8",env:{...process.env,GEMINI_API_KEY:"",GEMINI_MODEL:""}});
+  assert.equal(result.status,1);assert.equal(result.stdout,"");assert.equal(JSON.parse(result.stderr).error,"GEMINI_API_KEY_MISSING");
+});
+test("Flash can be selected and unapproved models are rejected",async()=>{
+  let count=0,selectedModel;
+  await selectTopic({apiKey:"dummy",model:"gemini-2.5-flash",load:()=>articles,request:async args=>{
+    selectedModel=args.model;return ++count===1?JSON.stringify(topic):review(articles);
+  }});
+  assert.equal(selectedModel,"gemini-2.5-flash");
+  let called=false;
+  await assert.rejects(selectTopic({apiKey:"dummy",model:"gemini-2.5-pro",load:()=>{called=true;},request:async()=>{called=true;}}),{code:"GEMINI_MODEL_NOT_ALLOWED"});
+  assert.equal(called,false);
 });
 test("4: mock selection + independent semantic review returns one topic and never publishes",async()=>{
   const requests=[];const result=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,request:async args=>{
@@ -47,51 +63,65 @@ test("Duplicate titles and near titles rejected locally",()=>{
 });
 test("Semantically duplicate paraphrases rejected by independent review",async()=>{
   let count=0;
-  await assert.rejects(selectTopic({apiKey:"dummy",model:"mock",load:()=>articles,request:async()=>++count===1?JSON.stringify({...topic,title:"入居相談を増やすウェブ上の募集案内",angle:"住まいの空き状況を案内する"}):JSON.stringify({comparisons:[{slug:"vacancy",duplicate:true,reason:"同じ空室案内の課題と解決策"}]})}),{code:"DUPLICATE_TOPIC"});
+  await assert.rejects(selectTopic({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,load:()=>articles,request:async()=>++count===1?JSON.stringify({...topic,title:"入居相談を増やすウェブ上の募集案内",angle:"住まいの空き状況を案内する"}):JSON.stringify({comparisons:[{slug:"vacancy",duplicate:true,reason:"同じ空室案内の課題と解決策"}]})}),{code:"DUPLICATE_TOPIC"});
 });
 test("Incomplete/invalid semantic review fails closed",()=>{
   for(const raw of ["{}",review([]),review([{slug:"unknown"}]),JSON.stringify({comparisons:[{slug:"vacancy",duplicate:"false",reason:"reason"}]})])assert.throws(()=>validateReview(raw,articles));
   assert.throws(()=>validateReview(review([articles[0],articles[0]]),[articles[0],{...articles[0],slug:"other"}]));
 });
-test("OpenAI request uses strict schema, configured model and no response storage",async()=>{
-  const text=await requestOpenAI({apiKey:"dummy",model:"configurable-model",instructions:"instructions",input:{articles},schema:topicSchema},async(url,options)=>{
-    assert.equal(url,"https://api.openai.com/v1/responses");const body=JSON.parse(options.body);
-    assert.equal(body.model,"configurable-model");assert.equal(body.store,false);assert.equal(body.text.format.strict,true);
-    assert.equal(body.text.format.type,"json_schema");assert.equal(options.redirect,"error");assert.ok(options.signal);
+test("Gemini request uses generateContent, API-key header and structured JSON",async()=>{
+  const text=await requestGemini({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,instructions:"instructions",input:{articles},schema:topicSchema},async(url,options)=>{
+    assert.equal(url,"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent");
+    assert.equal(options.headers["x-goog-api-key"],"dummy");assert.equal(options.headers.Authorization,undefined);
+    const body=JSON.parse(options.body);
+    assert.equal(body.systemInstruction.parts[0].text,"instructions");
+    assert.deepEqual(JSON.parse(body.contents[0].parts[0].text),{articles});
+    assert.equal(body.generationConfig.responseMimeType,"application/json");
+    assert.deepEqual(body.generationConfig.responseJsonSchema,topicSchema);
+    assert.equal(body.generationConfig.maxOutputTokens,8000);
+    assert.ok(!options.body.includes("dummy"));assert.equal(options.redirect,"error");assert.ok(options.signal);
     return ok(JSON.stringify(topic));
   });assert.deepEqual(JSON.parse(text),topic);
 });
-test("HTTP errors, timeout, refusal and incomplete responses rejected without raw messages",async()=>{
-  const args={apiKey:"secret-test-value",model:"mock",schema:topicSchema,input:{},instructions:"test"};
-  const cases=[async()=>{throw new Error("secret-test-value");},async()=>{const e=new Error("secret-test-value");e.name="TimeoutError";throw e;},async()=>({ok:true,text:async()=>JSON.stringify({status:"incomplete",output:[]})}),async()=>({ok:true,text:async()=>JSON.stringify({status:"completed",output:[{type:"message",content:[{type:"refusal",refusal:"secret-test-value"}]}]})})];
-  for(const fetch of cases)await assert.rejects(requestOpenAI(args,fetch),e=>!e.message.includes("secret-test-value")&&!!e.code);
+test("Malformed responses, timeout and request failures are rejected without raw messages",async()=>{
+  const args={apiKey:"secret-test-value",model:DEFAULT_GEMINI_MODEL,schema:topicSchema,input:{},instructions:"test"};
+  const cases=[async()=>{throw new Error("secret-test-value");},async()=>{const e=new Error("secret-test-value");e.name="TimeoutError";throw e;},async()=>({ok:true,status:200,text:async()=>"not JSON"}),async()=>({ok:true,status:200,text:async()=>JSON.stringify({candidates:[]})})];
+  for(const fetch of cases)await assert.rejects(requestGemini(args,fetch),e=>!e.message.includes("secret-test-value")&&!!e.code);
 });
-test("400/401/403/429 expose allowlisted OpenAI diagnostics without secrets",async()=>{
-  const apiKey="sk-test-secret-value-12345678";
+test("400/401/403/429 expose allowlisted Gemini diagnostics without secrets",async()=>{
+  const apiKey="AIzaTestSecretValue123456789012345";
   const cases=[
-    [400,"invalid_request_error","invalid_value","Invalid value in request"],
-    [401,"invalid_request_error","invalid_api_key",`Incorrect API key: ${apiKey}`],
-    [403,"permission_error","insufficient_permissions","Bearer private-authorization-value is not permitted"],
-    [429,"rate_limit_error","rate_limit_exceeded","Rate limit reached"]
+    [400,"INVALID_ARGUMENT","Invalid request"],
+    [401,"UNAUTHENTICATED",`Invalid API key: ${apiKey}`],
+    [403,"PERMISSION_DENIED","x-goog-api-key is not permitted"],
+    [429,"RESOURCE_EXHAUSTED","Quota exceeded"]
   ];
-  for(const [status,type,code,message] of cases) {
+  for(const [status,apiStatus,message] of cases) {
     let caught;
     try {
-      await requestOpenAI({apiKey,model:"mock",schema:topicSchema,input:{},instructions:"test"},async()=>({
-        ok:false,status,text:async()=>JSON.stringify({error:{type,code,message},request:{Authorization:`Bearer ${apiKey}`}})
+      await requestGemini({apiKey,model:DEFAULT_GEMINI_MODEL,schema:topicSchema,input:{},instructions:"test"},async()=>({
+        ok:false,status,text:async()=>JSON.stringify({error:{code:status,status:apiStatus,message},request:{"x-goog-api-key":apiKey}})
       }));
     } catch(error) { caught=error; }
-    assert.equal(caught.code,"OPENAI_HTTP_ERROR");
-    assert.deepEqual(Object.keys(caught.diagnostic),["httpStatus","apiErrorType","apiErrorCode","message"]);
+    assert.equal(caught.code,"GEMINI_HTTP_ERROR");
+    assert.deepEqual(Object.keys(caught.diagnostic),["httpStatus","apiErrorStatus","apiErrorCode","message"]);
     const report=JSON.stringify(failureReport(caught));
     assert.equal(JSON.parse(report).httpStatus,status);
-    assert.equal(JSON.parse(report).apiErrorType,type);
-    assert.equal(JSON.parse(report).apiErrorCode,code);
+    assert.equal(JSON.parse(report).apiErrorStatus,apiStatus);
+    assert.equal(JSON.parse(report).apiErrorCode,status);
     assert.ok(JSON.parse(report).message);
     assert.ok(!report.includes(apiKey));
-    assert.ok(!report.includes("private-authorization-value"));
-    assert.ok(!report.includes("Authorization"));
+    assert.ok(!report.includes('"request"'));
   }
+});
+test("Abnormal finishReason and prompt blockReason are reported safely",async()=>{
+  const args={apiKey:"secret-value",model:DEFAULT_GEMINI_MODEL,schema:topicSchema,input:{},instructions:"test"};
+  await assert.rejects(requestGemini(args,async()=>({ok:true,status:200,text:async()=>JSON.stringify({candidates:[{finishReason:"MAX_TOKENS",content:{parts:[]}}]})})),error=>{
+    const report=failureReport(error);return report.error==="GEMINI_FINISH_REASON"&&report.finishReason==="MAX_TOKENS"&&!JSON.stringify(report).includes("secret-value");
+  });
+  await assert.rejects(requestGemini(args,async()=>({ok:true,status:200,text:async()=>JSON.stringify({promptFeedback:{blockReason:"SAFETY"}})})),error=>{
+    const report=failureReport(error);return report.error==="GEMINI_BLOCKED"&&report.blockReason==="SAFETY"&&!JSON.stringify(report).includes("secret-value");
+  });
 });
 test("7/8: real articles + mocked API do not write tracked or untracked files",async()=>{
   const files=cp.execFileSync("git",["ls-files","-z"],{cwd:ROOT,encoding:"utf8"}).split("\0").filter(Boolean);
