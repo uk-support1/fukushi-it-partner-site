@@ -11,19 +11,39 @@ mainであることが前提です。workflow_dispatchによるmainでの手動�
 GitHub Actionsのスケジュールは定刻を保証せず、混雑による遅延・取りこぼしがあり得ます。
 公開リポジトリでは60日間活動がないとスケジュールが自動無効化される点にも注意してください。
 
-起動 → checkout → Node.js 24 → scripts/daily-blog.js → 無変更確認 → 正常終了。
-スクリプトは開始時刻と日本時間の日付、status: skipped、記事数0、
-shouldPublish: falseを標準出力（Actionsログ）へ表示するだけです。
-API呼び出し・Markdown作成・既存記事再生成・commit・push・デプロイは実施しません。
-Secretsや追加npm依存は不要で、GITHUB_TOKENはcontents:readだけです。
+起動 → checkout → Node.js 24 → 依存導入 → 模擬APIテスト → scripts/daily-blog.js
+→ 無変更確認 → 正常終了です。スクリプトは公開中の記事からタイトル・カテゴリ・
+概要・見出しを読み、OpenAI Responses APIでテーマ選定と独立した重複確認を行います。
+成功時はテーマJSONを標準出力（Actionsログ）へ表示します。
+
+APIキーはRepository Secretの `OPENAI_API_KEY`、モデルはRepository Variableの
+`OPENAI_MODEL` から取得します。値はコードへ保存しません。どちらかが未設定、
+API失敗、JSON不正、必須項目不足、既存記事との重複がある場合は失敗終了します。
+エラーログにはキー、API本文、既存記事本文を出しません。
+
+Markdown作成・既存記事再生成・commit・push・デプロイは実施しません。
+GITHUB_TOKENはcontents:readだけです。
 generate-blog.yml、公開サイト、独自ドメイン設定は変更しません。
 
-ローカル確認: `node scripts/daily-blog.js`。ファイルは作成・変更されません。
+ローカル確認は `npm test`。実APIを使う場合のみ `OPENAI_API_KEY` と
+`OPENAI_MODEL` を環境変数に設定して `node scripts/daily-blog.js` を実行します。
+実APIテストは費用が発生するため、この段階では行いません。
+
+## テーマJSON
+
+`title`、`category`、`target`、`keyword`、`reason`、`angle`、`service` を必須にします。
+カテゴリは許可済み一覧に限定し、余分な項目、不正文字、長すぎる値を拒否します。
+OpenAI APIには `store: false` と厳密なJSON Schemaを指定します。
+
+重複回避は二段階です。最初の選定で既存記事の本文概要・見出しまで比較し、
+次に別のAPI要求で候補と全既存記事を1件ずつ比較します。表現だけ違う同じ問い・
+解決策、判断が曖昧な候補は重複として失敗させます。完全一致と近いタイトルは
+ローカル処理でも拒否します。外部最新情報の検索は、この段階では行いません。
 
 ## 次段階の接続設計（今回は未実装）
 
-AIの処理は `scripts/daily-blog.js` を入口として別モジュールに追加します。
-記事作成結果を構造化して返し、有用な情報がない場合は引き続き0件で正常終了します。
+今回のAI処理は `scripts/daily-blog.js` から `scripts/topic-selector.js` を呼びます。
+記事作成結果は0件、shouldPublishはfalseのままです。
 
 最終的には同じDaily Blogワークフロー内で、次の順に明示的に実行します。
 
