@@ -2,6 +2,7 @@
 const test=require("node:test"),assert=require("node:assert/strict"),fs=require("fs"),path=require("path"),cp=require("child_process"),crypto=require("crypto");
 const {existingArticleInfo,validateTopic,validateReview,requestGemini,selectTopic,topicSchema,DEFAULT_GEMINI_MODEL}=require("../scripts/topic-selector");
 const {prepareDailyBlog,failureReport}=require("../scripts/daily-blog");
+const {generateArticle,validateArticle,articleSchema}=require("../scripts/article-generator");
 const YAML=require("yaml");
 const ROOT=path.resolve(__dirname,"..");
 const articles=[{slug:"vacancy",title:"グループホームの空室情報をホームページで伝える方法",category:"空室対策",summary:"空室情報を掲載して入居相談を増やす",headings:["掲載すべき情報"]}];
@@ -9,6 +10,18 @@ const topic={title:"福祉事業所の採用応募フォームで入力負担を
 const env={GEMINI_API_KEY:"test-only-not-a-real-key",GEMINI_MODEL:"gemini-3.5-flash-lite"};
 const review=rows=>JSON.stringify({comparisons:rows.map(a=>({slug:a.slug,duplicate:false,reason:"解決する課題が異なる"}))});
 const ok=text=>({ok:true,status:200,text:async()=>JSON.stringify({candidates:[{finishReason:"STOP",content:{parts:[{text}]}}]})});
+const articleBody=[
+  "福祉事業所の採用ページでは、応募する方が迷わず次の行動へ進める情報整理が大切です。現場の負担にも配慮しながら、できるところから見直していきましょう。",
+  "## 応募する方が知りたい情報を整理する",
+  "仕事内容や勤務場所、応募後の流れを分かりやすくまとめます。担当者だけで決めず、実際に問い合わせを受ける職員の声も確認すると、説明が不足している箇所を見つけやすくなります。".repeat(5),
+  "## 入力項目を必要なものに絞る",
+  "最初の連絡で確認する内容と、面談後に確認できる内容を分けます。入力欄の目的を一つずつ確認し、その時点で不要なものを減らすと、応募する方にも担当者にも扱いやすいフォームになります。".repeat(5),
+  "## スマートフォンで操作を確認する",
+  "採用情報から応募フォームまでを実際に操作し、文字の読みやすさやボタンの位置、エラー表示を確認します。公開後も職員が定期的に試すことで、小さな使いにくさに気づきやすくなります。".repeat(5),
+  "## まとめ｜小さな改善から始める",
+  "応募フォームは、一度に作り直す必要はありません。質問を一つ減らす、案内文を分かりやすくするなど、確認できた課題から順番に整えることが、応募しやすい入口づくりにつながります。".repeat(4)
+].join("\n\n");
+const generatedArticle={title:topic.title,description:"福祉事業所の採用応募フォームについて、入力負担を減らし応募しやすい入口を整える実務的なポイントを紹介します。",bodyMarkdown:articleBody};
 test("1/2: published Markdown context includes title/category/body/headings; drafts excluded",()=>{
   const real=existingArticleInfo();assert.ok(real.length>=9);assert.ok(real.every(a=>a.title&&a.category&&a.summary&&Array.isArray(a.headings)));
   const row={slug:"one",data:{published:true,title:"Title",type:"column"},body:"## Heading\n\nBody"};
@@ -49,12 +62,35 @@ test("Gemini 3.5 Flash can be selected and 2.5/unapproved models are rejected",a
     assert.equal(called,false);
   }
 });
-test("4: mock selection + independent semantic review returns one topic and never publishes",async()=>{
+test("Topic selection flows into article generation and never publishes",async()=>{
   const requests=[];const result=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,request:async args=>{
-    requests.push(args);return requests.length===1?JSON.stringify(topic):review(articles);
+    requests.push(args);return requests.length===1?JSON.stringify(topic):requests.length===2?review(articles):JSON.stringify(generatedArticle);
   }});
-  assert.equal(result.localDate,"2026-09-12");assert.deepEqual(result.topic,topic);assert.equal(result.shouldPublish,false);assert.equal(result.articlesCreated,0);
-  assert.equal(requests.length,2);assert.deepEqual(requests[0].input.existingArticles,articles);assert.deepEqual(requests[1].input.candidate,topic);
+  assert.equal(result.localDate,"2026-09-12");assert.deepEqual(result.topic,topic);assert.deepEqual(result.article,generatedArticle);
+  assert.equal(result.status,"article_generated");assert.equal(result.shouldPublish,false);assert.equal(result.articlesCreated,0);
+  assert.equal(requests.length,3);assert.deepEqual(requests[0].input.existingArticles,articles);assert.deepEqual(requests[1].input.candidate,topic);
+  assert.deepEqual(requests[2].input.topic,topic);assert.deepEqual(requests[2].schema,articleSchema);
+});
+test("Article JSON returns title, description and bodyMarkdown",async()=>{
+  const requests=[];
+  const result=await generateArticle({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,localDate:"2026-09-12",topic,request:async args=>{
+    requests.push(args);return JSON.stringify(generatedArticle);
+  }});
+  assert.deepEqual(result,generatedArticle);assert.equal(requests.length,1);assert.deepEqual(requests[0].input.topic,topic);
+  assert.equal(requests[0].input.outputRequirements.language,"ja");assert.equal(requests[0].model,DEFAULT_GEMINI_MODEL);
+  assert.match(requests[0].instructions,/存在しない制度/);assert.match(requests[0].instructions,/一般論に留め/);
+});
+test("Article validation rejects empty body, malformed JSON, missing fields and changed title",()=>{
+  assert.deepEqual(validateArticle(JSON.stringify(generatedArticle),topic),generatedArticle);
+  for(const raw of ["not JSON",JSON.stringify({...generatedArticle,bodyMarkdown:""}),
+    JSON.stringify({title:topic.title,bodyMarkdown:articleBody}),JSON.stringify({...generatedArticle,title:"別のタイトル"})]) {
+    assert.throws(()=>validateArticle(raw,topic));
+  }
+});
+test("Gemini failure stops article generation",async()=>{
+  await assert.rejects(generateArticle({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,localDate:"2026-09-12",topic,
+    request:async()=>{throw new (require("../scripts/topic-selector").TopicError)("GEMINI_HTTP_ERROR",{httpStatus:429,apiErrorStatus:"RESOURCE_EXHAUSTED",apiErrorCode:429,message:"Quota exceeded"});}}),
+  {code:"GEMINI_HTTP_ERROR"});
 });
 test("5/6: malformed JSON, missing/extra fields, invalid categories and HTML rejected",()=>{
   for(const raw of ["not JSON","```json\n{}\n```","[]",JSON.stringify({title:"only title"}),JSON.stringify({...topic,extra:true}),JSON.stringify({...topic,category:"other"}),JSON.stringify({...topic,title:"<script>bad</script>"})])assert.throws(()=>validateTopic(raw,articles));
@@ -130,6 +166,6 @@ test("7/8: real articles + mocked API do not write tracked or untracked files",a
   const hashes=()=>files.map(f=>crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT,f))).digest("hex"));
   const status=()=>cp.execFileSync("git",["status","--porcelain","--untracked-files=all"],{cwd:ROOT,encoding:"utf8"});
   const before=hashes(),beforeStatus=status();let count=0;
-  await prepareDailyBlog({env,request:async args=>++count===1?JSON.stringify(topic):review(args.input.existingArticles)});
+  await prepareDailyBlog({env,request:async args=>++count===1?JSON.stringify(topic):count===2?review(args.input.existingArticles):JSON.stringify(generatedArticle)});
   assert.deepEqual(hashes(),before);assert.equal(status(),beforeStatus);
 });

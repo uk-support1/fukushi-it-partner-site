@@ -14,16 +14,18 @@ GitHub Actionsのスケジュールは定刻を保証せず、混雑による遅
 起動 → checkout → Node.js 24 → 依存導入 → 模擬APIテスト → scripts/daily-blog.js
 → 無変更確認 → 正常終了です。スクリプトは公開中の記事からタイトル・カテゴリ・
 概要・見出しを読み、Gemini APIのgenerateContentでテーマ選定と独立した重複確認を行います。
-成功時はテーマJSONを標準出力（Actionsログ）へ表示します。
+重複がなければ、選定テーマを使って記事本文を生成・検証します。成功時はテーマJSONと
+記事JSONを標準出力（Actionsログ）へ表示します。
 
 APIキーはRepository Secretの `GEMINI_API_KEY`、モデルはRepository Variableの
 `GEMINI_MODEL` から取得します。基本モデルは `gemini-3.5-flash-lite` で、Variableが
 未設定の場合もこのモデルを使用します。必要な場合はVariableを `gemini-3.5-flash`
 へ変更して切り替えます。この2モデル以外は拒否します。値はコードへ保存しません。
 APIキー未設定、API失敗、JSON不正、必須項目不足、既存記事との重複がある場合は
-失敗終了します。エラーログにはキー、API本文、既存記事本文を出しません。
+失敗終了します。記事の本文が空、短すぎる、長すぎる、見出し構成が不正、タイトルが
+選定テーマと異なる場合も失敗します。エラーログにはキー、API本文、既存記事本文を出しません。
 
-Markdown作成・既存記事再生成・commit・push・デプロイは実施しません。
+Markdownファイル保存・既存記事再生成・commit・push・デプロイは実施しません。
 GITHUB_TOKENはcontents:readだけです。
 generate-blog.yml、公開サイト、独自ドメイン設定は変更しません。
 
@@ -44,10 +46,23 @@ Gemini APIには `application/json` とJSON Schemaを指定し、返却後も同
 解決策、判断が曖昧な候補は重複として失敗させます。完全一致と近いタイトルは
 ローカル処理でも拒否します。外部最新情報の検索は、この段階では行いません。
 
+## 記事JSON
+
+`title`、`description`、`bodyMarkdown` を必須にします。本文は1,500〜2,500文字程度を
+Geminiへ指示し、ローカルでは1,200〜3,500文字を許容範囲として検証します。
+既存記事と同じく本文の主見出しは `##`、補助見出しは `###` を使い、H1、front matter、
+HTML、画像、URL、Markdownリンクを拒否します。制度、法律、補助金、報酬改定、金額、
+期限など、最新の一次情報が入力されていない事項は一般論に留めるよう指示します。
+
+記事生成は `scripts/article-generator.js` に分離しています。日付、slug、画像、関連記事、
+公開状態はAIに決めさせません。現段階ではMarkdownファイルへ保存しないため、
+`articlesCreated` は0、`shouldPublish` はfalseのままです。
+
 ## 次段階の接続設計（今回は未実装）
 
-今回のAI処理は `scripts/daily-blog.js` から `scripts/topic-selector.js` を呼びます。
-記事作成結果は0件、shouldPublishはfalseのままです。
+`scripts/daily-blog.js` からテーマ選定と記事生成を順番に呼び出すところまで実装済みです。
+次段階で、検証済み記事JSONにコード側で日付、slug、画像、関連記事、`published: false`を
+加え、既存形式のMarkdownとして安全な保存先へ接続します。
 
 最終的には同じDaily Blogワークフロー内で、次の順に明示的に実行します。
 

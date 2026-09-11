@@ -1,13 +1,16 @@
 "use strict";
 const { selectTopic, TopicError } = require("./topic-selector");
+const { generateArticle } = require("./article-generator");
 
-async function prepareDailyBlog({now = new Date(), env = process.env, request, load} = {}) {
+async function prepareDailyBlog({now = new Date(), env = process.env, request, articleRequest, load} = {}) {
   const localDate = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
   }).format(now);
-  const result = await selectTopic({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,request,load});
-  return {startedAt:now.toISOString(),localDate,timeZone:"Asia/Tokyo",status:"topic_selected",
-    articlesCreated:0,shouldPublish:false,...result};
+  const selection = await selectTopic({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,request,load});
+  const article = await generateArticle({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
+    topic:selection.topic,request:articleRequest === undefined ? request : articleRequest});
+  return {startedAt:now.toISOString(),localDate,timeZone:"Asia/Tokyo",status:"article_generated",
+    articlesCreated:0,shouldPublish:false,...selection,article};
 }
 
 function failureReport(error) {
