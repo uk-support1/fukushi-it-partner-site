@@ -10,11 +10,24 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, l
     articlesCreated:0,shouldPublish:false,...result};
 }
 
+function failureReport(error) {
+  const report = {status:"failed",error:error instanceof TopicError ? error.code : "TOPIC_SELECTION_FAILED",
+    articlesCreated:0,shouldPublish:false};
+  if (error instanceof TopicError && error.code === "OPENAI_HTTP_ERROR" && error.diagnostic) {
+    report.httpStatus = error.diagnostic.httpStatus;
+    report.apiErrorType = error.diagnostic.apiErrorType;
+    report.apiErrorCode = error.diagnostic.apiErrorCode;
+    report.message = error.diagnostic.message;
+  }
+  return report;
+}
+
 if(require.main === module) {
   prepareDailyBlog().then(result=>console.log(JSON.stringify(result,null,2))).catch(error=>{
-    // Never print raw API responses, headers, article contents, or exception messages.
-    console.error(JSON.stringify({status:"failed",error:error instanceof TopicError ? error.code : "TOPIC_SELECTION_FAILED",articlesCreated:0,shouldPublish:false}));
+    // The report is an explicit allowlist. Never print raw responses, headers,
+    // request options, article contents, API keys, or arbitrary exceptions.
+    console.error(JSON.stringify(failureReport(error)));
     process.exitCode=1;
   });
 }
-module.exports={prepareDailyBlog};
+module.exports={prepareDailyBlog,failureReport};

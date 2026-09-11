@@ -2,7 +2,11 @@
 const lib = require("./lib/articles");
 const CATEGORIES = ["ホームページ制作", "ホームページ改善", "SEO", "Googleマップ／Googleビジネスプロフィール", "集客", "空室対策", "利用者募集", "採用", "ブログ運用", "AI活用", "IT活用", "業務効率化", "補助金活用", "福祉事業所の広報"];
 class TopicError extends Error {
-  constructor(code) { super(code); this.code = code; }
+  constructor(code, diagnostic = undefined) {
+    super(code);
+    this.code = code;
+    if (diagnostic) this.diagnostic = diagnostic;
+  }
 }
 const fail = code => { throw new TopicError(code); };
 const stringSchema = { type: "string" };
@@ -62,6 +66,34 @@ function validateReview(raw, articles) {
   }
 }
 
+function safeErrorText(value, apiKey, fallback, maxLength) {
+  if (typeof value !== "string") return fallback;
+  let text = value.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim();
+  if (!text) return fallback;
+  if (apiKey) text = text.split(apiKey).join("[REDACTED]");
+  text = text
+    .replace(/Bearer\s+[A-Za-z0-9._~+\/-]+=*/gi, "Bearer [REDACTED]")
+    .replace(/\bsk-[A-Za-z0-9_-]{8,}\b/g, "[REDACTED]");
+  return text.slice(0, maxLength);
+}
+
+async function openAIHttpError(response, apiKey) {
+  let parsed;
+  try {
+    const body = await response.text();
+    if (body.length <= 50000) parsed = JSON.parse(body);
+  } catch {}
+  const apiError = parsed && typeof parsed === "object" && !Array.isArray(parsed) &&
+    parsed.error && typeof parsed.error === "object" && !Array.isArray(parsed.error) ? parsed.error : {};
+  const status = Number.isInteger(response.status) ? response.status : 0;
+  return new TopicError("OPENAI_HTTP_ERROR", {
+    httpStatus: status,
+    apiErrorType: safeErrorText(apiError.type, apiKey, "unknown", 120),
+    apiErrorCode: safeErrorText(apiError.code, apiKey, "unknown", 120),
+    message: safeErrorText(apiError.message, apiKey, "OpenAI API request failed.", 500)
+  });
+}
+
 // Native fetch; injectable for local tests. No SDK, filesystem writes or retries.
 async function requestOpenAI({apiKey, model, instructions, input, schema}, fetchImpl = globalThis.fetch) {
   try {
@@ -71,7 +103,7 @@ async function requestOpenAI({apiKey, model, instructions, input, schema}, fetch
       body: JSON.stringify({ model, store: false, max_output_tokens: 8000, instructions,
         input: JSON.stringify(input), text: { format: { type: "json_schema", name: "daily_topic", strict: true, schema } } })
     });
-    if (!response.ok) fail("OPENAI_HTTP_ERROR");
+    if (!response.ok) throw await openAIHttpError(response, apiKey);
     const raw = await response.text();
     if(raw.length > 1000000) fail("OPENAI_RESPONSE_TOO_LARGE");
     const data = JSON.parse(raw);

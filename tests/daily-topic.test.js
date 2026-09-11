@@ -1,7 +1,7 @@
 "use strict";
 const test=require("node:test"),assert=require("node:assert/strict"),fs=require("fs"),path=require("path"),cp=require("child_process"),crypto=require("crypto");
 const {existingArticleInfo,validateTopic,validateReview,requestOpenAI,selectTopic,topicSchema}=require("../scripts/topic-selector");
-const {prepareDailyBlog}=require("../scripts/daily-blog");
+const {prepareDailyBlog,failureReport}=require("../scripts/daily-blog");
 const YAML=require("yaml");
 const ROOT=path.resolve(__dirname,"..");
 const articles=[{slug:"vacancy",title:"グループホームの空室情報をホームページで伝える方法",category:"空室対策",summary:"空室情報を掲載して入居相談を増やす",headings:["掲載すべき情報"]}];
@@ -63,8 +63,35 @@ test("OpenAI request uses strict schema, configured model and no response storag
 });
 test("HTTP errors, timeout, refusal and incomplete responses rejected without raw messages",async()=>{
   const args={apiKey:"secret-test-value",model:"mock",schema:topicSchema,input:{},instructions:"test"};
-  const cases=[async()=>({ok:false}),async()=>{throw new Error("secret-test-value");},async()=>{const e=new Error("secret-test-value");e.name="TimeoutError";throw e;},async()=>({ok:true,text:async()=>JSON.stringify({status:"incomplete",output:[]})}),async()=>({ok:true,text:async()=>JSON.stringify({status:"completed",output:[{type:"message",content:[{type:"refusal",refusal:"secret-test-value"}]}]})})];
+  const cases=[async()=>{throw new Error("secret-test-value");},async()=>{const e=new Error("secret-test-value");e.name="TimeoutError";throw e;},async()=>({ok:true,text:async()=>JSON.stringify({status:"incomplete",output:[]})}),async()=>({ok:true,text:async()=>JSON.stringify({status:"completed",output:[{type:"message",content:[{type:"refusal",refusal:"secret-test-value"}]}]})})];
   for(const fetch of cases)await assert.rejects(requestOpenAI(args,fetch),e=>!e.message.includes("secret-test-value")&&!!e.code);
+});
+test("400/401/403/429 expose allowlisted OpenAI diagnostics without secrets",async()=>{
+  const apiKey="sk-test-secret-value-12345678";
+  const cases=[
+    [400,"invalid_request_error","invalid_value","Invalid value in request"],
+    [401,"invalid_request_error","invalid_api_key",`Incorrect API key: ${apiKey}`],
+    [403,"permission_error","insufficient_permissions","Bearer private-authorization-value is not permitted"],
+    [429,"rate_limit_error","rate_limit_exceeded","Rate limit reached"]
+  ];
+  for(const [status,type,code,message] of cases) {
+    let caught;
+    try {
+      await requestOpenAI({apiKey,model:"mock",schema:topicSchema,input:{},instructions:"test"},async()=>({
+        ok:false,status,text:async()=>JSON.stringify({error:{type,code,message},request:{Authorization:`Bearer ${apiKey}`}})
+      }));
+    } catch(error) { caught=error; }
+    assert.equal(caught.code,"OPENAI_HTTP_ERROR");
+    assert.deepEqual(Object.keys(caught.diagnostic),["httpStatus","apiErrorType","apiErrorCode","message"]);
+    const report=JSON.stringify(failureReport(caught));
+    assert.equal(JSON.parse(report).httpStatus,status);
+    assert.equal(JSON.parse(report).apiErrorType,type);
+    assert.equal(JSON.parse(report).apiErrorCode,code);
+    assert.ok(JSON.parse(report).message);
+    assert.ok(!report.includes(apiKey));
+    assert.ok(!report.includes("private-authorization-value"));
+    assert.ok(!report.includes("Authorization"));
+  }
 });
 test("7/8: real articles + mocked API do not write tracked or untracked files",async()=>{
   const files=cp.execFileSync("git",["ls-files","-z"],{cwd:ROOT,encoding:"utf8"}).split("\0").filter(Boolean);
