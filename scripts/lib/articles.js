@@ -175,10 +175,10 @@ function markdownBodyToHtml(body, depth) {
     .join("\n\n");
 }
 
-function loadArticles() {
+function loadArticles(directory = ARTICLES_DIR) {
   // Validate every managed article before any generated file is written/deleted.
-  return fs.readdirSync(ARTICLES_DIR).filter(f => /\.md$/i.test(f)).map(filename => {
-    const parsed = parseFrontmatter(fs.readFileSync(path.join(ARTICLES_DIR, filename), "utf8"));
+  return fs.readdirSync(directory).filter(f => /\.md$/i.test(f)).map(filename => {
+    const parsed = parseFrontmatter(fs.readFileSync(path.join(directory, filename), "utf8"));
     const data = parsed.data;
     const slug = filename.replace(/\.md$/i, "");
     // A custom slug must match its source filename: never delete another page.

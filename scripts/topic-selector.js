@@ -21,8 +21,9 @@ const reviewSchema = { type: "object", additionalProperties: false, required: ["
 } };
 function plain(value) { return lib.stripMarkdown(String(value || "").replace(/<[^>]*>/g, " ")).replace(/\s+/g, " ").trim(); }
 function existingArticleInfo(articles = lib.loadArticles()) {
-  const result = articles.filter(a => a.data.published === true).map(a => ({
+  const result = articles.map(a => ({
     slug: a.slug, title: a.data.title, category: lib.categoryLabelOf(a.data),
+    published: a.data.published === true,
     summary: plain(a.data.description || a.data.excerpt || "") + " " + plain(a.body).slice(0, 2400),
     headings: String(a.body).split(/\r?\n/).filter(l => /^#{1,6}\s/.test(l)).map(plain)
   }));

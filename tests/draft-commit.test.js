@@ -12,7 +12,8 @@ const {
   DraftCommitError,
   defaultRunGit,
   commitDraft,
-  failureReport
+  failureReport,
+  writeCommitResult
 } = require("../scripts/commit-draft");
 
 const ROOT = path.resolve(__dirname, "..");
@@ -90,6 +91,11 @@ test("Only the generated Markdown is committed and pushed; unrelated files remai
   fs.writeFileSync(path.join(fixture.work, "unrelated.tmp"), "do not stage\n");
   const draft = createDraft(fixture);
   const outcome = commitDraft({ resultFile: draft.resultFile, cwd: fixture.work });
+  const committedResultFile = path.join(fixture.root, "committed-result.json");
+  writeCommitResult(outcome, committedResultFile);
+  assert.deepEqual(JSON.parse(fs.readFileSync(committedResultFile, "utf8")), outcome);
+  assert.throws(() => writeCommitResult(outcome, committedResultFile),
+    { code: "DRAFT_COMMIT_RESULT_SAVE_FAILED" });
   assert.equal(outcome.status, "draft_committed");
   assert.equal(outcome.articlesCreated, 1);
   assert.equal(outcome.shouldPublish, false);

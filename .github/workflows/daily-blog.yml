@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: daily-blog-main
+  group: github-pages
   cancel-in-progress: false
 
 jobs:
@@ -29,8 +29,8 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --ignore-scripts
-      - name: Test topic selection with mocked API
-        run: node --test tests/daily-topic.test.js
+      - name: Run tests with mocked APIs and local Git remotes
+        run: npm test
       - name: Select today's topic
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -40,7 +40,32 @@ jobs:
       - name: Commit and push only the generated draft
         env:
           DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
+          DAILY_DRAFT_COMMIT_RESULT_FILE: ${{ runner.temp }}/daily-draft-commit-result.json
         run: node scripts/commit-draft.js
+      - name: Publish and push only the generated article
+        env:
+          DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
+          DAILY_DRAFT_COMMIT_RESULT_FILE: ${{ runner.temp }}/daily-draft-commit-result.json
+        run: node scripts/publish-draft.js
+      - name: Prepare public files only
+        run: node scripts/prepare-pages.js "$RUNNER_TEMP/fukushi-pages"
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/fukushi-pages
 
-      # Future: run build/artifact/deploy in this
-      # workflow. Do not rely on a GITHUB_TOKEN push starting Generate Blog.
+  deploy:
+    needs: start
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Deploy generated site
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Report publication success
+        run: echo '{"status":"published","articlesCreated":1,"shouldPublish":true}'

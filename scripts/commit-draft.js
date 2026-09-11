@@ -150,13 +150,33 @@ function failureReport(error) {
   };
 }
 
+function writeCommitResult(result, resultFile) {
+  if (!resultFile) return;
+  try {
+    fs.writeFileSync(resultFile, JSON.stringify(result, null, 2) + "\n",
+      { encoding: "utf8", flag: "wx" });
+  } catch {
+    fail("DRAFT_COMMIT_RESULT_SAVE_FAILED");
+  }
+}
+
 if (require.main === module) {
   try {
-    console.log(JSON.stringify(commitDraft(), null, 2));
+    const result = commitDraft();
+    writeCommitResult(result, process.env.DAILY_DRAFT_COMMIT_RESULT_FILE);
+    console.log(JSON.stringify(result, null, 2));
   } catch (error) {
     console.error(JSON.stringify(failureReport(error)));
     process.exitCode = 1;
   }
 }
 
-module.exports = { DraftCommitError, defaultRunGit, readResult, validateDraft, commitDraft, failureReport };
+module.exports = {
+  DraftCommitError,
+  defaultRunGit,
+  readResult,
+  validateDraft,
+  commitDraft,
+  failureReport,
+  writeCommitResult
+};

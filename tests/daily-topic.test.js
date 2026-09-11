@@ -28,13 +28,15 @@ function temporaryArticles(t) {
   t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
   return directory;
 }
-test("1/2: published Markdown context includes title/category/body/headings; drafts excluded",()=>{
+test("1/2: Markdown context includes published articles and drafts for duplicate prevention",()=>{
   const real=existingArticleInfo();assert.ok(real.length>=9);assert.ok(real.every(a=>a.title&&a.category&&a.summary&&Array.isArray(a.headings)));
   const row={slug:"one",data:{published:true,title:"Title",type:"column"},body:"## Heading\n\nBody"};
   const data=existingArticleInfo([row,{...row,slug:"draft",data:{...row.data,published:false}}]);
-  assert.equal(data.length,1);assert.ok(data[0].summary.includes("Body"));assert.deepEqual(data[0].headings,["Heading"]);
+  assert.equal(data.length,2);assert.ok(data[0].summary.includes("Body"));assert.deepEqual(data[0].headings,["Heading"]);
+  assert.deepEqual(data.map(item=>item.published),[true,false]);
+  assert.throws(()=>validateTopic(JSON.stringify({...topic,title:"Title"}),data),{code:"DUPLICATE_TOPIC"});
 });
-test("Workflow keeps 06:00 JST schedule, manual trigger and scoped write permission",()=>{
+test("Workflow keeps 06:00 JST schedule and connects draft, publish and Pages deployment",()=>{
   const workflow=YAML.parse(fs.readFileSync(path.join(ROOT,".github/workflows/daily-blog.yml"),"utf8"));
   assert.equal(workflow.on.schedule[0].cron,"0 21 * * *");
   assert.deepEqual(workflow.on.workflow_dispatch,{});
@@ -48,8 +50,16 @@ test("Workflow keeps 06:00 JST schedule, manual trigger and scoped write permiss
   const commit=workflow.jobs.start.steps.find(step=>step.name==="Commit and push only the generated draft");
   assert.equal(commit.run,"node scripts/commit-draft.js");
   assert.equal(commit.env.DAILY_BLOG_RESULT_FILE,"${{ runner.temp }}/daily-blog-result.json");
-  const commands=workflow.jobs.start.steps.map(step=>step.run||"").join("\n");
-  assert.doesNotMatch(commands,/generate-blog|prepare-pages|deploy-pages/);
+  assert.equal(commit.env.DAILY_DRAFT_COMMIT_RESULT_FILE,"${{ runner.temp }}/daily-draft-commit-result.json");
+  const publish=workflow.jobs.start.steps.find(step=>step.name==="Publish and push only the generated article");
+  assert.equal(publish.run,"node scripts/publish-draft.js");
+  assert.equal(workflow.concurrency.group,"github-pages");
+  assert.equal(workflow.jobs.deploy.needs,"start");
+  assert.equal(workflow.jobs.deploy.permissions.pages,"write");
+  assert.equal(workflow.jobs.deploy.permissions["id-token"],"write");
+  assert.equal(workflow.jobs.deploy.steps.find(step=>step.id==="deployment").uses,"actions/deploy-pages@v4");
+  assert.match(workflow.jobs.deploy.steps.find(step=>step.name==="Report publication success").run,
+    /"status":"published".*"articlesCreated":1.*"shouldPublish":true/);
 });
 test("Missing key stops safely; missing model defaults to Flash-Lite",async()=>{
   let called=false;const request=async()=>{called=true;},load=()=>{called=true;return articles;};

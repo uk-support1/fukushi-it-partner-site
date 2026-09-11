@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build:blog": "node scripts/generate-blog.js",
-    "test": "node --test tests/blog.test.js tests/daily-topic.test.js tests/draft-commit.test.js"
+    "test": "node --test tests/blog.test.js tests/daily-topic.test.js tests/draft-commit.test.js tests/publish-draft.test.js"
   },
   "engines": {
     "node": ">=24"

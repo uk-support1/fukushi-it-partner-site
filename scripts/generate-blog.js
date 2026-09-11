@@ -570,7 +570,7 @@ function buildBlogHtml(blogIndex) {
   );
 }
 
-function buildSitemap(publishedArticles, managedArticles) {
+function buildSitemap(publishedArticles, managedArticles, blogDir = BLOG_DIR) {
   const cmsSlugs = {};
   managedArticles.forEach(function (a) {
     cmsSlugs[a.slug] = true;
@@ -581,7 +581,7 @@ function buildSitemap(publishedArticles, managedArticles) {
   let legacyFiles = [];
   try {
     legacyFiles = fs
-      .readdirSync(BLOG_DIR)
+      .readdirSync(blogDir)
       .filter(function (f) {
         return /\.html$/i.test(f);
       })
@@ -625,11 +625,21 @@ function buildSitemap(publishedArticles, managedArticles) {
   );
 }
 
-function main() {
-  const articles = lib.loadArticles();
+function generateBlog({ root = ROOT, onlySlug = null } = {}) {
+  root = path.resolve(root);
+  const articlesDir = path.join(root, "content", "articles");
+  const blogIndexFile = path.join(root, "data", "blog-index.json");
+  const blogDir = path.join(root, "blog");
+  const blogHtmlFile = path.join(root, "blog.html");
+  const sitemapFile = path.join(root, "sitemap.xml");
+  if (onlySlug !== null && (typeof onlySlug !== "string" ||
+      !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(onlySlug))) throw new Error("Unsafe target slug");
+  const articles = lib.loadArticles(articlesDir);
   const published = articles.filter(function (a) {
     return a.data.published === true;
   });
+  const targetArticles = onlySlug === null ? published : published.filter(a => a.slug === onlySlug);
+  if (onlySlug !== null && targetArticles.length !== 1) throw new Error("Target article is not published");
 
   const articlesBySlug = Object.create(null);
   articles.forEach(function (a) {
@@ -637,36 +647,65 @@ function main() {
   });
 
   // Only the exact output of a validated, existing CMS source may be removed.
-  fs.mkdirSync(BLOG_DIR, { recursive: true });
-  const unpublishedPaths = articles.filter(a => a.data.published !== true).map(a => path.join(BLOG_DIR, a.slug + ".html"));
-  for (const outPath of unpublishedPaths) {
-    if (fs.existsSync(outPath) && !fs.lstatSync(outPath).isFile()) throw new Error("Unsafe output: " + outPath);
-  }
-  for (const outPath of unpublishedPaths) {
-    if (fs.existsSync(outPath)) fs.unlinkSync(outPath);
+  fs.mkdirSync(blogDir, { recursive: true });
+  if (onlySlug === null) {
+    const unpublishedPaths = articles.filter(a => a.data.published !== true)
+      .map(a => path.join(blogDir, a.slug + ".html"));
+    for (const outPath of unpublishedPaths) {
+      if (fs.existsSync(outPath) && !fs.lstatSync(outPath).isFile()) throw new Error("Unsafe output: " + outPath);
+    }
+    for (const outPath of unpublishedPaths) {
+      if (fs.existsSync(outPath)) fs.unlinkSync(outPath);
+    }
   }
 
   // ① data/blog-index.json
   const blogIndex = buildBlogIndex(published);
-  fs.mkdirSync(path.dirname(BLOG_INDEX_FILE), { recursive: true });
-  fs.writeFileSync(BLOG_INDEX_FILE, JSON.stringify(blogIndex, null, 2) + "\n", "utf8");
-  console.log("generated " + BLOG_INDEX_FILE + " (" + published.length + " article(s))");
+  fs.mkdirSync(path.dirname(blogIndexFile), { recursive: true });
+  fs.writeFileSync(blogIndexFile, JSON.stringify(blogIndex, null, 2) + "\n", "utf8");
+  console.log("generated " + blogIndexFile + " (" + published.length + " article(s))");
 
   // ② blog/<slug>.html（content/articlesへ移行済みの記事のみ）
-  published.forEach(function (article) {
-    const outPath = path.join(BLOG_DIR, article.slug + ".html");
+  targetArticles.forEach(function (article) {
+    const outPath = path.join(blogDir, article.slug + ".html");
     const html = renderArticlePage(article, articlesBySlug, published);
     fs.writeFileSync(outPath, html, "utf8");
     console.log("generated " + outPath);
   });
 
   // ③ blog.html（注目記事＋時系列一覧）
-  fs.writeFileSync(BLOG_HTML_FILE, buildBlogHtml(blogIndex), "utf8");
-  console.log("generated " + BLOG_HTML_FILE);
+  fs.writeFileSync(blogHtmlFile, buildBlogHtml(blogIndex), "utf8");
+  console.log("generated " + blogHtmlFile);
 
   // ④ sitemap.xml
-  fs.writeFileSync(SITEMAP_FILE, buildSitemap(published, articles), "utf8");
-  console.log("updated " + SITEMAP_FILE);
+  fs.writeFileSync(sitemapFile, buildSitemap(published, articles, blogDir), "utf8");
+  console.log("updated " + sitemapFile);
+  return {
+    publishedCount: published.length,
+    files: [
+      path.relative(root, blogIndexFile).split(path.sep).join("/"),
+      ...targetArticles.map(a => "blog/" + a.slug + ".html"),
+      path.relative(root, blogHtmlFile).split(path.sep).join("/"),
+      path.relative(root, sitemapFile).split(path.sep).join("/")
+    ]
+  };
 }
 
-main();
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  if (args.length === 0) generateBlog();
+  else if (args.length === 2 && args[0] === "--only-slug") generateBlog({ onlySlug: args[1] });
+  else throw new Error("Usage: node scripts/generate-blog.js [--only-slug <slug>]");
+}
+
+module.exports = {
+  formatDateDisplay,
+  buildRelatedCardHtml,
+  resolveRelatedSlugs,
+  renderArticlePage,
+  buildBlogIndex,
+  buildBlogCardHtml,
+  buildBlogHtml,
+  buildSitemap,
+  generateBlog
+};
