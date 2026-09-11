@@ -17,8 +17,8 @@ GitHub Actionsのスケジュールは定刻を保証せず、混雑による遅
 成功時はテーマJSONを標準出力（Actionsログ）へ表示します。
 
 APIキーはRepository Secretの `GEMINI_API_KEY`、モデルはRepository Variableの
-`GEMINI_MODEL` から取得します。基本モデルは `gemini-2.5-flash-lite` で、Variableが
-未設定の場合もこのモデルを使用します。必要な場合はVariableを `gemini-2.5-flash`
+`GEMINI_MODEL` から取得します。基本モデルは `gemini-3.5-flash-lite` で、Variableが
+未設定の場合もこのモデルを使用します。必要な場合はVariableを `gemini-3.5-flash`
 へ変更して切り替えます。この2モデル以外は拒否します。値はコードへ保存しません。
 APIキー未設定、API失敗、JSON不正、必須項目不足、既存記事との重複がある場合は
 失敗終了します。エラーログにはキー、API本文、既存記事本文を出しません。

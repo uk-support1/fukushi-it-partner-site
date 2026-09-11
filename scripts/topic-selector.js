@@ -1,8 +1,8 @@
 "use strict";
 const lib = require("./lib/articles");
 const CATEGORIES = ["ホームページ制作", "ホームページ改善", "SEO", "Googleマップ／Googleビジネスプロフィール", "集客", "空室対策", "利用者募集", "採用", "ブログ運用", "AI活用", "IT活用", "業務効率化", "補助金活用", "福祉事業所の広報"];
-const DEFAULT_GEMINI_MODEL = "gemini-2.5-flash-lite";
-const ALLOWED_GEMINI_MODELS = new Set([DEFAULT_GEMINI_MODEL, "gemini-2.5-flash"]);
+const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite";
+const ALLOWED_GEMINI_MODELS = new Set([DEFAULT_GEMINI_MODEL, "gemini-3.5-flash"]);
 class TopicError extends Error {
   constructor(code, diagnostic = undefined) {
     super(code);

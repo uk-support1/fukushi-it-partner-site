@@ -6,7 +6,7 @@ const YAML=require("yaml");
 const ROOT=path.resolve(__dirname,"..");
 const articles=[{slug:"vacancy",title:"グループホームの空室情報をホームページで伝える方法",category:"空室対策",summary:"空室情報を掲載して入居相談を増やす",headings:["掲載すべき情報"]}];
 const topic={title:"福祉事業所の採用応募フォームで入力負担を減らす設計",category:"採用",target:"福祉事業所の採用担当者",keyword:"福祉 採用 応募フォーム",reason:"空室案内ではなく職員応募時の離脱に着目",angle:"応募入力項目を減らし途中離脱を抑える",service:"ホームページ改善支援"};
-const env={GEMINI_API_KEY:"test-only-not-a-real-key",GEMINI_MODEL:"gemini-2.5-flash-lite"};
+const env={GEMINI_API_KEY:"test-only-not-a-real-key",GEMINI_MODEL:"gemini-3.5-flash-lite"};
 const review=rows=>JSON.stringify({comparisons:rows.map(a=>({slug:a.slug,duplicate:false,reason:"解決する課題が異なる"}))});
 const ok=text=>({ok:true,status:200,text:async()=>JSON.stringify({candidates:[{finishReason:"STOP",content:{parts:[{text}]}}]})});
 test("1/2: published Markdown context includes title/category/body/headings; drafts excluded",()=>{
@@ -26,7 +26,7 @@ test("Workflow keeps 06:00 JST schedule, manual trigger, read-only token and sec
 });
 test("Missing key stops safely; missing model defaults to Flash-Lite",async()=>{
   let called=false;const request=async()=>{called=true;},load=()=>{called=true;return articles;};
-  await assert.rejects(selectTopic({apiKey:"",model:"gemini-2.5-flash-lite",request,load}),{code:"GEMINI_API_KEY_MISSING"});
+  await assert.rejects(selectTopic({apiKey:"",model:"gemini-3.5-flash-lite",request,load}),{code:"GEMINI_API_KEY_MISSING"});
   assert.equal(called,false);
   let selectedModel;
   let count=0;
@@ -37,15 +37,17 @@ test("Missing key stops safely; missing model defaults to Flash-Lite",async()=>{
   const result=cp.spawnSync(process.execPath,["scripts/daily-blog.js"],{cwd:ROOT,encoding:"utf8",env:{...process.env,GEMINI_API_KEY:"",GEMINI_MODEL:""}});
   assert.equal(result.status,1);assert.equal(result.stdout,"");assert.equal(JSON.parse(result.stderr).error,"GEMINI_API_KEY_MISSING");
 });
-test("Flash can be selected and unapproved models are rejected",async()=>{
+test("Gemini 3.5 Flash can be selected and 2.5/unapproved models are rejected",async()=>{
   let count=0,selectedModel;
-  await selectTopic({apiKey:"dummy",model:"gemini-2.5-flash",load:()=>articles,request:async args=>{
+  await selectTopic({apiKey:"dummy",model:"gemini-3.5-flash",load:()=>articles,request:async args=>{
     selectedModel=args.model;return ++count===1?JSON.stringify(topic):review(articles);
   }});
-  assert.equal(selectedModel,"gemini-2.5-flash");
-  let called=false;
-  await assert.rejects(selectTopic({apiKey:"dummy",model:"gemini-2.5-pro",load:()=>{called=true;},request:async()=>{called=true;}}),{code:"GEMINI_MODEL_NOT_ALLOWED"});
-  assert.equal(called,false);
+  assert.equal(selectedModel,"gemini-3.5-flash");
+  for (const model of ["gemini-2.5-flash-lite","gemini-2.5-flash","gemini-3.5-pro"]) {
+    let called=false;
+    await assert.rejects(selectTopic({apiKey:"dummy",model,load:()=>{called=true;},request:async()=>{called=true;}}),{code:"GEMINI_MODEL_NOT_ALLOWED"});
+    assert.equal(called,false);
+  }
 });
 test("4: mock selection + independent semantic review returns one topic and never publishes",async()=>{
   const requests=[];const result=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,request:async args=>{
@@ -71,7 +73,7 @@ test("Incomplete/invalid semantic review fails closed",()=>{
 });
 test("Gemini request uses generateContent, API-key header and structured JSON",async()=>{
   const text=await requestGemini({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,instructions:"instructions",input:{articles},schema:topicSchema},async(url,options)=>{
-    assert.equal(url,"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent");
+    assert.equal(url,"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent");
     assert.equal(options.headers["x-goog-api-key"],"dummy");assert.equal(options.headers.Authorization,undefined);
     const body=JSON.parse(options.body);
     assert.equal(body.systemInstruction.parts[0].text,"instructions");
