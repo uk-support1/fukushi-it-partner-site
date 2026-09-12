@@ -1,0 +1,349 @@
+/* ===========================================================
+   福祉ITパートナー｜お役立ち講座 専用スタイル
+   すべて course- プレフィックスを使用し、既存 style.css の
+   クラス・変数には一切変更を加えない（並行して読み込む前提）。
+=========================================================== */
+
+:root {
+  --course-mint: #e7f6ef;
+  --course-mint-border: #bfe3d1;
+  --course-marker: #d9f2a6;
+  --course-caution-bg: #f8f1e4;
+  --course-caution-border: #d6c1a2;
+}
+
+/* ----- 講座トップ：カテゴリ一覧 ----- */
+.course-hero .course-category-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+  list-style: none;
+}
+.course-category-badge {
+  background: var(--course-mint);
+  border: 1px solid var(--course-mint-border);
+  color: var(--green-900);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+}
+
+/* ----- 記事本文コンテナ ----- */
+.course-article { color: var(--text-900); }
+.course-body { color: #3a3f3d; }
+.course-body p { margin: 0 0 20px; line-height: 1.9; }
+
+/* ----- H2 / H3 見出し ----- */
+.course-body h2 {
+  position: relative;
+  color: var(--green-900);
+  font-size: 1.35rem;
+  font-weight: 800;
+  padding: 4px 0 4px 18px;
+  margin: 48px 0 22px;
+  border-left: 6px solid var(--green-900);
+}
+.course-body h2:first-child { margin-top: 0; }
+.course-body h3 {
+  position: relative;
+  color: var(--green-700);
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 2px 0 2px 14px;
+  margin: 32px 0 16px;
+  border-left: 4px solid var(--course-mint-border);
+}
+
+/* ----- SUMMARY（この記事でわかること） ----- */
+.course-summary {
+  background: var(--course-mint);
+  border: 1px solid var(--course-mint-border);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  margin: 24px 0 32px;
+}
+.course-summary-label {
+  font-weight: 800;
+  color: var(--green-900);
+  margin-bottom: 10px;
+}
+.course-summary ul { list-style: none; margin: 0; padding: 0; }
+.course-summary li {
+  position: relative;
+  padding-left: 24px;
+  margin: 8px 0;
+  line-height: 1.7;
+}
+.course-summary li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.65em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green-700);
+}
+
+/* ----- 自動目次 ----- */
+.course-toc {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-left: 4px solid var(--green-900);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 20px 22px;
+  margin: 0 0 36px;
+}
+.course-toc-title {
+  font-weight: 800;
+  color: var(--green-900);
+  margin-bottom: 12px;
+}
+.course-toc ol {
+  list-style: none;
+  counter-reset: course-toc-counter;
+  margin: 0;
+  padding: 0;
+}
+.course-toc li { margin: 0; }
+.course-toc li.course-toc-h2 {
+  counter-increment: course-toc-counter;
+  margin: 10px 0;
+}
+.course-toc li.course-toc-h2 > a {
+  position: relative;
+  display: block;
+  padding-left: 34px;
+  color: var(--text-900);
+  font-weight: 700;
+  line-height: 1.6;
+}
+.course-toc li.course-toc-h2 > a::before {
+  content: counter(course-toc-counter);
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.course-toc li.course-toc-h3 {
+  margin: 6px 0 6px 34px;
+}
+.course-toc li.course-toc-h3 > a {
+  position: relative;
+  display: block;
+  padding-left: 16px;
+  color: var(--text-600);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.course-toc li.course-toc-h3 > a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--course-mint-border);
+}
+.course-toc a:hover { color: var(--green-700); }
+
+/* headerが sticky のため、アンカージャンプ時に見出しが隠れないよう余白を確保 */
+.course-body h2[id], .course-body h3[id] { scroll-margin-top: 96px; }
+
+/* ----- ぶひお吹き出し ----- */
+.course-buhio {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 28px 0;
+}
+.course-buhio-img {
+  flex: none;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--course-mint);
+  object-fit: contain;
+  padding: 4px;
+}
+.course-buhio-bubble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  background: var(--course-mint);
+  border: 1px solid var(--course-mint-border);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+}
+.course-buhio-bubble::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 22px;
+  width: 16px;
+  height: 16px;
+  background: var(--course-mint);
+  border-left: 1px solid var(--course-mint-border);
+  border-bottom: 1px solid var(--course-mint-border);
+  transform: rotate(45deg);
+}
+.course-buhio-name {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--green-700);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.course-buhio-tag {
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.course-buhio-comment { margin: 0; line-height: 1.75; }
+
+/* ----- POINT BOX ----- */
+.course-point {
+  background: var(--course-mint);
+  border: 1px solid var(--course-mint-border);
+  border-radius: var(--radius-md);
+  padding: 20px 22px 18px;
+  margin: 28px 0;
+  position: relative;
+}
+.course-point::before {
+  content: "POINT";
+  display: inline-block;
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 3px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.course-point p:last-child { margin-bottom: 0; }
+.course-point ol {
+  list-style: none;
+  counter-reset: course-point-counter;
+  margin: 8px 0 0;
+  padding: 0;
+}
+.course-point ol li {
+  counter-increment: course-point-counter;
+  position: relative;
+  padding: 4px 0 4px 34px;
+  margin: 6px 0;
+  line-height: 1.7;
+}
+.course-point ol li::before {
+  content: counter(course-point-counter);
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.course-point ul { margin: 8px 0 0; padding-left: 20px; }
+
+/* 本文中（POINT BOXの外）の番号付きリストも同じ緑丸デザインで統一する */
+.course-body > ol {
+  list-style: none;
+  counter-reset: course-list-counter;
+  margin: 0 0 20px;
+  padding: 0;
+}
+.course-body > ol > li {
+  counter-increment: course-list-counter;
+  position: relative;
+  padding: 4px 0 4px 36px;
+  margin: 8px 0;
+  line-height: 1.8;
+}
+.course-body > ol > li::before {
+  content: counter(course-list-counter);
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----- 注意BOX ----- */
+.course-caution {
+  background: var(--course-caution-bg);
+  border: 1px solid var(--course-caution-border);
+  border-radius: var(--radius-md);
+  padding: 18px 22px 16px;
+  margin: 28px 0;
+}
+.course-caution-label {
+  display: inline-block;
+  color: #8a6d45;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.course-caution p:last-child { margin-bottom: 0; }
+
+/* ----- 太字・マーカー ----- */
+.course-body strong { color: var(--green-900); font-weight: 700; }
+.course-mark {
+  background-image: linear-gradient(var(--course-marker), var(--course-marker));
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 0% 0.5em;
+  padding: 0 1px;
+  transition: background-size 0.7s ease-out;
+}
+.course-mark.is-active { background-size: 100% 0.5em; }
+@media (prefers-reduced-motion: reduce) {
+  .course-mark { transition: none; background-size: 100% 0.5em; }
+}
+
+/* ----- 本文中の画像 ----- */
+.course-inline-image { display: block; max-width: 100%; height: auto; margin: 24px auto; border-radius: 10px; }
+
+/* ----- スマホ表示 ----- */
+@media (max-width: 720px) {
+  .course-buhio { gap: 12px; }
+  .course-buhio-img { width: 56px; height: 56px; }
+  .course-toc { padding: 16px 18px; }
+  .course-body h2 { font-size: 1.15rem; margin: 36px 0 18px; }
+  .course-body h3 { font-size: 1.02rem; }
+}
