@@ -66,8 +66,10 @@ test("Workflow keeps 06:00 JST schedule and connects draft, publish and Pages de
   assert.equal(continuation.needs,"deploy");assert.equal(continuation.permissions.actions,"write");
   assert.match(continuation.if,/workflow_dispatch.*continuous_trial/);
   const loop=continuation.steps[0].run;
-  assert.match(loop,/2026-09-12 14:40:00Z/);assert.match(loop,/started_epoch \+ 1800/);
-  assert.match(loop,/gh workflow run daily-blog\.yml/);
+  assert.match(loop,/2026-09-12 14:40:00Z/);
+  assert.ok(loop.includes("next_epoch=$(($(date -u +%s) + 1800))"));
+  assert.match(loop,/sleep \$\(\(next_epoch - now_epoch\)\)/);
+  assert.match(loop,/gh workflow run daily-blog\.yml --repo "\$GITHUB_REPOSITORY" --ref main -f continuous_trial=true/);
 });
 test("Missing key stops safely; missing model defaults to Flash-Lite",async()=>{
   let called=false;const request=async()=>{called=true;},load=()=>{called=true;return articles;};
