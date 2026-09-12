@@ -89,9 +89,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           deadline_epoch=$(date -u -d '2026-09-12 14:40:00Z' +%s)
-          run_started_at=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" --jq .run_started_at)
-          started_epoch=$(date -u -d "$run_started_at" +%s)
-          next_epoch=$((started_epoch + 1800))
+          next_epoch=$(($(date -u +%s) + 1800))
           if (( next_epoch > deadline_epoch )); then
             echo 'Trial deadline reached; no next run will be created.'
             exit 0
