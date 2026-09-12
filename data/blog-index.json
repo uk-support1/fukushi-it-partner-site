@@ -23,6 +23,17 @@
   },
   {
     "type": "column",
+    "category_label": "IT活用",
+    "title": "自治体や医療機関で広がるPublic Medical Hub（PMH）と、福祉事業所が備えておきたいデジタル連携の基礎知識",
+    "date": "2026-09-12",
+    "image": "assets/images/services/service-it-support.jpg",
+    "image_alt": "福祉事業所のIT活用を支援するイメージ",
+    "description": "自治体や医療機関で導入が進むPublic Medical Hub（PMH）の最新動向を踏まえ、福祉事業所が知っておきたいデジタル連携の基礎知識や今後の備えを実務的な視点で解説します。",
+    "excerpt": "自治体や医療機関で導入が進むPublic Medical Hub（PMH）の最新動向を踏まえ、福祉事業所が知っておきたいデジタル連携の基礎知識や今後の備えを実務…",
+    "slug": "article-2026-09-12-5da81f5fe361"
+  },
+  {
+    "type": "column",
     "category_label": "採用",
     "title": "障害者雇用優良事業所表彰に学ぶ、福祉事業所のホームページを活用した取り組み発信と採用強化のコツ",
     "date": "2026-09-12",
