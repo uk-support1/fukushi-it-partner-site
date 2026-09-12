@@ -3,18 +3,29 @@ const fs = require("fs");
 const { selectTopic, TopicError } = require("./topic-selector");
 const { generateArticle } = require("./article-generator");
 const { saveArticleDraft } = require("./article-writer");
+const { collectLatestInfo } = require("./latest-info");
 
 async function prepareDailyBlog({now = new Date(), env = process.env, request, articleRequest, load,
-  save = saveArticleDraft, articlesDir} = {}) {
+  collect = collectLatestInfo, save = saveArticleDraft, articlesDir} = {}) {
   const localDate = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
   }).format(now);
-  const selection = await selectTopic({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,request,load});
+  let latest = {candidates:[],attemptedSources:0,successfulSources:0};
+  try {
+    const collected = await collect({now});
+    if (collected && Array.isArray(collected.candidates)) latest = collected;
+  } catch {
+    // Collection is optional. Gemini's established evergreen path remains available.
+  }
+  const candidates = latest.candidates.length >= 3 ? latest.candidates.slice(0,10) : [];
+  const selection = await selectTopic({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
+    latestInfo:candidates,request,load});
   const article = await generateArticle({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
-    topic:selection.topic,request:articleRequest === undefined ? request : articleRequest});
-  const draft = save({article,topic:selection.topic,date:localDate,directory:articlesDir});
+    topic:selection.topic,sources:selection.sources,request:articleRequest === undefined ? request : articleRequest});
+  const draft = save({article,topic:selection.topic,sources:selection.sources,date:localDate,directory:articlesDir});
   return {startedAt:now.toISOString(),localDate,timeZone:"Asia/Tokyo",status:"draft_saved",
-    articlesCreated:1,shouldPublish:false,...selection,article,draft};
+    articlesCreated:1,shouldPublish:false,latestInformation:{attemptedSources:latest.attemptedSources || 0,
+      successfulSources:latest.successfulSources || 0,candidateCount:candidates.length},...selection,article,draft};
 }
 
 function failureReport(error) {

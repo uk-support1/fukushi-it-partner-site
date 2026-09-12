@@ -7,6 +7,7 @@ const YAML = require("yaml");
 const lib = require("./lib/articles");
 const { validateArticle } = require("./article-generator");
 const { CATEGORIES, TopicError } = require("./topic-selector");
+const { safeOfficialUrl } = require("./latest-info");
 
 const IMAGE_BY_CATEGORY = {
   "Googleマップ／Googleビジネスプロフィール": {
@@ -99,7 +100,19 @@ function availableSlug(title, date, directory) {
   fail("ARTICLE_SLUG_EXHAUSTED");
 }
 
-function buildArticleMarkdown({ article, topic, date, slug }) {
+function sourceSection(sources = []) {
+  if (!Array.isArray(sources) || sources.length === 0) return "";
+  const lines = sources.map(source => {
+    if (!source || typeof source !== "object" || !safeOfficialUrl(source.url) ||
+        typeof source.source !== "string" || !source.source.trim() ||
+        typeof source.title !== "string" || !source.title.trim()) fail("INVALID_ARTICLE_SOURCES");
+    const label = `${source.source}｜${source.title}`.replace(/[\[\]]/g, "").replace(/\s+/g, " ").trim();
+    return `- [${label}](${source.url})`;
+  });
+  return `\n\n## 出典・参考情報\n\n${lines.join("\n")}`;
+}
+
+function buildArticleMarkdown({ article, topic, date, slug, sources = [] }) {
   validateTopicForDraft(topic);
   validateDate(date);
   const cleanArticle = validateArticle(JSON.stringify(article), topic);
@@ -116,7 +129,7 @@ function buildArticleMarkdown({ article, topic, date, slug }) {
     description: cleanArticle.description,
     slug
   };
-  const markdown = `---\n${YAML.stringify(metadata).trimEnd()}\n---\n\n${cleanArticle.bodyMarkdown}\n`;
+  const markdown = `---\n${YAML.stringify(metadata).trimEnd()}\n---\n\n${cleanArticle.bodyMarkdown}${sourceSection(sources)}\n`;
   const parsed = lib.parseFrontmatter(markdown);
   if (parsed.data.slug !== slug || parsed.data.published !== false || !parsed.body.trim()) {
     fail("INVALID_ARTICLE_MARKDOWN");
@@ -124,13 +137,13 @@ function buildArticleMarkdown({ article, topic, date, slug }) {
   return { markdown, metadata };
 }
 
-function saveArticleDraft({ article, topic, date, directory = lib.ARTICLES_DIR }) {
+function saveArticleDraft({ article, topic, date, sources = [], directory = lib.ARTICLES_DIR }) {
   validateTopicForDraft(topic);
   for (let attempt = 0; attempt < 9999; attempt += 1) {
     const slug = availableSlug(article && article.title, date, directory);
     const filename = `${slug}.md`;
     const filePath = path.join(directory, filename);
-    const built = buildArticleMarkdown({ article, topic, date, slug });
+    const built = buildArticleMarkdown({ article, topic, date, slug, sources });
     try {
       fs.writeFileSync(filePath, built.markdown, { encoding: "utf8", flag: "wx" });
       return { slug, filename, filePath, metadata: built.metadata };
@@ -148,6 +161,7 @@ module.exports = {
   baseSlugFor,
   articleImage,
   availableSlug,
+  sourceSection,
   buildArticleMarkdown,
   saveArticleDraft
 };

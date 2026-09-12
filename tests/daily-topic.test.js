@@ -88,7 +88,8 @@ test("Gemini 3.5 Flash can be selected and 2.5/unapproved models are rejected",a
 });
 test("Topic selection flows into article generation, saves one draft and never publishes",async t=>{
   const directory=temporaryArticles(t);
-  const requests=[];const result=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,request:async args=>{
+  const requests=[];const result=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
+    collect:async()=>({candidates:[],attemptedSources:3,successfulSources:0}),request:async args=>{
     requests.push(args);return requests.length===1?JSON.stringify(topic):requests.length===2?review(articles):JSON.stringify(generatedArticle);
   },articlesDir:directory});
   assert.equal(result.localDate,"2026-09-12");assert.deepEqual(result.topic,topic);assert.deepEqual(result.article,generatedArticle);
@@ -135,7 +136,7 @@ test("Save failure keeps articlesCreated at zero and shouldPublish false",async(
     {code:"ARTICLE_DIRECTORY_INVALID"});
   let requests=0,caught;
   try {
-    await prepareDailyBlog({env,load:()=>articles,request:async()=>++requests===1?JSON.stringify(topic):requests===2?review(articles):JSON.stringify(generatedArticle),
+    await prepareDailyBlog({env,load:()=>articles,collect:async()=>{throw new Error("offline");},request:async()=>++requests===1?JSON.stringify(topic):requests===2?review(articles):JSON.stringify(generatedArticle),
       save:()=>{throw new (require("../scripts/topic-selector").TopicError)("ARTICLE_SAVE_FAILED");}});
   } catch(error) { caught=error; }
   assert.equal(caught.code,"ARTICLE_SAVE_FAILED");
@@ -244,7 +245,7 @@ test("Existing articles and public files are unchanged when a draft is tested in
   const hashes=()=>files.map(f=>crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT,f))).digest("hex"));
   const status=()=>cp.execFileSync("git",["status","--porcelain","--untracked-files=all"],{cwd:ROOT,encoding:"utf8"});
   const before=hashes(),beforeStatus=status();let count=0;
-  const result=await prepareDailyBlog({env,articlesDir:directory,request:async args=>++count===1?JSON.stringify(topic):count===2?review(args.input.existingArticles):JSON.stringify(generatedArticle)});
+  const result=await prepareDailyBlog({env,articlesDir:directory,collect:async()=>({candidates:[]}),request:async args=>++count===1?JSON.stringify(topic):count===2?review(args.input.existingArticles):JSON.stringify(generatedArticle)});
   assert.equal(result.articlesCreated,1);assert.equal(result.shouldPublish,false);
   assert.deepEqual(hashes(),before);assert.equal(status(),beforeStatus);
 });

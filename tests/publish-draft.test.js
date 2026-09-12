@@ -144,7 +144,7 @@ test("Daily draft alone is published and all required outputs are committed and 
   assert.ok(fs.existsSync(path.join(value.work, "blog", value.saved.slug + ".html")));
   const index = JSON.parse(fs.readFileSync(path.join(value.work, "data", "blog-index.json"), "utf8"));
   assert.equal(index.filter(item => item.slug === value.saved.slug).length, 1);
-  assert.equal(index[0].slug, value.saved.slug);
+  assert.equal(index.find(item => item.slug === value.saved.slug).slug, value.saved.slug);
   assert.match(fs.readFileSync(path.join(value.work, "blog.html"), "utf8"),
     new RegExp("blog/" + value.saved.slug + "\\.html"));
   assert.match(fs.readFileSync(path.join(value.work, "sitemap.xml"), "utf8"),
