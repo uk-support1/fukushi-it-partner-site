@@ -7,8 +7,8 @@ const ROOT = path.resolve(__dirname, "..");
 function isPublicFile(file) {
   if (file.split("/").some(part => part === "..")) return false;
   return /^[^/]+\.html$/i.test(file) ||
-    /^(assets|blog|subsidy-support)\//.test(file) ||
-    ["CNAME", ".nojekyll", "favicon.ico", "robots.txt", "sitemap.xml", "site.webmanifest", "data/blog-index.json"].includes(file);
+    /^(assets|blog|course|subsidy-support)\//.test(file) ||
+    ["CNAME", ".nojekyll", "favicon.ico", "robots.txt", "sitemap.xml", "site.webmanifest", "data/blog-index.json", "data/course-index.json"].includes(file);
 }
 
 function prepare(destination) {

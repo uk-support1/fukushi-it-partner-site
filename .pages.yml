@@ -111,3 +111,93 @@ content:
         type: string
         required: false
         hidden: true
+
+  - name: courses
+    label: "お役立ち講座"
+    description: "福祉事業所向けのストック型学習コンテンツです。お知らせ・コラムとは別に、Web・AI・IT・集客などについてじっくり学べる記事を管理します。保存すると自動的にサイトへ反映されます。"
+    type: collection
+    path: content/courses
+    filename:
+      template: "{fields.slug}.md"
+      field: create
+    format: yaml-frontmatter
+    extension: md
+    fields:
+      - name: slug
+        label: "URL（半角英数字とハイフンのみ）"
+        description: "記事のURL（course/◯◯.html）になります。例：website-basics-for-welfare\n半角英字で始め、半角英数字・ハイフンのみを使ってください。保存後は変更しないでください（変更すると別記事扱いになります）。"
+        type: string
+        required: true
+
+      - name: title
+        label: "タイトル"
+        description: "講座記事のタイトルです。ページの見出しや検索結果のタイトルにそのまま使われます。"
+        type: string
+        required: true
+
+      - name: date
+        label: "公開日"
+        description: "講座一覧の並び順（新しい順）に使われます。"
+        type: date
+        required: true
+
+      - name: category_label
+        label: "カテゴリ"
+        description: "講座トップのカテゴリ分類・一覧のバッジ表示に使われます。"
+        type: select
+        required: true
+        options:
+          values:
+            - "ホームページ・Web制作"
+            - "SEO・集客"
+            - "AI・IT活用"
+            - "Googleマップ・SNS・広報"
+
+      - name: image
+        label: "アイキャッチ画像"
+        description: "記事冒頭に表示される画像です。一覧のサムネイルやSNSシェア時の画像としても使われます。"
+        type: image
+        required: true
+
+      - name: image_alt
+        label: "画像の説明（任意）"
+        description: "画像の内容を簡単に入力してください。検索エンジンが画像の内容を理解するために使われ、SEO対策にもつながります。"
+        type: string
+        required: false
+
+      - name: description
+        label: "概要文（任意）"
+        description: "検索結果やSNSでシェアされた際に表示される説明文、および一覧の紹介文に使われます。120字程度を推奨します。空欄の場合は本文の冒頭が自動的に使われます。"
+        type: text
+        required: false
+
+      - name: body
+        label: "本文"
+        description: |
+          通常のMarkdownに加えて、以下の講座専用タグが使えます。タグは必ず開始・終了をセットで、前後に空行を入れて記述してください。
+
+          [SUMMARY]この記事でわかること（箇条書き推奨）[/SUMMARY]
+          … 記事冒頭の「この記事でわかること」ボックスになります。
+
+          [BUHIO type="point"]ぶひおのひとこと[/BUHIO]
+          … ぶひおの吹き出しです。typeは point（ポイント解説）/ caution（注意）/ important（重要）/ success（前向きな話題）/ greeting（あいさつ）/ note（通常のひとこと、省略時のデフォルト）から選べます。新しい画像のアップロードは不要です。
+
+          [POINT]要点（番号付きリストも可）[/POINT]
+          … 要点を目立たせるPOINT BOXになります。
+
+          [CAUTION]注意事項[/CAUTION]
+          … 注意を促す注意BOXになります。
+
+          [MARK]重要な文章[/MARK]
+          … 文中の重要な部分に黄緑のマーカーを引きます（見出し内では使わないでください）。
+
+          通常のMarkdown記法：
+          ## 見出し2　/　### 見出し3　/　**太字**　/　1. 番号付きリスト
+        type: text
+        required: true
+
+      - name: published
+        label: "公開する"
+        description: "オフのままだと下書きとして保存され、サイトには表示されません。"
+        type: boolean
+        default: false

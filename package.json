@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build:blog": "node scripts/generate-blog.js",
-    "test": "node --test tests/blog.test.js tests/daily-topic.test.js tests/latest-info.test.js tests/draft-commit.test.js tests/publish-draft.test.js tests/buhio.test.js tests/editorial.test.js"
+    "build:course": "node scripts/generate-course.js",
+    "test": "node --test tests/blog.test.js tests/daily-topic.test.js tests/latest-info.test.js tests/draft-commit.test.js tests/publish-draft.test.js tests/buhio.test.js tests/editorial.test.js tests/course.test.js"
   },
   "engines": {
     "node": ">=24"

@@ -1,0 +1,97 @@
+name: Generate Course
+
+# お役立ち講座（content/courses/*.md）専用のworkflow。
+# 既存のGenerate Blog（generate-blog.yml）・Daily Blog（daily-blog.yml）は変更しない。
+# 講座関連ファイルの変更時のみ実行し、既存ブログの自動投稿とは独立して動作する。
+#
+# feature/PRブランチ: npm test・生成確認のみ行い、commit・Pagesデプロイは行わない。
+# main: npm test・生成確認に加えて、生成物のcommitとGitHub Pagesへのデプロイまで行う。
+on:
+  push:
+    paths:
+      - 'content/courses/**'
+      - 'scripts/generate-course.js'
+      - 'scripts/lib/course-markdown.js'
+      - 'assets/css/course.css'
+      - 'assets/js/course-toc.js'
+      - 'scripts/prepare-pages.js'
+      - '.github/workflows/generate-course.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'content/courses/**'
+      - 'scripts/generate-course.js'
+      - 'scripts/lib/course-markdown.js'
+      - 'assets/css/course.css'
+      - 'assets/js/course-toc.js'
+      - 'scripts/prepare-pages.js'
+      - '.github/workflows/generate-course.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+# 既存Generate Blog・Daily BlogとGitHub Pagesの同時デプロイが競合しないよう、
+# 同じconcurrency groupで直列化する（お互いの生成結果を上書きしない）。
+# mainへのpushだけがこのgroupを使う（featureブランチ・PRの確認runはPages
+# デプロイを行わないため、直列化の対象に含めない）。
+concurrency:
+  group: ${{ github.ref == 'refs/heads/main' && 'github-pages' || format('generate-course-check-{0}', github.ref) }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  build-course:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: node scripts/generate-course.js
+      # 生成中に他のworkflow（Generate Blog / Daily Blog）がmainを更新していないか確認し、
+      # 上書きしない。mainへのpush時のみ実行。
+      - name: Check current main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+      # mainへのpush時のみ、生成物をcommit・push・デプロイ準備する。
+      # feature/PRの確認runはここで終了し、本番Pagesへは一切反映しない。
+      - name: Commit generated course files only
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git add -- content/courses course.html course data/course-index.json sitemap.xml
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git commit -m 'chore: update course articles [skip ci]'
+            git push origin HEAD:main
+          fi
+      - name: Prepare public files only
+        if: github.ref == 'refs/heads/main'
+        run: node scripts/prepare-pages.js "$RUNNER_TEMP/fukushi-pages"
+      - uses: actions/upload-pages-artifact@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: ${{ runner.temp }}/fukushi-pages
+
+  deploy:
+    needs: build-course
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Deploy generated site
+        id: deployment
+        uses: actions/deploy-pages@v4

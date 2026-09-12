@@ -219,6 +219,7 @@ function renderArticlePage(article, articlesBySlug, published) {
     '        <li><a href="../index.html#services">サービス</a></li>\n' +
     '        <li><a href="../works.html">制作実績</a></li>\n' +
     '        <li><a href="../flow.html">制作までの流れ</a></li>\n' +
+    '        <li><a href="../course.html">お役立ち講座</a></li>\n' +
     '        <li><a href="../blog.html" class="active">ブログ</a></li>\n' +
     '        <li><a href="../profile.html">プロフィール</a></li>\n' +
     '        <li><a href="../contact.html">お問い合わせ</a></li>\n' +
@@ -310,6 +311,7 @@ function renderArticlePage(article, articlesBySlug, published) {
     '          <li><a href="../index.html">HOME</a></li>\n' +
     '          <li><a href="../index.html#services">サービス</a></li>\n' +
     '          <li><a href="../works.html">制作実績</a></li>\n' +
+    '          <li><a href="../course.html">お役立ち講座</a></li>\n' +
     '          <li><a href="../blog.html">ブログ</a></li>\n' +
     '          <li><a href="../profile.html">プロフィール</a></li>\n' +
     '          <li><a href="../contact.html">お問い合わせ</a></li>\n' +
@@ -478,6 +480,7 @@ function buildBlogHtml(blogIndex) {
     '        <li><a href="index.html#services">サービス</a></li>\n' +
     '        <li><a href="works.html">制作実績</a></li>\n' +
     '        <li><a href="flow.html">制作までの流れ</a></li>\n' +
+    '        <li><a href="course.html">お役立ち講座</a></li>\n' +
     '        <li><a href="blog.html" class="active">ブログ</a></li>\n' +
     '        <li><a href="profile.html">プロフィール</a></li>\n' +
     '        <li><a href="contact.html">お問い合わせ</a></li>\n' +
@@ -547,6 +550,7 @@ function buildBlogHtml(blogIndex) {
     '          <li><a href="index.html">HOME</a></li>\n' +
     '          <li><a href="index.html#services">サービス</a></li>\n' +
     '          <li><a href="works.html">制作実績</a></li>\n' +
+    '          <li><a href="course.html">お役立ち講座</a></li>\n' +
     '          <li><a href="blog.html">ブログ</a></li>\n' +
     '          <li><a href="profile.html">プロフィール</a></li>\n' +
     '          <li><a href="contact.html">お問い合わせ</a></li>\n' +
@@ -573,7 +577,7 @@ function buildBlogHtml(blogIndex) {
   );
 }
 
-function buildSitemap(publishedArticles, managedArticles, blogDir = BLOG_DIR) {
+function buildSitemap(publishedArticles, managedArticles, blogDir = BLOG_DIR, root = ROOT) {
   const cmsSlugs = {};
   managedArticles.forEach(function (a) {
     cmsSlugs[a.slug] = true;
@@ -612,7 +616,27 @@ function buildSitemap(publishedArticles, managedArticles, blogDir = BLOG_DIR) {
       })
     );
 
-  const allUrls = STATIC_PAGES.concat(articleUrls, STATIC_PAGES_AFTER_ARTICLES);
+  // お役立ち講座のURL（存在する場合のみ追加）。
+  // data/course-index.jsonが無い・不正な場合は既存のブログsitemap生成に
+  // 一切影響しない（お役立ち講座を導入する前のsitemap.xmlと完全に同じ結果になる）。
+  let courseUrls = [];
+  try {
+    const courseIndexPath = path.join(root, "data", "course-index.json");
+    if (fs.existsSync(courseIndexPath)) {
+      const courseIndex = JSON.parse(fs.readFileSync(courseIndexPath, "utf8"));
+      if (Array.isArray(courseIndex) && courseIndex.length > 0) {
+        courseUrls = ["https://fukushi-it-partner.com/course.html"].concat(
+          courseIndex.map(function (c) {
+            return "https://fukushi-it-partner.com/course/" + c.slug + ".html";
+          })
+        );
+      }
+    }
+  } catch (err) {
+    courseUrls = [];
+  }
+
+  const allUrls = STATIC_PAGES.concat(articleUrls, courseUrls, STATIC_PAGES_AFTER_ARTICLES);
 
   const body = allUrls
     .map(function (loc) {
@@ -687,7 +711,7 @@ function generateBlog({ root = ROOT, onlySlug = null } = {}) {
   console.log("generated " + blogHtmlFile);
 
   // ④ sitemap.xml
-  fs.writeFileSync(sitemapFile, buildSitemap(published, articles, blogDir), "utf8");
+  fs.writeFileSync(sitemapFile, buildSitemap(published, articles, blogDir, root), "utf8");
   console.log("updated " + sitemapFile);
   return {
     publishedCount: published.length,
