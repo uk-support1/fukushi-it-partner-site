@@ -117,7 +117,8 @@ test("Generated article is saved with compatible front matter and body",t=>{
     type:"column",category_label:topic.category,title:generatedArticle.title,date,
     image:"assets/images/services/service-homepage.jpg",
     image_alt:"福祉事業所のホームページ活用を支援するイメージ",
-    published:false,description:generatedArticle.description,slug:saved.slug
+    published:false,description:generatedArticle.description,slug:saved.slug,
+    buhio:require("../scripts/lib/buhio").selectBuhio(generatedArticle)
   });
   assert.equal(parsed.body.trim(),generatedArticle.bodyMarkdown);
   assert.match(saved.slug,/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/);

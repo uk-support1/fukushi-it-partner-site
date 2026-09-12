@@ -23,6 +23,7 @@
 const fs = require("fs");
 const path = require("path");
 const lib = require("./lib/articles");
+const { renderBuhio } = require("./lib/buhio");
 
 const ROOT = path.join(__dirname, "..");
 const BLOG_INDEX_FILE = path.join(ROOT, "data", "blog-index.json");
@@ -144,7 +145,7 @@ function renderArticlePage(article, articlesBySlug, published) {
   const categoryLabel = lib.categoryLabelOf(data);
   const dateDisplay = formatDateDisplay(data.date);
   const imageSrc = lib.toSiteImagePath(data.image, "blog");
-  const bodyHtml = lib.markdownBodyToHtml(article.body, "blog");
+  const bodyHtml = renderBuhio({title: data.title, description: data.description, bodyMarkdown: article.body}, data.buhio, lib.escapeHtml) + "\n\n" + lib.markdownBodyToHtml(article.body, "blog");
   const description = lib.escapeHtml(lib.descriptionOf(data, article.body));
   const title = lib.escapeHtml(data.title);
 

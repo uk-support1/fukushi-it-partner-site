@@ -8,6 +8,7 @@ const lib = require("./lib/articles");
 const { validateArticle } = require("./article-generator");
 const { CATEGORIES, TopicError } = require("./topic-selector");
 const { safeOfficialUrl } = require("./latest-info");
+const { selectBuhio } = require("./lib/buhio");
 
 const IMAGE_BY_CATEGORY = {
   "Googleマップ／Googleビジネスプロフィール": {
@@ -127,7 +128,8 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [] }) {
     image_alt: image.imageAlt,
     published: false,
     description: cleanArticle.description,
-    slug
+    slug,
+    buhio: selectBuhio(cleanArticle, cleanArticle.buhio)
   };
   const markdown = `---\n${YAML.stringify(metadata).trimEnd()}\n---\n\n${cleanArticle.bodyMarkdown}${sourceSection(sources)}\n`;
   const parsed = lib.parseFrontmatter(markdown);

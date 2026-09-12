@@ -1,6 +1,7 @@
 "use strict";
 
 const { TopicError, requestGemini, resolveGeminiModel } = require("./topic-selector");
+const { BUHIO_IMAGES, selectBuhio } = require("./lib/buhio");
 
 const ARTICLE_FIELDS = ["title", "description", "bodyMarkdown"];
 const ARTICLE_MIN_CHARS = 1200;
@@ -8,8 +9,16 @@ const ARTICLE_MAX_CHARS = 3500;
 const articleSchema = {
   type: "object",
   additionalProperties: false,
-  required: ARTICLE_FIELDS,
+  required: [...ARTICLE_FIELDS, "buhio"],
   properties: {
+    buhio: {
+      type: "object", additionalProperties: false, required: ["image", "alt", "comment"],
+      properties: {
+        image: { type: "string", enum: BUHIO_IMAGES.map(item => item.file) },
+        alt: { type: "string", description: "記事の話題とぶひおの動作を自然に説明するalt。220字以内" },
+        comment: { type: "string", description: "現場の読者にやさしく要点を伝えるぶひおのひとこと。180字以内" }
+      }
+    },
     title: { type: "string", description: "選定テーマと完全に同じ記事タイトル" },
     description: { type: "string", description: "検索結果に表示する120字程度の日本語説明文" },
     bodyMarkdown: { type: "string", description: "見出しを含む日本語Markdown本文" }
@@ -23,7 +32,7 @@ function validateArticle(raw, topic) {
   let value;
   try { value = JSON.parse(raw); } catch { fail("INVALID_ARTICLE_JSON"); }
   if (!value || typeof value !== "object" || Array.isArray(value) ||
-      Object.keys(value).length !== ARTICLE_FIELDS.length || ARTICLE_FIELDS.some(key => !Object.hasOwn(value, key))) {
+      Object.keys(value).some(key => ![...ARTICLE_FIELDS, "buhio"].includes(key)) || ARTICLE_FIELDS.some(key => !Object.hasOwn(value, key))) {
     fail("INVALID_ARTICLE_FIELDS");
   }
   if (typeof value.title !== "string" || !value.title.trim() || value.title.length > 140 ||
@@ -36,7 +45,8 @@ function validateArticle(raw, topic) {
   if ((body.match(/^##\s+.+$/gm) || []).length < 3 || /^#\s+/m.test(body)) fail("INVALID_ARTICLE_HEADINGS");
   if (/^---\s*$/m.test(body) || /<[^>]+>/.test(body) || /https?:\/\/|\bwww\./i.test(body) ||
       /!?\[[^\]]*\]\([^)]+\)/.test(body)) fail("UNSAFE_ARTICLE_MARKDOWN");
-  return { title: value.title.trim(), description: value.description.trim(), bodyMarkdown: body };
+  return { title: value.title.trim(), description: value.description.trim(), bodyMarkdown: body,
+    ...(Object.hasOwn(value, "buhio") ? { buhio: selectBuhio(value, value.buhio) } : {}) };
 }
 
 async function generateArticle({apiKey, model, localDate, topic, sources = [], request = requestGemini}) {
@@ -47,6 +57,8 @@ async function generateArticle({apiKey, model, localDate, topic, sources = [], r
 
   const timely = Array.isArray(sources) && sources.length > 0;
   const instructions = "あなたは福祉ITパートナーの編集・執筆担当です。選定済みテーマから、日本語の実務的なブログ記事を作成してください。" +
+    "制度説明やニュースでも硬くなりすぎず、専門用語は初出で日常の言葉に言い換えてください。福祉事業所の現場目線で、結局どういうことか、職員・利用者・家族にどう関係するかを具体的に説明してください。" +
+    "buhioImagesの6種類の用途と完成した記事内容を照らし合わせ、最も適切な固定画像をbuhio.imageに1つ選んでください。順番やランダムでは選びません。画像の新規生成は行いません。buhio.altは記事に即した自然な説明、buhio.commentは本文の要点や今できることをやさしく伝える短い一言にしてください。本文にない事実は追加しません。" +
     "読者は障害福祉事業所、就労支援事業所、グループホーム、福祉事業を運営する法人や担当者です。専門用語を控え、営業色を強くせず、同じ内容を繰り返さないでください。" +
     "本文は1,500〜2,500文字程度とし、H1は使わず、既存記事と同じく##と必要に応じて###、段落、箇条書きを使います。導入、基礎的な説明、実務への影響、今できること、まとめを自然に構成し、Q&Aは読者の疑問解消に必要な場合だけ含めます。" +
     "タイトルは入力されたtopic.titleを一字一句変えません。front matter、画像、URL、Markdownリンク、関連記事、日付、slug、出典一覧は出力しません。出典一覧はコード側で追加します。" +
@@ -57,6 +69,7 @@ async function generateArticle({apiKey, model, localDate, topic, sources = [], r
   const raw = await request({apiKey, model, schema:articleSchema, instructions, input:{
     localDate,
     topic,
+    buhioImages: BUHIO_IMAGES,
     ...(timely ? {sourceInformation:sources} : {}),
     outputRequirements:{language:"ja",targetCharacters:"1500-2500",headingLevels:["##","###"],externalUrls:false}
   }});
