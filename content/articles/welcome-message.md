@@ -7,8 +7,19 @@ image_alt: 窓辺の落ち着いた光の中で開かれたノートとコーヒ
 published: true
 description: 福祉ITパートナーが、福祉事業所・団体向けのホームページづくりやIT活用に関する情報発信を始めました。今後発信していくテーマと、福祉のことを理解したIT支援への想いをお伝えします。
 slug: welcome-message
-related: ["why-homepage-5-reasons", "b-type-homepage-5-things"]
+related:
+  - why-homepage-5-reasons
+  - b-type-homepage-5-things
 excerpt: 福祉事業所・団体に向けたホームページづくりやIT活用に関する情報発信を始めました。今後発信していくテーマをご紹介します。
+buhio:
+  image: buhio-02-waving.png
+  alt: 福祉ITパートナーの情報発信を始めますについて、手を振って案内するぶひお
+  comment: 道具を増やす前に、誰との連絡を使いやすくしたいか考えてみよう。
+emphasis:
+  - text: 精神保健福祉士
+    style: strong
+  - text: 導入すること自体が目的ではありません
+    style: marker
 ---
 はじめまして。福祉ITパートナーの上原健太です。
 

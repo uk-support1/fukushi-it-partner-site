@@ -8,10 +8,21 @@ image_alt: ノートパソコンでホームページの掲載内容を編集し
 published: true
 description: 障害者グループホームのホームページに掲載したい内容を解説。入居希望者やご家族が確認したい情報、居室・生活支援・夜間体制の伝え方、入居者募集や職員採用への活用方法、写真掲載時の配慮点をご紹介します。
 slug: group-home-website-content
-related: ["why-homepage-5-reasons", "b-type-homepage-5-things"]
+related:
+  - why-homepage-5-reasons
+  - b-type-homepage-5-things
 excerpt: 入居希望者やご家族が確認したい情報から、居室の見せ方、生活支援・夜間体制の伝え方、入居者募集や職員採用への活用方法まで分かりやすくご紹介します。
 cta_heading: 何を掲載すればよいか分からない段階でも、ご相談いただけます。
 cta_button_text: 無料相談フォームを開く
+buhio:
+  image: buhio-03-pointing.png
+  alt: 障害者グループホームのホームページに何を載せる？入居希望者と家族に伝えたい内容について、ポイントを指し示すぶひお
+  comment: ご家族が知りたいのは料金だけではないよ。夜の支援や食事の様子も伝えよう。
+emphasis:
+  - text: 日常生活の支援内容と夜間の体制
+    style: strong
+  - text: 内容ごとにページを分けて整理すると
+    style: marker
 ---
 障害者グループホームを新規に開設する方や、入居者募集に悩んでいる運営者の方から、「障害者グループホーム ホームページ」に何を載せればよいか分からないというご相談をいただくことがあります。
 

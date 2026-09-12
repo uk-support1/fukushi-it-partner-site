@@ -11,7 +11,9 @@
 | buhio-05-surprised.png | 意外な情報、注意喚起、驚き |
 | buhio-06-important.png | 重要な注意点、制度変更 |
 
-記事生成のGemini呼び出しに6種類の用途を渡し、本文とともに `buhio.image`、`buhio.alt`、`buhio.comment` を返してもらいます。追加のAPI呼び出しはありません。選択結果はMarkdownのYAML front matterの `buhio` に保存します。
+記事生成のGemini呼び出しに6種類の用途を渡し、本文とともに `buhio.image`、`buhio.alt`、`buhio.comment` を返してもらいます。コメントは20〜60文字で、記事固有の要点や行動を伝えます。選択結果はMarkdownのYAML front matterの `buhio` に保存します。
+
+直近10件の公開記事の見出し・コメントを参照し、文字列の類似判定と独立したGeminiレビューで意味の重複を確認します。通常は生成に加えてレビューを1回行い、問題があれば最大2回まで修正生成します。詳細は `docs/article-editorial.md` を参照してください。コメント未指定の旧記事には本文の具体的な行動文を使用し、共通の励まし文は使いません。
 
 HTML生成時に本文冒頭へ「ぶひおのひとこと」の囲みを1つ表示します。画像は通常128px、480px以下の画面では88px、最大幅32%、高さ自動です。コメントは折り返し、altとコメントはHTMLエスケープします。
 

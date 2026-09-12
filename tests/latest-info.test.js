@@ -49,19 +49,21 @@ test("Latest candidates reach Gemini and trusted sources are appended to the tem
   const topic={title:"障害福祉事業者が考えるデジタル化資料の実務活用",category:"IT活用",target:"障害福祉事業者",keyword:"障害福祉 デジタル化",reason:"新しい一次情報を現場で活用するため",angle:"小規模事業者が着手点を整理する",service:"IT活用支援",sourceUrls:[candidates[0].url],importance:"standard"};
   const article={title:topic.title,description:"厚生労働省の新しい資料をもとに、障害福祉事業者がデジタル化を実務へ生かす際の考え方を整理します。",bodyMarkdown:[
     "公表された情報の要点を確認し、事業所での取り組み方を整理します。",
-    "## 今回の最新情報","厚生労働省から障害福祉事業者向けの資料が公表されました。".repeat(12),
-    "## 何が発表・変更されたのか","公表資料で示された内容を、確認できる範囲で整理します。".repeat(12),
-    "## 福祉事業者にどう関係するのか","日々の業務や情報管理を見直す材料になります。".repeat(12),
-    "## 現場で考えるべきポイント","現在の業務を棚卸しし、小さな改善から検討します。".repeat(12),
-    "## 福祉ITパートナーとしての見解","小規模事業者では目的と優先順位を明確にすることが大切です。".repeat(12),
-    "## まとめ","一次情報を確認しながら自事業所に合う進め方を選びます。".repeat(10)
-  ].join("\n\n")};
+    "## 厚生労働省のデジタル化資料を読む","厚生労働省から障害福祉事業者向けの資料が公表されました。".repeat(12),
+    "## 公表資料から読み取れる取り組み","公表資料で示された内容を、確認できる範囲で整理します。".repeat(12),
+    "## 情報管理の手順を見直す材料に","日々の業務や情報管理を見直す材料になります。".repeat(12),
+    "## 業務の棚卸しで着手点を探す","現在の業務を棚卸しし、小さな改善から検討します。".repeat(12),
+    "## 当社は目的と優先順位を重視します","小規模事業者では目的と優先順位を明確にすることが大切です。".repeat(12),
+    "## 自事業所に合う進め方を選ぼう","一次情報を確認しながら自事業所に合う進め方を選びます。".repeat(10)
+  ].join("\n\n"),buhio:{image:"buhio-03-pointing.png",alt:"デジタル化資料を案内するぶひお",comment:"資料を読んだら、今の業務で見直せる手順を一つ探してみよう。"},
+  emphasis:[{text:"確認できる範囲",style:"strong"},{text:"目的と優先順位を明確にすることが大切です。",style:"marker"}]};
   const review=JSON.stringify({comparisons:[{slug:"old",duplicate:false,reason:"新規資料の実務活用であり採用ページとは異なる"}]});
   let calls=0;
   const directory=fs.mkdtempSync(path.join(os.tmpdir(),"latest-draft-"));t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
   const result=await prepareDailyBlog({now:new Date("2026-09-11T21:00:00Z"),env:{GEMINI_API_KEY:"dummy"},articlesDir:directory,
     collect:async()=>({candidates,attemptedSources:3,successfulSources:3}),load:()=>existing,request:async args=>{
       calls++;
+      if(Object.hasOwn(args.schema.properties,"commentDuplicate")) return JSON.stringify({commentDuplicate:false,commentGrounded:true,headingDuplicates:[]});
       if(calls===1){assert.deepEqual(args.schema,latestTopicSchema);assert.deepEqual(args.input.latestInformationCandidates,candidates);return JSON.stringify(topic);}
       if(calls===2)return review;
       assert.deepEqual(args.input.sourceInformation,[candidates[0]]);return JSON.stringify(article);

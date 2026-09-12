@@ -21,7 +21,7 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
   const selection = await selectTopic({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
     latestInfo:candidates,request,load});
   const article = await generateArticle({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
-    topic:selection.topic,sources:selection.sources,request:articleRequest === undefined ? request : articleRequest});
+    topic:selection.topic,sources:selection.sources,recentArticleStyles:selection.recentArticleStyles,request:articleRequest === undefined ? request : articleRequest});
   const draft = save({article,topic:selection.topic,sources:selection.sources,date:localDate,directory:articlesDir});
   return {startedAt:now.toISOString(),localDate,timeZone:"Asia/Tokyo",status:"draft_saved",
     articlesCreated:1,shouldPublish:false,latestInformation:{attemptedSources:latest.attemptedSources || 0,

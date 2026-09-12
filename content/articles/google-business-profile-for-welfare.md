@@ -8,8 +8,19 @@ image_alt: Googleマップを使ったアクセス情報をホームページに
 published: true
 description: 福祉事業所がGoogleビジネスプロフィールに登録するメリットを分かりやすく解説。Googleマップから見つけてもらいやすくなる仕組みと、ホームページとの組み合わせ方をご紹介します。
 slug: google-business-profile-for-welfare
-related: ["why-homepage-5-reasons", "group-home-website-content"]
+related:
+  - why-homepage-5-reasons
+  - group-home-website-content
 excerpt: Googleビジネスプロフィールの基本と、福祉事業所が登録することで得られるメリットを分かりやすくご紹介します。
+buhio:
+  image: buhio-03-pointing.png
+  alt: 福祉事業所のGoogleマップ活用｜Googleビジネスプロフィールを登録するメリットについて、ポイントを指し示すぶひお
+  comment: 地図で見つけてもらえたら、詳しい支援内容へ進めるリンクも整えておこう。
+emphasis:
+  - text: Googleビジネスプロフィール
+    style: strong
+  - text: ホームページで詳しい支援内容や料金、空室状況などを確認する
+    style: marker
 ---
 福祉事業所を探すとき、「地域名＋グループホーム」「地域名＋就労継続支援B型」「地域名＋就労移行支援」といったキーワードでGoogle検索をする方がいます。
 

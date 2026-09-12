@@ -129,7 +129,8 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [] }) {
     published: false,
     description: cleanArticle.description,
     slug,
-    buhio: selectBuhio(cleanArticle, cleanArticle.buhio)
+    buhio: selectBuhio(cleanArticle, cleanArticle.buhio),
+    ...(cleanArticle.emphasis ? {emphasis:cleanArticle.emphasis} : {})
   };
   const markdown = `---\n${YAML.stringify(metadata).trimEnd()}\n---\n\n${cleanArticle.bodyMarkdown}${sourceSection(sources)}\n`;
   const parsed = lib.parseFrontmatter(markdown);

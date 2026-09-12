@@ -8,8 +8,19 @@ image_alt: 作業を見守りながら一緒に取り組むスタッフと利用
 published: true
 description: 就労継続支援B型事業所のホームページで伝えるべき5つのことを解説。利用対象者、作業内容、利用までの流れ、工賃や通所のイメージ、事業所が大切にしていることをご紹介します。
 slug: b-type-homepage-5-things
-related: ["why-homepage-5-reasons", "post-03-ai-first-step"]
+related:
+  - why-homepage-5-reasons
+  - post-03-ai-first-step
 excerpt: 利用対象者・作業内容・利用までの流れなど、利用を検討する方に伝えておきたい5つの内容をご紹介します。
+buhio:
+  image: buhio-01-standing.png
+  alt: 就労継続支援B型のホームページで伝えるべき5つのことについて、内容を案内するぶひお
+  comment: 「軽作業」だけでは想像しにくいよ。作業例と職員の手助けをセットで伝えよう。
+emphasis:
+  - text: 受入条件や利用可否
+    style: strong
+  - text: 未経験でも始められるか
+    style: marker
 ---
 就労継続支援B型の事業所を探している方やご家族、相談支援専門員の方は、まずホームページで「どのような事業所なのか」を確認することが多くあります。
 

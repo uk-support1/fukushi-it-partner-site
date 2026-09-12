@@ -30,7 +30,8 @@ function existingArticleInfo(articles = lib.loadArticles()) {
   const result = articles.map(a => ({
     slug: a.slug, title: a.data.title, category: lib.categoryLabelOf(a.data),
     date: a.data.date || "",
-    published: a.data.published === true,
+      published: a.data.published === true,
+      buhioComment: require("./lib/buhio").selectBuhio({title:a.data.title,bodyMarkdown:a.body},a.data.buhio).comment,
     summary: plain(a.data.description || a.data.excerpt || "") + " " + plain(a.body).slice(0, 2400),
     headings: String(a.body).split(/\r?\n/).filter(l => /^#{1,6}\s/.test(l)).map(plain),
     sourceUrls: [...new Set(String(a.body).match(/https:\/\/[^\s<>"'\])]+/g) || [])]
@@ -188,6 +189,7 @@ async function selectTopic({apiKey, model, localDate, latestInfo = [], request =
     input: {candidate:topic,existingArticles:articles} });
   validateReview(review,articles);
   const sources = timely ? topic.sourceUrls.map(url => availableLatestInfo.find(item => item.url === url)) : [];
-  return {topic,existingArticlesCount:articles.length,contentMode:timely ? "latest_info" : "evergreen",sources};
+  return {topic,existingArticlesCount:articles.length,contentMode:timely ? "latest_info" : "evergreen",sources,
+    recentArticleStyles:require("./lib/editorial").recentStyles(articles)};
 }
 module.exports={TopicError,CATEGORIES,existingArticleInfo,validateTopic,validateLatestTopic,validateReview,requestGemini,selectTopic,topicSchema,latestTopicSchema,reviewSchema,resolveGeminiModel,DEFAULT_GEMINI_MODEL,ALLOWED_GEMINI_MODELS};

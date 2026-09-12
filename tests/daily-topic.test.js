@@ -22,7 +22,11 @@ const articleBody=[
   "## まとめ｜小さな改善から始める",
   "応募フォームは、一度に作り直す必要はありません。質問を一つ減らす、案内文を分かりやすくするなど、確認できた課題から順番に整えることが、応募しやすい入口づくりにつながります。".repeat(4)
 ].join("\n\n");
-const generatedArticle={title:topic.title,description:"福祉事業所の採用応募フォームについて、入力負担を減らし応募しやすい入口を整える実務的なポイントを紹介します。",bodyMarkdown:articleBody};
+const generatedArticle={title:topic.title,description:"福祉事業所の採用応募フォームについて、入力負担を減らし応募しやすい入口を整える実務的なポイントを紹介します。",bodyMarkdown:articleBody,
+  buhio:{image:"buhio-03-pointing.png",alt:"応募フォームの入力項目を指し示すぶひお",comment:"応募の入口では、面談で聞ける項目を減らしてみよう。"},
+  emphasis:[{text:"入力欄の目的",style:"strong"},{text:"公開後も職員が定期的に試すことで",style:"marker"}]};
+const editorialReview=JSON.stringify({commentDuplicate:false,commentGrounded:true,headingDuplicates:[]});
+const isEditorial=args=>Object.hasOwn(args.schema.properties,"commentDuplicate");
 function temporaryArticles(t) {
   const directory=fs.mkdtempSync(path.join(os.tmpdir(),"fukushi-daily-articles-"));
   t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
@@ -100,12 +104,12 @@ test("Topic selection flows into article generation, saves one draft and never p
   const directory=temporaryArticles(t);
   const requests=[];const result=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
     collect:async()=>({candidates:[],attemptedSources:3,successfulSources:0}),request:async args=>{
-    requests.push(args);return requests.length===1?JSON.stringify(topic):requests.length===2?review(articles):JSON.stringify(generatedArticle);
+    requests.push(args);return isEditorial(args)?editorialReview:requests.length===1?JSON.stringify(topic):requests.length===2?review(articles):JSON.stringify(generatedArticle);
   },articlesDir:directory});
   assert.equal(result.localDate,"2026-09-12");assert.deepEqual(result.topic,topic);assert.deepEqual(result.article,generatedArticle);
   assert.equal(result.status,"draft_saved");assert.equal(result.shouldPublish,false);assert.equal(result.articlesCreated,1);
   assert.equal(result.draft.filename,result.draft.slug+".md");assert.ok(fs.existsSync(path.join(directory,result.draft.filename)));
-  assert.equal(requests.length,3);assert.deepEqual(requests[0].input.existingArticles,articles);assert.deepEqual(requests[1].input.candidate,topic);
+  assert.equal(requests.length,4);assert.deepEqual(requests[0].input.existingArticles,articles);assert.deepEqual(requests[1].input.candidate,topic);
   assert.deepEqual(requests[2].input.topic,topic);assert.deepEqual(requests[2].schema,articleSchema);
 });
 test("Generated article is saved with compatible front matter and body",t=>{
@@ -118,7 +122,7 @@ test("Generated article is saved with compatible front matter and body",t=>{
     image:"assets/images/services/service-homepage.jpg",
     image_alt:"福祉事業所のホームページ活用を支援するイメージ",
     published:false,description:generatedArticle.description,slug:saved.slug,
-    buhio:require("../scripts/lib/buhio").selectBuhio(generatedArticle)
+    buhio:generatedArticle.buhio,emphasis:generatedArticle.emphasis
   });
   assert.equal(parsed.body.trim(),generatedArticle.bodyMarkdown);
   assert.match(saved.slug,/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/);
@@ -147,7 +151,7 @@ test("Save failure keeps articlesCreated at zero and shouldPublish false",async(
     {code:"ARTICLE_DIRECTORY_INVALID"});
   let requests=0,caught;
   try {
-    await prepareDailyBlog({env,load:()=>articles,collect:async()=>{throw new Error("offline");},request:async()=>++requests===1?JSON.stringify(topic):requests===2?review(articles):JSON.stringify(generatedArticle),
+    await prepareDailyBlog({env,load:()=>articles,collect:async()=>{throw new Error("offline");},request:async args=>isEditorial(args)?editorialReview:++requests===1?JSON.stringify(topic):requests===2?review(articles):JSON.stringify(generatedArticle),
       save:()=>{throw new (require("../scripts/topic-selector").TopicError)("ARTICLE_SAVE_FAILED");}});
   } catch(error) { caught=error; }
   assert.equal(caught.code,"ARTICLE_SAVE_FAILED");
@@ -256,7 +260,7 @@ test("Existing articles and public files are unchanged when a draft is tested in
   const hashes=()=>files.map(f=>crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT,f))).digest("hex"));
   const status=()=>cp.execFileSync("git",["status","--porcelain","--untracked-files=all"],{cwd:ROOT,encoding:"utf8"});
   const before=hashes(),beforeStatus=status();let count=0;
-  const result=await prepareDailyBlog({env,articlesDir:directory,collect:async()=>({candidates:[]}),request:async args=>++count===1?JSON.stringify(topic):count===2?review(args.input.existingArticles):JSON.stringify(generatedArticle)});
+  const result=await prepareDailyBlog({env,articlesDir:directory,collect:async()=>({candidates:[]}),request:async args=>isEditorial(args)?editorialReview:++count===1?JSON.stringify(topic):count===2?review(args.input.existingArticles):JSON.stringify(generatedArticle)});
   assert.equal(result.articlesCreated,1);assert.equal(result.shouldPublish,false);
   assert.deepEqual(hashes(),before);assert.equal(status(),beforeStatus);
 });

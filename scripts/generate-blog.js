@@ -24,6 +24,7 @@ const fs = require("fs");
 const path = require("path");
 const lib = require("./lib/articles");
 const { renderBuhio } = require("./lib/buhio");
+const { assertNoMarkdownLeak } = require("./lib/markdown");
 
 const ROOT = path.join(__dirname, "..");
 const BLOG_INDEX_FILE = path.join(ROOT, "data", "blog-index.json");
@@ -145,7 +146,7 @@ function renderArticlePage(article, articlesBySlug, published) {
   const categoryLabel = lib.categoryLabelOf(data);
   const dateDisplay = formatDateDisplay(data.date);
   const imageSrc = lib.toSiteImagePath(data.image, "blog");
-  const bodyHtml = renderBuhio({title: data.title, description: data.description, bodyMarkdown: article.body}, data.buhio, lib.escapeHtml) + "\n\n" + lib.markdownBodyToHtml(article.body, "blog");
+  const bodyHtml = renderBuhio({title: data.title, description: data.description, bodyMarkdown: article.body}, data.buhio, lib.escapeHtml) + "\n\n" + lib.markdownBodyToHtml(article.body, "blog", data.emphasis || []);
   const description = lib.escapeHtml(lib.descriptionOf(data, article.body));
   const title = lib.escapeHtml(data.title);
 
@@ -237,7 +238,7 @@ function renderArticlePage(article, articlesBySlug, published) {
     "\n" +
     "<main>\n" +
     "  <section>\n" +
-    '    <div class="container blog-article reveal">\n' +
+    '    <div class="container blog-article">\n' +
     '      <a href="../blog.html" class="back-link">← ブログ一覧へ戻る</a>\n' +
     "      <h1>" +
     title +
@@ -330,6 +331,7 @@ function renderArticlePage(article, articlesBySlug, published) {
     "</footer>\n" +
     "\n" +
     '<script src="../assets/js/main.js"></script>\n' +
+    '<script src="../assets/js/article-emphasis.js" defer></script>\n' +
     "</body>\n" +
     "</html>\n"
   );
@@ -646,6 +648,12 @@ function generateBlog({ root = ROOT, onlySlug = null } = {}) {
   articles.forEach(function (a) {
     articlesBySlug[a.slug] = a;
   });
+  // Finish rendering and checking every target before changing public output files.
+  const rendered = new Map(targetArticles.map(article => {
+    const html=renderArticlePage(article,articlesBySlug,published);
+    assertNoMarkdownLeak(html);
+    return [article.slug,html];
+  }));
 
   // Only the exact output of a validated, existing CMS source may be removed.
   fs.mkdirSync(blogDir, { recursive: true });
@@ -669,7 +677,7 @@ function generateBlog({ root = ROOT, onlySlug = null } = {}) {
   // ② blog/<slug>.html（content/articlesへ移行済みの記事のみ）
   targetArticles.forEach(function (article) {
     const outPath = path.join(blogDir, article.slug + ".html");
-    const html = renderArticlePage(article, articlesBySlug, published);
+    const html = rendered.get(article.slug);
     fs.writeFileSync(outPath, html, "utf8");
     console.log("generated " + outPath);
   });

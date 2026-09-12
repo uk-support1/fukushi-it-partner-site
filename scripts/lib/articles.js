@@ -80,13 +80,8 @@ function excerptOf(data, body, len) {
   return excerptFromMarkdown(body, len);
 }
 
-// 見出し・太字・リンクなど最低限のMarkdownをHTMLへ変換する。
-// 外部npmパッケージ（marked等）は使わず、既存記事に登場する範囲の
-// 記法（見出し#/##/###、**太字**、==強調（オレンジ文字）==、
-// [リンク](url)、- 箇条書き、単独行の画像![alt](url)）のみを
-// 対象にした簡易コンバータ。
-// ==text== は、料金・期日などを既存記事のオレンジ文字（--orange-600）で
-// 強調する既存デザインを再現するための拡張記法。
+// Compatibility helper for callers that supply HTML-escaped inline text.
+// Full article rendering uses the token parser in markdown.js.
 function inlineMarkdown(escapedText) {
   return escapedText
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
@@ -101,79 +96,7 @@ function toSiteImagePath(imgPath, depth) {
   return prefix + cleaned;
 }
 
-function markdownBodyToHtml(body, depth) {
-  const blocks = String(body || "")
-    .split(/\r?\n\s*\r?\n/)
-    .map(function (b) {
-      return b.trim();
-    })
-    .filter(Boolean);
-
-  return blocks
-    .map(function (block) {
-      // すでに完結したHTMLブロック（例：qualification-boxのような
-      // 案内ボックス）はそのまま出力する。Pages CMSの本文で
-      // Markdownとして表現しにくい既存デザインを、記事の移行時に
-      // そのまま引き継げるようにするための最小限の拡張。
-      if (/^<[a-zA-Z][^>]*>[\s\S]*<\/[a-zA-Z][^>]*>$/.test(block)) {
-        return block;
-      }
-
-      const imageOnly = block.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
-      if (imageOnly) {
-        const alt = escapeHtml(imageOnly[1]);
-        const src = toSiteImagePath(imageOnly[2], depth);
-        return (
-          '<div class="article-photo">\n  <img src="' +
-          src +
-          '" alt="' +
-          alt +
-          '">\n</div>'
-        );
-      }
-
-      const lines = block.split(/\r?\n/).map(function (l) {
-        return l.trim();
-      });
-
-      if (lines.every(function (l) { return /^-\s+/.test(l); })) {
-        const items = lines
-          .map(function (l) {
-            return inlineMarkdown(escapeHtml(l.replace(/^-\s+/, "")));
-          })
-          .map(function (li) {
-            return "  <li>" + li + "</li>";
-          })
-          .join("\n");
-        return "<ul>\n" + items + "\n</ul>";
-      }
-
-      const h3 = block.match(/^###\s+(.*)$/);
-      if (h3) return "<h3>" + inlineMarkdown(escapeHtml(h3[1])) + "</h3>";
-
-      const h2 = block.match(/^##\s+(.*)$/);
-      if (h2) return "<h2>" + inlineMarkdown(escapeHtml(h2[1])) + "</h2>";
-
-      const h1 = block.match(/^#\s+(.*)$/);
-      if (h1) return "<h2>" + inlineMarkdown(escapeHtml(h1[1])) + "</h2>";
-
-      // 行末の "\" は、既存記事の <br> による改行（例：空室状況の
-      // 2行表示）を再現するための明示的な改行マーカー。
-      // マーカーがない行同士は、ソース上の折り返しとして1つの
-      // 文へ連結する（既存記事の書式に合わせるための挙動）。
-      let paragraphHtml = "";
-      lines.forEach(function (line, i) {
-        const hasBreak = /\\$/.test(line);
-        const clean = line.replace(/\\$/, "");
-        paragraphHtml += inlineMarkdown(escapeHtml(clean));
-        if (i < lines.length - 1) {
-          paragraphHtml += hasBreak ? "<br>\n        " : " ";
-        }
-      });
-      return "      <p>\n        " + paragraphHtml + "\n      </p>";
-    })
-    .join("\n\n");
-}
+const { markdownBodyToHtml } = require("./markdown");
 
 function loadArticles(directory = ARTICLES_DIR) {
   // Validate every managed article before any generated file is written/deleted.

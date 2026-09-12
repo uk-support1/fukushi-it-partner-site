@@ -30,8 +30,16 @@ function selectBuhio(article, requested) {
   return {
     image: chosen.file,
     alt: plain(requested?.alt, 220) || `${title}について、${chosen.pose}ぶひお`,
-    comment: plain(requested?.comment, 180) || "自分の事業所ならどうするか、現場の場面に置き換えて一緒に整理してみよう。"
+    comment: plain(requested?.comment, 180) || fallbackComment(article)
   };
+}
+function fallbackComment(article) {
+  const sentences=String(article.bodyMarkdown||"").split(/\r?\n/).filter(line=>!/^\s*[#<]/.test(line)).join(" ")
+    .replace(/[*`=]/g,"").split(/(?<=[。！？])/).map(s=>s.trim());
+  const action=sentences.find(s=>s.length>=20 && s.length<=60 && /確認|見直|整理|伝え|共有|相談/.test(s) && !/[<>]|https?:|\]\(/.test(s));
+  if(action) return action.replace(/しましょう。$/,"してみよう。");
+  const subject=String(article.title||"この記事の内容").replace(/[<>*`#\r\n]/g,"").slice(0,30);
+  return `「${subject}」で、今の対応と違う点を一つ確認してみよう。`;
 }
 function renderBuhio(article, requested, escapeHtml) {
   const selection = selectBuhio(article, requested);

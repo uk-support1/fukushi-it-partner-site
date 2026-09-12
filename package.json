@@ -3,12 +3,13 @@
   "private": true,
   "scripts": {
     "build:blog": "node scripts/generate-blog.js",
-    "test": "node --test tests/blog.test.js tests/daily-topic.test.js tests/latest-info.test.js tests/draft-commit.test.js tests/publish-draft.test.js tests/buhio.test.js"
+    "test": "node --test tests/blog.test.js tests/daily-topic.test.js tests/latest-info.test.js tests/draft-commit.test.js tests/publish-draft.test.js tests/buhio.test.js tests/editorial.test.js"
   },
   "engines": {
     "node": ">=24"
   },
   "dependencies": {
-    "yaml": "2.9.0"
+    "yaml": "2.9.0",
+    "marked": "17.0.5"
   }
 }

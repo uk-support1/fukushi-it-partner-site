@@ -8,8 +8,21 @@ image_alt: ノートパソコンでホームページのデザインを考えて
 published: true
 description: 福祉事業所にホームページが必要な理由を5つに分けて解説。利用者・ご家族・支援機関への情報発信、見学体験申込み、採用にも役立つ理由をご紹介します。
 slug: why-homepage-5-reasons
-related: ["post-03-ai-first-step", "b-type-homepage-5-things"]
+related:
+  - post-03-ai-first-step
+  - b-type-homepage-5-things
 excerpt: 利用者・ご家族・支援機関への情報発信から、見学体験申込み、採用にも役立つ理由を5つに分けてご紹介します。
+buhio:
+  image: buhio-02-waving.png
+  alt: 福祉事業所にホームページが必要な5つの理由について、手を振って案内するぶひお
+  comment: 電話しにくい時間でも連絡できる入口があると、ご家族の助けになるね。
+emphasis:
+  - text: お問い合わせフォームや見学申込みの導線
+    style: strong
+  - text: 必要な方が必要なときに確認できます。
+    style: marker
+  - text: 本人の同意やプライバシーへの配慮
+    style: notice
 ---
 福祉事業所を運営していると、日々の支援や利用者さんへの対応、関係機関との連携など、優先すべきことが多くあります。
 

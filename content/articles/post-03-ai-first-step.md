@@ -8,8 +8,21 @@ image_alt: ノートパソコンを使いながら相談に応じるスタッフ
 published: true
 description: 忙しい福祉現場でも無理なく始められる、生成AIの活用方法をご紹介します。
 slug: post-03-ai-first-step
-related: ["why-homepage-5-reasons", "b-type-homepage-5-things"]
+related:
+  - why-homepage-5-reasons
+  - b-type-homepage-5-things
 excerpt: 忙しい現場でも無理なく始められる、生成AIの活用方法をご紹介します。
+buhio:
+  image: buhio-01-standing.png
+  alt: 福祉現場でAIを活用する第一歩について、内容を案内するぶひお
+  comment: お知らせの下書きから試そう。利用者さんを特定できる情報は入れないでね。
+emphasis:
+  - text: 広報文やお知らせ文の下書き
+    style: strong
+  - text: 現場の言葉に整えていく
+    style: marker
+  - text: 個人を特定できる情報を入力しない
+    style: notice
 ---
 「AIを業務に活用したい」と思っても、何から始めればよいか分からないという声をよく聞きます。 福祉現場では専門的な配慮が必要な場面も多いため、AIをそのまま使うのではなく、 現場に合わせた取り入れ方を考えることが大切です。
 

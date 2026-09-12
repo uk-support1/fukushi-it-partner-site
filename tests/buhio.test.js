@@ -29,12 +29,13 @@ test("Content fallback covers six uses; invalid paths and unsafe text are replac
 test("Gemini selection survives validation, Markdown storage and HTML rendering", async () => {
   const topic = {title:"現場の改善事例",category:"IT活用",target:"職員",keyword:"改善",reason:"実務",angle:"現場",service:"IT支援"};
   const bodyMarkdown = ["## 導入", "職員が日々の仕事を振り返り、できることから一緒に整理します。".repeat(20), "## 現場でできること", "まずは記録の仕方を確認してみましょう。".repeat(30), "## まとめ", "小さな改善から始めましょう。".repeat(20)].join("\n\n");
-  const buhio = {image:BUHIO_IMAGES[3].file,alt:"現場の改善を喜んで跳び上がるぶひお",comment:"記録の仕方を、みんなで確認してみよう。"};
+  const buhio = {image:BUHIO_IMAGES[3].file,alt:"現場の改善を喜んで跳び上がるぶひお",comment:"毎日の記録の仕方を、職員みんなで確認してみよう。"};
   const article = await generateArticle({apiKey:"dummy", topic, request:async args => {
     assert.deepEqual(args.input.buhioImages, BUHIO_IMAGES);
     assert.ok(args.schema.required.includes("buhio"));
     assert.match(args.instructions, /結局どういうこと/);
-    return JSON.stringify({title:topic.title,description:"職員ができる改善を紹介します。",bodyMarkdown,buhio});
+    return JSON.stringify({title:topic.title,description:"職員ができる改善を紹介します。",bodyMarkdown:bodyMarkdown.replace("## まとめ","## 記録を振り返る時間を作る"),buhio,
+      emphasis:[{text:"日々の仕事",style:"strong"},{text:"まずは記録の仕方を確認してみましょう。",style:"marker"}]});
   }});
   const built = buildArticleMarkdown({article,topic,date:"2026-09-12",slug:"buhio-test"});
   const parsed = parseFrontmatter(built.markdown);

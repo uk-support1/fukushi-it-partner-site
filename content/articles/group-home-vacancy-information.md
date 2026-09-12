@@ -8,8 +8,19 @@ image_alt: 福祉向けのやさしいデザインでホームページを制作
 published: true
 description: 空室はあるのに問い合わせにつながらない、そんなグループホームに向けて、ホームページで空室情報を分かりやすく伝えるための工夫をご紹介します。
 slug: group-home-vacancy-information
-related: ["group-home-website-content", "google-business-profile-for-welfare"]
+related:
+  - group-home-website-content
+  - google-business-profile-for-welfare
 excerpt: 空室情報の書き方、更新日の重要性、写真や料金の見せ方など、入居希望者や家族が判断しやすいホームページの整え方をご紹介します。
+buhio:
+  image: buhio-06-important.png
+  alt: 障害者グループホームの入居者募集｜ホームページで空室を減らすためにできることについて、「ここ重要！」の札で大切な点を伝えるぶひお
+  comment: 空室の数に更新日を添えると、「今も募集している？」の迷いを減らせるね。
+emphasis:
+  - text: 最終更新日を表示
+    style: strong
+  - text: 事業所として公開できる範囲の情報を、分かりやすく載せておく
+    style: marker
 ---
 障害者グループホームでは、「現在、空室があります」という情報そのものが、入居を検討している方にとって非常に重要な情報です。
 
