@@ -4,6 +4,9 @@ on:
   schedule:
     # UTC 21:00 = next day 06:00 Asia/Tokyo. GitHub may delay scheduled runs.
     - cron: '0 21 * * *'
+    # One-day trial: 2026-09-12 12:40-23:40 JST (03:40-14:40 UTC).
+    # The gate below rejects 03:10 and every occurrence outside the exact JST date.
+    - cron: '10,40 3-14 12 9 *'
   workflow_dispatch: {}
 
 # Draft creation and one-file persistence only. No deployment permissions.
@@ -19,42 +22,71 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      should_run: ${{ steps.schedule_gate.outputs.should_run }}
     steps:
+      - name: Allow daily schedule and the one-day JST trial window
+        id: schedule_gate
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          should_run=false
+          if [[ "$EVENT_NAME" != "schedule" || "$EVENT_SCHEDULE" == "0 21 * * *" ]]; then
+            should_run=true
+          elif [[ "$(TZ=Asia/Tokyo date +%F)" == "2026-09-12" ]]; then
+            jst_time="$(TZ=Asia/Tokyo date +%H%M)"
+            if (( 10#$jst_time >= 1240 && 10#$jst_time <= 2340 )); then
+              should_run=true
+            fi
+          fi
+          echo "should_run=$should_run" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@v4
+        if: steps.schedule_gate.outputs.should_run == 'true'
         with:
           persist-credentials: true
       - uses: actions/setup-node@v4
+        if: steps.schedule_gate.outputs.should_run == 'true'
         with:
           node-version: '24'
           cache: npm
       - name: Install locked dependencies
+        if: steps.schedule_gate.outputs.should_run == 'true'
         run: npm ci --ignore-scripts
       - name: Run tests with mocked APIs and local Git remotes
+        if: steps.schedule_gate.outputs.should_run == 'true'
         run: npm test
       - name: Select today's topic
+        if: steps.schedule_gate.outputs.should_run == 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
           DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
         run: node scripts/daily-blog.js
       - name: Commit and push only the generated draft
+        if: steps.schedule_gate.outputs.should_run == 'true'
         env:
           DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
           DAILY_DRAFT_COMMIT_RESULT_FILE: ${{ runner.temp }}/daily-draft-commit-result.json
         run: node scripts/commit-draft.js
       - name: Publish and push only the generated article
+        if: steps.schedule_gate.outputs.should_run == 'true'
         env:
           DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
           DAILY_DRAFT_COMMIT_RESULT_FILE: ${{ runner.temp }}/daily-draft-commit-result.json
         run: node scripts/publish-draft.js
       - name: Prepare public files only
+        if: steps.schedule_gate.outputs.should_run == 'true'
         run: node scripts/prepare-pages.js "$RUNNER_TEMP/fukushi-pages"
       - uses: actions/upload-pages-artifact@v4
+        if: steps.schedule_gate.outputs.should_run == 'true'
         with:
           path: ${{ runner.temp }}/fukushi-pages
 
   deploy:
     needs: start
+    if: needs.start.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     permissions:
       pages: write

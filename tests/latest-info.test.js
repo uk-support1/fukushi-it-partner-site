@@ -79,3 +79,14 @@ test("Fewer than three candidates automatically uses the established evergreen p
   }});
   assert.equal(result.contentMode,"evergreen");assert.deepEqual(result.sources,[]);
 });
+
+test("A source URL already used by the previous article is removed before topic selection",async()=>{
+  const latest=["a","b","c"].map(id=>({title:id,url:`https://www.mhlw.go.jp/${id}`,publishedAt:"2026-09-12T00:00:00Z",source:"厚生労働省",summary:"福祉"}));
+  let count=0;
+  const result=await selectTopic({apiKey:"dummy",localDate:"2026-09-12",latestInfo:latest,
+    load:()=>[{slug:"previous",title:"前の記事",category:"IT活用",date:"2026-09-12",published:true,summary:"前の記事",headings:[],sourceUrls:[latest[0].url]}],
+    request:async args=>{count++;assert.equal(args.input.latestInformationCandidates,undefined);return count===1
+      ?JSON.stringify({title:"福祉事業所の広報計画",category:"福祉事業所の広報",target:"福祉事業者",keyword:"福祉 広報",reason:"別テーマ",angle:"月次計画",service:"広報支援"})
+      :JSON.stringify({comparisons:[{slug:"previous",duplicate:false,reason:"異なるテーマ"}]});}});
+  assert.equal(result.contentMode,"evergreen");
+});
