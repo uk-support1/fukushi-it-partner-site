@@ -39,12 +39,11 @@ test("1/2: Markdown context includes published articles and drafts for duplicate
 test("Workflow keeps 06:00 JST schedule and connects draft, publish and Pages deployment",()=>{
   const workflow=YAML.parse(fs.readFileSync(path.join(ROOT,".github/workflows/daily-blog.yml"),"utf8"));
   assert.equal(workflow.on.schedule[0].cron,"0 21 * * *");
-  assert.equal(workflow.on.schedule[1].cron,"10,40 3-14 12 9 *");
-  assert.deepEqual(workflow.on.workflow_dispatch,{});
+  assert.equal(workflow.on.schedule.length,1);
+  assert.equal(workflow.on.workflow_dispatch.inputs.continuous_trial.type,"boolean");
+  assert.equal(workflow.on.workflow_dispatch.inputs.continuous_trial.default,false);
   assert.deepEqual(workflow.permissions,{contents:"write"});
   const checkout=workflow.jobs.start.steps.find(step=>step.uses==="actions/checkout@v4");
-  const gate=workflow.jobs.start.steps.find(step=>step.id==="schedule_gate");
-  assert.match(gate.run,/2026-09-12/);assert.match(gate.run,/>= 1240/);assert.match(gate.run,/<= 2340/);
   assert.equal(checkout.with["persist-credentials"],true);
   const select=workflow.jobs.start.steps.find(step=>step.name==="Select today's topic");
   assert.equal(select.env.GEMINI_API_KEY,"${{ secrets.GEMINI_API_KEY }}");
@@ -58,12 +57,17 @@ test("Workflow keeps 06:00 JST schedule and connects draft, publish and Pages de
   assert.equal(publish.run,"node scripts/publish-draft.js");
   assert.equal(workflow.concurrency.group,"github-pages");
   assert.equal(workflow.jobs.deploy.needs,"start");
-  assert.equal(workflow.jobs.deploy.if,"needs.start.outputs.should_run == 'true'");
   assert.equal(workflow.jobs.deploy.permissions.pages,"write");
   assert.equal(workflow.jobs.deploy.permissions["id-token"],"write");
   assert.equal(workflow.jobs.deploy.steps.find(step=>step.id==="deployment").uses,"actions/deploy-pages@v4");
   assert.match(workflow.jobs.deploy.steps.find(step=>step.name==="Report publication success").run,
     /"status":"published".*"articlesCreated":1.*"shouldPublish":true/);
+  const continuation=workflow.jobs["continue-trial"];
+  assert.equal(continuation.needs,"deploy");assert.equal(continuation.permissions.actions,"write");
+  assert.match(continuation.if,/workflow_dispatch.*continuous_trial/);
+  const loop=continuation.steps[0].run;
+  assert.match(loop,/2026-09-12 14:40:00Z/);assert.match(loop,/started_epoch \+ 1800/);
+  assert.match(loop,/gh workflow run daily-blog\.yml/);
 });
 test("Missing key stops safely; missing model defaults to Flash-Lite",async()=>{
   let called=false;const request=async()=>{called=true;},load=()=>{called=true;return articles;};

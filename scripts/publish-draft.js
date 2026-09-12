@@ -5,6 +5,7 @@ const path = require("path");
 const lib = require("./lib/articles");
 const { generateBlog } = require("./generate-blog");
 const { DraftCommitError, defaultRunGit } = require("./commit-draft");
+const { sourceSection } = require("./article-writer");
 
 function fail(code) { throw new DraftCommitError(code); }
 function nulList(value) { return String(value || "").split("\0").filter(Boolean); }
@@ -80,11 +81,11 @@ function publishMarkdown(articlePath, daily) {
   let parsed;
   try { parsed = lib.parseFrontmatter(raw); }
   catch { fail("PUBLICATION_MARKDOWN_INVALID"); }
+  const expectedBody = `${String(daily.article.bodyMarkdown || "").trim()}${sourceSection(daily.sources)}`.trim();
   if (parsed.data.published === true) fail("PUBLICATION_ALREADY_PUBLISHED");
   if (parsed.data.published !== false || parsed.data.slug !== daily.draft.slug ||
       parsed.data.title !== daily.article.title || parsed.data.description !== daily.article.description ||
-      parsed.data.category_label !== daily.topic.category ||
-      parsed.body.trim() !== String(daily.article.bodyMarkdown || "").trim()) {
+      parsed.data.category_label !== daily.topic.category || parsed.body.trim() !== expectedBody) {
     fail("PUBLICATION_MARKDOWN_INVALID");
   }
   const matches = raw.match(/^published:\s*false\s*$/gm) || [];
