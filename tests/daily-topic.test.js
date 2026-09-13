@@ -121,6 +121,7 @@ test("Generated article is saved with compatible front matter and body",t=>{
     type:"column",category_label:topic.category,title:generatedArticle.title,date,
     image:"assets/images/services/service-homepage.jpg",
     image_alt:"福祉事業所のホームページ活用を支援するイメージ",
+    image_role:"hero",image_category:"recruit",image_series:"service-homepage",
     published:false,description:generatedArticle.description,slug:saved.slug,
     buhio:generatedArticle.buhio,emphasis:generatedArticle.emphasis
   });

@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const YAML = require("yaml");
 const lib = require("./lib/articles");
+const imageLibrary = require("./lib/image-library");
 const { validateArticle } = require("./article-generator");
 const { CATEGORIES, TopicError } = require("./topic-selector");
 const { safeOfficialUrl } = require("./latest-info");
@@ -54,8 +55,13 @@ function baseSlugFor(title, date) {
   return `article-${date}-${digest}`;
 }
 
-function articleImage(category) {
-  return IMAGE_BY_CATEGORY[category] || DEFAULT_IMAGE;
+function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero" } = {}) {
+  const selected = imageLibrary.selectImage({ category,
+    candidates: imageLibrary.discoverImages({ root, kind }),
+    history: imageLibrary.usageHistory({ articlesDir }) });
+  if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series };
+  const fallback = IMAGE_BY_CATEGORY[category] || DEFAULT_IMAGE;
+  return { ...fallback, category: imageLibrary.categoryFor(category), series: imageLibrary.seriesFor(fallback.image, imageLibrary.categoryFor(category)) };
 }
 
 function validateTopicForDraft(topic) {
@@ -113,12 +119,12 @@ function sourceSection(sources = []) {
   return `\n\n## 出典・参考情報\n\n${lines.join("\n")}`;
 }
 
-function buildArticleMarkdown({ article, topic, date, slug, sources = [] }) {
+function buildArticleMarkdown({ article, topic, date, slug, sources = [], imageOptions } = {}) {
   validateTopicForDraft(topic);
   validateDate(date);
   const cleanArticle = validateArticle(JSON.stringify(article), topic);
   if (typeof slug !== "string" || !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(slug)) fail("INVALID_ARTICLE_SLUG");
-  const image = articleImage(topic.category);
+  const image = articleImage(topic.category, imageOptions);
   const metadata = {
     type: "column",
     category_label: topic.category,
@@ -126,6 +132,9 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [] }) {
     date,
     image: image.image,
     image_alt: image.imageAlt,
+    image_role: "hero",
+    image_category: image.category,
+    image_series: image.series,
     published: false,
     description: cleanArticle.description,
     slug,
@@ -140,13 +149,14 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [] }) {
   return { markdown, metadata };
 }
 
-function saveArticleDraft({ article, topic, date, sources = [], directory = lib.ARTICLES_DIR }) {
+function saveArticleDraft({ article, topic, date, sources = [], directory = lib.ARTICLES_DIR, imageRoot, imageKind = "hero" }) {
   validateTopicForDraft(topic);
   for (let attempt = 0; attempt < 9999; attempt += 1) {
     const slug = availableSlug(article && article.title, date, directory);
     const filename = `${slug}.md`;
     const filePath = path.join(directory, filename);
-    const built = buildArticleMarkdown({ article, topic, date, slug, sources });
+    const built = buildArticleMarkdown({ article, topic, date, slug, sources,
+      imageOptions: { root: imageRoot || path.join(__dirname, ".."), articlesDir: directory, kind: imageKind } });
     try {
       fs.writeFileSync(filePath, built.markdown, { encoding: "utf8", flag: "wx" });
       return { slug, filename, filePath, metadata: built.metadata };
