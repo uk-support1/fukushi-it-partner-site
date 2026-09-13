@@ -39,6 +39,20 @@ test("discovers new hero files, derives categories and records Markdown image hi
   });
 });
 
+test("recognizes every supported category from conventional hero filenames", () => {
+  for (const category of ["ai", "dx", "web", "seo", "subsidy", "security", "recruit", "welfare"]) {
+    assert.equal(images.categoryFor("hero-" + category + "-01.webp"), category);
+  }
+});
+
+test("the committed hero library is preferred over legacy fallback images", () => {
+  const candidates = images.discoverImages({ root: path.resolve(__dirname, "..") });
+  assert.ok(candidates.length >= 99);
+  assert.equal(candidates.some(candidate => candidate.category === "general"), false);
+  assert.match(images.selectImage({ category: "補助金活用", candidates, history: [] }).path, /hero\/.*subsidy|hero\/subsidy-/);
+  assert.match(images.selectImage({ category: "AI活用", candidates, history: [] }).path, /hero\/hero-dx-/);
+});
+
 test("prefers category matches, avoids the latest ten and never repeats the latest image when another exists", () => {
   const candidates = ["hero-web-01.webp", "hero-web-02.webp", "hero-seo-01.webp"].map(file => ({
     path: "assets/images/blog-library/hero/" + file, category: images.categoryFor(file), series: images.seriesFor(file, images.categoryFor(file))

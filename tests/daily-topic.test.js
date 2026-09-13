@@ -119,9 +119,8 @@ test("Generated article is saved with compatible front matter and body",t=>{
   const parsed=require("../scripts/lib/articles").parseFrontmatter(raw);
   assert.deepEqual(parsed.data,{
     type:"column",category_label:topic.category,title:generatedArticle.title,date,
-    image:"assets/images/services/service-homepage.jpg",
-    image_alt:"福祉事業所のホームページ活用を支援するイメージ",
-    image_role:"hero",image_category:"recruit",image_series:"service-homepage",
+    image:"assets/images/blog-library/hero/hero-recruit-interview-01.png",
+    image_alt:"",image_role:"hero",image_category:"recruit",image_series:"interview",
     published:false,description:generatedArticle.description,slug:saved.slug,
     buhio:generatedArticle.buhio,emphasis:generatedArticle.emphasis
   });
