@@ -55,16 +55,17 @@ function discoverImages({ root, kind = "hero" } = {}) {
     .sort((a, b) => a.path.localeCompare(b.path));
 }
 
-function usageHistory({ articlesDir = lib.ARTICLES_DIR } = {}) {
+function usageHistory({ articlesDir = lib.ARTICLES_DIR, kind = "hero" } = {}) {
   if (!fs.existsSync(articlesDir)) return [];
   const entries = [];
   for (const filename of fs.readdirSync(articlesDir).filter(name => /\.md$/i.test(name))) {
     try {
       const parsed = lib.parseFrontmatter(fs.readFileSync(path.join(articlesDir, filename), "utf8"));
-      if (!parsed.data.image) continue;
-      entries.push({ image: normalizePath(parsed.data.image), category: parsed.data.image_category ||
-        categoryFor(parsed.data.category_label), series: parsed.data.image_series ||
-        seriesFor(parsed.data.image, categoryFor(parsed.data.image_category || parsed.data.category_label)),
+      const prefix = kind === "hero" ? "image" : kind + "_image";
+      if (!parsed.data[prefix]) continue;
+      entries.push({ image: normalizePath(parsed.data[prefix]), category: parsed.data[prefix + "_category"] ||
+        categoryFor(parsed.data.category_label), series: parsed.data[prefix + "_series"] ||
+        seriesFor(parsed.data[prefix], categoryFor(parsed.data[prefix + "_category"] || parsed.data.category_label)),
         article: parsed.data.slug || filename.replace(/\.md$/i, ""), date: String(parsed.data.date || "") });
     } catch { /* Invalid unrelated Markdown must not stop a publication. */ }
   }

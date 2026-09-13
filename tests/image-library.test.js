@@ -8,6 +8,7 @@ const path = require("path");
 const YAML = require("yaml");
 const images = require("../scripts/lib/image-library");
 const { saveArticleDraft } = require("../scripts/article-writer");
+const { refreshInlineImages } = require("../scripts/refresh-inline-images");
 
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "blog-images-"));
@@ -16,14 +17,14 @@ function fixture(t) {
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   return { root, articles };
 }
-function image(root, name) {
-  const file = path.join(root, "assets", "images", "blog-library", "hero", name);
+function image(root, name, kind = "hero") {
+  const file = path.join(root, "assets", "images", "blog-library", kind, name);
   fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, "image");
 }
-function article(directory, slug, date, imagePath, category = "web") {
+function article(directory, slug, date, imagePath, category = "web", body = "body") {
   fs.writeFileSync(path.join(directory, slug + ".md"), "---\n" + YAML.stringify({
-    title: slug, date, slug, image: imagePath, image_category: category, image_role: "hero", published: true
-  }).trimEnd() + "\n---\n\nbody\n");
+    type: "column", title: slug, date, slug, image: imagePath, image_category: category, image_role: "hero", published: true
+  }).trimEnd() + "\n---\n\n" + body + "\n");
 }
 
 test("discovers new hero files, derives categories and records Markdown image history", t => {
@@ -74,4 +75,29 @@ test("reuses the oldest eligible candidate only after exhaustion and falls back 
   const topic = { title: "AI画像の選び方", category: "AI活用", target: "福祉事業所", keyword: "AI", reason: "画像選択の確認", angle: "画像を分散する", service: "IT支援" }, articleData = { title: "AI画像の選び方", description: "説明".repeat(20), bodyMarkdown: "## 一つ目\n\n" + "本文".repeat(250) + "\n\n## 二つ目\n\n" + "本文".repeat(250) + "\n\n## 三つ目\n\n" + "本文".repeat(250) };
   const saved = saveArticleDraft({ article: articleData, topic, date: "2026-09-13", directory: value.articles, imageRoot: value.root });
   assert.match(fs.readFileSync(saved.filePath, "utf8"), /assets\/images\/services\/service-ai-support\.jpg/);
+});
+
+test("new drafts insert one early-middle inline image and record separate inline history", t => {
+  const value = fixture(t);
+  image(value.root, "hero-recruit-01.webp", "inline"); image(value.root, "hero-recruit-02.webp", "inline");
+  const topic = { title: "採用ページの改善", category: "採用", target: "福祉事業所", keyword: "採用", reason: "確認", angle: "改善", service: "支援" };
+  const body = "## 最初の確認\n\n" + "本文".repeat(250) + "\n\n## 次の確認\n\n" + "本文".repeat(250) + "\n\n## まとめ\n\n" + "本文".repeat(250);
+  const saved = saveArticleDraft({ article: { title: topic.title, description: "説明".repeat(20), bodyMarkdown: body }, topic, date: "2026-09-13", directory: value.articles, imageRoot: value.root });
+  const parsed = require("../scripts/lib/articles").parseFrontmatter(fs.readFileSync(saved.filePath, "utf8"));
+  assert.equal(parsed.data.inline_image, "assets/images/blog-library/inline/hero-recruit-01.webp");
+  assert.equal((parsed.body.match(/hero-recruit-01\.webp/g) || []).length, 1);
+  assert.equal(images.usageHistory({ articlesDir: value.articles, kind: "inline" })[0].image, parsed.data.inline_image);
+});
+
+test("published Markdown receives one inline image when the library is available, otherwise remains unchanged", t => {
+  const value = fixture(t);
+  article(value.articles, "published-post", "2026-09-12", "assets/images/hero.png", "welfare", "## 前半\n\n本文\n\n## 後半\n\n本文");
+  const initial = fs.readFileSync(path.join(value.articles, "published-post.md"), "utf8");
+  assert.deepEqual(refreshInlineImages({ root: value.root }), { published: 1, changed: 0 });
+  assert.equal(fs.readFileSync(path.join(value.articles, "published-post.md"), "utf8"), initial);
+  image(value.root, "hero-welfare-01.webp", "inline");
+  assert.deepEqual(refreshInlineImages({ root: value.root }), { published: 1, changed: 1 });
+  const updated = require("../scripts/lib/articles").parseFrontmatter(fs.readFileSync(path.join(value.articles, "published-post.md"), "utf8"));
+  assert.equal(updated.data.inline_image, "assets/images/blog-library/inline/hero-welfare-01.webp");
+  assert.match(updated.body, /hero-welfare-01\.webp/);
 });

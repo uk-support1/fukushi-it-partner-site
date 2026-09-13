@@ -1326,6 +1326,17 @@ section {
   display: block;
 }
 
+/* 本文中の補足画像。heroとは別の、読了のリズムを作る要素。 */
+.article-inline-image {
+  display: block;
+  width: min(100%, 880px);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  margin: 32px auto;
+}
+
 /* 記事詳細：本文中の補助写真 */
 .article-photo {
   width: 100%;

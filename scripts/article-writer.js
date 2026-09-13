@@ -58,10 +58,32 @@ function baseSlugFor(title, date) {
 function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero" } = {}) {
   const selected = imageLibrary.selectImage({ category,
     candidates: imageLibrary.discoverImages({ root, kind }),
-    history: imageLibrary.usageHistory({ articlesDir }) });
+    history: imageLibrary.usageHistory({ articlesDir, kind }) });
   if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series };
+  if (kind !== "hero") return null;
   const fallback = IMAGE_BY_CATEGORY[category] || DEFAULT_IMAGE;
   return { ...fallback, category: imageLibrary.categoryFor(category), series: imageLibrary.seriesFor(fallback.image, imageLibrary.categoryFor(category)) };
+}
+
+function inlineImage(category, options) { return articleImage(category, { ...options, kind: "inline" }); }
+
+function inlineAlt(category) {
+  const labels = { welfare: "福祉の現場を支えるイメージ", recruit: "採用活動を支えるイメージ",
+    ai: "AI活用のイメージ", dx: "業務のデジタル化を支えるイメージ", web: "ホームページ活用のイメージ",
+    seo: "情報発信を支えるイメージ", subsidy: "補助金活用のイメージ", security: "情報セキュリティのイメージ" };
+  return labels[imageLibrary.categoryFor(category)] || "記事内容を補足するイメージ";
+}
+
+// Place the illustration after the first substantial section: this keeps the
+// opening readable and puts the image near the article's early-middle point.
+function insertInlineImage(body, image) {
+  if (!image || !image.image || String(body).includes("(" + image.image + ")")) return String(body || "");
+  const blocks = String(body || "").trim().split(/\r?\n\s*\r?\n/);
+  const headings = blocks.map((block, index) => /^##\s+/.test(block) ? index : -1).filter(index => index >= 0);
+  if (headings.length < 2) return String(body || "");
+  const insertionAt = headings[Math.floor(headings.length / 2)];
+  blocks.splice(insertionAt, 0, `![${inlineAlt(image.category)}](${image.image})`);
+  return blocks.join("\n\n");
 }
 
 function validateTopicForDraft(topic) {
@@ -125,6 +147,7 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [], imageO
   const cleanArticle = validateArticle(JSON.stringify(article), topic);
   if (typeof slug !== "string" || !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(slug)) fail("INVALID_ARTICLE_SLUG");
   const image = articleImage(topic.category, imageOptions);
+  const inline = inlineImage(topic.category, imageOptions);
   const metadata = {
     type: "column",
     category_label: topic.category,
@@ -135,13 +158,15 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [], imageO
     image_role: "hero",
     image_category: image.category,
     image_series: image.series,
+    ...(inline ? { inline_image: inline.image, inline_image_alt: inlineAlt(inline.category),
+      inline_image_category: inline.category, inline_image_series: inline.series } : {}),
     published: false,
     description: cleanArticle.description,
     slug,
     buhio: selectBuhio(cleanArticle, cleanArticle.buhio),
     ...(cleanArticle.emphasis ? {emphasis:cleanArticle.emphasis} : {})
   };
-  const markdown = `---\n${YAML.stringify(metadata).trimEnd()}\n---\n\n${cleanArticle.bodyMarkdown}${sourceSection(sources)}\n`;
+  const markdown = `---\n${YAML.stringify(metadata).trimEnd()}\n---\n\n${insertInlineImage(cleanArticle.bodyMarkdown, inline)}${sourceSection(sources)}\n`;
   const parsed = lib.parseFrontmatter(markdown);
   if (parsed.data.slug !== slug || parsed.data.published !== false || !parsed.body.trim()) {
     fail("INVALID_ARTICLE_MARKDOWN");
@@ -173,6 +198,9 @@ module.exports = {
   DEFAULT_IMAGE,
   baseSlugFor,
   articleImage,
+  inlineImage,
+  inlineAlt,
+  insertInlineImage,
   availableSlug,
   sourceSection,
   buildArticleMarkdown,
