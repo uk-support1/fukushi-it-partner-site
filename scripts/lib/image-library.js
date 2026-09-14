@@ -6,6 +6,7 @@ const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const lib = require("./articles");
+const semantics = require("./image-semantics");
 
 const IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"]);
 const RECENT_ARTICLE_LIMIT = 10;
@@ -67,7 +68,13 @@ function walkImages(directory, root) {
 
 function discoverImages({ root, kind = "hero" } = {}) {
   if (!root) throw new Error("IMAGE_LIBRARY_ROOT_REQUIRED");
+  let catalog = new Map();
+  try {
+    const source = JSON.parse(fs.readFileSync(path.join(root, "data", "image-library.json"), "utf8"));
+    catalog = new Map((source.images || []).map(item => [item.path, item]));
+  } catch { /* New files remain eligible with their inferred path metadata. */ }
   return walkImages(path.join(root, "assets", "images", "blog-library", kind), root)
+    .map(candidate => ({ ...candidate, ...(catalog.get(candidate.path) || { tags: [candidate.category], themes: [candidate.category], scene: candidate.category, technology_level: "none" }) }))
     .sort((a, b) => a.path.localeCompare(b.path));
 }
 
@@ -95,16 +102,33 @@ function sameImage(candidate, use) {
     : candidate.path === use.image;
 }
 
-function selectImage({ category, candidates, history = [], recentLimit = RECENT_ARTICLE_LIMIT, excludedHashes = new Set() } = {}) {
+function selectImage({ category, candidates, history = [], recentLimit = RECENT_ARTICLE_LIMIT, excludedHashes = new Set(), profile = null } = {}) {
   if (!Array.isArray(candidates) || candidates.length === 0) return null;
-  const usable = candidates.filter(candidate => !candidate.hash || !excludedHashes.has(candidate.hash));
+  const semanticSafe = profile ? candidates.filter(candidate => !semantics.isExcluded(candidate, profile)) : candidates;
+  const safeCandidates = semanticSafe.length ? semanticSafe : candidates;
+  const usable = safeCandidates.filter(candidate => !candidate.hash || !excludedHashes.has(candidate.hash));
   // Only relax page-level exclusions after every distinct image has been tried.
   const pool = usable.length ? usable : candidates;
   const wanted = categoryFor(category);
-  const exact = pool.filter(candidate => candidate.category === wanted);
-  const nearby = pool.filter(candidate => (NEAR_CATEGORIES[wanted] || []).includes(candidate.category));
   const recent = history.slice(0, recentLimit);
   const latest = history[0];
+  if (profile) {
+    const scores = new Map(pool.map(candidate => [candidate, semantics.scoreImage(candidate, profile)]));
+    const meaningful = pool.filter(candidate => scores.get(candidate) > 0);
+    const semanticPool = meaningful.length ? meaningful : pool;
+    const recentFree = semanticPool.filter(candidate => !recent.some(use => sameImage(candidate, use)));
+    let eligible = recentFree.length ? recentFree : semanticPool;
+    const withoutLatest = eligible.filter(candidate => !latest || !sameImage(candidate, latest));
+    if (withoutLatest.length) eligible = withoutLatest;
+    const withoutLatestSeries = eligible.filter(candidate => !latest || candidate.series !== latest.series);
+    if (withoutLatestSeries.length) eligible = withoutLatestSeries;
+    const categoryRank = candidate => candidate.category === wanted ? 0 : ((NEAR_CATEGORIES[wanted] || []).includes(candidate.category) ? 1 : 2);
+    const lastUse = candidate => history.findIndex(use => sameImage(candidate, use));
+    return eligible.slice().sort((a, b) => scores.get(b) - scores.get(a) || categoryRank(a) - categoryRank(b) ||
+      (lastUse(a) < 0 ? 0 : 1) - (lastUse(b) < 0 ? 0 : 1) || lastUse(b) - lastUse(a) || a.path.localeCompare(b.path))[0];
+  }
+  const exact = pool.filter(candidate => candidate.category === wanted);
+  const nearby = pool.filter(candidate => (NEAR_CATEGORIES[wanted] || []).includes(candidate.category));
   const unused = list => list.filter(candidate => !recent.some(use => sameImage(candidate, use)));
   // Prefer exact-category images, but let nearby categories fill a depleted
   // exact pool before reusing a recent image.

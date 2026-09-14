@@ -3,7 +3,7 @@ type: column
 category_label: ホームページ制作
 title: 障害者グループホームの入居者募集｜ホームページで空室を減らすためにできること
 date: 2026-08-27
-image: assets/images/blog-library/hero/hero-dx-workflow-06.png
+image: assets/images/blog-library/hero/hero-welfare-care-02.png
 image_alt: 福祉向けのやさしいデザインでホームページを制作している画面
 published: true
 description: 空室はあるのに問い合わせにつながらない、そんなグループホームに向けて、ホームページで空室情報を分かりやすく伝えるための工夫をご紹介します。
@@ -22,9 +22,27 @@ emphasis:
   - text: 事業所として公開できる範囲の情報を、分かりやすく載せておく
     style: marker
 image_role: hero
-image_category: dx
-image_series: workflow
-image_hash: 4e089309782072f11b91c475006c13941007aa124f6f68bc73a2e903f51b5822
+image_category: welfare
+image_series: care
+image_hash: faa78d5e3e45acf0aebb1c45686786ec2da4680836c714d5f6a6a97cc5c6db90
+image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 障害者グループホームでは、「現在、空室があります」という情報そのものが、入居を検討している方にとって非常に重要な情報です。

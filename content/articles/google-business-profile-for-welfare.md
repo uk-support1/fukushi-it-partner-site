@@ -3,7 +3,7 @@ type: column
 category_label: ホームページ制作
 title: 福祉事業所のGoogleマップ活用｜Googleビジネスプロフィールを登録するメリット
 date: 2026-07-12
-image: assets/images/blog-library/hero/hero-dx-workflow-07.png
+image: assets/images/blog-library/hero/hero-welfare-care-03.png
 image_alt: Googleマップを使ったアクセス情報をホームページに組み込んでいる画面
 published: true
 description: 福祉事業所がGoogleビジネスプロフィールに登録するメリットを分かりやすく解説。Googleマップから見つけてもらいやすくなる仕組みと、ホームページとの組み合わせ方をご紹介します。
@@ -22,9 +22,27 @@ emphasis:
   - text: ホームページで詳しい支援内容や料金、空室状況などを確認する
     style: marker
 image_role: hero
-image_category: dx
-image_series: workflow
-image_hash: ef20953a8040c14b7089505634da8e890980c344dc29d090c7bf3998a96a01ed
+image_category: welfare
+image_series: care
+image_hash: 17d9e96468aebd6ddfdb0d1e7d526951492b61468e1a0ecc874cb1785abe5c33
+image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 福祉事業所を探すとき、「地域名＋グループホーム」「地域名＋就労継続支援B型」「地域名＋就労移行支援」といったキーワードでGoogle検索をする方がいます。

@@ -11,6 +11,7 @@ const { saveArticleDraft } = require("../scripts/article-writer");
 const { refreshInlineImages } = require("../scripts/refresh-inline-images");
 const { refreshHeroImages } = require("../scripts/refresh-hero-images");
 const { buildBlogIndex } = require("../scripts/generate-blog");
+const { articleImageProfile } = require("../scripts/lib/image-semantics");
 
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "blog-images-"));
@@ -111,6 +112,30 @@ test("blog index has a final content-hash uniqueness guard", t => {
   const index = buildBlogIndex(published, { root: value.root });
   const hashes = index.map(entry => images.imageHashForPath(value.root, entry.image));
   assert.equal(new Set(hashes).size, 2);
+});
+
+test("semantic profiles exclude unrelated strong themes and still choose a matching unused image", () => {
+  const candidates = [
+    { path: "welfare.png", category: "welfare", series: "support", hash: "a", tags: ["福祉", "支援", "相談"], scene: "福祉支援", themes: ["welfare"], technology_level: "none" },
+    { path: "ai.png", category: "ai", series: "ai", hash: "b", tags: ["AI", "PC"], scene: "AI活用", themes: ["ai"], technology_level: "strong" },
+    { path: "subsidy.png", category: "subsidy", series: "planning", hash: "c", tags: ["補助金", "申請"], scene: "申請計画", themes: ["subsidy"], technology_level: "none" },
+    { path: "recruit.png", category: "recruit", series: "interview", hash: "d", tags: ["採用", "面談"], scene: "採用面談", themes: ["recruit"], technology_level: "none" },
+    { path: "dx.png", category: "dx", series: "workflow", hash: "e", tags: ["PC", "Web", "デジタル"], scene: "PC作業", themes: ["digital"], technology_level: "strong" }
+  ];
+  const welfare = articleImageProfile({ title: "就労移行支援事業所で利用者に安心を伝えるホームページ", body: "利用者と家族への情報提供を整えます", category: "ホームページ制作" });
+  assert.equal(images.selectImage({ category: "ホームページ制作", candidates, profile: welfare }).path, "welfare.png");
+  const subsidy = articleImageProfile({ title: "補助金の申請準備", body: "申請書と予算を確認します", category: "補助金活用" });
+  assert.equal(images.selectImage({ category: "補助金活用", candidates, profile: subsidy }).path, "subsidy.png");
+  const recruit = articleImageProfile({ title: "採用面談の準備", body: "応募者と職員の面談", category: "採用" });
+  assert.equal(images.selectImage({ category: "採用", candidates, profile: recruit, excludedHashes: new Set(["d"]) }).path, "welfare.png");
+  const web = articleImageProfile({ title: "Webサイトの技術改善", body: "PCでデジタルなサイト制作を行う", category: "IT活用" });
+  assert.equal(images.selectImage({ category: "IT活用", candidates, profile: web }).path, "dx.png");
+});
+
+test("the committed image catalog covers every hero with stored semantic metadata", () => {
+  const catalog = require("../data/image-library.json").images;
+  assert.equal(catalog.length, 99);
+  for (const item of catalog) assert.ok(item.path && item.category && item.scene && item.tags.length && item.themes.length);
 });
 
 test("new drafts insert one early-middle inline image and record separate inline history", t => {

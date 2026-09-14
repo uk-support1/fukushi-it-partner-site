@@ -3,7 +3,7 @@ type: column
 category_label: ホームページ制作
 title: 就労継続支援B型のホームページで伝えるべき5つのこと
 date: 2026-03-12
-image: assets/images/blog-library/hero/hero-recruit-team-01.png
+image: assets/images/blog-library/hero/hero-welfare-care-07.png
 image_alt: 作業を見守りながら一緒に取り組むスタッフと利用者の様子
 published: true
 description: 就労継続支援B型事業所のホームページで伝えるべき5つのことを解説。利用対象者、作業内容、利用までの流れ、工賃や通所のイメージ、事業所が大切にしていることをご紹介します。
@@ -22,9 +22,27 @@ emphasis:
   - text: 未経験でも始められるか
     style: marker
 image_role: hero
-image_category: recruit
-image_series: team
-image_hash: 6a6f1a9f82af4573012ba5b7ed64cc046f62b21d6bfc6dcf31965dc1dcbeed98
+image_category: welfare
+image_series: care
+image_hash: 3472f731e05e2688a006f89252048737cf94e557171b44d84f759e30118ebcfd
+image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 就労継続支援B型の事業所を探している方やご家族、相談支援専門員の方は、まずホームページで「どのような事業所なのか」を確認することが多くあります。

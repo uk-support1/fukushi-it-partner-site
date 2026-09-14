@@ -3,7 +3,7 @@ type: column
 category_label: ホームページ制作
 title: 福祉事業所にホームページが必要な5つの理由
 date: 2026-04-05
-image: assets/images/blog-library/hero/hero-recruit-interview-11.png
+image: assets/images/blog-library/hero/hero-welfare-care-06.png
 image_alt: ノートパソコンでホームページのデザインを考えている様子
 published: true
 description: 福祉事業所にホームページが必要な理由を5つに分けて解説。利用者・ご家族・支援機関への情報発信、見学体験申込み、採用にも役立つ理由をご紹介します。
@@ -24,9 +24,27 @@ emphasis:
   - text: 本人の同意やプライバシーへの配慮
     style: notice
 image_role: hero
-image_category: recruit
-image_series: interview
-image_hash: 66e09219c9cb755f41b8ead75f0f7f05c00e5ea0666247ed3ccfc2068912577c
+image_category: welfare
+image_series: care
+image_hash: 0c7472ed3d2252c7d01eddcce133a60cbde9f9374ae2d4c6f86948821da84e1d
+image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 福祉事業所を運営していると、日々の支援や利用者さんへの対応、関係機関との連携など、優先すべきことが多くあります。

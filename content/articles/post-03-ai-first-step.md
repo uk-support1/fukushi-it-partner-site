@@ -3,7 +3,7 @@ type: column
 category_label: AI活用
 title: 福祉現場でAIを活用する第一歩
 date: 2026-02-07
-image: assets/images/blog-library/hero/hero-recruit-team-02.png
+image: assets/images/blog-library/hero/hero-dx-workflow-04.png
 image_alt: ノートパソコンを使いながら相談に応じるスタッフの様子
 published: true
 description: 忙しい福祉現場でも無理なく始められる、生成AIの活用方法をご紹介します。
@@ -24,9 +24,25 @@ emphasis:
   - text: 個人を特定できる情報を入力しない
     style: notice
 image_role: hero
-image_category: recruit
-image_series: team
-image_hash: 01055ef165354f84a909726910418bf924503d2ff3b779b740797e7275a781c7
+image_category: dx
+image_series: workflow
+image_hash: eeaa177280781628358350ea25b28f10caa64a3dc04dc7fc878bd8f590a69d40
+image_selection:
+  themes:
+    - ai
+    - digital
+    - welfare
+  preferredTags:
+    - AI
+    - デジタル
+    - PC
+  preferredScenes:
+    - AI活用
+  excludedThemes:
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 「AIを業務に活用したい」と思っても、何から始めればよいか分からないという声をよく聞きます。 福祉現場では専門的な配慮が必要な場面も多いため、AIをそのまま使うのではなく、 現場に合わせた取り入れ方を考えることが大切です。

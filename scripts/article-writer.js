@@ -6,6 +6,7 @@ const path = require("path");
 const YAML = require("yaml");
 const lib = require("./lib/articles");
 const imageLibrary = require("./lib/image-library");
+const { articleImageProfile } = require("./lib/image-semantics");
 const { validateArticle } = require("./article-generator");
 const { CATEGORIES, TopicError } = require("./topic-selector");
 const { safeOfficialUrl } = require("./latest-info");
@@ -55,15 +56,16 @@ function baseSlugFor(title, date) {
   return `article-${date}-${digest}`;
 }
 
-function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero" } = {}) {
+function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {} } = {}) {
+  const profile = articleImageProfile({ ...content, category });
   const selected = imageLibrary.selectImage({ category,
     candidates: imageLibrary.discoverImages({ root, kind }),
     history: imageLibrary.usageHistory({ root, articlesDir, kind }),
-    recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT });
-  if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series, hash: selected.hash };
+    recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT, profile });
+  if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series, hash: selected.hash, profile };
   if (kind !== "hero") return null;
   const fallback = IMAGE_BY_CATEGORY[category] || DEFAULT_IMAGE;
-  return { ...fallback, category: imageLibrary.categoryFor(category), series: imageLibrary.seriesFor(fallback.image, imageLibrary.categoryFor(category)) };
+  return { ...fallback, category: imageLibrary.categoryFor(category), series: imageLibrary.seriesFor(fallback.image, imageLibrary.categoryFor(category)), profile };
 }
 
 function inlineImage(category, options) { return articleImage(category, { ...options, kind: "inline" }); }
@@ -147,8 +149,9 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [], imageO
   validateDate(date);
   const cleanArticle = validateArticle(JSON.stringify(article), topic);
   if (typeof slug !== "string" || !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(slug)) fail("INVALID_ARTICLE_SLUG");
-  const image = articleImage(topic.category, imageOptions);
-  const inline = inlineImage(topic.category, imageOptions);
+  const content = { title: cleanArticle.title, body: cleanArticle.bodyMarkdown };
+  const image = articleImage(topic.category, { ...imageOptions, content });
+  const inline = inlineImage(topic.category, { ...imageOptions, content });
   const metadata = {
     type: "column",
     category_label: topic.category,
@@ -160,6 +163,7 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [], imageO
     image_category: image.category,
     image_series: image.series,
     ...(image.hash ? { image_hash: image.hash } : {}),
+    image_selection: image.profile,
     ...(inline ? { inline_image: inline.image, inline_image_alt: inlineAlt(inline.category),
       inline_image_category: inline.category, inline_image_series: inline.series,
       ...(inline.hash ? { inline_image_hash: inline.hash } : {}) } : {}),

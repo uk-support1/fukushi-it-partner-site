@@ -26,6 +26,7 @@ const lib = require("./lib/articles");
 const { renderBuhio } = require("./lib/buhio");
 const { assertNoMarkdownLeak } = require("./lib/markdown");
 const imageLibrary = require("./lib/image-library");
+const { articleImageProfile } = require("./lib/image-semantics");
 
 const ROOT = path.join(__dirname, "..");
 const BLOG_INDEX_FILE = path.join(ROOT, "data", "blog-index.json");
@@ -353,7 +354,8 @@ function buildBlogIndex(publishedArticles, { root = ROOT } = {}) {
       // blog.html. A duplicate source image cannot leak into the list even if
       // an old Markdown record was manually edited.
       const selected = imageLibrary.selectImage({ category: lib.categoryLabelOf(a.data), candidates, history,
-        recentLimit: imageLibrary.HERO_RECENT_ARTICLE_LIMIT, excludedHashes: usedHashes });
+        recentLimit: imageLibrary.HERO_RECENT_ARTICLE_LIMIT, excludedHashes: usedHashes,
+        profile: a.data.image_selection || articleImageProfile({ title: a.data.title, body: a.body, category: lib.categoryLabelOf(a.data) }) });
       const image = selected ? selected.path : (a.data.image || null);
       const hash = selected ? selected.hash : imageLibrary.imageHashForPath(root, image);
       if (hash) usedHashes.add(hash);

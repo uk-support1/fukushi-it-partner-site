@@ -2,7 +2,7 @@
 type: column
 title: 福祉事業所のホームページで最初に整えたい5つの情報
 date: 2026-09-02
-image: assets/images/blog-library/hero/hero-recruit-interview-08.png
+image: assets/images/blog-library/hero/hero-welfare-care-01.png
 image_alt: 福祉事業所のホームページをパソコンで確認している様子
 published: true
 description: 福祉事業所のホームページで、利用を検討している方やご家族に分かりやすく伝えるために、最初に掲載しておきたい5つの情報を紹介します。
@@ -19,9 +19,27 @@ emphasis:
   - text: 個人が写る場合の許可や個人情報
     style: notice
 image_role: hero
-image_category: recruit
-image_series: interview
-image_hash: 08bb6824b099345ef89e023cb7e3323d44ec45d3276a7d2033f65197688f1369
+image_category: welfare
+image_series: care
+image_hash: f4e7021604598873a3b24d7387452685d48d5561931f46d51c61436a95ad4739
+image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 福祉事業所のホームページを作るとき、「何を掲載すればよいのか分からない」というご相談をいただくことがあります。
