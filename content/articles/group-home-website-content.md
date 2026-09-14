@@ -3,7 +3,7 @@ type: column
 category_label: ホームページ制作
 title: 障害者グループホームのホームページに何を載せる？入居希望者と家族に伝えたい内容
 date: 2026-05-11
-image: assets/images/blog-library/hero/hero-recruit-interview-09.png
+image: assets/images/blog-library/hero/hero-recruit-interview-10.png
 image_alt: ノートパソコンでホームページの掲載内容を編集している様子
 published: true
 description: 障害者グループホームのホームページに掲載したい内容を解説。入居希望者やご家族が確認したい情報、居室・生活支援・夜間体制の伝え方、入居者募集や職員採用への活用方法、写真掲載時の配慮点をご紹介します。
@@ -26,7 +26,7 @@ emphasis:
 image_role: hero
 image_category: recruit
 image_series: interview
-image_hash: 7283dc2518c54822761484ebae4f5e9afb2a9bb6271cfcc950c4c9ee3eb539f2
+image_hash: 1d5981d05be218ee3b4b36e44c044eecb6f692de05bf172c1d78975bf49b1d70
 ---
 
 障害者グループホームを新規に開設する方や、入居者募集に悩んでいる運営者の方から、「障害者グループホーム ホームページ」に何を載せればよいか分からないというご相談をいただくことがあります。

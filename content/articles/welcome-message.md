@@ -2,7 +2,7 @@
 type: news
 title: 福祉ITパートナーの情報発信を始めます
 date: 2026-01-15
-image: assets/images/blog-library/hero/hero-recruit-team-02.png
+image: assets/images/blog-library/hero/hero-recruit-team-03.png
 image_alt: 窓辺の落ち着いた光の中で開かれたノートとコーヒー
 published: true
 description: 福祉ITパートナーが、福祉事業所・団体向けのホームページづくりやIT活用に関する情報発信を始めました。今後発信していくテーマと、福祉のことを理解したIT支援への想いをお伝えします。
@@ -23,7 +23,7 @@ emphasis:
 image_role: hero
 image_category: recruit
 image_series: team
-image_hash: 01055ef165354f84a909726910418bf924503d2ff3b779b740797e7275a781c7
+image_hash: 31363371449b8e52540cb4ec9b03dedd925995b1fc2c678a6b61901697651d99
 ---
 
 はじめまして。福祉ITパートナーの上原健太です。
