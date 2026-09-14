@@ -58,8 +58,9 @@ function baseSlugFor(title, date) {
 function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero" } = {}) {
   const selected = imageLibrary.selectImage({ category,
     candidates: imageLibrary.discoverImages({ root, kind }),
-    history: imageLibrary.usageHistory({ articlesDir, kind }) });
-  if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series };
+    history: imageLibrary.usageHistory({ root, articlesDir, kind }),
+    recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT });
+  if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series, hash: selected.hash };
   if (kind !== "hero") return null;
   const fallback = IMAGE_BY_CATEGORY[category] || DEFAULT_IMAGE;
   return { ...fallback, category: imageLibrary.categoryFor(category), series: imageLibrary.seriesFor(fallback.image, imageLibrary.categoryFor(category)) };
@@ -158,8 +159,10 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [], imageO
     image_role: "hero",
     image_category: image.category,
     image_series: image.series,
+    ...(image.hash ? { image_hash: image.hash } : {}),
     ...(inline ? { inline_image: inline.image, inline_image_alt: inlineAlt(inline.category),
-      inline_image_category: inline.category, inline_image_series: inline.series } : {}),
+      inline_image_category: inline.category, inline_image_series: inline.series,
+      ...(inline.hash ? { inline_image_hash: inline.hash } : {}) } : {}),
     published: false,
     description: cleanArticle.description,
     slug,

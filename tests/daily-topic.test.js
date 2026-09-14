@@ -121,6 +121,7 @@ test("Generated article is saved with compatible front matter and body",t=>{
     type:"column",category_label:topic.category,title:generatedArticle.title,date,
     image:"assets/images/blog-library/hero/hero-recruit-interview-01.png",
     image_alt:"",image_role:"hero",image_category:"recruit",image_series:"interview",
+    image_hash:require("../scripts/lib/image-library").imageHash(path.join(ROOT,"assets/images/blog-library/hero/hero-recruit-interview-01.png")),
     published:false,description:generatedArticle.description,slug:saved.slug,
     buhio:generatedArticle.buhio,emphasis:generatedArticle.emphasis
   });

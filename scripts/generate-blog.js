@@ -25,6 +25,7 @@ const path = require("path");
 const lib = require("./lib/articles");
 const { renderBuhio } = require("./lib/buhio");
 const { assertNoMarkdownLeak } = require("./lib/markdown");
+const imageLibrary = require("./lib/image-library");
 
 const ROOT = path.join(__dirname, "..");
 const BLOG_INDEX_FILE = path.join(ROOT, "data", "blog-index.json");
@@ -339,19 +340,31 @@ function renderArticlePage(article, articlesBySlug, published) {
   );
 }
 
-function buildBlogIndex(publishedArticles) {
+function buildBlogIndex(publishedArticles, { root = ROOT } = {}) {
+  const candidates = imageLibrary.discoverImages({ root, kind: "hero" });
+  const usedHashes = new Set(), history = [];
   return publishedArticles
     .slice()
     .sort(function (a, b) {
       return String(b.data.date).localeCompare(String(a.data.date));
     })
     .map(function (a) {
+      // This is a final, independent guard for the cards visible together on
+      // blog.html. A duplicate source image cannot leak into the list even if
+      // an old Markdown record was manually edited.
+      const selected = imageLibrary.selectImage({ category: lib.categoryLabelOf(a.data), candidates, history,
+        recentLimit: imageLibrary.HERO_RECENT_ARTICLE_LIMIT, excludedHashes: usedHashes });
+      const image = selected ? selected.path : (a.data.image || null);
+      const hash = selected ? selected.hash : imageLibrary.imageHashForPath(root, image);
+      if (hash) usedHashes.add(hash);
+      history.push({ image, hash, category: selected ? selected.category : a.data.image_category,
+        series: selected ? selected.series : a.data.image_series, article: a.slug, date: String(a.data.date || "") });
       return {
         type: a.data.type || "",
         category_label: lib.categoryLabelOf(a.data),
         title: a.data.title,
         date: a.data.date,
-        image: a.data.image || null,
+        image,
         image_alt: a.data.image_alt || "",
         description: lib.descriptionOf(a.data, a.body),
         excerpt: lib.excerptOf(a.data, a.body, 80),
@@ -693,7 +706,7 @@ function generateBlog({ root = ROOT, onlySlug = null } = {}) {
   }
 
   // ① data/blog-index.json
-  const blogIndex = buildBlogIndex(published);
+  const blogIndex = buildBlogIndex(published, { root });
   fs.mkdirSync(path.dirname(blogIndexFile), { recursive: true });
   fs.writeFileSync(blogIndexFile, JSON.stringify(blogIndex, null, 2) + "\n", "utf8");
   console.log("generated " + blogIndexFile + " (" + published.length + " article(s))");

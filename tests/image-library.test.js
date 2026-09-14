@@ -9,6 +9,8 @@ const YAML = require("yaml");
 const images = require("../scripts/lib/image-library");
 const { saveArticleDraft } = require("../scripts/article-writer");
 const { refreshInlineImages } = require("../scripts/refresh-inline-images");
+const { refreshHeroImages } = require("../scripts/refresh-hero-images");
+const { buildBlogIndex } = require("../scripts/generate-blog");
 
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "blog-images-"));
@@ -35,9 +37,11 @@ test("discovers new hero files, derives categories and records Markdown image hi
     ["assets/images/blog-library/hero/nested/hero-ai-02.webp", "ai"],
     ["assets/images/blog-library/hero/seo-05.webp", "seo"]
   ]);
-  assert.deepEqual(images.usageHistory({ articlesDir: value.articles })[0], {
+  const history = images.usageHistory({ root: value.root, articlesDir: value.articles })[0];
+  assert.deepEqual({ image: history.image, category: history.category, series: history.series, article: history.article, date: history.date }, {
     image: "assets/images/blog-library/hero/seo-05.webp", category: "seo", series: "seo", article: "published-post", date: "2026-09-12"
   });
+  assert.equal(history.hash, images.discoverImages({ root: value.root })[1].hash);
 });
 
 test("recognizes every supported category from conventional hero filenames", () => {
@@ -75,6 +79,38 @@ test("reuses the oldest eligible candidate only after exhaustion and falls back 
   const topic = { title: "AI画像の選び方", category: "AI活用", target: "福祉事業所", keyword: "AI", reason: "画像選択の確認", angle: "画像を分散する", service: "IT支援" }, articleData = { title: "AI画像の選び方", description: "説明".repeat(20), bodyMarkdown: "## 一つ目\n\n" + "本文".repeat(250) + "\n\n## 二つ目\n\n" + "本文".repeat(250) + "\n\n## 三つ目\n\n" + "本文".repeat(250) };
   const saved = saveArticleDraft({ article: articleData, topic, date: "2026-09-13", directory: value.articles, imageRoot: value.root });
   assert.match(fs.readFileSync(saved.filePath, "utf8"), /assets\/images\/services\/service-ai-support\.jpg/);
+});
+
+test("SHA-256 treats renamed byte-identical heroes as one image and refreshes published cards uniquely", t => {
+  const value = fixture(t);
+  image(value.root, "hero-welfare-01.webp"); image(value.root, "hero-welfare-copy.webp");
+  fs.writeFileSync(path.join(value.root, "assets/images/blog-library/hero/hero-recruit-01.webp"), "different");
+  fs.mkdirSync(path.join(value.root, "assets/images/services"), { recursive: true });
+  fs.writeFileSync(path.join(value.root, "assets/images/services/service-homepage.jpg"), "legacy");
+  article(value.articles, "new", "2026-09-12", "assets/images/services/service-homepage.jpg", "welfare");
+  article(value.articles, "old", "2026-09-11", "assets/images/services/service-homepage.jpg", "recruit");
+  const candidates = images.discoverImages({ root: value.root });
+  const duplicate = candidates.filter(candidate => candidate.path.includes("welfare"));
+  const distinct = candidates.find(candidate => candidate.path.includes("recruit"));
+  assert.equal(duplicate[0].hash, duplicate[1].hash);
+  assert.equal(images.selectImage({ category: "welfare", candidates, history: [{ image: duplicate[0].path, hash: duplicate[0].hash }], recentLimit: 20 }).hash, distinct.hash);
+  const result = refreshHeroImages({ root: value.root });
+  assert.deepEqual(result, { published: 2, changed: 2, duplicateHashes: 1, candidates: 3 });
+  const assigned = images.usageHistory({ root: value.root, articlesDir: value.articles });
+  assert.notEqual(assigned[0].hash, assigned[1].hash);
+});
+
+test("blog index has a final content-hash uniqueness guard", t => {
+  const value = fixture(t);
+  image(value.root, "hero-welfare-01.webp"); image(value.root, "hero-welfare-copy.webp");
+  fs.writeFileSync(path.join(value.root, "assets/images/blog-library/hero/hero-recruit-01.webp"), "different");
+  const published = [
+    { slug: "new", body: "本文", data: { published: true, date: "2026-09-12", category_label: "福祉", title: "new", image: "same.jpg" } },
+    { slug: "old", body: "本文", data: { published: true, date: "2026-09-11", category_label: "採用", title: "old", image: "same.jpg" } }
+  ];
+  const index = buildBlogIndex(published, { root: value.root });
+  const hashes = index.map(entry => images.imageHashForPath(value.root, entry.image));
+  assert.equal(new Set(hashes).size, 2);
 });
 
 test("new drafts insert one early-middle inline image and record separate inline history", t => {
