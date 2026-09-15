@@ -470,69 +470,187 @@ section {
   letter-spacing: 0.02em;
 }
 
-/* ===== Problem section ===== */
+/* ===== Problem section（イラスト＋hover演出） ===== */
 .problem-section {
   background: var(--cream-100);
+  overflow-x: hidden;
 }
 
-.problem-list {
+/* お悩みは4項目になったため、均等4列のグリッドでシンプルに並べる */
+.problem-illustrated {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 920px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 34px 28px;
+  max-width: 980px;
   margin: 0 auto;
+  padding: 8px 0 0;
 }
 
-.problem-item {
+.problem-figure {
+  box-sizing: border-box;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
   text-align: center;
-  background: var(--white);
-  border-radius: var(--radius-md);
-  padding: 20px;
-  box-shadow: var(--shadow-soft);
 }
 
-.problem-item p {
-  color: var(--text-900);
+/* スクロール出現を1個ずつ時間差で（.revealの基本トランジションに遅延だけ追加） */
+.problem-illustrated .problem-figure:nth-child(1) { transition-delay: 0s; }
+.problem-illustrated .problem-figure:nth-child(2) { transition-delay: 0.06s; }
+.problem-illustrated .problem-figure:nth-child(3) { transition-delay: 0.12s; }
+.problem-illustrated .problem-figure:nth-child(4) { transition-delay: 0.18s; }
+
+.problem-figure-stage {
+  position: relative;
+  width: 100%;
+}
+
+.problem-figure-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  animation: home-float 7s ease-in-out infinite;
+}
+
+.problem-figure--1 .problem-figure-img { animation-delay: 0s; }
+.problem-figure--2 .problem-figure-img { animation-delay: -1.2s; }
+.problem-figure--3 .problem-figure-img { animation-delay: -2.4s; }
+.problem-figure--4 .problem-figure-img { animation-delay: -3.6s; }
+
+/* 04は元画像の背景が縁まで塗られており四角く見えやすいため、
+   下端をごく軽くフェードさせて背景との境目をやわらげている
+   （元画像ファイルは無編集。境目を完全には消せないため、CSSでの緩和にとどまる） */
+.problem-figure--4 .problem-figure-img {
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 16%, #000 100%);
+  mask-image: linear-gradient(to top, transparent 0%, #000 16%, #000 100%);
+}
+
+.problem-figure-caption {
+  margin-top: 14px;
+  color: var(--green-900);
   font-weight: 700;
   font-size: 0.95rem;
   line-height: 1.5;
 }
 
-/* 今後イラストを配置する予定のビジュアル領域（現在はプレースホルダー表示） */
-.problem-visual {
+/* ===== hover / pointer接近で現れる補助イラスト（お悩み・サービス共通） ===== */
+.hover-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hover-item {
+  position: absolute;
+  width: 17%;
+  max-width: 48px;
+  opacity: 0;
+  transform: translateY(10px) scale(0.82);
+  transition: opacity 0.5s cubic-bezier(0.22, 0.8, 0.32, 1),
+    transform 0.5s cubic-bezier(0.22, 0.8, 0.32, 1);
+}
+
+.problem-figure:hover .hover-item,
+.problem-figure:focus-within .hover-item {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.hover-item:nth-child(1) { top: -8%; left: -8%; transition-delay: 0ms; }
+.hover-item:nth-child(2) { top: -10%; right: -6%; transition-delay: 70ms; }
+.hover-item:nth-child(3) { bottom: -2%; left: -10%; transition-delay: 140ms; }
+.hover-item:nth-child(4) { bottom: -6%; right: -8%; transition-delay: 210ms; }
+.hover-item:nth-child(5) { top: 42%; left: -14%; transition-delay: 280ms; }
+
+.hover-item-img {
+  display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-sm);
-  background: var(--green-100);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: auto;
+  transform: translate(calc(var(--px, 0) * 10px), calc(var(--py, 0) * 10px));
+  transition: transform 0.2s ease-out;
 }
 
-.problem-visual::before {
-  content: "?";
-  font-size: 2.4rem;
-  font-weight: 800;
-  color: var(--orange-500);
+@keyframes home-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-@media (max-width: 768px) {
-  .problem-list {
+@media (prefers-reduced-motion: reduce) {
+  .problem-figure-img,
+  .hover-item,
+  .hover-item-img,
+  .welfare-photo-hero-img,
+  .welfare-photo-hero-line,
+  .welfare-photo-hero-light,
+  .card h3,
+  .card:hover .card-photo img {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .welfare-photo-hero-img {
+    transform: scale(1) !important;
+  }
+
+  .welfare-photo-hero-line {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .welfare-photo-hero-light {
+    opacity: 0 !important;
+  }
+
+  .card h3 {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .cards-grid .card:hover,
+  .card:hover .card-photo img {
+    transform: none !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .problem-illustrated {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 480px) {
-  .problem-list {
+@media (max-width: 520px) {
+  .problem-illustrated {
     grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 36px;
+  }
+
+  .problem-figure {
+    width: 100%;
+    max-width: 230px;
+    padding: 8px;
   }
 }
 
-/* ===== Value section ===== */
+@media (max-width: 700px) {
+  /* スマホはhoverがないため、補助イラストは2点だけ常時表示し、
+     残りは非表示にして情報過多を避ける */
+  .hover-item:nth-child(1),
+  .hover-item:nth-child(2) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: none;
+  }
+
+  .hover-item:nth-child(3),
+  .hover-item:nth-child(4),
+  .hover-item:nth-child(5) {
+    display: none;
+  }
+}
+
+/* ===== Value section（福祉×ITビジュアル） ===== */
 .value-section {
   text-align: center;
 }
@@ -556,20 +674,187 @@ section {
   color: var(--text-600);
 }
 
-/* 今後メインイラストを配置する予定のビジュアル領域（現在はプレースホルダー表示） */
-.welfare-it-visual {
-  width: 100%;
-  max-width: 560px;
-  aspect-ratio: 16 / 9;
-  margin: 32px auto 0;
-  border-radius: var(--radius-md);
-  background: var(--white);
-  border: 1px dashed var(--border-soft);
-}
-
 @media (max-width: 600px) {
   .value-box {
     padding: 32px 28px;
+  }
+}
+
+/* ===== 福祉×IT 写真ヒーロー ===== */
+.welfare-photo-hero {
+  position: relative;
+  padding: 0;
+  height: 90vh;
+  min-height: 560px;
+  max-height: 820px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.welfare-photo-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.welfare-photo-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 74% 40%;
+  transform: scale(1.045);
+}
+
+.welfare-photo-hero.is-visible .welfare-photo-hero-img {
+  animation: welfare-photo-zoom 6.5s cubic-bezier(0.25, 0.7, 0.4, 1) forwards;
+}
+
+@keyframes welfare-photo-zoom {
+  from { transform: scale(1.045); }
+  to { transform: scale(1); }
+}
+
+.welfare-photo-hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    var(--white) 0%,
+    var(--cream-100) 20%,
+    rgba(232, 244, 238, 0.6) 40%,
+    rgba(232, 244, 238, 0.15) 58%,
+    rgba(232, 244, 238, 0) 74%
+  );
+}
+
+.welfare-photo-hero-container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+
+.welfare-photo-hero-content {
+  max-width: 580px;
+}
+
+.welfare-photo-hero-copy {
+  margin: 0;
+}
+
+.welfare-photo-hero-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(26px);
+  color: var(--green-900);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 1rem + 1.15vw, 1.8rem);
+  line-height: 1.65;
+  transition: opacity 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0s,
+              transform 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0s;
+}
+
+.welfare-photo-hero-line--2 {
+  transition-delay: 1.5s;
+}
+
+.welfare-photo-hero-line--3 {
+  transform: none;
+  transition: opacity 3s ease-out 3s;
+  margin-top: 18px;
+  font-size: clamp(1.9rem, 1.3rem + 2.3vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.welfare-photo-hero-line-accent {
+  color: var(--orange-600);
+}
+
+.welfare-photo-hero.is-visible .welfare-photo-hero-line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.welfare-photo-hero.is-visible .welfare-photo-hero-line--3 {
+  transform: none;
+}
+
+.welfare-photo-hero-light {
+  position: absolute;
+  z-index: 2;
+  top: 64%;
+  left: 70%;
+  width: 96px;
+  height: 2px;
+  margin-left: -48px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.95) 42%,
+    rgba(222, 238, 228, 0.95) 58%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-24px);
+}
+
+.welfare-photo-hero.is-visible .welfare-photo-hero-light {
+  animation: welfare-light-sweep 1.3s ease-out 6.3s 1 forwards;
+}
+
+@keyframes welfare-light-sweep {
+  0% { opacity: 0; transform: translateX(-24px); }
+  18% { opacity: 1; }
+  72% { opacity: 0.85; }
+  100% { opacity: 0; transform: translateX(24px); }
+}
+
+@media (max-width: 768px) {
+  .welfare-photo-hero {
+    height: auto;
+    min-height: 75svh;
+    max-height: 90svh;
+    padding: 120px 0 40px;
+    align-items: flex-end;
+  }
+
+  .welfare-photo-hero-img {
+    object-position: 78% 24%;
+  }
+
+  .welfare-photo-hero-gradient {
+    background: linear-gradient(
+      to top,
+      var(--white) 0%,
+      var(--cream-100) 30%,
+      rgba(232, 244, 238, 0.72) 52%,
+      rgba(232, 244, 238, 0.18) 72%,
+      rgba(232, 244, 238, 0) 88%
+    );
+  }
+
+  .welfare-photo-hero-content {
+    max-width: none;
+  }
+
+  .welfare-photo-hero-line {
+    font-size: 1.15rem;
+  }
+
+  .welfare-photo-hero-line--3 {
+    font-size: 1.55rem;
+    white-space: normal;
+    margin-top: 12px;
+  }
+
+  .welfare-photo-hero-light {
+    display: none;
   }
 }
 
@@ -598,14 +883,15 @@ section {
   flex-direction: column;
 }
 
-.card:hover {
-  transform: translateY(-6px);
+.cards-grid .card:hover {
+  transform: translateY(-3px);
   box-shadow: 0 16px 32px rgba(31, 77, 60, 0.12);
 }
 
 .card-photo {
   aspect-ratio: 16 / 9;
   background: var(--green-100);
+  overflow: hidden;
 }
 
 .card-photo img {
@@ -613,10 +899,15 @@ section {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s ease-out;
+}
+
+.card:hover .card-photo img {
+  transform: scale(1.025);
 }
 
 .card-body {
-  padding: 28px 24px 24px;
+  padding: 36px 24px 28px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -624,18 +915,23 @@ section {
 
 .card h3 {
   color: var(--green-900);
-  font-size: 1.1rem;
-  margin-bottom: 12px;
+  font-size: 1.35rem;
+  font-weight: 800;
+  text-align: center;
+  margin: 0 0 22px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease-out 0.15s, transform 0.6s ease-out 0.15s;
 }
 
-.card p {
-  color: var(--text-600);
-  font-size: 0.95rem;
+.card.is-visible h3 {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .card-cta {
-  margin-top: 0;
-  padding-top: 20px;
+  margin-top: auto;
+  padding-top: 4px;
 }
 
 .card-cta .btn {
@@ -676,21 +972,16 @@ section {
   }
 
   .card-body {
-    padding: 16px 12px 14px;
+    padding: 20px 14px 16px;
   }
 
   .card h3 {
-    font-size: 0.88rem;
-    margin-bottom: 4px;
-  }
-
-  .card p {
-    font-size: 0.76rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    margin-bottom: 14px;
   }
 
   .card-cta {
-    padding-top: 12px;
+    padding-top: 4px;
   }
 
   .card-cta .btn {
@@ -1849,12 +2140,29 @@ section {
 .reveal {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* 小見出し→大見出し→ビジュアルのように時間差で出現させるための
+   汎用ずらしクラス（新規に使う箇所だけに付与。既存の.revealの挙動は変えない） */
+.reveal-d1 { transition-delay: 0.08s; }
+.reveal-d2 { transition-delay: 0.16s; }
+.reveal-d3 { transition-delay: 0.24s; }
+.reveal-d4 { transition-delay: 0.32s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-d1,
+  .reveal-d2,
+  .reveal-d3,
+  .reveal-d4 {
+    transition: none;
+  }
 }
 
 /* ===== Works page sections ===== */
