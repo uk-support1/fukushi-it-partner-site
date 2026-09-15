@@ -18,16 +18,36 @@ function metadataFor(candidate) {
     "welfare:support": { tags: ["福祉", "支援", "相談", "利用者", "情報提供"], scene: "福祉支援", themes: ["welfare"], technology_level: "none" },
     "welfare:support-team": { tags: ["福祉", "支援", "職員", "チーム", "相談"], scene: "支援チーム", themes: ["welfare"], technology_level: "none" },
     "welfare:consultation": { tags: ["福祉", "相談", "利用者", "支援", "対話"], scene: "福祉相談", themes: ["welfare"], technology_level: "none" },
+    "welfare:team-support": { tags: ["福祉", "職員", "利用者", "相談", "支援"], scene: "福祉支援の打ち合わせ", themes: ["welfare"], technology_level: "none" },
+    "welfare:digital-care": { tags: ["福祉", "生活支援", "職員", "タブレット", "事業所"], scene: "福祉事業所での情報確認", themes: ["welfare"], technology_level: "moderate" },
+    "welfare:facility": { tags: ["福祉", "事業所", "相談", "利用者", "室内"], scene: "福祉事業所の風景", themes: ["welfare"], technology_level: "none" },
     "welfare:web-support": { tags: ["福祉", "利用者", "家族", "ホームページ", "情報提供"], scene: "福祉の情報相談", themes: ["welfare", "web"], technology_level: "moderate" },
     "recruit:interview": { tags: ["採用", "面談", "応募者", "職員", "対話"], scene: "採用面談", themes: ["recruit"], technology_level: "none" },
-    "web:design": { tags: ["ホームページ", "Web", "デザイン", "PC", "打ち合わせ"], scene: "Web制作打ち合わせ", themes: ["web"], technology_level: "moderate" },
-    "web:planning": { tags: ["ホームページ", "Web", "情報発信", "PC", "打ち合わせ"], scene: "Web企画", themes: ["web"], technology_level: "moderate" }
+    "ai:chat": { tags: ["AI", "生成AI", "チャット", "文章作成", "PC"], scene: "生成AIの活用", themes: ["ai"], technology_level: "strong" },
+    "ai:workflow": { tags: ["AI", "生成AI", "業務整理", "情報整理", "PC"], scene: "AIによる業務整理", themes: ["ai"], technology_level: "strong" },
+    "dx:paperless": { tags: ["DX", "ペーパーレス", "業務効率化", "書類", "スキャン"], scene: "ペーパーレス業務", themes: ["digital"], technology_level: "strong" },
+    "dx:dashboard": { tags: ["DX", "業務効率化", "データ", "タブレット", "PC"], scene: "デジタル業務管理", themes: ["digital"], technology_level: "strong" },
+    "web:design": { tags: ["ホームページ", "Web", "デザイン", "PC", "サイト制作"], scene: "Webサイト制作", themes: ["web"], technology_level: "moderate" },
+    "web:planning": { tags: ["ホームページ", "Web", "情報発信", "PC", "打ち合わせ"], scene: "Web企画", themes: ["web"], technology_level: "moderate" },
+    "web:site-review": { tags: ["ホームページ", "Web", "サイト確認", "スマホ", "PC"], scene: "Webサイトの確認", themes: ["web"], technology_level: "moderate" },
+    "web:site-search": { tags: ["ホームページ", "Web", "検索", "サイト設計", "PC"], scene: "Webサイトの検索画面", themes: ["web"], technology_level: "moderate" },
+    "web:form": { tags: ["ホームページ", "Web", "フォーム", "スマホ", "PC"], scene: "Webフォームの確認", themes: ["web"], technology_level: "moderate" },
+    "web:update": { tags: ["ホームページ", "Web", "サイト更新", "情報発信", "PC"], scene: "Webサイトの更新", themes: ["web"], technology_level: "moderate" },
+    "seo:analytics": { tags: ["SEO", "検索", "アクセス分析", "集客", "グラフ"], scene: "アクセス分析", themes: ["seo"], technology_level: "moderate" },
+    "seo:search": { tags: ["SEO", "検索", "キーワード", "集客", "PC"], scene: "検索結果の確認", themes: ["seo"], technology_level: "moderate" },
+    "subsidy:application": { tags: ["補助金", "助成金", "申請書", "資金計画", "電卓"], scene: "補助金の申請準備", themes: ["subsidy"], technology_level: "none" },
+    "security:protection": { tags: ["セキュリティ", "個人情報", "パスワード", "安全管理", "情報保護"], scene: "情報セキュリティ対策", themes: ["security"], technology_level: "strong" }
   };
   const named = candidate.category === "subsidy" && candidate.path.includes("budget") ? { tags: ["補助金", "予算", "計算", "書類"], scene: "予算検討", themes: ["subsidy"], technology_level: "none" } :
     candidate.category === "subsidy" && candidate.path.includes("consultation") ? { tags: ["補助金", "相談", "申請", "書類"], scene: "補助金相談", themes: ["subsidy"], technology_level: "none" } :
     candidate.category === "subsidy" && candidate.path.includes("website") ? { tags: ["補助金", "ホームページ", "相談", "書類"], scene: "補助金相談", themes: ["subsidy"], technology_level: "none" } : null;
   const base = named || groups[key] || { tags: [candidate.category], scene: candidate.category, themes: [candidate.category], technology_level: "none" };
-  return { path: candidate.path, category: candidate.category, series: candidate.series, ...base, has_person: !candidate.path.includes("budget") };
+  const noPerson = new Set([
+    "inline-subsidy-application-01.png", "inline-security-protection-05.png",
+    "inline-seo-search-01.png", "inline-subsidy-application-04.png"
+  ]);
+  return { path: candidate.path, category: candidate.category, series: candidate.series, ...base,
+    has_person: !noPerson.has(path.basename(candidate.path)) };
 }
 
 function refreshImageMetadata({ root = path.join(__dirname, ".."), kind = null } = {}) {
@@ -35,7 +55,7 @@ function refreshImageMetadata({ root = path.join(__dirname, ".."), kind = null }
   const existing = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : { version: 1, images: [] };
   const byPath = new Map((existing.images || []).map(item => [item.path, item]));
   const kinds = kind ? [kind] : ["hero", "inline"];
-  const candidates = kinds.flatMap(imageKind => images.discoverImages({ root, kind: imageKind }));
+  const candidates = kinds.flatMap(imageKind => images.discoverImages({ root, kind: imageKind, catalog: false }));
   const catalog = candidates.map(candidate => candidate.path.includes("/inline/") ? metadataFor(candidate) : (byPath.get(candidate.path) || metadataFor(candidate)));
   const document = { version: 1, generated_for: kind || "hero and inline", images: catalog };
   fs.writeFileSync(file, JSON.stringify(document, null, 2) + "\n", "utf8");

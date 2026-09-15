@@ -45,11 +45,11 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-design-09.png
+inline_image: assets/images/blog-library/inline/inline-web-site-search-01.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
-inline_image_series: design
-inline_image_hash: 6d192c344d15878c772d81b80a5934c8d1f1e48c463eca2dcf6bd3b117ce98f0
+inline_image_series: site-search
+inline_image_hash: 4d977d7812a2cdc9add64339b958074a89af721d337d590dcde26630f7e3bae4
 inline_image_selection:
   themes:
     - digital
@@ -127,7 +127,7 @@ inline_image_selection:
 
 ホームページでは、「何を見せるか」だけでなく、「安心して見てもらえる情報の出し方」を考えることも大切です。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-09.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-site-search-01.png)
 
 ## 4．予定やお知らせを、いつでも確認できる
 

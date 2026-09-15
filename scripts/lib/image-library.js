@@ -66,10 +66,10 @@ function walkImages(directory, root) {
   return found;
 }
 
-function discoverImages({ root, kind = "hero" } = {}) {
+function discoverImages({ root, kind = "hero", catalog: useCatalog = true } = {}) {
   if (!root) throw new Error("IMAGE_LIBRARY_ROOT_REQUIRED");
   let catalog = new Map();
-  try {
+  if (useCatalog) try {
     const source = JSON.parse(fs.readFileSync(path.join(root, "data", "image-library.json"), "utf8"));
     catalog = new Map((source.images || []).map(item => [item.path, item]));
   } catch { /* New files remain eligible with their inferred path metadata. */ }

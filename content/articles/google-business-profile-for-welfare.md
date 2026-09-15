@@ -43,11 +43,11 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-design-06.png
+inline_image: assets/images/blog-library/inline/inline-web-planning-01.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
-inline_image_series: design
-inline_image_hash: cd84021bd3fcfd5a1549b36bd87bd5dfef710ec873436b7994309d90ab857c27
+inline_image_series: planning
+inline_image_hash: 77f7b142c212ec32696a79926e9f8ef826241336502ddf7646968b418020915b
 inline_image_selection:
   themes:
     - digital
@@ -112,7 +112,7 @@ Googleマップとホームページは、どちらか一方があればよい�
 
 ただし、情報が古いまま放置されていると、かえって混乱を招いてしまいます。移転や電話番号の変更などがあった際は、忘れずに更新しておくことが大切です。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-06.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-planning-01.png)
 
 ## まず登録しておきたい情報
 

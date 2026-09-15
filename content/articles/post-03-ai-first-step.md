@@ -43,11 +43,11 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-welfare-consultation-04.png
-inline_image_alt: 福祉の現場を支えるイメージ
-inline_image_category: welfare
-inline_image_series: consultation
-inline_image_hash: 3ea69537d10b6dbdcd4758e0406e8256c39d4cd415f05d5e7987e158e3f3ef1c
+inline_image: assets/images/blog-library/inline/inline-ai-chat-01.png
+inline_image_alt: AI活用のイメージ
+inline_image_category: ai
+inline_image_series: chat
+inline_image_hash: f90a31bb6c4af286d9496dc0110f9bc3c96f743be966a1986e9615bf9abc0613
 inline_image_selection:
   themes:
     - ai
@@ -72,7 +72,7 @@ inline_image_selection:
 
 広報文やお知らせ文の下書きをAIに作成してもらい、現場の言葉に整えていく使い方から始めると、 無理なく取り入れることができます。
 
-![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-consultation-04.png)
+![AI活用のイメージ](assets/images/blog-library/inline/inline-ai-chat-01.png)
 
 ## 2. 個人情報や利用者さんの情報は入力しない
 

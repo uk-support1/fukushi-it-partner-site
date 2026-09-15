@@ -45,11 +45,11 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-design-08.png
+inline_image: assets/images/blog-library/inline/inline-web-site-review-01.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
-inline_image_series: design
-inline_image_hash: 07520425a66d754b38926d4170a82b59e453f0c7f8de002114111747084715b2
+inline_image_series: site-review
+inline_image_hash: 2cac004ca86b7048c5ce206463c854258724a0bcef319994099556003dda7c8f
 inline_image_selection:
   themes:
     - digital
@@ -129,7 +129,7 @@ inline_image_selection:
 
 「一人ひとりのペースを大切にしています」「困ったことがあれば、いつでも相談してくださいね」といった、事業所の言葉での紹介も効果的です。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-08.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-site-review-01.png)
 
 ## 空室情報や見学案内の掲載方法
 

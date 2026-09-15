@@ -43,11 +43,11 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-planning-01.png
+inline_image: assets/images/blog-library/inline/inline-web-update-01.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
-inline_image_series: planning
-inline_image_hash: ae537f3930d3e533ee020052969d4c1d6676f300b47d3d484e5f480fab230933
+inline_image_series: update
+inline_image_hash: d1fa5425457163803b0ad9da481c2a7202464728555479af4c0a1c0c96594fb6
 inline_image_selection:
   themes:
     - digital
@@ -126,7 +126,7 @@ B型事業所のホームページでは、作業内容をできるだけ具体�
 
 実際の流れは自治体や本人の状況によって異なるため、「状況に応じて一緒に確認します」と添えると、より丁寧な印象になります。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-planning-01.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-update-01.png)
 
 ## 4．工賃や通所のイメージ
 

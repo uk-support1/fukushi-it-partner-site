@@ -44,11 +44,11 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-design-07.png
+inline_image: assets/images/blog-library/inline/inline-web-planning-02.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
-inline_image_series: design
-inline_image_hash: 6a0d5380fff53785971b0106f08be06a2c689ad9ceb49816fbfb30e7a9e5a92b
+inline_image_series: planning
+inline_image_hash: ae537f3930d3e533ee020052969d4c1d6676f300b47d3d484e5f480fab230933
 inline_image_selection:
   themes:
     - digital
@@ -107,7 +107,7 @@ inline_image_selection:
 
 ![事業所のスタッフが集まり、ホームページのプランについて話し合っている様子](assets/images/blog/team-meeting-laptop.jpg)
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-07.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-planning-02.png)
 
 ## どちらのプランを選べばよいか
 

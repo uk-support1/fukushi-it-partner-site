@@ -138,15 +138,29 @@ test("the committed image catalog covers every hero with stored semantic metadat
   for (const item of heroes) assert.ok(item.path && item.category && item.scene && item.tags.length && item.themes.length);
 });
 
-test("the committed inline library is named, cataloged, semantic-safe, and avoids recent hashes", () => {
+test("the committed inline library is content-classified, cataloged, semantic-safe, and avoids recent hashes", () => {
   const root = path.resolve(__dirname, "..");
   const candidates = images.discoverImages({ root, kind: "inline" });
   assert.equal(candidates.length, 45);
   assert.deepEqual(candidates.reduce((counts, candidate) => { counts[candidate.category] = (counts[candidate.category] || 0) + 1; return counts; }, {}),
-    { recruit: 9, web: 18, welfare: 18 });
+    { ai: 4, dx: 2, recruit: 2, security: 7, seo: 3, subsidy: 6, web: 11, welfare: 10 });
   for (const candidate of candidates) {
-    assert.match(path.basename(candidate.path), /^inline-(welfare|recruit|web)-[a-z-]+-\d{2}\.png$/);
+    assert.match(path.basename(candidate.path), /^inline-(welfare|recruit|ai|dx|web|seo|subsidy|security)-[a-z-]+-\d{2}\.png$/);
     assert.ok(candidate.hash && candidate.tags.length && candidate.scene && candidate.technology_level && typeof candidate.has_person === "boolean");
+  }
+  const categoryExpectations = {
+    "inline-ai-chat-01.png": ["ai", "生成AIの活用", "strong"],
+    "inline-dx-paperless-01.png": ["dx", "ペーパーレス業務", "strong"],
+    "inline-seo-analytics-01.png": ["seo", "アクセス分析", "moderate"],
+    "inline-subsidy-application-01.png": ["subsidy", "補助金の申請準備", "none"],
+    "inline-security-protection-01.png": ["security", "情報セキュリティ対策", "strong"],
+    "inline-recruit-interview-01.png": ["recruit", "採用面談", "none"],
+    "inline-welfare-consultation-01.png": ["welfare", "福祉相談", "none"],
+    "inline-web-design-01.png": ["web", "Webサイト制作", "moderate"]
+  };
+  for (const [name, [category, scene, level]] of Object.entries(categoryExpectations)) {
+    const candidate = candidates.find(item => path.basename(item.path) === name);
+    assert.deepEqual([candidate.category, candidate.scene, candidate.technology_level], [category, scene, level]);
   }
   const welfare = articleImageProfile({ title: "福祉事業所で利用者と家族に安心を伝える", body: "支援の相談と情報提供を紹介します", category: "ホームページ制作" });
   const selected = images.selectImage({ category: "ホームページ制作", candidates, profile: welfare, recentLimit: 10 });
