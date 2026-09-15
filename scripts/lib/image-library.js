@@ -11,7 +11,7 @@ const semantics = require("./image-semantics");
 const IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"]);
 const RECENT_ARTICLE_LIMIT = 10;
 const HERO_RECENT_ARTICLE_LIMIT = 20;
-const CATEGORIES = ["welfare", "recruit", "ai", "dx", "web", "seo", "subsidy", "security"];
+const CATEGORIES = ["welfare", "recruit", "ai", "dx", "web", "seo", "subsidy", "security", "general"];
 const NEAR_CATEGORIES = {
   web: ["seo", "dx"], ai: ["dx"], welfare: ["recruit"],
   subsidy: ["welfare", "dx"], security: ["dx"]
@@ -115,7 +115,16 @@ function selectImage({ category, candidates, history = [], recentLimit = RECENT_
   if (profile) {
     const scores = new Map(pool.map(candidate => [candidate, semantics.scoreImage(candidate, profile)]));
     const meaningful = pool.filter(candidate => scores.get(candidate) > 0);
-    const semanticPool = meaningful.length ? meaningful : pool;
+    let semanticPool = meaningful.length ? meaningful : pool;
+    const strongTheme = ["ai", "security", "subsidy", "recruit"].find(theme => profile.themes.includes(theme));
+    const strongMatches = strongTheme ? semanticPool.filter(candidate => candidate.category === strongTheme) : [];
+    if (strongMatches.length) semanticPool = strongMatches;
+    else if (meaningful.length) {
+      const bestScore = Math.max(...meaningful.map(candidate => scores.get(candidate)));
+      // Rotate only among images that remain close to the best semantic match.
+      // A weakly related unused image must not displace a strongly matching recent one.
+      semanticPool = meaningful.filter(candidate => scores.get(candidate) >= bestScore - 5);
+    }
     const recentFree = semanticPool.filter(candidate => !recent.some(use => sameImage(candidate, use)));
     let eligible = recentFree.length ? recentFree : semanticPool;
     const withoutLatest = eligible.filter(candidate => !latest || !sameImage(candidate, latest));

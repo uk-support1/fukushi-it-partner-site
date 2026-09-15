@@ -40,11 +40,11 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-005.png
+inline_image: assets/images/blog-library/inline/inline-web-003.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
-inline_image_series: design
-inline_image_hash: bcf03c08f3e81b1a269f86a4e556a17df107b5d9c7e861e202606faab7f1494e
+inline_image_series: web
+inline_image_hash: 7db44fabcfe31c6202fb9881095067114cb1bf305097a90cfe5650877ffe7f8f
 inline_image_selection:
   themes:
     - digital
@@ -109,7 +109,7 @@ inline_image_selection:
 
 など、最低限の案内があるだけでも分かりやすくなります。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-005.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-003.png)
 
 ## 4．写真
 

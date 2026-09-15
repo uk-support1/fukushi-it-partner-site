@@ -49,7 +49,8 @@ function metadataFor(candidate) {
     web: { tags: ["ホームページ", "Web", "サイト制作", "情報発信", "PC"], scene: "Webサイト活用", themes: ["web"], technology_level: "moderate" },
     seo: { tags: ["SEO", "検索", "アクセス分析", "集客", "キーワード"], scene: "検索・アクセス分析", themes: ["seo"], technology_level: "moderate" },
     subsidy: { tags: ["補助金", "助成金", "申請", "書類", "資金計画"], scene: "補助金の申請準備", themes: ["subsidy"], technology_level: "none" },
-    security: { tags: ["セキュリティ", "個人情報", "パスワード", "安全管理", "情報保護"], scene: "情報セキュリティ対策", themes: ["security"], technology_level: "strong" }
+    security: { tags: ["セキュリティ", "個人情報", "パスワード", "安全管理", "情報保護"], scene: "情報セキュリティ対策", themes: ["security"], technology_level: "strong" },
+    general: { tags: ["一般事務", "書類確認", "オフィス", "打ち合わせ"], scene: "一般的な事務作業", themes: ["general"], technology_level: "none" }
   };
   const base = named || groups[key] || categoryDefaults[candidate.category] || { tags: [candidate.category], scene: candidate.category, themes: [candidate.category], technology_level: "none" };
   const noPerson = new Set([

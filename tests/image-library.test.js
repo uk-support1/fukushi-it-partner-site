@@ -46,7 +46,7 @@ test("discovers new hero files, derives categories and records Markdown image hi
 });
 
 test("recognizes every supported category from conventional hero filenames", () => {
-  for (const category of ["ai", "dx", "web", "seo", "subsidy", "security", "recruit", "welfare"]) {
+  for (const category of ["ai", "dx", "web", "seo", "subsidy", "security", "recruit", "welfare", "general"]) {
     assert.equal(images.categoryFor("hero-" + category + "-01.webp"), category);
   }
 });
@@ -143,9 +143,9 @@ test("the committed inline library is content-classified, cataloged, semantic-sa
   const candidates = images.discoverImages({ root, kind: "inline" });
   assert.equal(candidates.length, 90);
   assert.deepEqual(candidates.reduce((counts, candidate) => { counts[candidate.category] = (counts[candidate.category] || 0) + 1; return counts; }, {}),
-    { ai: 12, dx: 2, recruit: 2, security: 17, seo: 12, subsidy: 15, web: 11, welfare: 19 });
+    { ai: 11, dx: 5, general: 10, recruit: 2, security: 9, seo: 13, subsidy: 13, web: 12, welfare: 15 });
   for (const candidate of candidates) {
-    assert.match(path.basename(candidate.path), /^inline-(welfare|recruit|ai|dx|web|seo|subsidy|security)-\d{3}\.(?:png|jpe?g|webp)$/);
+    assert.match(path.basename(candidate.path), /^inline-(welfare|recruit|ai|dx|web|seo|subsidy|security|general)-\d{3}\.(?:png|jpe?g|webp)$/);
     assert.ok(candidate.hash && candidate.tags.length && candidate.scene && candidate.technology_level && typeof candidate.has_person === "boolean");
   }
   const categoryExpectations = {
@@ -153,10 +153,11 @@ test("the committed inline library is content-classified, cataloged, semantic-sa
     "inline-dx-001.png": ["dx", "デジタル業務", "strong"],
     "inline-seo-001.png": ["seo", "検索・アクセス分析", "moderate"],
     "inline-subsidy-001.png": ["subsidy", "補助金の申請準備", "none"],
-    "inline-security-001.png": ["security", "情報セキュリティ対策", "strong"],
+    "inline-security-001.png": ["security", "ログインと情報保護を含む業務風景", "strong"],
     "inline-recruit-001.png": ["recruit", "採用活動", "none"],
     "inline-welfare-001.png": ["welfare", "福祉支援", "none"],
-    "inline-web-001.png": ["web", "Webサイト活用", "moderate"]
+    "inline-web-001.png": ["web", "Webサイト活用", "moderate"],
+    "inline-general-001.png": ["general", "一般的なPC作業", "none"]
   };
   for (const [name, [category, scene, level]] of Object.entries(categoryExpectations)) {
     const candidate = candidates.find(item => path.basename(item.path) === name);
@@ -168,6 +169,29 @@ test("the committed inline library is content-classified, cataloged, semantic-sa
   const repeated = images.selectImage({ category: "ホームページ制作", candidates, profile: welfare,
     history: [{ image: selected.path, hash: selected.hash, series: selected.series }], recentLimit: 10 });
   assert.notEqual(repeated.hash, selected.hash);
+});
+
+test("general inline images are used only when no semantically matched safe image exists", () => {
+  const general = { path: "general.png", category: "general", series: "office", hash: "general",
+    tags: ["一般事務", "書類確認", "オフィス"], scene: "一般的な事務作業", themes: ["general"], technology_level: "none" };
+  const welfare = { path: "welfare.png", category: "welfare", series: "support", hash: "welfare",
+    tags: ["福祉", "支援", "利用者"], scene: "福祉支援", themes: ["welfare"], technology_level: "none" };
+  const ai = { path: "ai.png", category: "ai", series: "ai", hash: "ai",
+    tags: ["AI", "生成AI"], scene: "AI活用", themes: ["ai"], technology_level: "strong" };
+  const profile = articleImageProfile({ title: "福祉事業所で利用者を支える方法", body: "職員による相談と支援を紹介します", category: "福祉" });
+  assert.equal(images.selectImage({ category: "welfare", candidates: [general, welfare, ai], profile }).path, "welfare.png");
+  assert.equal(images.selectImage({ category: "welfare", candidates: [general, ai], profile }).path, "general.png");
+});
+
+test("strong topic and semantic matches outrank an unrelated unused inline image", () => {
+  const recruit = { path: "recruit.png", category: "recruit", series: "interview", hash: "recruit",
+    tags: ["採用", "面談", "職員"], scene: "採用面談", themes: ["recruit"], technology_level: "none" };
+  const welfare = { path: "welfare.png", category: "welfare", series: "support", hash: "welfare",
+    tags: ["福祉", "支援", "職員"], scene: "福祉支援", themes: ["welfare"], technology_level: "none" };
+  const profile = articleImageProfile({ title: "福祉事業所の採用面談を改善する", body: "応募者と職員の面談を紹介します", category: "採用" });
+  const selected = images.selectImage({ category: "recruit", candidates: [recruit, welfare], profile,
+    history: [{ image: recruit.path, hash: recruit.hash, series: recruit.series }] });
+  assert.equal(selected.path, "recruit.png");
 });
 
 test("inline image styling remains fluid for narrow screens", () => {
@@ -200,4 +224,21 @@ test("published Markdown receives one inline image when the library is available
   assert.match(updated.body, /hero-welfare-01\.webp/);
   assert.ok(updated.data.inline_image_hash);
   assert.ok(updated.data.inline_image_selection);
+});
+
+test("bulk inline refresh avoids consecutive reuse after category candidates are exhausted", t => {
+  const value = fixture(t);
+  image(value.root, "inline-recruit-001.webp", "inline");
+  image(value.root, "inline-recruit-002.webp", "inline");
+  fs.writeFileSync(path.join(value.root, "assets/images/blog-library/inline/inline-recruit-002.webp"), "different");
+  const body = "## 前半\n\n本文\n\n## 後半\n\n本文";
+  article(value.articles, "newest", "2026-09-12", "assets/images/hero.png", "採用", body);
+  article(value.articles, "middle", "2026-09-11", "assets/images/hero.png", "採用", body);
+  article(value.articles, "oldest", "2026-09-10", "assets/images/hero.png", "採用", body);
+  assert.deepEqual(refreshInlineImages({ root: value.root, force: true }), { published: 3, changed: 3 });
+  const assigned = images.usageHistory({ root: value.root, articlesDir: value.articles, kind: "inline" });
+  assert.equal(new Set(assigned.map(item => item.hash)).size, 2);
+  assert.notEqual(assigned[0].hash, assigned[1].hash);
+  assert.notEqual(assigned[1].hash, assigned[2].hash);
+  assert.deepEqual(refreshInlineImages({ root: value.root, force: true }), { published: 3, changed: 0 });
 });

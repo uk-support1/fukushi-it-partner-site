@@ -1868,21 +1868,20 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-ai-008.png",
-      "category": "ai",
-      "series": "ai",
+      "path": "assets/images/blog-library/inline/inline-general-001.png",
+      "category": "general",
+      "series": "pc-work",
       "tags": [
-        "AI",
-        "生成AI",
-        "情報整理",
-        "文章作成",
-        "PC"
+        "一般事務",
+        "PC作業",
+        "オフィス",
+        "情報確認"
       ],
-      "scene": "AI活用",
+      "scene": "一般的なPC作業",
       "themes": [
-        "ai"
+        "general"
       ],
-      "technology_level": "strong",
+      "technology_level": "none",
       "has_person": true
     },
     {
@@ -1940,7 +1939,7 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-ai-012.png",
+      "path": "assets/images/blog-library/inline/inline-ai-008.png",
       "category": "ai",
       "series": "ai",
       "tags": [
@@ -2030,7 +2029,24 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-security-001.png",
+      "path": "assets/images/blog-library/inline/inline-general-002.png",
+      "category": "general",
+      "series": "pc-work",
+      "tags": [
+        "一般事務",
+        "PC作業",
+        "オフィス",
+        "デスクワーク"
+      ],
+      "scene": "一般的なPC作業",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-security-002.png",
       "category": "security",
       "series": "security",
       "tags": [
@@ -2048,17 +2064,137 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-security-002.png",
+      "path": "assets/images/blog-library/inline/inline-general-003.png",
+      "category": "general",
+      "series": "document-review",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "PC作業",
+        "オフィス"
+      ],
+      "scene": "書類を確認する事務作業",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-007.png",
+      "category": "welfare",
+      "series": "support",
+      "tags": [
+        "福祉",
+        "支援",
+        "利用者",
+        "職員",
+        "タブレット"
+      ],
+      "scene": "福祉職員による利用者支援",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-general-004.png",
+      "category": "general",
+      "series": "desk",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類とPCのある事務机",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-general-005.png",
+      "category": "general",
+      "series": "document-review",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "PC作業",
+        "オフィス"
+      ],
+      "scene": "書類を確認する事務作業",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-general-006.png",
+      "category": "general",
+      "series": "meeting",
+      "tags": [
+        "一般事務",
+        "打ち合わせ",
+        "職員",
+        "オフィス"
+      ],
+      "scene": "通常の社内打ち合わせ",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-general-007.png",
+      "category": "general",
+      "series": "pc-work",
+      "tags": [
+        "一般事務",
+        "PC作業",
+        "オフィス",
+        "デスクワーク"
+      ],
+      "scene": "一般的なPC作業",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-general-008.png",
+      "category": "general",
+      "series": "desk",
+      "tags": [
+        "一般事務",
+        "PC作業",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "一般的なオフィスの作業机",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-security-001.png",
       "category": "security",
-      "series": "security",
+      "series": "protection",
       "tags": [
         "セキュリティ",
-        "個人情報",
         "パスワード",
-        "安全管理",
-        "情報保護"
+        "ログイン",
+        "情報保護",
+        "安全管理"
       ],
-      "scene": "情報セキュリティ対策",
+      "scene": "ログインと情報保護を含む業務風景",
       "themes": [
         "security"
       ],
@@ -2192,150 +2328,6 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-security-010.png",
-      "category": "security",
-      "series": "security",
-      "tags": [
-        "セキュリティ",
-        "個人情報",
-        "パスワード",
-        "安全管理",
-        "情報保護"
-      ],
-      "scene": "情報セキュリティ対策",
-      "themes": [
-        "security"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-security-011.png",
-      "category": "security",
-      "series": "security",
-      "tags": [
-        "セキュリティ",
-        "個人情報",
-        "パスワード",
-        "安全管理",
-        "情報保護"
-      ],
-      "scene": "情報セキュリティ対策",
-      "themes": [
-        "security"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-security-012.png",
-      "category": "security",
-      "series": "security",
-      "tags": [
-        "セキュリティ",
-        "個人情報",
-        "パスワード",
-        "安全管理",
-        "情報保護"
-      ],
-      "scene": "情報セキュリティ対策",
-      "themes": [
-        "security"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-security-013.png",
-      "category": "security",
-      "series": "security",
-      "tags": [
-        "セキュリティ",
-        "個人情報",
-        "パスワード",
-        "安全管理",
-        "情報保護"
-      ],
-      "scene": "情報セキュリティ対策",
-      "themes": [
-        "security"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-security-014.png",
-      "category": "security",
-      "series": "security",
-      "tags": [
-        "セキュリティ",
-        "個人情報",
-        "パスワード",
-        "安全管理",
-        "情報保護"
-      ],
-      "scene": "情報セキュリティ対策",
-      "themes": [
-        "security"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-security-015.png",
-      "category": "security",
-      "series": "security",
-      "tags": [
-        "セキュリティ",
-        "個人情報",
-        "パスワード",
-        "安全管理",
-        "情報保護"
-      ],
-      "scene": "情報セキュリティ対策",
-      "themes": [
-        "security"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-security-016.png",
-      "category": "security",
-      "series": "security",
-      "tags": [
-        "セキュリティ",
-        "個人情報",
-        "パスワード",
-        "安全管理",
-        "情報保護"
-      ],
-      "scene": "情報セキュリティ対策",
-      "themes": [
-        "security"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-security-017.png",
-      "category": "security",
-      "series": "security",
-      "tags": [
-        "セキュリティ",
-        "個人情報",
-        "パスワード",
-        "安全管理",
-        "情報保護"
-      ],
-      "scene": "情報セキュリティ対策",
-      "themes": [
-        "security"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
       "path": "assets/images/blog-library/inline/inline-seo-001.png",
       "category": "seo",
       "series": "seo",
@@ -2372,19 +2364,19 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-seo-003.png",
-      "category": "seo",
-      "series": "seo",
+      "path": "assets/images/blog-library/inline/inline-web-007.png",
+      "category": "web",
+      "series": "site-review",
       "tags": [
-        "SEO",
-        "検索",
-        "アクセス分析",
-        "集客",
-        "キーワード"
+        "ホームページ",
+        "Web",
+        "サイト確認",
+        "PC",
+        "情報閲覧"
       ],
-      "scene": "検索・アクセス分析",
+      "scene": "Webサイトの確認",
       "themes": [
-        "seo"
+        "web"
       ],
       "technology_level": "moderate",
       "has_person": true
@@ -2534,22 +2526,22 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-seo-012.png",
-      "category": "seo",
-      "series": "seo",
+      "path": "assets/images/blog-library/inline/inline-web-012.png",
+      "category": "web",
+      "series": "site-review",
       "tags": [
-        "SEO",
-        "検索",
-        "アクセス分析",
-        "集客",
-        "キーワード"
+        "ホームページ",
+        "Web",
+        "サイト確認",
+        "PC",
+        "情報閲覧"
       ],
-      "scene": "検索・アクセス分析",
+      "scene": "Webサイトの確認",
       "themes": [
-        "seo"
+        "web"
       ],
       "technology_level": "moderate",
-      "has_person": true
+      "has_person": false
     },
     {
       "path": "assets/images/blog-library/inline/inline-subsidy-001.png",
@@ -2570,19 +2562,18 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-subsidy-002.png",
-      "category": "subsidy",
-      "series": "subsidy",
+      "path": "assets/images/blog-library/inline/inline-general-009.png",
+      "category": "general",
+      "series": "document-review",
       "tags": [
-        "補助金",
-        "助成金",
-        "申請",
-        "書類",
-        "資金計画"
+        "一般事務",
+        "書類確認",
+        "PC作業",
+        "オフィス"
       ],
-      "scene": "補助金の申請準備",
+      "scene": "書類を確認する事務作業",
       "themes": [
-        "subsidy"
+        "general"
       ],
       "technology_level": "none",
       "has_person": true
@@ -2786,25 +2777,25 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-subsidy-014.png",
-      "category": "subsidy",
-      "series": "subsidy",
+      "path": "assets/images/blog-library/inline/inline-welfare-009.png",
+      "category": "welfare",
+      "series": "consultation",
       "tags": [
-        "補助金",
-        "助成金",
-        "申請",
-        "書類",
-        "資金計画"
+        "福祉",
+        "相談",
+        "利用者",
+        "職員",
+        "支援"
       ],
-      "scene": "補助金の申請準備",
+      "scene": "福祉職員との相談",
       "themes": [
-        "subsidy"
+        "welfare"
       ],
       "technology_level": "none",
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-subsidy-015.png",
+      "path": "assets/images/blog-library/inline/inline-subsidy-002.png",
       "category": "subsidy",
       "series": "subsidy",
       "tags": [
@@ -2930,19 +2921,19 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-web-007.png",
-      "category": "web",
-      "series": "web",
+      "path": "assets/images/blog-library/inline/inline-seo-003.png",
+      "category": "seo",
+      "series": "analytics",
       "tags": [
-        "ホームページ",
-        "Web",
-        "サイト制作",
-        "情報発信",
-        "PC"
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ"
       ],
-      "scene": "Webサイト活用",
+      "scene": "アクセスデータの分析",
       "themes": [
-        "web"
+        "seo"
       ],
       "technology_level": "moderate",
       "has_person": true
@@ -3038,39 +3029,38 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-002.png",
-      "category": "welfare",
-      "series": "welfare",
+      "path": "assets/images/blog-library/inline/inline-general-010.png",
+      "category": "general",
+      "series": "document-review",
       "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
+        "一般事務",
+        "書類確認",
+        "PC作業",
+        "オフィス"
       ],
-      "scene": "福祉支援",
+      "scene": "書類を確認する事務作業",
       "themes": [
-        "welfare"
+        "general"
       ],
       "technology_level": "none",
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-003.png",
-      "category": "welfare",
-      "series": "welfare",
+      "path": "assets/images/blog-library/inline/inline-dx-003.png",
+      "category": "dx",
+      "series": "multi-device",
       "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
+        "DX",
+        "デジタル化",
+        "スマートフォン",
+        "PC",
+        "業務効率化"
       ],
-      "scene": "福祉支援",
+      "scene": "スマートフォンとPCを使う業務",
       "themes": [
-        "welfare"
+        "digital"
       ],
-      "technology_level": "none",
+      "technology_level": "moderate",
       "has_person": true
     },
     {
@@ -3092,57 +3082,57 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-005.png",
-      "category": "welfare",
-      "series": "welfare",
+      "path": "assets/images/blog-library/inline/inline-dx-004.png",
+      "category": "dx",
+      "series": "cloud",
       "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
+        "DX",
+        "クラウド",
+        "情報共有",
+        "PC",
+        "業務効率化"
       ],
-      "scene": "福祉支援",
+      "scene": "クラウドを使った情報共有",
       "themes": [
-        "welfare"
+        "digital"
       ],
-      "technology_level": "none",
+      "technology_level": "strong",
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-006.png",
-      "category": "welfare",
-      "series": "welfare",
+      "path": "assets/images/blog-library/inline/inline-dx-005.png",
+      "category": "dx",
+      "series": "workflow",
       "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
+        "DX",
+        "デジタル化",
+        "タブレット",
+        "業務効率化",
+        "情報管理"
       ],
-      "scene": "福祉支援",
+      "scene": "タブレットによる業務管理",
       "themes": [
-        "welfare"
+        "digital"
       ],
-      "technology_level": "none",
-      "has_person": true
+      "technology_level": "strong",
+      "has_person": false
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-007.png",
-      "category": "welfare",
-      "series": "welfare",
+      "path": "assets/images/blog-library/inline/inline-seo-012.png",
+      "category": "seo",
+      "series": "analytics",
       "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ"
       ],
-      "scene": "福祉支援",
+      "scene": "アクセスデータの分析",
       "themes": [
-        "welfare"
+        "seo"
       ],
-      "technology_level": "none",
+      "technology_level": "moderate",
       "has_person": true
     },
     {
@@ -3164,22 +3154,22 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-009.png",
-      "category": "welfare",
-      "series": "welfare",
+      "path": "assets/images/blog-library/inline/inline-seo-013.png",
+      "category": "seo",
+      "series": "analytics",
       "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ"
       ],
-      "scene": "福祉支援",
+      "scene": "アクセスデータの分析",
       "themes": [
-        "welfare"
+        "seo"
       ],
-      "technology_level": "none",
-      "has_person": true
+      "technology_level": "moderate",
+      "has_person": false
     },
     {
       "path": "assets/images/blog-library/inline/inline-welfare-010.png",
@@ -3290,7 +3280,7 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-016.png",
+      "path": "assets/images/blog-library/inline/inline-welfare-002.png",
       "category": "welfare",
       "series": "welfare",
       "tags": [
@@ -3308,7 +3298,7 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-017.png",
+      "path": "assets/images/blog-library/inline/inline-welfare-003.png",
       "category": "welfare",
       "series": "welfare",
       "tags": [
@@ -3326,7 +3316,7 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-018.png",
+      "path": "assets/images/blog-library/inline/inline-welfare-005.png",
       "category": "welfare",
       "series": "welfare",
       "tags": [
@@ -3344,7 +3334,7 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-019.png",
+      "path": "assets/images/blog-library/inline/inline-welfare-006.png",
       "category": "welfare",
       "series": "welfare",
       "tags": [

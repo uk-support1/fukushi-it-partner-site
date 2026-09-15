@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 const images = require("./lib/image-library");
 
-const CATEGORIES = ["welfare", "web", "recruit", "ai", "dx", "seo", "subsidy", "security"];
+const CATEGORIES = ["welfare", "web", "recruit", "ai", "dx", "seo", "subsidy", "security", "general"];
 const INCOMING_CATEGORIES = [
   [/20260915-021\d+/, "ai"], [/20260915-022[0-5]\d+/, "welfare"],
   [/20260915-022[6-9]\d+/, "seo"], [/20260915-023\d+/, "subsidy"],

@@ -42,11 +42,11 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-001.png
+inline_image: assets/images/blog-library/inline/inline-web-008.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
-inline_image_series: design
-inline_image_hash: f1b5bddac15f5cdba8d40a94b8b09d7d730d59fa710118bd11505829827b90a4
+inline_image_series: web
+inline_image_hash: ae537f3930d3e533ee020052969d4c1d6676f300b47d3d484e5f480fab230933
 inline_image_selection:
   themes:
     - digital
@@ -101,7 +101,7 @@ inline_image_selection:
 
 ![ノートパソコンの画面に表示されたブログ記事のレイアウト](assets/images/blog/laptop-blog-layout.jpg)
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-001.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-008.png)
 
 ## 福祉のことを理解したIT支援を
 

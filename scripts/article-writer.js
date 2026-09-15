@@ -56,11 +56,11 @@ function baseSlugFor(title, date) {
   return `article-${date}-${digest}`;
 }
 
-function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {} } = {}) {
+function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {}, history = null } = {}) {
   const profile = articleImageProfile({ ...content, category });
   const selected = imageLibrary.selectImage({ category,
     candidates: imageLibrary.discoverImages({ root, kind }),
-    history: imageLibrary.usageHistory({ root, articlesDir, kind }),
+    history: history || imageLibrary.usageHistory({ root, articlesDir, kind }),
     recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT, profile });
   if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series, hash: selected.hash, profile };
   if (kind !== "hero") return null;
@@ -73,7 +73,8 @@ function inlineImage(category, options) { return articleImage(category, { ...opt
 function inlineAlt(category) {
   const labels = { welfare: "福祉の現場を支えるイメージ", recruit: "採用活動を支えるイメージ",
     ai: "AI活用のイメージ", dx: "業務のデジタル化を支えるイメージ", web: "ホームページ活用のイメージ",
-    seo: "情報発信を支えるイメージ", subsidy: "補助金活用のイメージ", security: "情報セキュリティのイメージ" };
+    seo: "情報発信を支えるイメージ", subsidy: "補助金活用のイメージ", security: "情報セキュリティのイメージ",
+    general: "一般的な事務作業のイメージ" };
   return labels[imageLibrary.categoryFor(category)] || "記事内容を補足するイメージ";
 }
 
