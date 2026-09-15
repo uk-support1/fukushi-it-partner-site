@@ -3,8 +3,8 @@ type: column
 category_label: ホームページ制作
 title: 福祉事業所にホームページが必要な5つの理由
 date: 2026-04-05
-image: assets/images/blog-library/hero/hero-welfare-009.png
-image_alt: ノートパソコンでホームページのデザインを考えている様子
+image: assets/images/blog-library/hero/hero-welfare-013.png
+image_alt: 福祉の現場を支えるイメージ
 published: true
 description: 福祉事業所にホームページが必要な理由を5つに分けて解説。利用者・ご家族・支援機関への情報発信、見学体験申込み、採用にも役立つ理由をご紹介します。
 slug: why-homepage-5-reasons
@@ -25,48 +25,54 @@ emphasis:
     style: notice
 image_role: hero
 image_category: welfare
-image_series: care
-image_hash: 0c7472ed3d2252c7d01eddcce133a60cbde9f9374ae2d4c6f86948821da84e1d
+image_series: welfare-consultation
+image_hash: cefba00b3a339dcdff25dd5c940986c47e90979fa941bb0806cbc1356b45b9b1
 image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-007.png
-inline_image_alt: ホームページ活用のイメージ
-inline_image_category: web
-inline_image_series: site-review
-inline_image_hash: b6d1cc17267320db78a2c9898bb136605eda07a4bbe3f742b69054edfb4d427d
+inline_image: assets/images/blog-library/inline/inline-welfare-013.png
+inline_image_alt: 福祉の現場を支えるイメージ
+inline_image_category: welfare
+inline_image_series: welfare
+inline_image_hash: 420469de511150c2af48a53fb150c0a7ecf7ddfefa133b921cf92210c185e6e9
 inline_image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
 ---
 
@@ -127,7 +133,7 @@ inline_image_selection:
 
 ホームページでは、「何を見せるか」だけでなく、「安心して見てもらえる情報の出し方」を考えることも大切です。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-007.png)
+![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-013.png)
 
 ## 4．予定やお知らせを、いつでも確認できる
 

@@ -5,14 +5,167 @@
     {
       "path": "assets/images/blog-library/hero/hero-ai-001.png",
       "category": "ai",
-      "series": "workflow",
+      "series": "ai-person",
+      "tags": [
+        "AI",
+        "生成AI",
+        "人工知能",
+        "PC",
+        "業務"
+      ],
+      "scene": "AIを活用する人",
+      "themes": [
+        "ai",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-ai-002.png",
+      "category": "ai",
+      "series": "ai-interface",
       "tags": [
         "AI",
         "人工知能",
+        "デジタル",
         "PC",
-        "デジタル"
+        "情報整理"
       ],
-      "scene": "AI活用",
+      "scene": "AIとデジタル情報",
+      "themes": [
+        "ai",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-ai-003.png",
+      "category": "ai",
+      "series": "ai-interface",
+      "tags": [
+        "AI",
+        "人工知能",
+        "デジタル",
+        "PC",
+        "情報整理"
+      ],
+      "scene": "AIとデジタル情報",
+      "themes": [
+        "ai",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-ai-004.png",
+      "category": "ai",
+      "series": "ai-interface",
+      "tags": [
+        "AI",
+        "人工知能",
+        "デジタル",
+        "PC",
+        "情報整理"
+      ],
+      "scene": "AIとデジタル情報",
+      "themes": [
+        "ai",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-ai-005.png",
+      "category": "ai",
+      "series": "ai-interface",
+      "tags": [
+        "AI",
+        "人工知能",
+        "デジタル",
+        "PC",
+        "情報整理"
+      ],
+      "scene": "AIとデジタル情報",
+      "themes": [
+        "ai",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-ai-006.png",
+      "category": "ai",
+      "series": "ai-person",
+      "tags": [
+        "AI",
+        "生成AI",
+        "人工知能",
+        "PC",
+        "業務"
+      ],
+      "scene": "AIを活用する人",
+      "themes": [
+        "ai",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-ai-007.png",
+      "category": "ai",
+      "series": "ai-interface",
+      "tags": [
+        "AI",
+        "人工知能",
+        "デジタル",
+        "PC",
+        "情報整理"
+      ],
+      "scene": "AIとデジタル情報",
+      "themes": [
+        "ai",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-ai-008.png",
+      "category": "ai",
+      "series": "ai-robot",
+      "tags": [
+        "AI",
+        "生成AI",
+        "ロボット",
+        "PC",
+        "業務"
+      ],
+      "scene": "AIアシスタント",
+      "themes": [
+        "ai",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-ai-009.png",
+      "category": "ai",
+      "series": "ai-person",
+      "tags": [
+        "AI",
+        "生成AI",
+        "人工知能",
+        "PC",
+        "業務"
+      ],
+      "scene": "AIを活用する人",
       "themes": [
         "ai",
         "digital"
@@ -23,29 +176,31 @@
     {
       "path": "assets/images/blog-library/hero/hero-dx-001.png",
       "category": "dx",
-      "series": "workflow",
+      "series": "dx-cloud",
       "tags": [
+        "DX",
         "クラウド",
+        "デジタル化",
         "PC",
-        "デジタル",
-        "連携"
+        "情報共有"
       ],
-      "scene": "クラウド連携",
+      "scene": "クラウドを使う業務",
       "themes": [
         "digital"
       ],
       "technology_level": "strong",
-      "has_person": true
+      "has_person": false
     },
     {
       "path": "assets/images/blog-library/hero/hero-dx-002.png",
       "category": "dx",
-      "series": "workflow",
+      "series": "dx-paperless",
       "tags": [
-        "書類",
+        "DX",
+        "ペーパーレス",
         "デジタル化",
-        "PC",
-        "業務"
+        "書類",
+        "業務効率化"
       ],
       "scene": "書類のデジタル化",
       "themes": [
@@ -55,15 +210,492 @@
       "has_person": false
     },
     {
+      "path": "assets/images/blog-library/hero/hero-dx-003.png",
+      "category": "dx",
+      "series": "dx-cloud",
+      "tags": [
+        "DX",
+        "クラウド",
+        "デジタル化",
+        "PC",
+        "情報共有"
+      ],
+      "scene": "クラウドを使う業務",
+      "themes": [
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-dx-004.png",
+      "category": "dx",
+      "series": "dx-tablet",
+      "tags": [
+        "DX",
+        "タブレット",
+        "業務効率化",
+        "デジタル化"
+      ],
+      "scene": "タブレットによる業務効率化",
+      "themes": [
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-dx-005.png",
+      "category": "dx",
+      "series": "dx-cloud",
+      "tags": [
+        "DX",
+        "クラウド",
+        "デジタル化",
+        "PC",
+        "情報共有"
+      ],
+      "scene": "クラウドを使う業務",
+      "themes": [
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-dx-006.png",
+      "category": "dx",
+      "series": "dx-tablet",
+      "tags": [
+        "DX",
+        "タブレット",
+        "業務効率化",
+        "デジタル化"
+      ],
+      "scene": "タブレットによる業務効率化",
+      "themes": [
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-dx-007.png",
+      "category": "dx",
+      "series": "dx-tablet",
+      "tags": [
+        "DX",
+        "タブレット",
+        "業務効率化",
+        "デジタル化"
+      ],
+      "scene": "タブレットによる業務効率化",
+      "themes": [
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-dx-008.png",
+      "category": "dx",
+      "series": "dx-tablet",
+      "tags": [
+        "DX",
+        "タブレット",
+        "業務効率化",
+        "デジタル化"
+      ],
+      "scene": "タブレットによる業務効率化",
+      "themes": [
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-001.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-002.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-003.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-004.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-005.png",
+      "category": "general",
+      "series": "office-pc",
+      "tags": [
+        "一般事務",
+        "PC",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "一般的なPC作業",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-006.png",
+      "category": "general",
+      "series": "office-pc",
+      "tags": [
+        "一般事務",
+        "PC",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "一般的なPC作業",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-007.png",
+      "category": "general",
+      "series": "office-meeting",
+      "tags": [
+        "打ち合わせ",
+        "相談",
+        "オフィス",
+        "一般事務"
+      ],
+      "scene": "一般的な打ち合わせ",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-008.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-009.png",
+      "category": "general",
+      "series": "office-meeting",
+      "tags": [
+        "打ち合わせ",
+        "相談",
+        "オフィス",
+        "一般事務"
+      ],
+      "scene": "一般的な打ち合わせ",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-010.png",
+      "category": "general",
+      "series": "office-meeting",
+      "tags": [
+        "打ち合わせ",
+        "相談",
+        "オフィス",
+        "一般事務"
+      ],
+      "scene": "一般的な打ち合わせ",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-011.png",
+      "category": "general",
+      "series": "office-meeting",
+      "tags": [
+        "打ち合わせ",
+        "相談",
+        "オフィス",
+        "一般事務"
+      ],
+      "scene": "一般的な打ち合わせ",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-012.png",
+      "category": "general",
+      "series": "office-meeting",
+      "tags": [
+        "打ち合わせ",
+        "相談",
+        "オフィス",
+        "一般事務"
+      ],
+      "scene": "一般的な打ち合わせ",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-013.png",
+      "category": "general",
+      "series": "office-pc",
+      "tags": [
+        "一般事務",
+        "PC",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "一般的なPC作業",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-014.png",
+      "category": "general",
+      "series": "office-meeting",
+      "tags": [
+        "打ち合わせ",
+        "相談",
+        "オフィス",
+        "一般事務"
+      ],
+      "scene": "一般的な打ち合わせ",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-015.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-016.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-017.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-018.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-019.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-020.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-021.png",
+      "category": "general",
+      "series": "office-documents",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "デスク",
+        "オフィス"
+      ],
+      "scene": "書類確認のデスク",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-general-022.png",
+      "category": "general",
+      "series": "office-meeting",
+      "tags": [
+        "打ち合わせ",
+        "相談",
+        "オフィス",
+        "一般事務"
+      ],
+      "scene": "一般的な打ち合わせ",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
       "path": "assets/images/blog-library/hero/hero-recruit-001.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-interview",
       "tags": [
         "採用",
+        "求人",
         "面談",
-        "職員",
-        "対話",
-        "相談"
+        "応募者"
       ],
       "scene": "採用面談",
       "themes": [
@@ -75,15 +707,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-002.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-team",
       "tags": [
         "採用",
-        "面談",
         "職員",
-        "対話",
-        "相談"
+        "チーム",
+        "職場"
       ],
-      "scene": "採用面談",
+      "scene": "職場のチーム",
       "themes": [
         "recruit"
       ],
@@ -93,15 +724,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-003.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-team",
       "tags": [
         "採用",
-        "面談",
         "職員",
-        "対話",
-        "相談"
+        "チーム",
+        "職場"
       ],
-      "scene": "採用面談",
+      "scene": "職場のチーム",
       "themes": [
         "recruit"
       ],
@@ -111,15 +741,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-004.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-team",
       "tags": [
         "採用",
-        "面談",
         "職員",
-        "対話",
-        "相談"
+        "チーム",
+        "職場"
       ],
-      "scene": "採用面談",
+      "scene": "職場のチーム",
       "themes": [
         "recruit"
       ],
@@ -129,15 +758,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-005.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-team",
       "tags": [
         "採用",
-        "面談",
         "職員",
-        "対話",
-        "相談"
+        "チーム",
+        "職場"
       ],
-      "scene": "採用面談",
+      "scene": "職場のチーム",
       "themes": [
         "recruit"
       ],
@@ -147,13 +775,12 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-006.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-interview",
       "tags": [
         "採用",
+        "求人",
         "面談",
-        "職員",
-        "対話",
-        "相談"
+        "応募者"
       ],
       "scene": "採用面談",
       "themes": [
@@ -165,15 +792,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-007.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-team",
       "tags": [
         "採用",
-        "面談",
         "職員",
-        "対話",
-        "相談"
+        "チーム",
+        "職場"
       ],
-      "scene": "採用面談",
+      "scene": "職場のチーム",
       "themes": [
         "recruit"
       ],
@@ -183,15 +809,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-008.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-team",
       "tags": [
         "採用",
-        "面談",
         "職員",
-        "対話",
-        "相談"
+        "チーム",
+        "職場"
       ],
-      "scene": "採用面談",
+      "scene": "職場のチーム",
       "themes": [
         "recruit"
       ],
@@ -201,15 +826,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-009.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-team",
       "tags": [
         "採用",
-        "面談",
         "職員",
-        "対話",
-        "相談"
+        "チーム",
+        "職場"
       ],
-      "scene": "採用面談",
+      "scene": "職場のチーム",
       "themes": [
         "recruit"
       ],
@@ -219,13 +843,12 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-010.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-interview",
       "tags": [
         "採用",
+        "求人",
         "面談",
-        "職員",
-        "対話",
-        "相談"
+        "応募者"
       ],
       "scene": "採用面談",
       "themes": [
@@ -237,213 +860,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-recruit-011.png",
       "category": "recruit",
-      "series": "interview",
+      "series": "recruit-digital-profile",
       "tags": [
         "採用",
-        "面談",
-        "職員",
-        "対話",
-        "相談"
+        "求人",
+        "応募者",
+        "オンライン"
       ],
-      "scene": "採用面談",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-012.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-013.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-014.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-015.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-016.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-017.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-018.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-019.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-020.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-021.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-022.png",
-      "category": "recruit",
-      "series": "team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "協働",
-        "事業所"
-      ],
-      "scene": "職員チーム",
+      "scene": "オンライン採用情報",
       "themes": [
         "recruit"
       ],
@@ -453,14 +877,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-security-001.png",
       "category": "security",
-      "series": "workflow",
+      "series": "security-lock",
       "tags": [
         "セキュリティ",
         "個人情報",
         "パスワード",
-        "スマホ"
+        "鍵",
+        "安全管理"
       ],
-      "scene": "情報セキュリティ",
+      "scene": "ログインと情報保護",
       "themes": [
         "security",
         "digital"
@@ -469,14 +894,280 @@
       "has_person": false
     },
     {
+      "path": "assets/images/blog-library/hero/hero-security-002.png",
+      "category": "security",
+      "series": "security-lock",
+      "tags": [
+        "セキュリティ",
+        "個人情報",
+        "パスワード",
+        "鍵",
+        "安全管理"
+      ],
+      "scene": "ログインと情報保護",
+      "themes": [
+        "security",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-security-003.png",
+      "category": "security",
+      "series": "security-lock",
+      "tags": [
+        "セキュリティ",
+        "個人情報",
+        "パスワード",
+        "鍵",
+        "安全管理"
+      ],
+      "scene": "ログインと情報保護",
+      "themes": [
+        "security",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-security-004.png",
+      "category": "security",
+      "series": "security-lock",
+      "tags": [
+        "セキュリティ",
+        "個人情報",
+        "パスワード",
+        "鍵",
+        "安全管理"
+      ],
+      "scene": "ログインと情報保護",
+      "themes": [
+        "security",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-security-005.png",
+      "category": "security",
+      "series": "security-lock",
+      "tags": [
+        "セキュリティ",
+        "個人情報",
+        "パスワード",
+        "鍵",
+        "安全管理"
+      ],
+      "scene": "ログインと情報保護",
+      "themes": [
+        "security",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-security-006.png",
+      "category": "security",
+      "series": "security-lock",
+      "tags": [
+        "セキュリティ",
+        "個人情報",
+        "パスワード",
+        "鍵",
+        "安全管理"
+      ],
+      "scene": "ログインと情報保護",
+      "themes": [
+        "security",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-security-007.png",
+      "category": "security",
+      "series": "security-lock",
+      "tags": [
+        "セキュリティ",
+        "個人情報",
+        "パスワード",
+        "鍵",
+        "安全管理"
+      ],
+      "scene": "ログインと情報保護",
+      "themes": [
+        "security",
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-seo-001.png",
+      "category": "seo",
+      "series": "seo-analytics",
+      "tags": [
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ分析"
+      ],
+      "scene": "アクセス分析",
+      "themes": [
+        "seo",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-seo-002.png",
+      "category": "seo",
+      "series": "seo-analytics",
+      "tags": [
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ分析"
+      ],
+      "scene": "アクセス分析",
+      "themes": [
+        "seo",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-seo-003.png",
+      "category": "seo",
+      "series": "seo-analytics",
+      "tags": [
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ分析"
+      ],
+      "scene": "アクセス分析",
+      "themes": [
+        "seo",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-seo-004.png",
+      "category": "seo",
+      "series": "seo-analytics",
+      "tags": [
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ分析"
+      ],
+      "scene": "アクセス分析",
+      "themes": [
+        "seo",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-seo-005.png",
+      "category": "seo",
+      "series": "seo-search",
+      "tags": [
+        "SEO",
+        "検索",
+        "キーワード",
+        "集客",
+        "分析"
+      ],
+      "scene": "検索・キーワード分析",
+      "themes": [
+        "seo",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-seo-006.png",
+      "category": "seo",
+      "series": "seo-search",
+      "tags": [
+        "SEO",
+        "検索",
+        "キーワード",
+        "集客",
+        "分析"
+      ],
+      "scene": "検索・キーワード分析",
+      "themes": [
+        "seo",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-seo-007.png",
+      "category": "seo",
+      "series": "seo-analytics",
+      "tags": [
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ分析"
+      ],
+      "scene": "アクセス分析",
+      "themes": [
+        "seo",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-seo-008.png",
+      "category": "seo",
+      "series": "seo-analytics",
+      "tags": [
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ分析"
+      ],
+      "scene": "アクセス分析",
+      "themes": [
+        "seo",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
       "path": "assets/images/blog-library/hero/hero-subsidy-001.png",
       "category": "subsidy",
-      "series": "workflow",
+      "series": "funding-growth",
       "tags": [
         "補助金",
-        "予算",
-        "資金",
-        "計画"
+        "助成金",
+        "資金計画",
+        "事業計画"
       ],
       "scene": "資金計画",
       "themes": [
@@ -488,48 +1179,51 @@
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-002.png",
       "category": "subsidy",
-      "series": "consultation",
+      "series": "funding-planning",
       "tags": [
         "補助金",
-        "相談",
+        "助成金",
         "申請",
-        "書類"
+        "電卓",
+        "資金計画"
       ],
-      "scene": "補助金相談",
+      "scene": "補助金の申請・資金相談",
       "themes": [
         "subsidy"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": false
     },
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-003.png",
       "category": "subsidy",
-      "series": "consultation",
+      "series": "funding-planning",
       "tags": [
         "補助金",
-        "相談",
+        "助成金",
         "申請",
-        "書類"
+        "電卓",
+        "資金計画"
       ],
-      "scene": "補助金相談",
+      "scene": "補助金の申請・資金相談",
       "themes": [
         "subsidy"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": false
     },
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-004.png",
       "category": "subsidy",
-      "series": "consultation",
+      "series": "funding-planning",
       "tags": [
         "補助金",
-        "相談",
+        "助成金",
         "申請",
-        "書類"
+        "電卓",
+        "資金計画"
       ],
-      "scene": "補助金相談",
+      "scene": "補助金の申請・資金相談",
       "themes": [
         "subsidy"
       ],
@@ -539,14 +1233,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-005.png",
       "category": "subsidy",
-      "series": "consultation",
+      "series": "funding-planning",
       "tags": [
         "補助金",
-        "相談",
+        "助成金",
         "申請",
-        "書類"
+        "電卓",
+        "資金計画"
       ],
-      "scene": "補助金相談",
+      "scene": "補助金の申請・資金相談",
       "themes": [
         "subsidy"
       ],
@@ -556,14 +1251,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-006.png",
       "category": "subsidy",
-      "series": "consultation",
+      "series": "funding-planning",
       "tags": [
         "補助金",
-        "相談",
+        "助成金",
         "申請",
-        "書類"
+        "電卓",
+        "資金計画"
       ],
-      "scene": "補助金相談",
+      "scene": "補助金の申請・資金相談",
       "themes": [
         "subsidy"
       ],
@@ -573,14 +1269,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-007.png",
       "category": "subsidy",
-      "series": "consultation",
+      "series": "funding-planning",
       "tags": [
         "補助金",
-        "相談",
+        "助成金",
         "申請",
-        "書類"
+        "電卓",
+        "資金計画"
       ],
-      "scene": "補助金相談",
+      "scene": "補助金の申請・資金相談",
       "themes": [
         "subsidy"
       ],
@@ -590,14 +1287,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-008.png",
       "category": "subsidy",
-      "series": "consultation",
+      "series": "funding-planning",
       "tags": [
         "補助金",
-        "相談",
+        "助成金",
         "申請",
-        "書類"
+        "電卓",
+        "資金計画"
       ],
-      "scene": "補助金相談",
+      "scene": "補助金の申請・資金相談",
       "themes": [
         "subsidy"
       ],
@@ -607,14 +1305,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-009.png",
       "category": "subsidy",
-      "series": "consultation",
+      "series": "funding-planning",
       "tags": [
         "補助金",
-        "相談",
+        "助成金",
         "申請",
-        "書類"
+        "電卓",
+        "資金計画"
       ],
-      "scene": "補助金相談",
+      "scene": "補助金の申請・資金相談",
       "themes": [
         "subsidy"
       ],
@@ -624,224 +1323,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-010.png",
       "category": "subsidy",
-      "series": "consultation",
+      "series": "funding-growth",
       "tags": [
         "補助金",
-        "相談",
-        "申請",
-        "書類"
+        "助成金",
+        "資金計画",
+        "事業計画"
       ],
-      "scene": "補助金相談",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-011.png",
-      "category": "subsidy",
-      "series": "consultation",
-      "tags": [
-        "補助金",
-        "相談",
-        "申請",
-        "書類"
-      ],
-      "scene": "補助金相談",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-012.png",
-      "category": "subsidy",
-      "series": "planning",
-      "tags": [
-        "補助金",
-        "計画",
-        "予算",
-        "書類",
-        "相談"
-      ],
-      "scene": "申請計画",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-013.png",
-      "category": "subsidy",
-      "series": "planning",
-      "tags": [
-        "補助金",
-        "計画",
-        "予算",
-        "書類",
-        "相談"
-      ],
-      "scene": "申請計画",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-014.png",
-      "category": "subsidy",
-      "series": "planning",
-      "tags": [
-        "補助金",
-        "計画",
-        "予算",
-        "書類",
-        "相談"
-      ],
-      "scene": "申請計画",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-015.png",
-      "category": "subsidy",
-      "series": "planning",
-      "tags": [
-        "補助金",
-        "計画",
-        "予算",
-        "書類",
-        "相談"
-      ],
-      "scene": "申請計画",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-016.png",
-      "category": "subsidy",
-      "series": "planning",
-      "tags": [
-        "補助金",
-        "計画",
-        "予算",
-        "書類",
-        "相談"
-      ],
-      "scene": "申請計画",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-017.png",
-      "category": "subsidy",
-      "series": "planning",
-      "tags": [
-        "補助金",
-        "計画",
-        "予算",
-        "書類",
-        "相談"
-      ],
-      "scene": "申請計画",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-018.png",
-      "category": "subsidy",
-      "series": "planning",
-      "tags": [
-        "補助金",
-        "計画",
-        "予算",
-        "書類",
-        "相談"
-      ],
-      "scene": "申請計画",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-019.png",
-      "category": "subsidy",
-      "series": "planning",
-      "tags": [
-        "補助金",
-        "計画",
-        "予算",
-        "書類",
-        "相談"
-      ],
-      "scene": "申請計画",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-020.png",
-      "category": "subsidy",
-      "series": "planning",
-      "tags": [
-        "補助金",
-        "計画",
-        "予算",
-        "書類",
-        "相談"
-      ],
-      "scene": "申請計画",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-021.jpg",
-      "category": "subsidy",
-      "series": "photo-alt-gemini-planning",
-      "tags": [
-        "subsidy"
-      ],
-      "scene": "subsidy",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-022.png",
-      "category": "subsidy",
-      "series": "photo-budget-problem",
-      "tags": [
-        "補助金",
-        "予算",
-        "計算",
-        "書類"
-      ],
-      "scene": "予算検討",
+      "scene": "資金計画",
       "themes": [
         "subsidy"
       ],
@@ -849,138 +1338,131 @@
       "has_person": false
     },
     {
-      "path": "assets/images/blog-library/hero/hero-subsidy-023.png",
-      "category": "subsidy",
-      "series": "photo-consultation",
+      "path": "assets/images/blog-library/hero/hero-web-001.png",
+      "category": "web",
+      "series": "website-review",
       "tags": [
-        "補助金",
-        "相談",
-        "申請",
-        "書類"
-      ],
-      "scene": "補助金相談",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-024.png",
-      "category": "subsidy",
-      "series": "photo-cost-reduction",
-      "tags": [
-        "subsidy"
-      ],
-      "scene": "subsidy",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-025.png",
-      "category": "subsidy",
-      "series": "photo-explanation",
-      "tags": [
-        "subsidy"
-      ],
-      "scene": "subsidy",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-026.png",
-      "category": "subsidy",
-      "series": "photo",
-      "tags": [
-        "subsidy"
-      ],
-      "scene": "subsidy",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-027.png",
-      "category": "subsidy",
-      "series": "photo-issue-budget",
-      "tags": [
-        "補助金",
-        "予算",
-        "計算",
-        "書類"
-      ],
-      "scene": "予算検討",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": false
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-028.png",
-      "category": "subsidy",
-      "series": "photo-issue-inquiry",
-      "tags": [
-        "subsidy"
-      ],
-      "scene": "subsidy",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-subsidy-029.png",
-      "category": "subsidy",
-      "series": "photo-issue-website",
-      "tags": [
-        "補助金",
+        "Web",
         "ホームページ",
-        "相談",
-        "書類"
+        "サイト制作",
+        "スマホ",
+        "情報発信"
       ],
-      "scene": "補助金相談",
+      "scene": "Webサイトの制作・確認",
       "themes": [
-        "subsidy"
+        "web",
+        "digital"
       ],
-      "technology_level": "none",
+      "technology_level": "moderate",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-web-002.png",
+      "category": "web",
+      "series": "website-review",
+      "tags": [
+        "Web",
+        "ホームページ",
+        "サイト制作",
+        "スマホ",
+        "情報発信"
+      ],
+      "scene": "Webサイトの制作・確認",
+      "themes": [
+        "web",
+        "digital"
+      ],
+      "technology_level": "moderate",
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/hero/hero-subsidy-030.png",
-      "category": "subsidy",
-      "series": "photo-services",
+      "path": "assets/images/blog-library/hero/hero-web-003.jpg",
+      "category": "web",
+      "series": "website-review",
       "tags": [
-        "subsidy"
+        "Web",
+        "ホームページ",
+        "サイト制作",
+        "スマホ",
+        "情報発信"
       ],
-      "scene": "subsidy",
+      "scene": "Webサイトの制作・確認",
       "themes": [
-        "subsidy"
+        "web",
+        "digital"
       ],
-      "technology_level": "none",
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-web-004.png",
+      "category": "web",
+      "series": "website-review",
+      "tags": [
+        "Web",
+        "ホームページ",
+        "サイト制作",
+        "スマホ",
+        "情報発信"
+      ],
+      "scene": "Webサイトの制作・確認",
+      "themes": [
+        "web",
+        "digital"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-web-005.png",
+      "category": "web",
+      "series": "website-review",
+      "tags": [
+        "Web",
+        "ホームページ",
+        "サイト制作",
+        "スマホ",
+        "情報発信"
+      ],
+      "scene": "Webサイトの制作・確認",
+      "themes": [
+        "web",
+        "digital"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/hero/hero-web-006.png",
+      "category": "web",
+      "series": "website-review",
+      "tags": [
+        "Web",
+        "ホームページ",
+        "サイト制作",
+        "スマホ",
+        "情報発信"
+      ],
+      "scene": "Webサイトの制作・確認",
+      "themes": [
+        "web",
+        "digital"
+      ],
+      "technology_level": "moderate",
       "has_person": true
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-001.png",
       "category": "welfare",
-      "series": "workflow",
+      "series": "welfare-team",
       "tags": [
         "福祉",
-        "支援",
         "職員",
-        "利用者",
-        "相談"
+        "事業所",
+        "支援",
+        "チーム"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉職員の打ち合わせ",
       "themes": [
         "welfare"
       ],
@@ -990,14 +1472,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-002.png",
       "category": "welfare",
-      "series": "workflow",
+      "series": "welfare-consultation",
       "tags": [
-        "職員",
-        "チーム",
+        "福祉",
         "相談",
-        "協働"
+        "利用者",
+        "職員",
+        "支援"
       ],
-      "scene": "チーム連携",
+      "scene": "福祉の相談場面",
       "themes": [
         "welfare"
       ],
@@ -1007,14 +1490,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-003.png",
       "category": "welfare",
-      "series": "workflow",
+      "series": "welfare-team",
       "tags": [
+        "福祉",
         "職員",
-        "チーム",
-        "PC",
-        "協働"
+        "事業所",
+        "支援",
+        "チーム"
       ],
-      "scene": "職員チーム",
+      "scene": "福祉職員の打ち合わせ",
       "themes": [
         "welfare"
       ],
@@ -1024,15 +1508,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-004.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-facility",
       "tags": [
         "福祉",
         "利用者",
-        "支援",
-        "ケア",
-        "室内"
+        "職員",
+        "施設",
+        "生活支援"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉施設での支援",
       "themes": [
         "welfare"
       ],
@@ -1042,15 +1526,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-005.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-team",
       "tags": [
         "福祉",
-        "利用者",
+        "職員",
+        "事業所",
         "支援",
-        "ケア",
-        "室内"
+        "チーム"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉職員の打ち合わせ",
       "themes": [
         "welfare"
       ],
@@ -1060,15 +1544,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-006.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-consultation",
       "tags": [
         "福祉",
+        "相談",
         "利用者",
-        "支援",
-        "ケア",
-        "室内"
+        "職員",
+        "支援"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉の相談場面",
       "themes": [
         "welfare"
       ],
@@ -1078,15 +1562,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-007.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-consultation",
       "tags": [
         "福祉",
+        "相談",
         "利用者",
-        "支援",
-        "ケア",
-        "室内"
+        "職員",
+        "支援"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉の相談場面",
       "themes": [
         "welfare"
       ],
@@ -1096,15 +1580,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-008.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-team",
       "tags": [
         "福祉",
-        "利用者",
+        "職員",
+        "事業所",
         "支援",
-        "ケア",
-        "室内"
+        "チーム"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉職員の打ち合わせ",
       "themes": [
         "welfare"
       ],
@@ -1114,15 +1598,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-009.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-team",
       "tags": [
         "福祉",
-        "利用者",
+        "職員",
+        "事業所",
         "支援",
-        "ケア",
-        "室内"
+        "チーム"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉職員の打ち合わせ",
       "themes": [
         "welfare"
       ],
@@ -1132,15 +1616,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-010.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-consultation",
       "tags": [
         "福祉",
+        "相談",
         "利用者",
-        "支援",
-        "ケア",
-        "室内"
+        "職員",
+        "支援"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉の相談場面",
       "themes": [
         "welfare"
       ],
@@ -1150,15 +1634,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-011.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-facility",
       "tags": [
         "福祉",
         "利用者",
-        "支援",
-        "ケア",
-        "室内"
+        "職員",
+        "施設",
+        "生活支援"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉施設での支援",
       "themes": [
         "welfare"
       ],
@@ -1168,15 +1652,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-012.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-facility",
       "tags": [
         "福祉",
         "利用者",
-        "支援",
-        "ケア",
-        "室内"
+        "職員",
+        "施設",
+        "生活支援"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉施設での支援",
       "themes": [
         "welfare"
       ],
@@ -1186,15 +1670,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-013.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-consultation",
       "tags": [
         "福祉",
+        "相談",
         "利用者",
-        "支援",
-        "ケア",
-        "室内"
+        "職員",
+        "支援"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉の相談場面",
       "themes": [
         "welfare"
       ],
@@ -1204,15 +1688,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-014.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-facility",
       "tags": [
         "福祉",
         "利用者",
-        "支援",
-        "ケア",
-        "室内"
+        "職員",
+        "施設",
+        "生活支援"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉施設での支援",
       "themes": [
         "welfare"
       ],
@@ -1222,15 +1706,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-015.png",
       "category": "welfare",
-      "series": "care",
+      "series": "welfare-team",
       "tags": [
         "福祉",
-        "利用者",
+        "職員",
+        "事業所",
         "支援",
-        "ケア",
-        "室内"
+        "チーム"
       ],
-      "scene": "福祉支援",
+      "scene": "福祉職員の打ち合わせ",
       "themes": [
         "welfare"
       ],
@@ -1240,15 +1724,14 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-016.png",
       "category": "welfare",
-      "series": "home",
+      "series": "welfare-life-support",
       "tags": [
         "福祉",
-        "グループホーム",
-        "生活",
+        "生活支援",
         "利用者",
-        "事業所"
+        "家族"
       ],
-      "scene": "福祉事業所",
+      "scene": "福祉と生活支援",
       "themes": [
         "welfare"
       ],
@@ -1258,15 +1741,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-017.png",
       "category": "welfare",
-      "series": "home",
+      "series": "welfare-facility",
       "tags": [
         "福祉",
-        "グループホーム",
-        "生活",
         "利用者",
-        "事業所"
+        "職員",
+        "施設",
+        "生活支援"
       ],
-      "scene": "福祉事業所",
+      "scene": "福祉施設での支援",
       "themes": [
         "welfare"
       ],
@@ -1276,465 +1759,15 @@
     {
       "path": "assets/images/blog-library/hero/hero-welfare-018.png",
       "category": "welfare",
-      "series": "home",
+      "series": "welfare-facility",
       "tags": [
         "福祉",
-        "グループホーム",
-        "生活",
         "利用者",
-        "事業所"
-      ],
-      "scene": "福祉事業所",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-019.png",
-      "category": "welfare",
-      "series": "home",
-      "tags": [
-        "福祉",
-        "グループホーム",
-        "生活",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉事業所",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-020.png",
-      "category": "welfare",
-      "series": "home",
-      "tags": [
-        "福祉",
-        "グループホーム",
-        "生活",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉事業所",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-021.png",
-      "category": "welfare",
-      "series": "home",
-      "tags": [
-        "福祉",
-        "グループホーム",
-        "生活",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉事業所",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-022.png",
-      "category": "welfare",
-      "series": "home",
-      "tags": [
-        "福祉",
-        "グループホーム",
-        "生活",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉事業所",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-023.png",
-      "category": "welfare",
-      "series": "home",
-      "tags": [
-        "福祉",
-        "グループホーム",
-        "生活",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉事業所",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-024.png",
-      "category": "welfare",
-      "series": "home",
-      "tags": [
-        "福祉",
-        "グループホーム",
-        "生活",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉事業所",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-025.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-026.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-027.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-028.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-029.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-030.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-031.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-032.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-033.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-034.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "情報提供"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-035.png",
-      "category": "welfare",
-      "series": "support-team",
-      "tags": [
-        "福祉",
-        "支援",
         "職員",
-        "チーム",
-        "相談"
+        "施設",
+        "生活支援"
       ],
-      "scene": "支援チーム",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-036.png",
-      "category": "welfare",
-      "series": "support-team",
-      "tags": [
-        "福祉",
-        "支援",
-        "職員",
-        "チーム",
-        "相談"
-      ],
-      "scene": "支援チーム",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-037.png",
-      "category": "welfare",
-      "series": "support-team",
-      "tags": [
-        "福祉",
-        "支援",
-        "職員",
-        "チーム",
-        "相談"
-      ],
-      "scene": "支援チーム",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-038.png",
-      "category": "welfare",
-      "series": "support-team",
-      "tags": [
-        "福祉",
-        "支援",
-        "職員",
-        "チーム",
-        "相談"
-      ],
-      "scene": "支援チーム",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-039.png",
-      "category": "welfare",
-      "series": "support-team",
-      "tags": [
-        "福祉",
-        "支援",
-        "職員",
-        "チーム",
-        "相談"
-      ],
-      "scene": "支援チーム",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-040.png",
-      "category": "welfare",
-      "series": "support-team",
-      "tags": [
-        "福祉",
-        "支援",
-        "職員",
-        "チーム",
-        "相談"
-      ],
-      "scene": "支援チーム",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-041.png",
-      "category": "welfare",
-      "series": "support-team",
-      "tags": [
-        "福祉",
-        "支援",
-        "職員",
-        "チーム",
-        "相談"
-      ],
-      "scene": "支援チーム",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-042.png",
-      "category": "welfare",
-      "series": "support-team",
-      "tags": [
-        "福祉",
-        "支援",
-        "職員",
-        "チーム",
-        "相談"
-      ],
-      "scene": "支援チーム",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-043.png",
-      "category": "welfare",
-      "series": "support-team",
-      "tags": [
-        "福祉",
-        "支援",
-        "職員",
-        "チーム",
-        "相談"
-      ],
-      "scene": "支援チーム",
+      "scene": "福祉施設での支援",
       "themes": [
         "welfare"
       ],
@@ -1868,20 +1901,21 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-general-001.png",
-      "category": "general",
-      "series": "pc-work",
+      "path": "assets/images/blog-library/inline/inline-ai-008.png",
+      "category": "ai",
+      "series": "ai",
       "tags": [
-        "一般事務",
-        "PC作業",
-        "オフィス",
-        "情報確認"
+        "AI",
+        "生成AI",
+        "情報整理",
+        "文章作成",
+        "PC"
       ],
-      "scene": "一般的なPC作業",
+      "scene": "AI活用",
       "themes": [
-        "general"
+        "ai"
       ],
-      "technology_level": "none",
+      "technology_level": "strong",
       "has_person": true
     },
     {
@@ -1939,24 +1973,6 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-ai-008.png",
-      "category": "ai",
-      "series": "ai",
-      "tags": [
-        "AI",
-        "生成AI",
-        "情報整理",
-        "文章作成",
-        "PC"
-      ],
-      "scene": "AI活用",
-      "themes": [
-        "ai"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
       "path": "assets/images/blog-library/inline/inline-dx-001.png",
       "category": "dx",
       "series": "dx",
@@ -1993,37 +2009,72 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-recruit-001.png",
-      "category": "recruit",
-      "series": "recruit",
+      "path": "assets/images/blog-library/inline/inline-dx-003.png",
+      "category": "dx",
+      "series": "multi-device",
       "tags": [
-        "採用",
-        "求人",
-        "面談",
-        "職員",
-        "応募者"
+        "DX",
+        "デジタル化",
+        "スマートフォン",
+        "PC",
+        "業務効率化"
       ],
-      "scene": "採用活動",
+      "scene": "スマートフォンとPCを使う業務",
       "themes": [
-        "recruit"
+        "digital"
       ],
-      "technology_level": "none",
+      "technology_level": "moderate",
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-recruit-002.png",
-      "category": "recruit",
-      "series": "recruit",
+      "path": "assets/images/blog-library/inline/inline-dx-004.png",
+      "category": "dx",
+      "series": "cloud",
       "tags": [
-        "採用",
-        "求人",
-        "面談",
-        "職員",
-        "応募者"
+        "DX",
+        "クラウド",
+        "情報共有",
+        "PC",
+        "業務効率化"
       ],
-      "scene": "採用活動",
+      "scene": "クラウドを使った情報共有",
       "themes": [
-        "recruit"
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-dx-005.png",
+      "category": "dx",
+      "series": "workflow",
+      "tags": [
+        "DX",
+        "デジタル化",
+        "タブレット",
+        "業務効率化",
+        "情報管理"
+      ],
+      "scene": "タブレットによる業務管理",
+      "themes": [
+        "digital"
+      ],
+      "technology_level": "strong",
+      "has_person": false
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-general-001.png",
+      "category": "general",
+      "series": "pc-work",
+      "tags": [
+        "一般事務",
+        "PC作業",
+        "オフィス",
+        "情報確認"
+      ],
+      "scene": "一般的なPC作業",
+      "themes": [
+        "general"
       ],
       "technology_level": "none",
       "has_person": true
@@ -2046,24 +2097,6 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-security-002.png",
-      "category": "security",
-      "series": "security",
-      "tags": [
-        "セキュリティ",
-        "個人情報",
-        "パスワード",
-        "安全管理",
-        "情報保護"
-      ],
-      "scene": "情報セキュリティ対策",
-      "themes": [
-        "security"
-      ],
-      "technology_level": "strong",
-      "has_person": true
-    },
-    {
       "path": "assets/images/blog-library/inline/inline-general-003.png",
       "category": "general",
       "series": "document-review",
@@ -2078,24 +2111,6 @@
         "general"
       ],
       "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-welfare-007.png",
-      "category": "welfare",
-      "series": "support",
-      "tags": [
-        "福祉",
-        "支援",
-        "利用者",
-        "職員",
-        "タブレット"
-      ],
-      "scene": "福祉職員による利用者支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "moderate",
       "has_person": true
     },
     {
@@ -2184,6 +2199,76 @@
       "has_person": false
     },
     {
+      "path": "assets/images/blog-library/inline/inline-general-009.png",
+      "category": "general",
+      "series": "document-review",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "PC作業",
+        "オフィス"
+      ],
+      "scene": "書類を確認する事務作業",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-general-010.png",
+      "category": "general",
+      "series": "document-review",
+      "tags": [
+        "一般事務",
+        "書類確認",
+        "PC作業",
+        "オフィス"
+      ],
+      "scene": "書類を確認する事務作業",
+      "themes": [
+        "general"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-001.png",
+      "category": "recruit",
+      "series": "recruit",
+      "tags": [
+        "採用",
+        "求人",
+        "面談",
+        "職員",
+        "応募者"
+      ],
+      "scene": "採用活動",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-002.png",
+      "category": "recruit",
+      "series": "recruit",
+      "tags": [
+        "採用",
+        "求人",
+        "面談",
+        "職員",
+        "応募者"
+      ],
+      "scene": "採用活動",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
       "path": "assets/images/blog-library/inline/inline-security-001.png",
       "category": "security",
       "series": "protection",
@@ -2195,6 +2280,24 @@
         "安全管理"
       ],
       "scene": "ログインと情報保護を含む業務風景",
+      "themes": [
+        "security"
+      ],
+      "technology_level": "strong",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-security-002.png",
+      "category": "security",
+      "series": "security",
+      "tags": [
+        "セキュリティ",
+        "個人情報",
+        "パスワード",
+        "安全管理",
+        "情報保護"
+      ],
+      "scene": "情報セキュリティ対策",
       "themes": [
         "security"
       ],
@@ -2364,19 +2467,19 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-web-007.png",
-      "category": "web",
-      "series": "site-review",
+      "path": "assets/images/blog-library/inline/inline-seo-003.png",
+      "category": "seo",
+      "series": "analytics",
       "tags": [
-        "ホームページ",
-        "Web",
-        "サイト確認",
-        "PC",
-        "情報閲覧"
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ"
       ],
-      "scene": "Webサイトの確認",
+      "scene": "アクセスデータの分析",
       "themes": [
-        "web"
+        "seo"
       ],
       "technology_level": "moderate",
       "has_person": true
@@ -2526,19 +2629,37 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-web-012.png",
-      "category": "web",
-      "series": "site-review",
+      "path": "assets/images/blog-library/inline/inline-seo-012.png",
+      "category": "seo",
+      "series": "analytics",
       "tags": [
-        "ホームページ",
-        "Web",
-        "サイト確認",
-        "PC",
-        "情報閲覧"
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ"
       ],
-      "scene": "Webサイトの確認",
+      "scene": "アクセスデータの分析",
       "themes": [
-        "web"
+        "seo"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-seo-013.png",
+      "category": "seo",
+      "series": "analytics",
+      "tags": [
+        "SEO",
+        "アクセス分析",
+        "集客",
+        "グラフ",
+        "データ"
+      ],
+      "scene": "アクセスデータの分析",
+      "themes": [
+        "seo"
       ],
       "technology_level": "moderate",
       "has_person": false
@@ -2562,18 +2683,19 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-general-009.png",
-      "category": "general",
-      "series": "document-review",
+      "path": "assets/images/blog-library/inline/inline-subsidy-002.png",
+      "category": "subsidy",
+      "series": "subsidy",
       "tags": [
-        "一般事務",
-        "書類確認",
-        "PC作業",
-        "オフィス"
+        "補助金",
+        "助成金",
+        "申請",
+        "書類",
+        "資金計画"
       ],
-      "scene": "書類を確認する事務作業",
+      "scene": "補助金の申請準備",
       "themes": [
-        "general"
+        "subsidy"
       ],
       "technology_level": "none",
       "has_person": true
@@ -2777,42 +2899,6 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-welfare-009.png",
-      "category": "welfare",
-      "series": "consultation",
-      "tags": [
-        "福祉",
-        "相談",
-        "利用者",
-        "職員",
-        "支援"
-      ],
-      "scene": "福祉職員との相談",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-subsidy-002.png",
-      "category": "subsidy",
-      "series": "subsidy",
-      "tags": [
-        "補助金",
-        "助成金",
-        "申請",
-        "書類",
-        "資金計画"
-      ],
-      "scene": "補助金の申請準備",
-      "themes": [
-        "subsidy"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
       "path": "assets/images/blog-library/inline/inline-web-001.png",
       "category": "web",
       "series": "web",
@@ -2921,19 +3007,19 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-seo-003.png",
-      "category": "seo",
-      "series": "analytics",
+      "path": "assets/images/blog-library/inline/inline-web-007.png",
+      "category": "web",
+      "series": "site-review",
       "tags": [
-        "SEO",
-        "アクセス分析",
-        "集客",
-        "グラフ",
-        "データ"
+        "ホームページ",
+        "Web",
+        "サイト確認",
+        "PC",
+        "情報閲覧"
       ],
-      "scene": "アクセスデータの分析",
+      "scene": "Webサイトの確認",
       "themes": [
-        "seo"
+        "web"
       ],
       "technology_level": "moderate",
       "has_person": true
@@ -3011,6 +3097,24 @@
       "has_person": true
     },
     {
+      "path": "assets/images/blog-library/inline/inline-web-012.png",
+      "category": "web",
+      "series": "site-review",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "サイト確認",
+        "PC",
+        "情報閲覧"
+      ],
+      "scene": "Webサイトの確認",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": false
+    },
+    {
       "path": "assets/images/blog-library/inline/inline-welfare-001.png",
       "category": "welfare",
       "series": "welfare",
@@ -3029,38 +3133,39 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-general-010.png",
-      "category": "general",
-      "series": "document-review",
+      "path": "assets/images/blog-library/inline/inline-welfare-002.png",
+      "category": "welfare",
+      "series": "welfare",
       "tags": [
-        "一般事務",
-        "書類確認",
-        "PC作業",
-        "オフィス"
+        "福祉",
+        "支援",
+        "相談",
+        "利用者",
+        "事業所"
       ],
-      "scene": "書類を確認する事務作業",
+      "scene": "福祉支援",
       "themes": [
-        "general"
+        "welfare"
       ],
       "technology_level": "none",
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-dx-003.png",
-      "category": "dx",
-      "series": "multi-device",
+      "path": "assets/images/blog-library/inline/inline-welfare-003.png",
+      "category": "welfare",
+      "series": "welfare",
       "tags": [
-        "DX",
-        "デジタル化",
-        "スマートフォン",
-        "PC",
-        "業務効率化"
+        "福祉",
+        "支援",
+        "相談",
+        "利用者",
+        "事業所"
       ],
-      "scene": "スマートフォンとPCを使う業務",
+      "scene": "福祉支援",
       "themes": [
-        "digital"
+        "welfare"
       ],
-      "technology_level": "moderate",
+      "technology_level": "none",
       "has_person": true
     },
     {
@@ -3082,55 +3187,55 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-dx-004.png",
-      "category": "dx",
-      "series": "cloud",
+      "path": "assets/images/blog-library/inline/inline-welfare-005.png",
+      "category": "welfare",
+      "series": "welfare",
       "tags": [
-        "DX",
-        "クラウド",
-        "情報共有",
-        "PC",
-        "業務効率化"
+        "福祉",
+        "支援",
+        "相談",
+        "利用者",
+        "事業所"
       ],
-      "scene": "クラウドを使った情報共有",
+      "scene": "福祉支援",
       "themes": [
-        "digital"
+        "welfare"
       ],
-      "technology_level": "strong",
+      "technology_level": "none",
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-dx-005.png",
-      "category": "dx",
-      "series": "workflow",
+      "path": "assets/images/blog-library/inline/inline-welfare-006.png",
+      "category": "welfare",
+      "series": "welfare",
       "tags": [
-        "DX",
-        "デジタル化",
-        "タブレット",
-        "業務効率化",
-        "情報管理"
+        "福祉",
+        "支援",
+        "相談",
+        "利用者",
+        "事業所"
       ],
-      "scene": "タブレットによる業務管理",
+      "scene": "福祉支援",
       "themes": [
-        "digital"
+        "welfare"
       ],
-      "technology_level": "strong",
-      "has_person": false
+      "technology_level": "none",
+      "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-seo-012.png",
-      "category": "seo",
-      "series": "analytics",
+      "path": "assets/images/blog-library/inline/inline-welfare-007.png",
+      "category": "welfare",
+      "series": "support",
       "tags": [
-        "SEO",
-        "アクセス分析",
-        "集客",
-        "グラフ",
-        "データ"
+        "福祉",
+        "支援",
+        "利用者",
+        "職員",
+        "タブレット"
       ],
-      "scene": "アクセスデータの分析",
+      "scene": "福祉職員による利用者支援",
       "themes": [
-        "seo"
+        "welfare"
       ],
       "technology_level": "moderate",
       "has_person": true
@@ -3154,22 +3259,22 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/inline/inline-seo-013.png",
-      "category": "seo",
-      "series": "analytics",
+      "path": "assets/images/blog-library/inline/inline-welfare-009.png",
+      "category": "welfare",
+      "series": "consultation",
       "tags": [
-        "SEO",
-        "アクセス分析",
-        "集客",
-        "グラフ",
-        "データ"
+        "福祉",
+        "相談",
+        "利用者",
+        "職員",
+        "支援"
       ],
-      "scene": "アクセスデータの分析",
+      "scene": "福祉職員との相談",
       "themes": [
-        "seo"
+        "welfare"
       ],
-      "technology_level": "moderate",
-      "has_person": false
+      "technology_level": "none",
+      "has_person": true
     },
     {
       "path": "assets/images/blog-library/inline/inline-welfare-010.png",
@@ -3263,78 +3368,6 @@
     },
     {
       "path": "assets/images/blog-library/inline/inline-welfare-015.png",
-      "category": "welfare",
-      "series": "welfare",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-welfare-002.png",
-      "category": "welfare",
-      "series": "welfare",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-welfare-003.png",
-      "category": "welfare",
-      "series": "welfare",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-welfare-005.png",
-      "category": "welfare",
-      "series": "welfare",
-      "tags": [
-        "福祉",
-        "支援",
-        "相談",
-        "利用者",
-        "事業所"
-      ],
-      "scene": "福祉支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/inline/inline-welfare-006.png",
       "category": "welfare",
       "series": "welfare",
       "tags": [

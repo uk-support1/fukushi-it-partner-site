@@ -2,13 +2,15 @@
 
 // These profiles are deliberately text-only. Image understanding happens when
 // the catalog is curated, never during the daily publication job.
-const STRONG_THEMES = ["ai", "security", "subsidy", "recruit"];
+const STRONG_THEMES = ["ai", "security", "subsidy", "recruit", "seo"];
 
 function includes(text, pattern) { return pattern.test(text); }
 
 function articleImageProfile({ title = "", body = "", category = "" } = {}) {
   const focus = `${title}\n${category}`.toLowerCase();
-  const text = `${focus}\n${body}`.toLowerCase();
+  // Existing image filenames and alt text are output, not article meaning.
+  const cleanBody = String(body).replace(/!\[[^\]]*\]\([^)]*\)/g, "");
+  const text = `${focus}\n${cleanBody}`.toLowerCase();
   const themes = new Set();
   // Strong themes must be the article's stated subject, not a passing body
   // mention such as a homepage article listing "採用" as one possible use.
@@ -16,6 +18,7 @@ function articleImageProfile({ title = "", body = "", category = "" } = {}) {
   if (includes(focus, /補助金|助成金|申請|交付/)) themes.add("subsidy");
   if (includes(focus, /セキュリティ|個人情報|パスワード|情報漏えい|マイナンバー/)) themes.add("security");
   if (includes(focus, /採用|求人|応募|雇用|職員募集|スタッフ募集/)) themes.add("recruit");
+  if (includes(focus, /seo|検索順位|アクセス解析|アクセス分析|web集客|ウェブ集客|キーワード分析|googleマップ|googleビジネス/)) themes.add("seo");
   if (includes(text, /it|デジタル|システム|クラウド|連携|pc|パソコン|業務効率/)) themes.add("digital");
   if (includes(text, /ホームページ|ウェブサイト|webサイト|サイト制作|googleマップ|検索|seo|アクセシビリティ/)) themes.add("web");
   if (includes(text, /福祉|障害|利用者|家族|支援|事業所|グループホーム|就労/)) themes.add("welfare");
@@ -25,11 +28,14 @@ function articleImageProfile({ title = "", body = "", category = "" } = {}) {
   else if (themes.has("subsidy")) { ["補助金", "申請", "相談", "書類"].forEach(value => preferredTags.add(value)); preferredScenes.add("補助金相談"); }
   else if (themes.has("ai")) { ["AI", "デジタル", "PC"].forEach(value => preferredTags.add(value)); preferredScenes.add("AI活用"); }
   else if (themes.has("security")) { ["セキュリティ", "PC", "情報管理"].forEach(value => preferredTags.add(value)); preferredScenes.add("情報管理"); }
-  else if (themes.has("digital") || (themes.has("web") && !themes.has("welfare"))) { ["PC", "Web", "デジタル", "業務"].forEach(value => preferredTags.add(value)); preferredScenes.add("PC作業"); }
+  else if (themes.has("seo")) { ["SEO", "検索", "アクセス分析", "集客", "データ分析"].forEach(value => preferredTags.add(value)); preferredScenes.add("検索・アクセス分析"); }
+  else if (themes.has("welfare")) { ["福祉", "支援", "相談", "利用者", "事業所"].forEach(value => preferredTags.add(value)); preferredScenes.add("福祉支援"); }
+  else if (themes.has("web") && !themes.has("welfare")) { ["Web", "ホームページ", "サイト制作", "スマホ", "情報発信"].forEach(value => preferredTags.add(value)); preferredScenes.add("Webサイト活用"); }
+  else if (themes.has("digital")) { ["DX", "デジタル化", "業務効率化", "クラウド", "タブレット"].forEach(value => preferredTags.add(value)); preferredScenes.add("デジタル業務"); }
   else { ["福祉", "支援", "相談", "利用者", "事業所"].forEach(value => preferredTags.add(value)); preferredScenes.add("福祉支援"); }
   // A welfare website article is about reassurance and information provision
   // unless it explicitly discusses a technical/digital subject.
-  if (themes.has("welfare") && themes.has("web") && !themes.has("digital")) {
+  if (themes.has("welfare") && themes.has("web")) {
     ["福祉", "支援", "相談", "利用者", "情報提供"].forEach(value => preferredTags.add(value));
     preferredScenes.add("福祉支援");
   }
@@ -48,6 +54,7 @@ function scoreImage(candidate, profile) {
 function isExcluded(candidate, profile) {
   if (!profile) return false;
   if ((candidate.themes || []).some(theme => profile.excludedThemes.includes(theme))) return true;
+  if (candidate.category === "web" && !profile.themes.includes("web")) return true;
   return candidate.technology_level === "strong" && !profile.allowTechnology;
 }
 

@@ -53,8 +53,15 @@ test("recognizes every supported category from conventional hero filenames", () 
 
 test("the committed hero library is preferred over legacy fallback images", () => {
   const candidates = images.discoverImages({ root: path.resolve(__dirname, "..") });
-  assert.ok(candidates.length >= 99);
-  assert.equal(candidates.some(candidate => candidate.category === "general"), false);
+  assert.equal(candidates.length, 99);
+  assert.deepEqual(candidates.reduce((counts, candidate) => {
+    counts[candidate.category] = (counts[candidate.category] || 0) + 1;
+    return counts;
+  }, {}), { ai: 9, dx: 8, general: 22, recruit: 11, security: 7, seo: 8, subsidy: 10, web: 6, welfare: 18 });
+  for (const candidate of candidates) {
+    assert.match(path.basename(candidate.path), /^hero-(welfare|recruit|ai|dx|web|seo|subsidy|security|general)-\d{3}\.(?:png|jpe?g|webp)$/);
+    assert.ok(candidate.hash && candidate.tags.length && candidate.scene && candidate.themes.length && typeof candidate.has_person === "boolean");
+  }
   assert.match(images.selectImage({ category: "補助金活用", candidates, history: [] }).path, /hero\/hero-subsidy-\d{3}/);
   assert.match(images.selectImage({ category: "AI活用", candidates, history: [] }).path, /hero\/hero-ai-\d{3}/);
 });
@@ -131,6 +138,28 @@ test("semantic profiles exclude unrelated strong themes and still choose a match
   assert.equal(images.selectImage({ category: "IT活用", candidates, profile: web }).path, "dx.png");
 });
 
+test("SEO and strong Web heroes are excluded unless the article subject calls for them", () => {
+  const candidates = [
+    { path: "general.png", category: "general", series: "office", hash: "g", tags: ["一般事務"], scene: "一般的な事務作業", themes: ["general"], technology_level: "none" },
+    { path: "seo.png", category: "seo", series: "analytics", hash: "s", tags: ["SEO", "検索", "アクセス分析"], scene: "検索・アクセス分析", themes: ["seo", "web"], technology_level: "moderate" },
+    { path: "web.png", category: "web", series: "website", hash: "w", tags: ["Web", "ホームページ"], scene: "Webサイト活用", themes: ["web", "digital"], technology_level: "moderate" }
+  ];
+  const welfare = articleImageProfile({ title: "福祉施設での生活支援と相談", body: "利用者と家族を職員が支えます", category: "福祉" });
+  assert.equal(images.selectImage({ category: "welfare", candidates, profile: welfare }).path, "general.png");
+  const seo = articleImageProfile({ title: "SEOとアクセス分析で検索順位を改善する", body: "キーワードと集客を確認します", category: "ホームページ制作" });
+  assert.equal(images.selectImage({ category: "web", candidates, profile: seo }).path, "seo.png");
+  const web = articleImageProfile({ title: "Webサイト制作でスマホ表示を整える", body: "ホームページのフォームを更新します", category: "ホームページ制作" });
+  assert.equal(images.selectImage({ category: "web", candidates, profile: web }).path, "web.png");
+});
+
+test("an existing image filename and alt text never change the article meaning profile", () => {
+  const profile = articleImageProfile({ title: "福祉施設での生活支援", body:
+    "利用者への相談支援です。\n\n![AIとクラウド](assets/images/blog-library/inline/inline-ai-001.png)", category: "福祉" });
+  assert.equal(profile.themes.includes("ai"), false);
+  assert.equal(profile.themes.includes("digital"), false);
+  assert.equal(profile.themes.includes("welfare"), true);
+});
+
 test("the committed image catalog covers every hero with stored semantic metadata", () => {
   const catalog = require("../data/image-library.json").images;
   const heroes = catalog.filter(item => item.path.includes("/hero/"));
@@ -169,6 +198,19 @@ test("the committed inline library is content-classified, cataloged, semantic-sa
   const repeated = images.selectImage({ category: "ホームページ制作", candidates, profile: welfare,
     history: [{ image: selected.path, hash: selected.hash, series: selected.series }], recentLimit: 10 });
   assert.notEqual(repeated.hash, selected.hash);
+});
+
+test("published heroes are hash-unique and the latest ten inline images are hash-unique", () => {
+  const root = path.resolve(__dirname, "..");
+  const articlesDir = path.join(root, "content", "articles");
+  const published = new Set(require("../scripts/lib/articles").loadArticles(articlesDir)
+    .filter(article => article.data.published === true).map(article => article.slug));
+  const heroes = images.usageHistory({ root, articlesDir, kind: "hero" }).filter(item => published.has(item.article));
+  const inline = images.usageHistory({ root, articlesDir, kind: "inline" }).filter(item => published.has(item.article));
+  assert.equal(heroes.length, 19);
+  assert.equal(new Set(heroes.map(item => item.hash)).size, heroes.length);
+  assert.equal(inline.length, 19);
+  assert.equal(new Set(inline.slice(0, 10).map(item => item.hash)).size, 10);
 });
 
 test("general inline images are used only when no semantically matched safe image exists", () => {

@@ -4,7 +4,7 @@ category_label: ホームページ制作
 title: 福祉事業所のホームページ制作、いくらかかる？2つのプランと選び方
 date: 2026-06-05
 image: assets/images/blog-library/hero/hero-welfare-007.png
-image_alt: ノートパソコンを見ながらホームページ制作のプランについて相談している様子
+image_alt: 福祉の現場を支えるイメージ
 published: true
 description: 福祉事業所・団体のホームページ制作費用は、ページ数や内容によって変わります。福祉ITパートナーの「おまかせライトプラン（19,800円）」「ブランディングプラン（55,000円）」の内容と、選び方の基準をご紹介します。
 slug: website-pricing-two-plans
@@ -24,48 +24,54 @@ emphasis:
     style: marker
 image_role: hero
 image_category: welfare
-image_series: care
-image_hash: c299cf1ae68999e638301ebd59010d0ccfa95c26f1dce0635f4e585e23cc4a73
+image_series: welfare-consultation
+image_hash: 0539627eecdf6025636a1059bffd76bf7b29d78c9cb4537aaa861231939bbad5
 image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-dx-001.png
-inline_image_alt: 業務のデジタル化を支えるイメージ
-inline_image_category: dx
-inline_image_series: dx
-inline_image_hash: bde2df719f72e605a572af05d58137e65a5c0a07322681e8cf2094054847f37d
+inline_image: assets/images/blog-library/inline/inline-welfare-011.png
+inline_image_alt: 福祉の現場を支えるイメージ
+inline_image_category: welfare
+inline_image_series: welfare
+inline_image_hash: d315df93b8b2a3e77df7356b0709d6af8f26375db6d3b7de8d17703e276860c0
 inline_image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
 ---
 
@@ -107,7 +113,7 @@ inline_image_selection:
 
 ![事業所のスタッフが集まり、ホームページのプランについて話し合っている様子](assets/images/blog/team-meeting-laptop.jpg)
 
-![業務のデジタル化を支えるイメージ](assets/images/blog-library/inline/inline-dx-001.png)
+![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-011.png)
 
 ## どちらのプランを選べばよいか
 

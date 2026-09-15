@@ -3,8 +3,8 @@ type: column
 category_label: ホームページ制作
 title: 障害者グループホームのホームページに何を載せる？入居希望者と家族に伝えたい内容
 date: 2026-05-11
-image: assets/images/blog-library/hero/hero-welfare-008.png
-image_alt: ノートパソコンでホームページの掲載内容を編集している様子
+image: assets/images/blog-library/hero/hero-welfare-010.png
+image_alt: 福祉の現場を支えるイメージ
 published: true
 description: 障害者グループホームのホームページに掲載したい内容を解説。入居希望者やご家族が確認したい情報、居室・生活支援・夜間体制の伝え方、入居者募集や職員採用への活用方法、写真掲載時の配慮点をご紹介します。
 slug: group-home-website-content
@@ -25,48 +25,54 @@ emphasis:
     style: marker
 image_role: hero
 image_category: welfare
-image_series: care
-image_hash: c13652f64b346cea97ec7aa2755c812d5cbbb76bd9073cf35882de455390eb82
+image_series: welfare-consultation
+image_hash: 0a5ca03bd1e4d2cd882bc6c9bdc56afea6b5c43fad5d65577bfff2169d640707
 image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-005.png
-inline_image_alt: ホームページ活用のイメージ
-inline_image_category: web
-inline_image_series: web
-inline_image_hash: bcf03c08f3e81b1a269f86a4e556a17df107b5d9c7e861e202606faab7f1494e
+inline_image: assets/images/blog-library/inline/inline-welfare-012.png
+inline_image_alt: 福祉の現場を支えるイメージ
+inline_image_category: welfare
+inline_image_series: welfare
+inline_image_hash: 46457c70a065a5ce356d4f905dc22a2bdc5d2ace914e66d34453ab79c72430e0
 inline_image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
 ---
 
@@ -129,7 +135,7 @@ inline_image_selection:
 
 「一人ひとりのペースを大切にしています」「困ったことがあれば、いつでも相談してくださいね」といった、事業所の言葉での紹介も効果的です。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-005.png)
+![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-012.png)
 
 ## 空室情報や見学案内の掲載方法
 

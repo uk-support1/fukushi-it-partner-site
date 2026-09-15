@@ -3,8 +3,8 @@ type: column
 category_label: ホームページ制作
 title: 就労継続支援B型のホームページで伝えるべき5つのこと
 date: 2026-03-12
-image: assets/images/blog-library/hero/hero-welfare-010.png
-image_alt: 作業を見守りながら一緒に取り組むスタッフと利用者の様子
+image: assets/images/blog-library/hero/hero-welfare-004.png
+image_alt: 福祉の現場を支えるイメージ
 published: true
 description: 就労継続支援B型事業所のホームページで伝えるべき5つのことを解説。利用対象者、作業内容、利用までの流れ、工賃や通所のイメージ、事業所が大切にしていることをご紹介します。
 slug: b-type-homepage-5-things
@@ -23,48 +23,54 @@ emphasis:
     style: marker
 image_role: hero
 image_category: welfare
-image_series: care
-image_hash: 3472f731e05e2688a006f89252048737cf94e557171b44d84f759e30118ebcfd
+image_series: welfare-facility
+image_hash: f4e7021604598873a3b24d7387452685d48d5561931f46d51c61436a95ad4739
 image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-006.png
-inline_image_alt: ホームページ活用のイメージ
-inline_image_category: web
-inline_image_series: web
-inline_image_hash: 238e530050fc6ef9d0e46ec85e0649535af947ee21672f16c187825b8b2150ae
+inline_image: assets/images/blog-library/inline/inline-welfare-014.png
+inline_image_alt: 福祉の現場を支えるイメージ
+inline_image_category: welfare
+inline_image_series: welfare
+inline_image_hash: 31115697bfd40a04f27781c50884ffdb2a0772f0d86d165f5ee2efaa9d654663
 inline_image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
 ---
 
@@ -126,7 +132,7 @@ B型事業所のホームページでは、作業内容をできるだけ具体�
 
 実際の流れは自治体や本人の状況によって異なるため、「状況に応じて一緒に確認します」と添えると、より丁寧な印象になります。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-006.png)
+![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-014.png)
 
 ## 4．工賃や通所のイメージ
 

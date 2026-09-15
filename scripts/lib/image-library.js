@@ -116,7 +116,7 @@ function selectImage({ category, candidates, history = [], recentLimit = RECENT_
     const scores = new Map(pool.map(candidate => [candidate, semantics.scoreImage(candidate, profile)]));
     const meaningful = pool.filter(candidate => scores.get(candidate) > 0);
     let semanticPool = meaningful.length ? meaningful : pool;
-    const strongTheme = ["ai", "security", "subsidy", "recruit"].find(theme => profile.themes.includes(theme));
+    const strongTheme = ["ai", "security", "subsidy", "recruit", "seo"].find(theme => profile.themes.includes(theme));
     const strongMatches = strongTheme ? semanticPool.filter(candidate => candidate.category === strongTheme) : [];
     if (strongMatches.length) semanticPool = strongMatches;
     else if (meaningful.length) {

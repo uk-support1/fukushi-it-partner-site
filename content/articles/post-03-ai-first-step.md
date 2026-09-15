@@ -3,8 +3,8 @@ type: column
 category_label: AI活用
 title: 福祉現場でAIを活用する第一歩
 date: 2026-02-07
-image: assets/images/blog-library/hero/hero-ai-001.png
-image_alt: ノートパソコンを使いながら相談に応じるスタッフの様子
+image: assets/images/blog-library/hero/hero-ai-002.png
+image_alt: AI活用のイメージ
 published: true
 description: 忙しい福祉現場でも無理なく始められる、生成AIの活用方法をご紹介します。
 slug: post-03-ai-first-step
@@ -24,9 +24,9 @@ emphasis:
   - text: 個人を特定できる情報を入力しない
     style: notice
 image_role: hero
-image_category: dx
-image_series: workflow
-image_hash: eeaa177280781628358350ea25b28f10caa64a3dc04dc7fc878bd8f590a69d40
+image_category: ai
+image_series: ai-interface
+image_hash: 7283dc2518c54822761484ebae4f5e9afb2a9bb6271cfcc950c4c9ee3eb539f2
 image_selection:
   themes:
     - ai
@@ -42,6 +42,7 @@ image_selection:
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
 inline_image: assets/images/blog-library/inline/inline-ai-001.png
 inline_image_alt: AI活用のイメージ

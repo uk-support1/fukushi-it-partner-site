@@ -56,12 +56,13 @@ function baseSlugFor(title, date) {
   return `article-${date}-${digest}`;
 }
 
-function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {}, history = null } = {}) {
+function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {}, history = null, excludedHashes = new Set() } = {}) {
   const profile = articleImageProfile({ ...content, category });
   const selected = imageLibrary.selectImage({ category,
     candidates: imageLibrary.discoverImages({ root, kind }),
     history: history || imageLibrary.usageHistory({ root, articlesDir, kind }),
-    recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT, profile });
+    recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT,
+    excludedHashes, profile });
   if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series, hash: selected.hash, profile };
   if (kind !== "hero") return null;
   const fallback = IMAGE_BY_CATEGORY[category] || DEFAULT_IMAGE;

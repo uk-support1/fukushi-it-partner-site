@@ -2,8 +2,8 @@
 type: column
 title: 福祉事業所のホームページで最初に整えたい5つの情報
 date: 2026-09-02
-image: assets/images/blog-library/hero/hero-welfare-004.png
-image_alt: 福祉事業所のホームページをパソコンで確認している様子
+image: assets/images/blog-library/hero/hero-welfare-015.png
+image_alt: 福祉の現場を支えるイメージ
 published: true
 description: 福祉事業所のホームページで、利用を検討している方やご家族に分かりやすく伝えるために、最初に掲載しておきたい5つの情報を紹介します。
 slug: welfare-website-essential-information
@@ -20,48 +20,54 @@ emphasis:
     style: notice
 image_role: hero
 image_category: welfare
-image_series: care
-image_hash: f4e7021604598873a3b24d7387452685d48d5561931f46d51c61436a95ad4739
+image_series: welfare-team
+image_hash: 65e86703a128fa3f8c69a03c10645795eb6e244276ac36e79657781d7d3b4cb2
 image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-003.png
-inline_image_alt: ホームページ活用のイメージ
-inline_image_category: web
-inline_image_series: web
-inline_image_hash: 7db44fabcfe31c6202fb9881095067114cb1bf305097a90cfe5650877ffe7f8f
+inline_image: assets/images/blog-library/inline/inline-welfare-008.png
+inline_image_alt: 福祉の現場を支えるイメージ
+inline_image_category: welfare
+inline_image_series: welfare
+inline_image_hash: 5202c55520821a78c15d460882721a3ebffd0da736ca1123b9211fd034202a91
 inline_image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
 ---
 
@@ -109,7 +115,7 @@ inline_image_selection:
 
 など、最低限の案内があるだけでも分かりやすくなります。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-003.png)
+![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-008.png)
 
 ## 4．写真
 

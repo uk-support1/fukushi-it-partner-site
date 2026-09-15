@@ -3,8 +3,8 @@ type: column
 category_label: ホームページ制作
 title: 福祉事業所のGoogleマップ活用｜Googleビジネスプロフィールを登録するメリット
 date: 2026-07-12
-image: assets/images/blog-library/hero/hero-welfare-006.png
-image_alt: Googleマップを使ったアクセス情報をホームページに組み込んでいる画面
+image: assets/images/blog-library/hero/hero-seo-001.png
+image_alt: 情報発信を支えるイメージ
 published: true
 description: 福祉事業所がGoogleビジネスプロフィールに登録するメリットを分かりやすく解説。Googleマップから見つけてもらいやすくなる仕組みと、ホームページとの組み合わせ方をご紹介します。
 slug: google-business-profile-for-welfare
@@ -22,44 +22,60 @@ emphasis:
   - text: ホームページで詳しい支援内容や料金、空室状況などを確認する
     style: marker
 image_role: hero
-image_category: welfare
-image_series: care
-image_hash: 17d9e96468aebd6ddfdb0d1e7d526951492b61468e1a0ecc874cb1785abe5c33
+image_category: seo
+image_series: seo-analytics
+image_hash: ac8e2acc17e489a9684707c99f9fb7594da8bbf15e5da4ab53c181f665770aac
 image_selection:
   themes:
+    - seo
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - SEO
+    - 検索
+    - アクセス分析
+    - 集客
+    - データ分析
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 検索・アクセス分析
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-004.png
-inline_image_alt: ホームページ活用のイメージ
-inline_image_category: web
-inline_image_series: web
-inline_image_hash: 1223810c7b02d92d61ff0e9e0678cbb6a51397da4e777af9e33d2a40d12af61f
+inline_image: assets/images/blog-library/inline/inline-seo-001.png
+inline_image_alt: 情報発信を支えるイメージ
+inline_image_category: seo
+inline_image_series: seo
+inline_image_hash: 98ff00384a5b02ff92379d188f4bd9fcc3c1a3b07f0292a0efbc09aa470b07af
 inline_image_selection:
   themes:
+    - seo
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - SEO
+    - 検索
+    - アクセス分析
+    - 集客
+    - データ分析
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 検索・アクセス分析
+    - 福祉支援
   excludedThemes:
     - ai
     - security
@@ -112,7 +128,7 @@ Googleマップとホームページは、どちらか一方があればよい�
 
 ただし、情報が古いまま放置されていると、かえって混乱を招いてしまいます。移転や電話番号の変更などがあった際は、忘れずに更新しておくことが大切です。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-004.png)
+![情報発信を支えるイメージ](assets/images/blog-library/inline/inline-seo-001.png)
 
 ## まず登録しておきたい情報
 

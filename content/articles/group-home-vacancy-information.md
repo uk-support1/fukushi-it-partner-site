@@ -3,8 +3,8 @@ type: column
 category_label: ホームページ制作
 title: 障害者グループホームの入居者募集｜ホームページで空室を減らすためにできること
 date: 2026-08-27
-image: assets/images/blog-library/hero/hero-welfare-005.png
-image_alt: 福祉向けのやさしいデザインでホームページを制作している画面
+image: assets/images/blog-library/hero/hero-welfare-006.png
+image_alt: 福祉の現場を支えるイメージ
 published: true
 description: 空室はあるのに問い合わせにつながらない、そんなグループホームに向けて、ホームページで空室情報を分かりやすく伝えるための工夫をご紹介します。
 slug: group-home-vacancy-information
@@ -23,48 +23,54 @@ emphasis:
     style: marker
 image_role: hero
 image_category: welfare
-image_series: care
-image_hash: faa78d5e3e45acf0aebb1c45686786ec2da4680836c714d5f6a6a97cc5c6db90
+image_series: welfare-consultation
+image_hash: dcfba3c3261a53325491976ad7d011f235926f9e6d907ccdc562a618c7a11dd8
 image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-012.png
-inline_image_alt: ホームページ活用のイメージ
-inline_image_category: web
-inline_image_series: site-review
-inline_image_hash: 7dc8513b16d374bc272a546d57b7441cc6d239d73ebcb729ae3d3fe8d02e566a
+inline_image: assets/images/blog-library/inline/inline-welfare-010.png
+inline_image_alt: 福祉の現場を支えるイメージ
+inline_image_category: welfare
+inline_image_series: welfare
+inline_image_hash: 6c5e006b813d0ab43a33068f3f73d371917c6ea1903ab58d398f8ffb02b5a194
 inline_image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
 ---
 
@@ -127,7 +133,7 @@ inline_image_selection:
 
 正確な金額がケースによって異なる場合は、「月額の目安」として掲載する方法もあります。なお、障害福祉サービスの制度上の費用などについては、誤解を招かないよう、断定的な説明は避けるようにしましょう。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-012.png)
+![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-010.png)
 
 ## 見学・問い合わせまでの流れを分かりやすくする
 

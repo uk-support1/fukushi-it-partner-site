@@ -3,7 +3,7 @@ type: news
 title: 福祉ITパートナーの情報発信を始めます
 date: 2026-01-15
 image: assets/images/blog-library/hero/hero-welfare-011.png
-image_alt: 窓辺の落ち着いた光の中で開かれたノートとコーヒー
+image_alt: 福祉の現場を支えるイメージ
 published: true
 description: 福祉ITパートナーが、福祉事業所・団体向けのホームページづくりやIT活用に関する情報発信を始めました。今後発信していくテーマと、福祉のことを理解したIT支援への想いをお伝えします。
 slug: welcome-message
@@ -22,48 +22,54 @@ emphasis:
     style: marker
 image_role: hero
 image_category: welfare
-image_series: care
-image_hash: a52d0e2142cb6d0a9970e17e2a8e7b1ddbfa6a07e741f690d8255bd3ee648c13
+image_series: welfare-facility
+image_hash: e9b2f6584db9e3bbc38729dbb0a21d0512ea63bba671fcc673a5597e9ddc18cc
 image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-008.png
-inline_image_alt: ホームページ活用のイメージ
-inline_image_category: web
-inline_image_series: web
-inline_image_hash: ae537f3930d3e533ee020052969d4c1d6676f300b47d3d484e5f480fab230933
+inline_image: assets/images/blog-library/inline/inline-welfare-015.png
+inline_image_alt: 福祉の現場を支えるイメージ
+inline_image_category: welfare
+inline_image_series: welfare
+inline_image_hash: 6d192c344d15878c772d81b80a5934c8d1f1e48c463eca2dcf6bd3b117ce98f0
 inline_image_selection:
   themes:
     - digital
     - web
     - welfare
   preferredTags:
-    - PC
-    - Web
-    - デジタル
-    - 業務
+    - 福祉
+    - 支援
+    - 相談
+    - 利用者
+    - 事業所
+    - 情報提供
   preferredScenes:
-    - PC作業
+    - 福祉支援
   excludedThemes:
     - ai
     - security
     - subsidy
     - recruit
+    - seo
   allowTechnology: true
 ---
 
@@ -101,7 +107,7 @@ inline_image_selection:
 
 ![ノートパソコンの画面に表示されたブログ記事のレイアウト](assets/images/blog/laptop-blog-layout.jpg)
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-008.png)
+![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-015.png)
 
 ## 福祉のことを理解したIT支援を
 

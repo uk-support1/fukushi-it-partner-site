@@ -23,7 +23,8 @@ function refreshInlineImages({ root = path.join(__dirname, ".."), force = false 
       continue;
     }
     const image = inlineImage(article.data.category_label, { root, articlesDir,
-      content: { title: article.data.title, body: article.body }, history });
+      content: { title: article.data.title, body: article.body }, history,
+      excludedHashes: new Set(history.slice(0, 10).map(use => use.hash).filter(Boolean)) });
     if (!image) continue;
     const markdown = `![${require("./article-writer").inlineAlt(image.category)}](${image.image})`;
     const body = article.data.inline_image
