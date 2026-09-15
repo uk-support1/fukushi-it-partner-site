@@ -101,7 +101,7 @@ test("SHA-256 treats renamed byte-identical heroes as one image and refreshes pu
   assert.notEqual(assigned[0].hash, assigned[1].hash);
 });
 
-test("blog index has a final content-hash uniqueness guard", t => {
+test("blog index uses the Markdown hero without reselecting it", t => {
   const value = fixture(t);
   image(value.root, "hero-welfare-01.webp"); image(value.root, "hero-welfare-copy.webp");
   fs.writeFileSync(path.join(value.root, "assets/images/blog-library/hero/hero-recruit-01.webp"), "different");
@@ -109,9 +109,8 @@ test("blog index has a final content-hash uniqueness guard", t => {
     { slug: "new", body: "本文", data: { published: true, date: "2026-09-12", category_label: "福祉", title: "new", image: "same.jpg" } },
     { slug: "old", body: "本文", data: { published: true, date: "2026-09-11", category_label: "採用", title: "old", image: "same.jpg" } }
   ];
-  const index = buildBlogIndex(published, { root: value.root });
-  const hashes = index.map(entry => images.imageHashForPath(value.root, entry.image));
-  assert.equal(new Set(hashes).size, 2);
+  const index = buildBlogIndex(published);
+  assert.deepEqual(index.map(entry => entry.image), ["same.jpg", "same.jpg"]);
 });
 
 test("semantic profiles exclude unrelated strong themes and still choose a matching unused image", () => {

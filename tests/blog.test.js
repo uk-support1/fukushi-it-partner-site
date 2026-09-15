@@ -9,6 +9,7 @@ const ROOT = path.resolve(__dirname, "..");
 const lib = require("../scripts/lib/articles");
 const YAML = require("yaml");
 const { isPublicFile } = require("../scripts/prepare-pages");
+const imageLibrary = require("../scripts/lib/image-library");
 const text = (dir, file) => fs.readFileSync(path.join(dir, file), "utf8").replace(/\r\n/g, "\n");
 function sandbox(t) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fukushi-blog-test-"));
@@ -48,6 +49,29 @@ test("A: full generation is repeatable as published article history grows", t =>
   const first = Object.fromEntries(files.map(f => [f, text(dir,f)]));
   run(dir);
   for(const f of files) assert.equal(text(dir,f), first[f], f);
+});
+test("Published article, index, and blog card always share the Markdown hero", () => {
+  const index = JSON.parse(text(ROOT, "data/blog-index.json"));
+  const cards = text(ROOT, "blog.html");
+  const published = lib.loadArticles(path.join(ROOT, "content", "articles")).filter(article => article.data.published === true);
+  assert.equal(index.length, published.length);
+  for (const article of published) {
+    const expected = article.data.image;
+    const entry = index.find(item => item.slug === article.slug);
+    assert.ok(entry, article.slug);
+    assert.equal(entry.image, expected, article.slug + " index");
+    assert.equal(imageLibrary.imageHashForPath(ROOT, entry.image), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " index hash");
+    const page = text(ROOT, "blog/" + article.slug + ".html");
+    const hero = page.match(/<div class="article-eyecatch">\s*<img src="([^"]+)"/);
+    assert.ok(hero, article.slug + " article hero");
+    assert.equal(hero[1].replace(/^\.\.\//, ""), expected, article.slug + " article image");
+    assert.equal(imageLibrary.imageHashForPath(ROOT, hero[1].replace(/^\.\.\//, "")), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " article hash");
+    const escaped = article.slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const card = cards.match(new RegExp('<a class="(?:blog-featured|blog-list-item) reveal" href="blog/' + escaped + '\\.html">[\\s\\S]*?<img src="([^"]+)"'));
+    assert.ok(card, article.slug + " blog card");
+    assert.equal(card[1], expected, article.slug + " card image");
+    assert.equal(imageLibrary.imageHashForPath(ROOT, card[1]), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " card hash");
+  }
 });
 test("B: new draft excluded everywhere", t => {
   const dir = sandbox(t); article(dir,"test-draft",false); run(dir); visibility(dir,"test-draft",false);
