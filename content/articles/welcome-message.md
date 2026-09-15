@@ -2,7 +2,7 @@
 type: news
 title: 福祉ITパートナーの情報発信を始めます
 date: 2026-01-15
-image: assets/images/blog-library/hero/hero-welfare-care-08.png
+image: assets/images/blog-library/hero/hero-welfare-011.png
 image_alt: 窓辺の落ち着いた光の中で開かれたノートとコーヒー
 published: true
 description: 福祉ITパートナーが、福祉事業所・団体向けのホームページづくりやIT活用に関する情報発信を始めました。今後発信していくテーマと、福祉のことを理解したIT支援への想いをお伝えします。
@@ -42,7 +42,7 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-design-01.png
+inline_image: assets/images/blog-library/inline/inline-web-001.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
 inline_image_series: design
@@ -101,7 +101,7 @@ inline_image_selection:
 
 ![ノートパソコンの画面に表示されたブログ記事のレイアウト](assets/images/blog/laptop-blog-layout.jpg)
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-01.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-001.png)
 
 ## 福祉のことを理解したIT支援を
 

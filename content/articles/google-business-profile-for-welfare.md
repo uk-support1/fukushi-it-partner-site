@@ -3,7 +3,7 @@ type: column
 category_label: ホームページ制作
 title: 福祉事業所のGoogleマップ活用｜Googleビジネスプロフィールを登録するメリット
 date: 2026-07-12
-image: assets/images/blog-library/hero/hero-welfare-care-03.png
+image: assets/images/blog-library/hero/hero-welfare-006.png
 image_alt: Googleマップを使ったアクセス情報をホームページに組み込んでいる画面
 published: true
 description: 福祉事業所がGoogleビジネスプロフィールに登録するメリットを分かりやすく解説。Googleマップから見つけてもらいやすくなる仕組みと、ホームページとの組み合わせ方をご紹介します。
@@ -43,7 +43,7 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-planning-01.png
+inline_image: assets/images/blog-library/inline/inline-web-007.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
 inline_image_series: planning
@@ -112,7 +112,7 @@ Googleマップとホームページは、どちらか一方があればよい�
 
 ただし、情報が古いまま放置されていると、かえって混乱を招いてしまいます。移転や電話番号の変更などがあった際は、忘れずに更新しておくことが大切です。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-planning-01.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-007.png)
 
 ## まず登録しておきたい情報
 

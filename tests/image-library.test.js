@@ -55,8 +55,8 @@ test("the committed hero library is preferred over legacy fallback images", () =
   const candidates = images.discoverImages({ root: path.resolve(__dirname, "..") });
   assert.ok(candidates.length >= 99);
   assert.equal(candidates.some(candidate => candidate.category === "general"), false);
-  assert.match(images.selectImage({ category: "補助金活用", candidates, history: [] }).path, /hero\/.*subsidy|hero\/subsidy-/);
-  assert.match(images.selectImage({ category: "AI活用", candidates, history: [] }).path, /hero\/hero-dx-/);
+  assert.match(images.selectImage({ category: "補助金活用", candidates, history: [] }).path, /hero\/hero-subsidy-\d{3}/);
+  assert.match(images.selectImage({ category: "AI活用", candidates, history: [] }).path, /hero\/hero-ai-\d{3}/);
 });
 
 test("prefers category matches, avoids the latest ten and never repeats the latest image when another exists", () => {
@@ -141,22 +141,22 @@ test("the committed image catalog covers every hero with stored semantic metadat
 test("the committed inline library is content-classified, cataloged, semantic-safe, and avoids recent hashes", () => {
   const root = path.resolve(__dirname, "..");
   const candidates = images.discoverImages({ root, kind: "inline" });
-  assert.equal(candidates.length, 45);
+  assert.equal(candidates.length, 90);
   assert.deepEqual(candidates.reduce((counts, candidate) => { counts[candidate.category] = (counts[candidate.category] || 0) + 1; return counts; }, {}),
-    { ai: 4, dx: 2, recruit: 2, security: 7, seo: 3, subsidy: 6, web: 11, welfare: 10 });
+    { ai: 12, dx: 2, recruit: 2, security: 17, seo: 12, subsidy: 15, web: 11, welfare: 19 });
   for (const candidate of candidates) {
-    assert.match(path.basename(candidate.path), /^inline-(welfare|recruit|ai|dx|web|seo|subsidy|security)-[a-z-]+-\d{2}\.png$/);
+    assert.match(path.basename(candidate.path), /^inline-(welfare|recruit|ai|dx|web|seo|subsidy|security)-\d{3}\.(?:png|jpe?g|webp)$/);
     assert.ok(candidate.hash && candidate.tags.length && candidate.scene && candidate.technology_level && typeof candidate.has_person === "boolean");
   }
   const categoryExpectations = {
-    "inline-ai-chat-01.png": ["ai", "生成AIの活用", "strong"],
-    "inline-dx-paperless-01.png": ["dx", "ペーパーレス業務", "strong"],
-    "inline-seo-analytics-01.png": ["seo", "アクセス分析", "moderate"],
-    "inline-subsidy-application-01.png": ["subsidy", "補助金の申請準備", "none"],
-    "inline-security-protection-01.png": ["security", "情報セキュリティ対策", "strong"],
-    "inline-recruit-interview-01.png": ["recruit", "採用面談", "none"],
-    "inline-welfare-consultation-01.png": ["welfare", "福祉相談", "none"],
-    "inline-web-design-01.png": ["web", "Webサイト制作", "moderate"]
+    "inline-ai-001.png": ["ai", "AI活用", "strong"],
+    "inline-dx-001.png": ["dx", "デジタル業務", "strong"],
+    "inline-seo-001.png": ["seo", "検索・アクセス分析", "moderate"],
+    "inline-subsidy-001.png": ["subsidy", "補助金の申請準備", "none"],
+    "inline-security-001.png": ["security", "情報セキュリティ対策", "strong"],
+    "inline-recruit-001.png": ["recruit", "採用活動", "none"],
+    "inline-welfare-001.png": ["welfare", "福祉支援", "none"],
+    "inline-web-001.png": ["web", "Webサイト活用", "moderate"]
   };
   for (const [name, [category, scene, level]] of Object.entries(categoryExpectations)) {
     const candidate = candidates.find(item => path.basename(item.path) === name);

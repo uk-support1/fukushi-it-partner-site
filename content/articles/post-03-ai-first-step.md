@@ -3,7 +3,7 @@ type: column
 category_label: AI活用
 title: 福祉現場でAIを活用する第一歩
 date: 2026-02-07
-image: assets/images/blog-library/hero/hero-dx-workflow-04.png
+image: assets/images/blog-library/hero/hero-ai-001.png
 image_alt: ノートパソコンを使いながら相談に応じるスタッフの様子
 published: true
 description: 忙しい福祉現場でも無理なく始められる、生成AIの活用方法をご紹介します。
@@ -43,7 +43,7 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-ai-chat-01.png
+inline_image: assets/images/blog-library/inline/inline-ai-009.png
 inline_image_alt: AI活用のイメージ
 inline_image_category: ai
 inline_image_series: chat
@@ -72,7 +72,7 @@ inline_image_selection:
 
 広報文やお知らせ文の下書きをAIに作成してもらい、現場の言葉に整えていく使い方から始めると、 無理なく取り入れることができます。
 
-![AI活用のイメージ](assets/images/blog-library/inline/inline-ai-chat-01.png)
+![AI活用のイメージ](assets/images/blog-library/inline/inline-ai-009.png)
 
 ## 2. 個人情報や利用者さんの情報は入力しない
 

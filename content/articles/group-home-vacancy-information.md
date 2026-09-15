@@ -3,7 +3,7 @@ type: column
 category_label: ホームページ制作
 title: 障害者グループホームの入居者募集｜ホームページで空室を減らすためにできること
 date: 2026-08-27
-image: assets/images/blog-library/hero/hero-welfare-care-02.png
+image: assets/images/blog-library/hero/hero-welfare-005.png
 image_alt: 福祉向けのやさしいデザインでホームページを制作している画面
 published: true
 description: 空室はあるのに問い合わせにつながらない、そんなグループホームに向けて、ホームページで空室情報を分かりやすく伝えるための工夫をご紹介します。
@@ -43,7 +43,7 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-form-01.png
+inline_image: assets/images/blog-library/inline/inline-web-006.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
 inline_image_series: form
@@ -127,7 +127,7 @@ inline_image_selection:
 
 正確な金額がケースによって異なる場合は、「月額の目安」として掲載する方法もあります。なお、障害福祉サービスの制度上の費用などについては、誤解を招かないよう、断定的な説明は避けるようにしましょう。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-form-01.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-006.png)
 
 ## 見学・問い合わせまでの流れを分かりやすくする
 

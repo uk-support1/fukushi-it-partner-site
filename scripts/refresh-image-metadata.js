@@ -41,7 +41,17 @@ function metadataFor(candidate) {
   const named = candidate.category === "subsidy" && candidate.path.includes("budget") ? { tags: ["補助金", "予算", "計算", "書類"], scene: "予算検討", themes: ["subsidy"], technology_level: "none" } :
     candidate.category === "subsidy" && candidate.path.includes("consultation") ? { tags: ["補助金", "相談", "申請", "書類"], scene: "補助金相談", themes: ["subsidy"], technology_level: "none" } :
     candidate.category === "subsidy" && candidate.path.includes("website") ? { tags: ["補助金", "ホームページ", "相談", "書類"], scene: "補助金相談", themes: ["subsidy"], technology_level: "none" } : null;
-  const base = named || groups[key] || { tags: [candidate.category], scene: candidate.category, themes: [candidate.category], technology_level: "none" };
+  const categoryDefaults = {
+    welfare: { tags: ["福祉", "支援", "相談", "利用者", "事業所"], scene: "福祉支援", themes: ["welfare"], technology_level: "none" },
+    recruit: { tags: ["採用", "求人", "面談", "職員", "応募者"], scene: "採用活動", themes: ["recruit"], technology_level: "none" },
+    ai: { tags: ["AI", "生成AI", "情報整理", "文章作成", "PC"], scene: "AI活用", themes: ["ai"], technology_level: "strong" },
+    dx: { tags: ["DX", "業務効率化", "デジタル化", "情報管理", "PC"], scene: "デジタル業務", themes: ["digital"], technology_level: "strong" },
+    web: { tags: ["ホームページ", "Web", "サイト制作", "情報発信", "PC"], scene: "Webサイト活用", themes: ["web"], technology_level: "moderate" },
+    seo: { tags: ["SEO", "検索", "アクセス分析", "集客", "キーワード"], scene: "検索・アクセス分析", themes: ["seo"], technology_level: "moderate" },
+    subsidy: { tags: ["補助金", "助成金", "申請", "書類", "資金計画"], scene: "補助金の申請準備", themes: ["subsidy"], technology_level: "none" },
+    security: { tags: ["セキュリティ", "個人情報", "パスワード", "安全管理", "情報保護"], scene: "情報セキュリティ対策", themes: ["security"], technology_level: "strong" }
+  };
+  const base = named || groups[key] || categoryDefaults[candidate.category] || { tags: [candidate.category], scene: candidate.category, themes: [candidate.category], technology_level: "none" };
   const noPerson = new Set([
     "inline-subsidy-application-01.png", "inline-security-protection-05.png",
     "inline-seo-search-01.png", "inline-subsidy-application-04.png"
@@ -56,7 +66,9 @@ function refreshImageMetadata({ root = path.join(__dirname, ".."), kind = null }
   const byPath = new Map((existing.images || []).map(item => [item.path, item]));
   const kinds = kind ? [kind] : ["hero", "inline"];
   const candidates = kinds.flatMap(imageKind => images.discoverImages({ root, kind: imageKind, catalog: false }));
-  const catalog = candidates.map(candidate => candidate.path.includes("/inline/") ? metadataFor(candidate) : (byPath.get(candidate.path) || metadataFor(candidate)));
+  // Keep reviewed metadata after a canonical filename drops its descriptive
+  // series suffix. Only genuinely new files receive inferred defaults.
+  const catalog = candidates.map(candidate => byPath.get(candidate.path) || metadataFor(candidate));
   const document = { version: 1, generated_for: kind || "hero and inline", images: catalog };
   fs.writeFileSync(file, JSON.stringify(document, null, 2) + "\n", "utf8");
   return { file, images: catalog.length };

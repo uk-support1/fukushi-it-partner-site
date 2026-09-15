@@ -3,7 +3,7 @@ type: column
 category_label: ホームページ制作
 title: 福祉事業所のホームページ制作、いくらかかる？2つのプランと選び方
 date: 2026-06-05
-image: assets/images/blog-library/hero/hero-welfare-care-04.png
+image: assets/images/blog-library/hero/hero-welfare-007.png
 image_alt: ノートパソコンを見ながらホームページ制作のプランについて相談している様子
 published: true
 description: 福祉事業所・団体のホームページ制作費用は、ページ数や内容によって変わります。福祉ITパートナーの「おまかせライトプラン（19,800円）」「ブランディングプラン（55,000円）」の内容と、選び方の基準をご紹介します。
@@ -44,7 +44,7 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-planning-02.png
+inline_image: assets/images/blog-library/inline/inline-web-008.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
 inline_image_series: planning
@@ -107,7 +107,7 @@ inline_image_selection:
 
 ![事業所のスタッフが集まり、ホームページのプランについて話し合っている様子](assets/images/blog/team-meeting-laptop.jpg)
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-planning-02.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-008.png)
 
 ## どちらのプランを選べばよいか
 

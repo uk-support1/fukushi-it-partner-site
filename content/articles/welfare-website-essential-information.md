@@ -2,7 +2,7 @@
 type: column
 title: 福祉事業所のホームページで最初に整えたい5つの情報
 date: 2026-09-02
-image: assets/images/blog-library/hero/hero-welfare-care-01.png
+image: assets/images/blog-library/hero/hero-welfare-004.png
 image_alt: 福祉事業所のホームページをパソコンで確認している様子
 published: true
 description: 福祉事業所のホームページで、利用を検討している方やご家族に分かりやすく伝えるために、最初に掲載しておきたい5つの情報を紹介します。
@@ -40,7 +40,7 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-web-design-05.png
+inline_image: assets/images/blog-library/inline/inline-web-005.png
 inline_image_alt: ホームページ活用のイメージ
 inline_image_category: web
 inline_image_series: design
@@ -109,7 +109,7 @@ inline_image_selection:
 
 など、最低限の案内があるだけでも分かりやすくなります。
 
-![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-05.png)
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-005.png)
 
 ## 4．写真
 
