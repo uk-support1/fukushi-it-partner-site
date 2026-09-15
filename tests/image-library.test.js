@@ -117,8 +117,9 @@ test("blog index uses the Markdown hero without reselecting it", t => {
     { slug: "new", body: "本文", data: { published: true, date: "2026-09-12", category_label: "福祉", title: "new", image: "same.jpg" } },
     { slug: "old", body: "本文", data: { published: true, date: "2026-09-11", category_label: "採用", title: "old", image: "same.jpg" } }
   ];
-  const index = buildBlogIndex(published);
+  const index = buildBlogIndex(published, value.root);
   assert.deepEqual(index.map(entry => entry.image), ["same.jpg", "same.jpg"]);
+  assert.deepEqual(index.map(entry => entry.object_position), ["50% 50%", "50% 50%"]);
 });
 
 test("semantic profiles exclude unrelated strong themes and still choose a matching unused image", () => {
@@ -166,6 +167,12 @@ test("the committed image catalog covers every hero with stored semantic metadat
   const heroes = catalog.filter(item => item.path.includes("/hero/"));
   assert.equal(heroes.length, 86);
   for (const item of heroes) assert.ok(item.path && item.category && item.scene && item.tags.length && item.themes.length);
+  const publishedImages = new Set(require("../data/blog-index.json").map(item => item.image));
+  const focused = heroes.filter(item => publishedImages.has(item.path));
+  assert.equal(focused.length, 19);
+  for (const item of focused) assert.match(item.object_position, /^(?:100|\d{1,2})% (?:100|\d{1,2})%$/);
+  assert.equal(images.normalizeObjectPosition("125% 50%"), "50% 50%");
+  assert.equal(images.normalizeObjectPosition("35% 40%"), "35% 40%");
 });
 
 test("the committed hero library has no byte-identical files and dedupe prefers canonical names", () => {

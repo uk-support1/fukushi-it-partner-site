@@ -54,12 +54,14 @@ test("Published article, index, and blog card always share the Markdown hero", (
   const index = JSON.parse(text(ROOT, "data/blog-index.json"));
   const cards = text(ROOT, "blog.html");
   const published = lib.loadArticles(path.join(ROOT, "content", "articles")).filter(article => article.data.published === true);
+  const metadata = new Map(require("../data/image-library.json").images.map(item => [item.path, item]));
   assert.equal(index.length, published.length);
   for (const article of published) {
     const expected = article.data.image;
     const entry = index.find(item => item.slug === article.slug);
     assert.ok(entry, article.slug);
     assert.equal(entry.image, expected, article.slug + " index");
+    assert.equal(entry.object_position, metadata.get(expected)?.object_position || "50% 50%", article.slug + " focal point");
     assert.equal(imageLibrary.imageHashForPath(ROOT, entry.image), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " index hash");
     const page = text(ROOT, "blog/" + article.slug + ".html");
     const hero = page.match(/<div class="article-eyecatch">\s*<img src="([^"]+)"/);
@@ -67,18 +69,19 @@ test("Published article, index, and blog card always share the Markdown hero", (
     assert.equal(hero[1].replace(/^\.\.\//, ""), expected, article.slug + " article image");
     assert.equal(imageLibrary.imageHashForPath(ROOT, hero[1].replace(/^\.\.\//, "")), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " article hash");
     const escaped = article.slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const card = cards.match(new RegExp('<a class="(?:blog-featured|blog-list-item) reveal" href="blog/' + escaped + '\\.html">[\\s\\S]*?<img src="([^"]+)"'));
+    const card = cards.match(new RegExp('<a class="(?:blog-featured|blog-list-item) reveal" href="blog/' + escaped + '\\.html">[\\s\\S]*?<img src="([^"]+)"[^>]*style="--hero-object-position: ([^;]+);"'));
     assert.ok(card, article.slug + " blog card");
     assert.equal(card[1], expected, article.slug + " card image");
+    assert.equal(card[2], entry.object_position, article.slug + " card focal point");
     assert.equal(imageLibrary.imageHashForPath(ROOT, card[1]), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " card hash");
   }
 });
 test("Blog list thumbnails use a consistent three-by-two cover frame", () => {
   const css = text(ROOT, "assets/css/style.css");
   assert.match(css, /\.blog-featured-thumb\s*\{[^}]*aspect-ratio:\s*3\s*\/\s*2;[^}]*overflow:\s*hidden;/);
-  assert.match(css, /\.blog-featured-thumb img\s*\{[^}]*object-fit:\s*cover;[^}]*object-position:\s*center;/);
+  assert.match(css, /\.blog-featured-thumb img\s*\{[^}]*object-fit:\s*cover;[^}]*object-position:\s*var\(--hero-object-position,\s*50%\s+50%\);/);
   assert.match(css, /\.blog-list-thumb\s*\{[^}]*flex:\s*0\s+0\s+246px;[^}]*aspect-ratio:\s*3\s*\/\s*2;[^}]*overflow:\s*hidden;/);
-  assert.match(css, /\.blog-list-thumb img\s*\{[^}]*aspect-ratio:\s*3\s*\/\s*2;[^}]*object-fit:\s*cover;[^}]*object-position:\s*center;/);
+  assert.match(css, /\.blog-list-thumb img\s*\{[^}]*aspect-ratio:\s*3\s*\/\s*2;[^}]*object-fit:\s*cover;[^}]*object-position:\s*var\(--hero-object-position,\s*50%\s+50%\);/);
   assert.match(css, /@media\s*\(max-width:\s*700px\)\s*\{[\s\S]*?\.blog-list-thumb\s*\{[^}]*width:\s*100%;[^}]*height:\s*auto;[^}]*aspect-ratio:\s*3\s*\/\s*2;/);
 });
 

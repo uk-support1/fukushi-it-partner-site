@@ -23,6 +23,33 @@ const JAPANESE_CATEGORIES = {
 
 function normalizePath(value) { return String(value || "").replace(/\\/g, "/").replace(/^\/+/, ""); }
 
+function normalizeObjectPosition(value) {
+  const match = /^\s*(\d{1,3}(?:\.\d+)?)%\s+(\d{1,3}(?:\.\d+)?)%\s*$/.exec(String(value || ""));
+  if (!match) return "50% 50%";
+  const x = Number(match[1]), y = Number(match[2]);
+  if (!Number.isFinite(x) || !Number.isFinite(y) || x < 0 || x > 100 || y < 0 || y > 100) return "50% 50%";
+  return x + "% " + y + "%";
+}
+
+function imageObjectPositions(root) {
+  const positions = new Map();
+  try {
+    const source = JSON.parse(fs.readFileSync(path.join(root, "data", "image-library.json"), "utf8"));
+    for (const item of source.images || []) {
+      const focal = Number.isFinite(item.focal_x) && Number.isFinite(item.focal_y)
+        ? item.focal_x + "% " + item.focal_y + "%"
+        : item.object_position;
+      if (focal) positions.set(normalizePath(item.path), normalizeObjectPosition(focal));
+    }
+  } catch { /* Missing metadata safely falls back to the center. */ }
+  return positions;
+}
+
+function objectPositionForImage(positions, imagePath) {
+  const value = positions instanceof Map ? positions.get(normalizePath(imagePath)) : "";
+  return normalizeObjectPosition(value);
+}
+
 function categoryFor(value) {
   const text = String(value || "").toLowerCase();
   if (JAPANESE_CATEGORIES[value]) return JAPANESE_CATEGORIES[value];
@@ -158,4 +185,4 @@ function selectImage({ category, candidates, history = [], recentLimit = RECENT_
   })[0];
 }
 
-module.exports = { RECENT_ARTICLE_LIMIT, HERO_RECENT_ARTICLE_LIMIT, categoryFor, seriesFor, imageHash, imageHashForPath, discoverImages, usageHistory, selectImage, sameImage };
+module.exports = { RECENT_ARTICLE_LIMIT, HERO_RECENT_ARTICLE_LIMIT, categoryFor, seriesFor, imageHash, imageHashForPath, discoverImages, usageHistory, selectImage, sameImage, normalizeObjectPosition, imageObjectPositions, objectPositionForImage };

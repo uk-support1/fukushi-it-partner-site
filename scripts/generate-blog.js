@@ -23,6 +23,7 @@
 const fs = require("fs");
 const path = require("path");
 const lib = require("./lib/articles");
+const imageLibrary = require("./lib/image-library");
 const { renderBuhio } = require("./lib/buhio");
 const { assertNoMarkdownLeak } = require("./lib/markdown");
 
@@ -51,7 +52,7 @@ function formatDateDisplay(isoDate) {
   return String(isoDate || "").split("-").join(".");
 }
 
-function buildRelatedCardHtml(slug, articlesBySlug) {
+function buildRelatedCardHtml(slug, articlesBySlug, imagePositions = new Map()) {
   const cms = articlesBySlug[slug];
   if (!cms || cms.data.published !== true) return "";
   const title = cms.data.title;
@@ -72,7 +73,9 @@ function buildRelatedCardHtml(slug, articlesBySlug) {
     imgSrc +
     '" alt="' +
     lib.escapeHtml(imageAlt) +
-    '">\n' +
+    '" style="--hero-object-position: ' +
+    imageLibrary.objectPositionForImage(imagePositions, image) +
+    ';">\n' +
     "          </div>\n" +
     '          <div class="blog-list-body">\n' +
     '            <div class="meta-row">\n' +
@@ -140,7 +143,7 @@ function resolveRelatedSlugs(article, published) {
     });
 }
 
-function renderArticlePage(article, articlesBySlug, published) {
+function renderArticlePage(article, articlesBySlug, published, imagePositions = new Map()) {
   const data = article.data;
   const slug = article.slug;
   const categoryLabel = lib.categoryLabelOf(data);
@@ -153,7 +156,7 @@ function renderArticlePage(article, articlesBySlug, published) {
   const related = resolveRelatedSlugs(article, published);
   const relatedHtml = related
     .map(function (relSlug) {
-      return buildRelatedCardHtml(relSlug, articlesBySlug);
+      return buildRelatedCardHtml(relSlug, articlesBySlug, imagePositions);
     })
     .filter(Boolean)
     .join("\n\n");
@@ -339,13 +342,14 @@ function renderArticlePage(article, articlesBySlug, published) {
   );
 }
 
-function buildBlogIndex(publishedArticles) {
+function buildBlogIndex(publishedArticles, root = ROOT, imagePositions = imageLibrary.imageObjectPositions(root)) {
   return publishedArticles
     .slice()
     .sort(function (a, b) {
       return String(b.data.date).localeCompare(String(a.data.date));
     })
     .map(function (a) {
+      const image = a.data.image || null;
       return {
         type: a.data.type || "",
         category_label: lib.categoryLabelOf(a.data),
@@ -353,8 +357,9 @@ function buildBlogIndex(publishedArticles) {
         date: a.data.date,
         // Markdown front matter is the single source of truth. Hero selection
         // happens before publishing; index generation must never choose again.
-        image: a.data.image || null,
+        image,
         image_alt: a.data.image_alt || "",
+        object_position: imageLibrary.objectPositionForImage(imagePositions, image),
         description: lib.descriptionOf(a.data, a.body),
         excerpt: lib.excerptOf(a.data, a.body, 80),
         slug: a.slug,
@@ -388,7 +393,9 @@ function buildBlogCardHtml(entry, variant) {
     lib.toSiteImagePath(entry.image, "root") +
     '" alt="' +
     lib.escapeHtml(entry.image_alt) +
-    '">\n' +
+    '" style="--hero-object-position: ' +
+    imageLibrary.normalizeObjectPosition(entry.object_position) +
+    ';">\n' +
     indent +
     "  </div>\n" +
     indent +
@@ -670,13 +677,14 @@ function generateBlog({ root = ROOT, onlySlug = null } = {}) {
   const targetArticles = onlySlug === null ? published : published.filter(a => a.slug === onlySlug);
   if (onlySlug !== null && targetArticles.length !== 1) throw new Error("Target article is not published");
 
+  const imagePositions = imageLibrary.imageObjectPositions(root);
   const articlesBySlug = Object.create(null);
   articles.forEach(function (a) {
     articlesBySlug[a.slug] = a;
   });
   // Finish rendering and checking every target before changing public output files.
   const rendered = new Map(targetArticles.map(article => {
-    const html=renderArticlePage(article,articlesBySlug,published);
+    const html=renderArticlePage(article,articlesBySlug,published,imagePositions);
     assertNoMarkdownLeak(html);
     return [article.slug,html];
   }));
@@ -695,7 +703,7 @@ function generateBlog({ root = ROOT, onlySlug = null } = {}) {
   }
 
   // ① data/blog-index.json
-  const blogIndex = buildBlogIndex(published);
+  const blogIndex = buildBlogIndex(published, root, imagePositions);
   fs.mkdirSync(path.dirname(blogIndexFile), { recursive: true });
   fs.writeFileSync(blogIndexFile, JSON.stringify(blogIndex, null, 2) + "\n", "utf8");
   console.log("generated " + blogIndexFile + " (" + published.length + " article(s))");

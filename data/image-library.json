@@ -38,7 +38,8 @@
         "digital"
       ],
       "technology_level": "strong",
-      "has_person": false
+      "has_person": false,
+      "object_position": "92% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-ai-003.png",
@@ -566,7 +567,8 @@
         "recruit"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "78% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-recruit-002.png",
@@ -634,7 +636,8 @@
         "recruit"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "85% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-recruit-007.png",
@@ -685,7 +688,8 @@
         "recruit"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "85% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-recruit-011.png",
@@ -721,7 +725,8 @@
         "digital"
       ],
       "technology_level": "strong",
-      "has_person": false
+      "has_person": false,
+      "object_position": "100% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-security-002.png",
@@ -854,7 +859,8 @@
         "web"
       ],
       "technology_level": "moderate",
-      "has_person": false
+      "has_person": false,
+      "object_position": "10% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-seo-002.png",
@@ -1022,7 +1028,8 @@
         "subsidy"
       ],
       "technology_level": "none",
-      "has_person": false
+      "has_person": false,
+      "object_position": "100% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-subsidy-003.png",
@@ -1297,7 +1304,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "65% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-002.png",
@@ -1315,7 +1323,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "10% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-003.png",
@@ -1333,7 +1342,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "25% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-004.png",
@@ -1351,7 +1361,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "25% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-005.png",
@@ -1369,7 +1380,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "18% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-006.png",
@@ -1387,7 +1399,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "82% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-007.png",
@@ -1405,7 +1418,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "15% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-008.png",
@@ -1423,7 +1437,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "12% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-010.png",
@@ -1441,7 +1456,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "78% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-011.png",
@@ -1459,7 +1475,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "100% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-013.png",
@@ -1477,7 +1494,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "82% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-014.png",
@@ -1513,7 +1531,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "55% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-016.png",
