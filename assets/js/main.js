@@ -39,6 +39,51 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // お問い合わせフォーム（Formspree）の送信処理
+  var contactForm = document.getElementById("contact-form");
+
+  if (contactForm) {
+    var contactSubmitBtn = contactForm.querySelector(".contact-form-submit");
+    var contactErrorEl = document.getElementById("contact-form-error");
+    var contactSuccessEl = document.getElementById("contact-form-success");
+
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      if (contactErrorEl) {
+        contactErrorEl.hidden = true;
+      }
+      if (contactSubmitBtn) {
+        contactSubmitBtn.disabled = true;
+        contactSubmitBtn.textContent = "送信中…";
+      }
+
+      fetch(contactForm.action, {
+        method: "POST",
+        body: new FormData(contactForm),
+        headers: { Accept: "application/json" }
+      })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error("送信に失敗しました");
+          }
+          contactForm.hidden = true;
+          if (contactSuccessEl) {
+            contactSuccessEl.hidden = false;
+          }
+        })
+        .catch(function () {
+          if (contactErrorEl) {
+            contactErrorEl.hidden = false;
+          }
+          if (contactSubmitBtn) {
+            contactSubmitBtn.disabled = false;
+            contactSubmitBtn.textContent = "送信する";
+          }
+        });
+    });
+  }
+
   // モバイルナビ開閉
   var toggle = document.querySelector(".nav-toggle");
   var navLinks = document.querySelector(".nav-links");

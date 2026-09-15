@@ -78,6 +78,68 @@
     </div>
   </section>
 
+  <section class="contact-form-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">お問い合わせフォーム</span>
+        <p class="section-lead contact-form-lead">
+          ホームページ制作や集客、AI・IT活用、補助金活用など、<br>
+          福祉事業所の運営に関するご相談を受け付けています。<br>
+          お気軽にお問い合わせください。
+        </p>
+      </div>
+
+      <form class="contact-form reveal" id="contact-form" action="https://formspree.io/f/moeqgzrw" method="POST">
+        <div class="form-group">
+          <label for="cf-org">法人名・事業所名<span class="form-required">必須</span></label>
+          <input type="text" id="cf-org" name="法人名・事業所名" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cf-email">メールアドレス<span class="form-required">必須</span></label>
+          <input type="email" id="cf-email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cf-service">ご希望のサービス<span class="form-required">必須</span></label>
+          <select id="cf-service" name="ご希望のサービス" required>
+            <option value="" disabled selected>選択してください</option>
+            <option value="ホームページ制作">ホームページ制作</option>
+            <option value="ホームページ更新">ホームページ更新</option>
+            <option value="SEO・集客支援">SEO・集客支援</option>
+            <option value="AI・IT活用">AI・IT活用</option>
+            <option value="補助金活用">補助金活用</option>
+            <option value="その他">その他</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cf-message">ご相談内容<span class="form-required">必須</span></label>
+          <textarea id="cf-message" name="ご相談内容" rows="6" required></textarea>
+        </div>
+
+        <div class="form-group form-group--checkbox">
+          <label class="form-checkbox-label">
+            <input type="checkbox" id="cf-agree" name="個人情報の取扱いへの同意" required>
+            <span><a href="privacy.html" target="_blank" rel="noopener noreferrer">個人情報の取扱い</a>に同意します<span class="form-required">必須</span></span>
+          </label>
+        </div>
+
+        <input type="hidden" name="_subject" value="【福祉ITパートナー】お問い合わせフォームより">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <button type="submit" class="btn btn-accent contact-form-submit">送信する</button>
+
+        <p class="contact-form-error" id="contact-form-error" hidden>送信に失敗しました。お手数ですが、時間をおいて再度お試しいただくか、お電話・メールにてご連絡ください。</p>
+      </form>
+
+      <div class="contact-form-success" id="contact-form-success" hidden>
+        <p class="contact-form-success-title">お問い合わせありがとうございます。</p>
+        <p>内容を確認のうえ、ご連絡いたします。</p>
+      </div>
+    </div>
+  </section>
+
   <section class="contact-secondary-section">
     <div class="container">
 
