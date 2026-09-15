@@ -477,7 +477,7 @@ section {
 
 .problem-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   max-width: 920px;
   margin: 0 auto;
@@ -485,28 +485,48 @@ section {
 
 .problem-item {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   gap: 14px;
+  text-align: center;
   background: var(--white);
   border-radius: var(--radius-md);
-  padding: 22px 24px;
+  padding: 20px;
   box-shadow: var(--shadow-soft);
 }
 
-.problem-item .icon {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--orange-500);
-  color: var(--white);
+.problem-item p {
+  color: var(--text-900);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* 今後イラストを配置する予定のビジュアル領域（現在はプレースホルダー表示） */
+.problem-visual {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  background: var(--green-100);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+}
+
+.problem-visual::before {
+  content: "?";
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--orange-500);
 }
 
 @media (max-width: 768px) {
+  .problem-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
   .problem-list {
     grid-template-columns: 1fr;
   }
@@ -534,6 +554,17 @@ section {
 
 .value-box p {
   color: var(--text-600);
+}
+
+/* 今後メインイラストを配置する予定のビジュアル領域（現在はプレースホルダー表示） */
+.welfare-it-visual {
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 16 / 9;
+  margin: 32px auto 0;
+  border-radius: var(--radius-md);
+  background: var(--white);
+  border: 1px dashed var(--border-soft);
 }
 
 @media (max-width: 600px) {
@@ -585,7 +616,7 @@ section {
 }
 
 .card-body {
-  padding: 32px 24px 28px;
+  padding: 28px 24px 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -603,7 +634,7 @@ section {
 }
 
 .card-cta {
-  margin-top: auto;
+  margin-top: 0;
   padding-top: 20px;
 }
 
@@ -769,54 +800,6 @@ section {
   left: 0;
   color: var(--green-700);
   font-weight: 700;
-}
-
-/* ===== Profile preview ===== */
-.profile-preview {
-  background: var(--green-100);
-}
-
-.profile-flex {
-  display: flex;
-  align-items: center;
-  gap: 48px;
-}
-
-.profile-photo {
-  flex-shrink: 0;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: var(--white);
-  box-shadow: var(--shadow-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.profile-text h3 {
-  color: var(--green-900);
-  font-size: 1.4rem;
-  margin-bottom: 6px;
-}
-
-.profile-text .role {
-  color: var(--orange-600);
-  font-weight: 700;
-  font-size: 0.9rem;
-  margin-bottom: 16px;
-}
-
-.profile-text p {
-  color: var(--text-600);
-}
-
-@media (max-width: 768px) {
-  .profile-flex {
-    flex-direction: column;
-    text-align: center;
-    gap: 24px;
-  }
 }
 
 /* ===== CTA section ===== */
