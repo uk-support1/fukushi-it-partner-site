@@ -2,8 +2,8 @@ name: Daily Blog
 
 on:
   schedule:
-    # UTC 21:00 = next day 06:00 Asia/Tokyo. GitHub may delay scheduled runs.
-    - cron: '0 21 * * *'
+    # UTC 21:17 = next day 06:17 Asia/Tokyo. GitHub may delay scheduled runs.
+    - cron: '17 21 * * *'
   workflow_dispatch:
     inputs:
       continuous_trial:

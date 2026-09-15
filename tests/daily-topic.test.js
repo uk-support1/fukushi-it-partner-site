@@ -40,9 +40,9 @@ test("1/2: Markdown context includes published articles and drafts for duplicate
   assert.deepEqual(data.map(item=>item.published),[true,false]);
   assert.throws(()=>validateTopic(JSON.stringify({...topic,title:"Title"}),data),{code:"DUPLICATE_TOPIC"});
 });
-test("Workflow keeps 06:00 JST schedule and connects draft, publish and Pages deployment",()=>{
+test("Workflow keeps 06:17 JST schedule and connects draft, publish and Pages deployment",()=>{
   const workflow=YAML.parse(fs.readFileSync(path.join(ROOT,".github/workflows/daily-blog.yml"),"utf8"));
-  assert.equal(workflow.on.schedule[0].cron,"0 21 * * *");
+  assert.equal(workflow.on.schedule[0].cron,"17 21 * * *");
   assert.equal(workflow.on.schedule.length,1);
   assert.equal(workflow.on.workflow_dispatch.inputs.continuous_trial.type,"boolean");
   assert.equal(workflow.on.workflow_dispatch.inputs.continuous_trial.default,false);
@@ -200,7 +200,7 @@ test("Duplicate titles and near titles rejected locally",()=>{
 });
 test("Semantically duplicate paraphrases rejected by independent review",async()=>{
   let count=0;
-  await assert.rejects(selectTopic({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,load:()=>articles,request:async()=>++count===1?JSON.stringify({...topic,title:"入居相談を増やすウェブ上の募集案内",angle:"住まいの空き状況を案内する"}):JSON.stringify({comparisons:[{slug:"vacancy",duplicate:true,reason:"同じ空室案内の課題と解決策"}]})}),{code:"DUPLICATE_TOPIC"});
+  await assert.rejects(selectTopic({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,load:()=>articles,request:async()=>++count%2===1?JSON.stringify({...topic,title:"入居相談を増やすウェブ上の募集案内",angle:"住まいの空き状況を案内する"}):JSON.stringify({comparisons:[{slug:"vacancy",duplicate:true,reason:"同じ空室案内の課題と解決策"}]})}),{code:"DUPLICATE_TOPIC"});
 });
 test("Incomplete/invalid semantic review fails closed",()=>{
   for(const raw of ["{}",review([]),review([{slug:"unknown"}]),JSON.stringify({comparisons:[{slug:"vacancy",duplicate:"false",reason:"reason"}]})])assert.throws(()=>validateReview(raw,articles));
@@ -269,4 +269,73 @@ test("Existing articles and public files are unchanged when a draft is tested in
   const result=await prepareDailyBlog({env,articlesDir:directory,collect:async()=>({candidates:[]}),request:async args=>isEditorial(args)?editorialReview:++count===1?JSON.stringify(topic):count===2?review(args.input.existingArticles):JSON.stringify(generatedArticle)});
   assert.equal(result.articlesCreated,1);assert.equal(result.shouldPublish,false);
   assert.deepEqual(hashes(),before);assert.equal(status(),beforeStatus);
+});
+
+test("Duplicate first choice is reselected and daily blog saves exactly one draft",async t=>{
+  const directory=temporaryArticles(t), selections=[];
+  const rejected={...topic,title:articles[0].title};
+  const result=await prepareDailyBlog({env,articlesDir:directory,load:()=>articles,
+    collect:async()=>({candidates:[]}),request:async args=>{
+      if(args.schema===topicSchema) {
+        selections.push(args);
+        return JSON.stringify(selections.length===1?rejected:topic);
+      }
+      if(isEditorial(args))return editorialReview;
+      if(args.input.candidate)return review(articles);
+      assert.deepEqual(args.input.topic,topic);
+      return JSON.stringify(generatedArticle);
+    }});
+  assert.equal(selections.length,2);
+  assert.deepEqual(selections[1].input.rejectedTopics,[Object.fromEntries(['title','category','keyword','angle'].map(k=>[k,rejected[k]]))]);
+  assert.match(selections[1].instructions,/実質的に異なるテーマ/);
+  assert.match(selections[1].instructions,/カテゴリや解決策も可能なら変え/);
+  assert.equal(result.status,'draft_saved');assert.equal(result.articlesCreated,1);
+  assert.equal(fs.readdirSync(directory).length,1);
+  assert.equal(require('../scripts/lib/articles').parseFrontmatter(fs.readFileSync(result.draft.filePath,'utf8')).data.published,false);
+});
+
+test("Two latest semantic duplicates switch only the third selection to evergreen",async()=>{
+  const latestInfo=[1,2,3].map(n=>({url:`https://example.org/${n}`,title:`情報${n}`}));
+  const selections=[],reviews=[];
+  const result=await selectTopic({apiKey:'dummy',load:()=>articles,latestInfo,request:async args=>{
+    if(args.input.candidate) {
+      reviews.push(args);
+      return JSON.stringify({comparisons:articles.map(a=>({slug:a.slug,duplicate:reviews.length<3,reason:'実質的な問いと解決策を比較'}))});
+    }
+    selections.push(args);
+    return JSON.stringify(selections.length<3?{...topic,angle:`却下される切り口${selections.length}`,sourceUrls:[latestInfo[0].url],importance:'standard'}:topic);
+  }});
+  assert.equal(selections.length,3);assert.equal(reviews.length,3);
+  for(const args of selections.slice(0,2))assert.deepEqual(args.input.latestInformationCandidates,latestInfo);
+  assert.equal(selections[2].schema,topicSchema);
+  assert.equal(selections[2].input.latestInformationCandidates,undefined);
+  assert.deepEqual(selections[2].input.rejectedTopics.map(t=>t.angle),['却下される切り口1','却下される切り口2']);
+  for(const args of reviews) {
+    assert.deepEqual(args.input.existingArticles,articles);
+    assert.match(args.instructions,/判断が曖昧な場合もtrue/);
+    assert.match(args.instructions,/既存記事を1件も省略せず/);
+  }
+  assert.equal(result.contentMode,'evergreen');assert.deepEqual(result.sources,[]);
+});
+
+test("Three duplicate choices fail safely before generation or saving",async()=>{
+  let choices=0,saves=0,generations=0;
+  await assert.rejects(prepareDailyBlog({env,load:()=>articles,collect:async()=>({candidates:[]}),
+    request:async()=>{choices++;return JSON.stringify({...topic,title:articles[0].title});},
+    articleRequest:async()=>{generations++;},save:()=>{saves++;}}),{code:'DUPLICATE_TOPIC'});
+  assert.equal(choices,3);assert.equal(generations,0);assert.equal(saves,0);
+});
+
+test("Non-duplicate selection and review errors are never retried",async()=>{
+  const {TopicError}=require('../scripts/topic-selector');
+  for(const atReview of [false,true])for(const kind of ['auth','json','fields']) {
+    let calls=0;
+    await assert.rejects(selectTopic({apiKey:'dummy',load:()=>articles,request:async()=>{
+      calls++;
+      if(atReview&&calls===1)return JSON.stringify(topic);
+      if(kind==='auth')throw new TopicError('GEMINI_HTTP_ERROR',{httpStatus:401});
+      return kind==='json'?'not JSON':'{}';
+    }}),{code:kind==='auth'?'GEMINI_HTTP_ERROR':kind==='json'?'INVALID_AI_JSON':'INVALID_AI_FIELDS'});
+    assert.equal(calls,atReview?2:1);
+  }
 });
