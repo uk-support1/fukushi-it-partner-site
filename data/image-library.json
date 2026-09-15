@@ -331,57 +331,6 @@
       "has_person": false
     },
     {
-      "path": "assets/images/blog-library/hero/hero-general-002.png",
-      "category": "general",
-      "series": "office-documents",
-      "tags": [
-        "一般事務",
-        "書類確認",
-        "デスク",
-        "オフィス"
-      ],
-      "scene": "書類確認のデスク",
-      "themes": [
-        "general"
-      ],
-      "technology_level": "none",
-      "has_person": false
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-general-003.png",
-      "category": "general",
-      "series": "office-documents",
-      "tags": [
-        "一般事務",
-        "書類確認",
-        "デスク",
-        "オフィス"
-      ],
-      "scene": "書類確認のデスク",
-      "themes": [
-        "general"
-      ],
-      "technology_level": "none",
-      "has_person": false
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-general-004.png",
-      "category": "general",
-      "series": "office-documents",
-      "tags": [
-        "一般事務",
-        "書類確認",
-        "デスク",
-        "オフィス"
-      ],
-      "scene": "書類確認のデスク",
-      "themes": [
-        "general"
-      ],
-      "technology_level": "none",
-      "has_person": false
-    },
-    {
       "path": "assets/images/blog-library/hero/hero-general-005.png",
       "category": "general",
       "series": "office-pc",
@@ -451,23 +400,6 @@
     },
     {
       "path": "assets/images/blog-library/hero/hero-general-009.png",
-      "category": "general",
-      "series": "office-meeting",
-      "tags": [
-        "打ち合わせ",
-        "相談",
-        "オフィス",
-        "一般事務"
-      ],
-      "scene": "一般的な打ち合わせ",
-      "themes": [
-        "general"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-general-010.png",
       "category": "general",
       "series": "office-meeting",
       "tags": [
@@ -569,57 +501,6 @@
       "has_person": false
     },
     {
-      "path": "assets/images/blog-library/hero/hero-general-016.png",
-      "category": "general",
-      "series": "office-documents",
-      "tags": [
-        "一般事務",
-        "書類確認",
-        "デスク",
-        "オフィス"
-      ],
-      "scene": "書類確認のデスク",
-      "themes": [
-        "general"
-      ],
-      "technology_level": "none",
-      "has_person": false
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-general-017.png",
-      "category": "general",
-      "series": "office-documents",
-      "tags": [
-        "一般事務",
-        "書類確認",
-        "デスク",
-        "オフィス"
-      ],
-      "scene": "書類確認のデスク",
-      "themes": [
-        "general"
-      ],
-      "technology_level": "none",
-      "has_person": false
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-general-018.png",
-      "category": "general",
-      "series": "office-documents",
-      "tags": [
-        "一般事務",
-        "書類確認",
-        "デスク",
-        "オフィス"
-      ],
-      "scene": "書類確認のデスク",
-      "themes": [
-        "general"
-      ],
-      "technology_level": "none",
-      "has_person": false
-    },
-    {
       "path": "assets/images/blog-library/hero/hero-general-019.png",
       "category": "general",
       "series": "office-documents",
@@ -638,23 +519,6 @@
     },
     {
       "path": "assets/images/blog-library/hero/hero-general-020.png",
-      "category": "general",
-      "series": "office-documents",
-      "tags": [
-        "一般事務",
-        "書類確認",
-        "デスク",
-        "オフィス"
-      ],
-      "scene": "書類確認のデスク",
-      "themes": [
-        "general"
-      ],
-      "technology_level": "none",
-      "has_person": false
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-general-021.png",
       "category": "general",
       "series": "office-documents",
       "tags": [
@@ -739,23 +603,6 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/hero/hero-recruit-004.png",
-      "category": "recruit",
-      "series": "recruit-team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "職場"
-      ],
-      "scene": "職場のチーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
       "path": "assets/images/blog-library/hero/hero-recruit-005.png",
       "category": "recruit",
       "series": "recruit-team",
@@ -791,23 +638,6 @@
     },
     {
       "path": "assets/images/blog-library/hero/hero-recruit-007.png",
-      "category": "recruit",
-      "series": "recruit-team",
-      "tags": [
-        "採用",
-        "職員",
-        "チーム",
-        "職場"
-      ],
-      "scene": "職場のチーム",
-      "themes": [
-        "recruit"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-recruit-008.png",
       "category": "recruit",
       "series": "recruit-team",
       "tags": [
@@ -1596,24 +1426,6 @@
       "has_person": true
     },
     {
-      "path": "assets/images/blog-library/hero/hero-welfare-009.png",
-      "category": "welfare",
-      "series": "welfare-team",
-      "tags": [
-        "福祉",
-        "職員",
-        "事業所",
-        "支援",
-        "チーム"
-      ],
-      "scene": "福祉職員の打ち合わせ",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
       "path": "assets/images/blog-library/hero/hero-welfare-010.png",
       "category": "welfare",
       "series": "welfare-consultation",
@@ -1633,24 +1445,6 @@
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-011.png",
-      "category": "welfare",
-      "series": "welfare-facility",
-      "tags": [
-        "福祉",
-        "利用者",
-        "職員",
-        "施設",
-        "生活支援"
-      ],
-      "scene": "福祉施設での支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-012.png",
       "category": "welfare",
       "series": "welfare-facility",
       "tags": [
@@ -1740,24 +1534,6 @@
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-017.png",
-      "category": "welfare",
-      "series": "welfare-facility",
-      "tags": [
-        "福祉",
-        "利用者",
-        "職員",
-        "施設",
-        "生活支援"
-      ],
-      "scene": "福祉施設での支援",
-      "themes": [
-        "welfare"
-      ],
-      "technology_level": "none",
-      "has_person": true
-    },
-    {
-      "path": "assets/images/blog-library/hero/hero-welfare-018.png",
       "category": "welfare",
       "series": "welfare-facility",
       "tags": [

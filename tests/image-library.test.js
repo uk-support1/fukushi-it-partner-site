@@ -10,6 +10,7 @@ const images = require("../scripts/lib/image-library");
 const { saveArticleDraft } = require("../scripts/article-writer");
 const { refreshInlineImages } = require("../scripts/refresh-inline-images");
 const { refreshHeroImages } = require("../scripts/refresh-hero-images");
+const { chooseSurvivor, pruneDuplicateHeroes } = require("../scripts/prune-duplicate-hero-images");
 const { buildBlogIndex } = require("../scripts/generate-blog");
 const { articleImageProfile } = require("../scripts/lib/image-semantics");
 
@@ -53,11 +54,11 @@ test("recognizes every supported category from conventional hero filenames", () 
 
 test("the committed hero library is preferred over legacy fallback images", () => {
   const candidates = images.discoverImages({ root: path.resolve(__dirname, "..") });
-  assert.equal(candidates.length, 99);
+  assert.equal(candidates.length, 86);
   assert.deepEqual(candidates.reduce((counts, candidate) => {
     counts[candidate.category] = (counts[candidate.category] || 0) + 1;
     return counts;
-  }, {}), { ai: 9, dx: 8, general: 22, recruit: 11, security: 7, seo: 8, subsidy: 10, web: 6, welfare: 18 });
+  }, {}), { ai: 9, dx: 8, general: 14, recruit: 9, security: 7, seo: 8, subsidy: 10, web: 6, welfare: 15 });
   for (const candidate of candidates) {
     assert.match(path.basename(candidate.path), /^hero-(welfare|recruit|ai|dx|web|seo|subsidy|security|general)-\d{3}\.(?:png|jpe?g|webp)$/);
     assert.ok(candidate.hash && candidate.tags.length && candidate.scene && candidate.themes.length && typeof candidate.has_person === "boolean");
@@ -163,8 +164,16 @@ test("an existing image filename and alt text never change the article meaning p
 test("the committed image catalog covers every hero with stored semantic metadata", () => {
   const catalog = require("../data/image-library.json").images;
   const heroes = catalog.filter(item => item.path.includes("/hero/"));
-  assert.equal(heroes.length, 99);
+  assert.equal(heroes.length, 86);
   for (const item of heroes) assert.ok(item.path && item.category && item.scene && item.tags.length && item.themes.length);
+});
+
+test("the committed hero library has no byte-identical files and dedupe prefers canonical names", () => {
+  const root = path.resolve(__dirname, "..");
+  assert.equal(chooseSurvivor(["copy.png", "hero-general-009.png", "hero-general-010.png"]), "hero-general-009.png");
+  assert.deepEqual(pruneDuplicateHeroes({ root }), {
+    groups: 0, removed: 0, survivors: 86, referenceRewrites: 0, details: []
+  });
 });
 
 test("the committed inline library is content-classified, cataloged, semantic-safe, and avoids recent hashes", () => {
