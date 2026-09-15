@@ -73,6 +73,15 @@ test("Published article, index, and blog card always share the Markdown hero", (
     assert.equal(imageLibrary.imageHashForPath(ROOT, card[1]), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " card hash");
   }
 });
+test("Blog list thumbnails use a consistent three-by-two cover frame", () => {
+  const css = text(ROOT, "assets/css/style.css");
+  assert.match(css, /\.blog-featured-thumb\s*\{[^}]*aspect-ratio:\s*3\s*\/\s*2;[^}]*overflow:\s*hidden;/);
+  assert.match(css, /\.blog-featured-thumb img\s*\{[^}]*object-fit:\s*cover;[^}]*object-position:\s*center;/);
+  assert.match(css, /\.blog-list-thumb\s*\{[^}]*flex:\s*0\s+0\s+246px;[^}]*aspect-ratio:\s*3\s*\/\s*2;[^}]*overflow:\s*hidden;/);
+  assert.match(css, /\.blog-list-thumb img\s*\{[^}]*aspect-ratio:\s*3\s*\/\s*2;[^}]*object-fit:\s*cover;[^}]*object-position:\s*center;/);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)\s*\{[\s\S]*?\.blog-list-thumb\s*\{[^}]*width:\s*100%;[^}]*height:\s*auto;[^}]*aspect-ratio:\s*3\s*\/\s*2;/);
+});
+
 test("B: new draft excluded everywhere", t => {
   const dir = sandbox(t); article(dir,"test-draft",false); run(dir); visibility(dir,"test-draft",false);
 });
