@@ -45,6 +45,29 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
+inline_image: assets/images/blog-library/inline/inline-web-design-08.png
+inline_image_alt: ホームページ活用のイメージ
+inline_image_category: web
+inline_image_series: design
+inline_image_hash: 07520425a66d754b38926d4170a82b59e453f0c7f8de002114111747084715b2
+inline_image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 障害者グループホームを新規に開設する方や、入居者募集に悩んでいる運営者の方から、「障害者グループホーム ホームページ」に何を載せればよいか分からないというご相談をいただくことがあります。
@@ -105,6 +128,8 @@ image_selection:
 ![ヘッドセットを着けて笑顔で相談に対応するスタッフの様子](assets/images/blog/online-call-headset.jpg)
 
 「一人ひとりのペースを大切にしています」「困ったことがあれば、いつでも相談してくださいね」といった、事業所の言葉での紹介も効果的です。
+
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-08.png)
 
 ## 空室情報や見学案内の掲載方法
 

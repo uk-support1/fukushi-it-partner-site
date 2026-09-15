@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_for": "hero",
+  "generated_for": "hero and inline",
   "images": [
     {
       "path": "assets/images/blog-library/hero/hero-dx-workflow-01.png",
@@ -1739,6 +1739,825 @@
         "subsidy"
       ],
       "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-interview-01.png",
+      "category": "recruit",
+      "series": "interview",
+      "tags": [
+        "採用",
+        "面談",
+        "応募者",
+        "職員",
+        "対話"
+      ],
+      "scene": "採用面談",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-interview-02.png",
+      "category": "recruit",
+      "series": "interview",
+      "tags": [
+        "採用",
+        "面談",
+        "応募者",
+        "職員",
+        "対話"
+      ],
+      "scene": "採用面談",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-interview-03.png",
+      "category": "recruit",
+      "series": "interview",
+      "tags": [
+        "採用",
+        "面談",
+        "応募者",
+        "職員",
+        "対話"
+      ],
+      "scene": "採用面談",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-interview-04.png",
+      "category": "recruit",
+      "series": "interview",
+      "tags": [
+        "採用",
+        "面談",
+        "応募者",
+        "職員",
+        "対話"
+      ],
+      "scene": "採用面談",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-interview-05.png",
+      "category": "recruit",
+      "series": "interview",
+      "tags": [
+        "採用",
+        "面談",
+        "応募者",
+        "職員",
+        "対話"
+      ],
+      "scene": "採用面談",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-interview-06.png",
+      "category": "recruit",
+      "series": "interview",
+      "tags": [
+        "採用",
+        "面談",
+        "応募者",
+        "職員",
+        "対話"
+      ],
+      "scene": "採用面談",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-interview-07.png",
+      "category": "recruit",
+      "series": "interview",
+      "tags": [
+        "採用",
+        "面談",
+        "応募者",
+        "職員",
+        "対話"
+      ],
+      "scene": "採用面談",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-interview-08.png",
+      "category": "recruit",
+      "series": "interview",
+      "tags": [
+        "採用",
+        "面談",
+        "応募者",
+        "職員",
+        "対話"
+      ],
+      "scene": "採用面談",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-recruit-interview-09.png",
+      "category": "recruit",
+      "series": "interview",
+      "tags": [
+        "採用",
+        "面談",
+        "応募者",
+        "職員",
+        "対話"
+      ],
+      "scene": "採用面談",
+      "themes": [
+        "recruit"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-design-01.png",
+      "category": "web",
+      "series": "design",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "デザイン",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web制作打ち合わせ",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-design-02.png",
+      "category": "web",
+      "series": "design",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "デザイン",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web制作打ち合わせ",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-design-03.png",
+      "category": "web",
+      "series": "design",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "デザイン",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web制作打ち合わせ",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-design-04.png",
+      "category": "web",
+      "series": "design",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "デザイン",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web制作打ち合わせ",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-design-05.png",
+      "category": "web",
+      "series": "design",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "デザイン",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web制作打ち合わせ",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-design-06.png",
+      "category": "web",
+      "series": "design",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "デザイン",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web制作打ち合わせ",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-design-07.png",
+      "category": "web",
+      "series": "design",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "デザイン",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web制作打ち合わせ",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-design-08.png",
+      "category": "web",
+      "series": "design",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "デザイン",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web制作打ち合わせ",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-design-09.png",
+      "category": "web",
+      "series": "design",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "デザイン",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web制作打ち合わせ",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-planning-01.png",
+      "category": "web",
+      "series": "planning",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "情報発信",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web企画",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-planning-02.png",
+      "category": "web",
+      "series": "planning",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "情報発信",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web企画",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-planning-03.png",
+      "category": "web",
+      "series": "planning",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "情報発信",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web企画",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-planning-04.png",
+      "category": "web",
+      "series": "planning",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "情報発信",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web企画",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-planning-05.png",
+      "category": "web",
+      "series": "planning",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "情報発信",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web企画",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-planning-06.png",
+      "category": "web",
+      "series": "planning",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "情報発信",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web企画",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-planning-07.png",
+      "category": "web",
+      "series": "planning",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "情報発信",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web企画",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-planning-08.png",
+      "category": "web",
+      "series": "planning",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "情報発信",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web企画",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-web-planning-09.png",
+      "category": "web",
+      "series": "planning",
+      "tags": [
+        "ホームページ",
+        "Web",
+        "情報発信",
+        "PC",
+        "打ち合わせ"
+      ],
+      "scene": "Web企画",
+      "themes": [
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-consultation-01.png",
+      "category": "welfare",
+      "series": "consultation",
+      "tags": [
+        "福祉",
+        "相談",
+        "利用者",
+        "支援",
+        "対話"
+      ],
+      "scene": "福祉相談",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-consultation-02.png",
+      "category": "welfare",
+      "series": "consultation",
+      "tags": [
+        "福祉",
+        "相談",
+        "利用者",
+        "支援",
+        "対話"
+      ],
+      "scene": "福祉相談",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-consultation-03.png",
+      "category": "welfare",
+      "series": "consultation",
+      "tags": [
+        "福祉",
+        "相談",
+        "利用者",
+        "支援",
+        "対話"
+      ],
+      "scene": "福祉相談",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-consultation-04.png",
+      "category": "welfare",
+      "series": "consultation",
+      "tags": [
+        "福祉",
+        "相談",
+        "利用者",
+        "支援",
+        "対話"
+      ],
+      "scene": "福祉相談",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-consultation-05.png",
+      "category": "welfare",
+      "series": "consultation",
+      "tags": [
+        "福祉",
+        "相談",
+        "利用者",
+        "支援",
+        "対話"
+      ],
+      "scene": "福祉相談",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-consultation-06.png",
+      "category": "welfare",
+      "series": "consultation",
+      "tags": [
+        "福祉",
+        "相談",
+        "利用者",
+        "支援",
+        "対話"
+      ],
+      "scene": "福祉相談",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-consultation-07.png",
+      "category": "welfare",
+      "series": "consultation",
+      "tags": [
+        "福祉",
+        "相談",
+        "利用者",
+        "支援",
+        "対話"
+      ],
+      "scene": "福祉相談",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-consultation-08.png",
+      "category": "welfare",
+      "series": "consultation",
+      "tags": [
+        "福祉",
+        "相談",
+        "利用者",
+        "支援",
+        "対話"
+      ],
+      "scene": "福祉相談",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-consultation-09.png",
+      "category": "welfare",
+      "series": "consultation",
+      "tags": [
+        "福祉",
+        "相談",
+        "利用者",
+        "支援",
+        "対話"
+      ],
+      "scene": "福祉相談",
+      "themes": [
+        "welfare"
+      ],
+      "technology_level": "none",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-web-support-01.png",
+      "category": "welfare",
+      "series": "web-support",
+      "tags": [
+        "福祉",
+        "利用者",
+        "家族",
+        "ホームページ",
+        "情報提供"
+      ],
+      "scene": "福祉の情報相談",
+      "themes": [
+        "welfare",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-web-support-02.png",
+      "category": "welfare",
+      "series": "web-support",
+      "tags": [
+        "福祉",
+        "利用者",
+        "家族",
+        "ホームページ",
+        "情報提供"
+      ],
+      "scene": "福祉の情報相談",
+      "themes": [
+        "welfare",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-web-support-03.png",
+      "category": "welfare",
+      "series": "web-support",
+      "tags": [
+        "福祉",
+        "利用者",
+        "家族",
+        "ホームページ",
+        "情報提供"
+      ],
+      "scene": "福祉の情報相談",
+      "themes": [
+        "welfare",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-web-support-04.png",
+      "category": "welfare",
+      "series": "web-support",
+      "tags": [
+        "福祉",
+        "利用者",
+        "家族",
+        "ホームページ",
+        "情報提供"
+      ],
+      "scene": "福祉の情報相談",
+      "themes": [
+        "welfare",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-web-support-05.png",
+      "category": "welfare",
+      "series": "web-support",
+      "tags": [
+        "福祉",
+        "利用者",
+        "家族",
+        "ホームページ",
+        "情報提供"
+      ],
+      "scene": "福祉の情報相談",
+      "themes": [
+        "welfare",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-web-support-06.png",
+      "category": "welfare",
+      "series": "web-support",
+      "tags": [
+        "福祉",
+        "利用者",
+        "家族",
+        "ホームページ",
+        "情報提供"
+      ],
+      "scene": "福祉の情報相談",
+      "themes": [
+        "welfare",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-web-support-07.png",
+      "category": "welfare",
+      "series": "web-support",
+      "tags": [
+        "福祉",
+        "利用者",
+        "家族",
+        "ホームページ",
+        "情報提供"
+      ],
+      "scene": "福祉の情報相談",
+      "themes": [
+        "welfare",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-web-support-08.png",
+      "category": "welfare",
+      "series": "web-support",
+      "tags": [
+        "福祉",
+        "利用者",
+        "家族",
+        "ホームページ",
+        "情報提供"
+      ],
+      "scene": "福祉の情報相談",
+      "themes": [
+        "welfare",
+        "web"
+      ],
+      "technology_level": "moderate",
+      "has_person": true
+    },
+    {
+      "path": "assets/images/blog-library/inline/inline-welfare-web-support-09.png",
+      "category": "welfare",
+      "series": "web-support",
+      "tags": [
+        "福祉",
+        "利用者",
+        "家族",
+        "ホームページ",
+        "情報提供"
+      ],
+      "scene": "福祉の情報相談",
+      "themes": [
+        "welfare",
+        "web"
+      ],
+      "technology_level": "moderate",
       "has_person": true
     }
   ]

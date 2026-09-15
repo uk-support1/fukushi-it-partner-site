@@ -42,6 +42,29 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
+inline_image: assets/images/blog-library/inline/inline-web-planning-02.png
+inline_image_alt: ホームページ活用のイメージ
+inline_image_category: web
+inline_image_series: planning
+inline_image_hash: bcf03c08f3e81b1a269f86a4e556a17df107b5d9c7e861e202606faab7f1494e
+inline_image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 はじめまして。福祉ITパートナーの上原健太です。
@@ -77,6 +100,8 @@ image_selection:
 専門用語をできるだけ避けながら、すぐに役立てやすい内容を分かりやすくお伝えしていきます。
 
 ![ノートパソコンの画面に表示されたブログ記事のレイアウト](assets/images/blog/laptop-blog-layout.jpg)
+
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-planning-02.png)
 
 ## 福祉のことを理解したIT支援を
 

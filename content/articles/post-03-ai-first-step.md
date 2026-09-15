@@ -43,6 +43,27 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
+inline_image: assets/images/blog-library/inline/inline-welfare-consultation-04.png
+inline_image_alt: 福祉の現場を支えるイメージ
+inline_image_category: welfare
+inline_image_series: consultation
+inline_image_hash: 3ea69537d10b6dbdcd4758e0406e8256c39d4cd415f05d5e7987e158e3f3ef1c
+inline_image_selection:
+  themes:
+    - ai
+    - digital
+    - welfare
+  preferredTags:
+    - AI
+    - デジタル
+    - PC
+  preferredScenes:
+    - AI活用
+  excludedThemes:
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 「AIを業務に活用したい」と思っても、何から始めればよいか分からないという声をよく聞きます。 福祉現場では専門的な配慮が必要な場面も多いため、AIをそのまま使うのではなく、 現場に合わせた取り入れ方を考えることが大切です。
@@ -50,6 +71,8 @@ image_selection:
 ## 1. まずは「文章作成の下書き」から
 
 広報文やお知らせ文の下書きをAIに作成してもらい、現場の言葉に整えていく使い方から始めると、 無理なく取り入れることができます。
+
+![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-consultation-04.png)
 
 ## 2. 個人情報や利用者さんの情報は入力しない
 

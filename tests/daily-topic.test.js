@@ -123,10 +123,14 @@ test("Generated article is saved with compatible front matter and body",t=>{
     image_alt:"",image_role:"hero",image_category:"recruit",image_series:"interview",
     image_hash:require("../scripts/lib/image-library").imageHash(path.join(ROOT,"assets/images/blog-library/hero/hero-recruit-interview-01.png")),
     image_selection:{themes:["recruit","welfare"],preferredTags:["採用","面談","職員","チーム"],preferredScenes:["採用面談"],excludedThemes:["ai","security","subsidy"],allowTechnology:false},
+    inline_image:"assets/images/blog-library/inline/inline-recruit-interview-01.png",
+    inline_image_alt:"採用活動を支えるイメージ",inline_image_category:"recruit",inline_image_series:"interview",
+    inline_image_hash:require("../scripts/lib/image-library").imageHash(path.join(ROOT,"assets/images/blog-library/inline/inline-recruit-interview-01.png")),
+    inline_image_selection:{themes:["recruit","welfare"],preferredTags:["採用","面談","職員","チーム"],preferredScenes:["採用面談"],excludedThemes:["ai","security","subsidy"],allowTechnology:false},
     published:false,description:generatedArticle.description,slug:saved.slug,
     buhio:generatedArticle.buhio,emphasis:generatedArticle.emphasis
   });
-  assert.equal(parsed.body.trim(),generatedArticle.bodyMarkdown);
+  assert.equal(parsed.body.replace(/!\[[^\]]*\]\(assets\/images\/blog-library\/inline\/[^)\s]+\)\s*/g,"").trim(),generatedArticle.bodyMarkdown);
   assert.match(saved.slug,/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/);
   assert.equal(saved.slug,baseSlugFor(generatedArticle.title,date));
 });

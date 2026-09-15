@@ -133,8 +133,32 @@ test("semantic profiles exclude unrelated strong themes and still choose a match
 
 test("the committed image catalog covers every hero with stored semantic metadata", () => {
   const catalog = require("../data/image-library.json").images;
-  assert.equal(catalog.length, 99);
-  for (const item of catalog) assert.ok(item.path && item.category && item.scene && item.tags.length && item.themes.length);
+  const heroes = catalog.filter(item => item.path.includes("/hero/"));
+  assert.equal(heroes.length, 99);
+  for (const item of heroes) assert.ok(item.path && item.category && item.scene && item.tags.length && item.themes.length);
+});
+
+test("the committed inline library is named, cataloged, semantic-safe, and avoids recent hashes", () => {
+  const root = path.resolve(__dirname, "..");
+  const candidates = images.discoverImages({ root, kind: "inline" });
+  assert.equal(candidates.length, 45);
+  assert.deepEqual(candidates.reduce((counts, candidate) => { counts[candidate.category] = (counts[candidate.category] || 0) + 1; return counts; }, {}),
+    { recruit: 9, web: 18, welfare: 18 });
+  for (const candidate of candidates) {
+    assert.match(path.basename(candidate.path), /^inline-(welfare|recruit|web)-[a-z-]+-\d{2}\.png$/);
+    assert.ok(candidate.hash && candidate.tags.length && candidate.scene && candidate.technology_level && typeof candidate.has_person === "boolean");
+  }
+  const welfare = articleImageProfile({ title: "福祉事業所で利用者と家族に安心を伝える", body: "支援の相談と情報提供を紹介します", category: "ホームページ制作" });
+  const selected = images.selectImage({ category: "ホームページ制作", candidates, profile: welfare, recentLimit: 10 });
+  assert.equal(selected.category, "welfare");
+  const repeated = images.selectImage({ category: "ホームページ制作", candidates, profile: welfare,
+    history: [{ image: selected.path, hash: selected.hash, series: selected.series }], recentLimit: 10 });
+  assert.notEqual(repeated.hash, selected.hash);
+});
+
+test("inline image styling remains fluid for narrow screens", () => {
+  const css = fs.readFileSync(path.join(__dirname, "..", "assets", "css", "style.css"), "utf8");
+  assert.match(css, /\.article-inline-image\s*\{[\s\S]*width:\s*min\(100%,\s*880px\)[\s\S]*object-fit:\s*cover/);
 });
 
 test("new drafts insert one early-middle inline image and record separate inline history", t => {
@@ -160,4 +184,6 @@ test("published Markdown receives one inline image when the library is available
   const updated = require("../scripts/lib/articles").parseFrontmatter(fs.readFileSync(path.join(value.articles, "published-post.md"), "utf8"));
   assert.equal(updated.data.inline_image, "assets/images/blog-library/inline/hero-welfare-01.webp");
   assert.match(updated.body, /hero-welfare-01\.webp/);
+  assert.ok(updated.data.inline_image_hash);
+  assert.ok(updated.data.inline_image_selection);
 });

@@ -45,6 +45,29 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
+inline_image: assets/images/blog-library/inline/inline-web-design-09.png
+inline_image_alt: ホームページ活用のイメージ
+inline_image_category: web
+inline_image_series: design
+inline_image_hash: 6d192c344d15878c772d81b80a5934c8d1f1e48c463eca2dcf6bd3b117ce98f0
+inline_image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 福祉事業所を運営していると、日々の支援や利用者さんへの対応、関係機関との連携など、優先すべきことが多くあります。
@@ -103,6 +126,8 @@ image_selection:
 ただし、利用者さんの写真や個人情報を掲載する際は、本人の同意やプライバシーへの配慮が欠かせません。
 
 ホームページでは、「何を見せるか」だけでなく、「安心して見てもらえる情報の出し方」を考えることも大切です。
+
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-09.png)
 
 ## 4．予定やお知らせを、いつでも確認できる
 

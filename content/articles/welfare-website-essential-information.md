@@ -40,6 +40,29 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
+inline_image: assets/images/blog-library/inline/inline-web-design-04.png
+inline_image_alt: ホームページ活用のイメージ
+inline_image_category: web
+inline_image_series: design
+inline_image_hash: dc1cc50c7e5e3db7aa9c78204f9d0d8b8bfc5e6a0f788194aabd5ee351eff5ec
+inline_image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 福祉事業所のホームページを作るとき、「何を掲載すればよいのか分からない」というご相談をいただくことがあります。
@@ -85,6 +108,8 @@ image_selection:
 「費用については制度や状況によって異なるため、詳しくはお問い合わせください」
 
 など、最低限の案内があるだけでも分かりやすくなります。
+
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-04.png)
 
 ## 4．写真
 

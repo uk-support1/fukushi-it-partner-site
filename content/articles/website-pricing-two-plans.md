@@ -44,6 +44,29 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
+inline_image: assets/images/blog-library/inline/inline-web-design-07.png
+inline_image_alt: ホームページ活用のイメージ
+inline_image_category: web
+inline_image_series: design
+inline_image_hash: 6a0d5380fff53785971b0106f08be06a2c689ad9ceb49816fbfb30e7a9e5a92b
+inline_image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 「ホームページを作りたいけれど、費用がどれくらいかかるのか分からない」というご相談を、福祉事業所や団体の担当者の方からよくいただきます。
@@ -83,6 +106,8 @@ image_selection:
 利用者さんやご家族、支援機関の方に向けて、事業所らしさをしっかり伝えたい場合や、採用・見学導線も整えたい場合に選ばれています。
 
 ![事業所のスタッフが集まり、ホームページのプランについて話し合っている様子](assets/images/blog/team-meeting-laptop.jpg)
+
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-07.png)
 
 ## どちらのプランを選べばよいか
 

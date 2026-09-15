@@ -82,10 +82,15 @@ function publishMarkdown(articlePath, daily) {
   try { parsed = lib.parseFrontmatter(raw); }
   catch { fail("PUBLICATION_MARKDOWN_INVALID"); }
   const expectedBody = `${String(daily.article.bodyMarkdown || "").trim()}${sourceSection(daily.sources)}`.trim();
+  // Inline illustrations are selected locally while the draft is saved. They
+  // are presentation metadata, so validate the authored body after removing
+  // that one generated line instead of rejecting an otherwise intact draft.
+  const inlineImages = parsed.body.match(/!\[[^\]]*\]\(assets\/images\/blog-library\/inline\/[^)\s]+\)/g) || [];
+  const authoredBody = parsed.body.replace(/!\[[^\]]*\]\(assets\/images\/blog-library\/inline\/[^)\s]+\)\s*/g, "").trim();
   if (parsed.data.published === true) fail("PUBLICATION_ALREADY_PUBLISHED");
   if (parsed.data.published !== false || parsed.data.slug !== daily.draft.slug ||
       parsed.data.title !== daily.article.title || parsed.data.description !== daily.article.description ||
-      parsed.data.category_label !== daily.topic.category || parsed.body.trim() !== expectedBody) {
+      parsed.data.category_label !== daily.topic.category || inlineImages.length > 1 || authoredBody !== expectedBody) {
     fail("PUBLICATION_MARKDOWN_INVALID");
   }
   const matches = raw.match(/^published:\s*false\s*$/gm) || [];

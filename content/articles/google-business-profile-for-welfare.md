@@ -43,6 +43,29 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
+inline_image: assets/images/blog-library/inline/inline-web-design-06.png
+inline_image_alt: ホームページ活用のイメージ
+inline_image_category: web
+inline_image_series: design
+inline_image_hash: cd84021bd3fcfd5a1549b36bd87bd5dfef710ec873436b7994309d90ab857c27
+inline_image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 福祉事業所を探すとき、「地域名＋グループホーム」「地域名＋就労継続支援B型」「地域名＋就労移行支援」といったキーワードでGoogle検索をする方がいます。
@@ -88,6 +111,8 @@ Googleマップとホームページは、どちらか一方があればよい�
 住所・電話番号・営業時間・ホームページのURLなどをまとめて確認できることも、Googleビジネスプロフィールの利点です。
 
 ただし、情報が古いまま放置されていると、かえって混乱を招いてしまいます。移転や電話番号の変更などがあった際は、忘れずに更新しておくことが大切です。
+
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-design-06.png)
 
 ## まず登録しておきたい情報
 

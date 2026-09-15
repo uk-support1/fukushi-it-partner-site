@@ -43,6 +43,29 @@ image_selection:
     - subsidy
     - recruit
   allowTechnology: true
+inline_image: assets/images/blog-library/inline/inline-web-planning-01.png
+inline_image_alt: ホームページ活用のイメージ
+inline_image_category: web
+inline_image_series: planning
+inline_image_hash: ae537f3930d3e533ee020052969d4c1d6676f300b47d3d484e5f480fab230933
+inline_image_selection:
+  themes:
+    - digital
+    - web
+    - welfare
+  preferredTags:
+    - PC
+    - Web
+    - デジタル
+    - 業務
+  preferredScenes:
+    - PC作業
+  excludedThemes:
+    - ai
+    - security
+    - subsidy
+    - recruit
+  allowTechnology: true
 ---
 
 就労継続支援B型の事業所を探している方やご家族、相談支援専門員の方は、まずホームページで「どのような事業所なのか」を確認することが多くあります。
@@ -102,6 +125,8 @@ B型事業所のホームページでは、作業内容をできるだけ具体�
 - 利用開始
 
 実際の流れは自治体や本人の状況によって異なるため、「状況に応じて一緒に確認します」と添えると、より丁寧な印象になります。
+
+![ホームページ活用のイメージ](assets/images/blog-library/inline/inline-web-planning-01.png)
 
 ## 4．工賃や通所のイメージ
 
