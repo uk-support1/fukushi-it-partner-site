@@ -585,7 +585,8 @@
         "recruit"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "65% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-recruit-003.png",
@@ -1513,7 +1514,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "75% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-015.png",
@@ -1549,7 +1551,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "65% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-welfare-017.png",
@@ -1567,7 +1570,8 @@
         "welfare"
       ],
       "technology_level": "none",
-      "has_person": true
+      "has_person": true,
+      "object_position": "20% 50%"
     },
     {
       "path": "assets/images/blog-library/inline/inline-ai-001.png",

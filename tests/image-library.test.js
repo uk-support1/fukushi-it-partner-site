@@ -214,7 +214,7 @@ test("the committed image catalog covers every hero with stored semantic metadat
   for (const item of heroes) assert.ok(item.path && item.category && item.scene && item.tags.length && item.themes.length);
   const publishedImages = new Set(require("../data/blog-index.json").map(item => item.image));
   const focused = heroes.filter(item => publishedImages.has(item.path));
-  assert.equal(focused.length, 19);
+  assert.equal(focused.length, 20);
   for (const item of focused) assert.match(item.object_position, /^(?:100|\d{1,2})% (?:100|\d{1,2})%$/);
   assert.equal(images.normalizeObjectPosition("125% 50%"), "50% 50%");
   assert.equal(images.normalizeObjectPosition("35% 40%"), "35% 40%");
@@ -268,10 +268,23 @@ test("published heroes are hash-unique and the latest ten inline images are hash
     .filter(article => article.data.published === true).map(article => article.slug));
   const heroes = images.usageHistory({ root, articlesDir, kind: "hero" }).filter(item => published.has(item.article));
   const inline = images.usageHistory({ root, articlesDir, kind: "inline" }).filter(item => published.has(item.article));
-  assert.equal(heroes.length, 19);
+  assert.equal(heroes.length, 20);
   assert.equal(new Set(heroes.map(item => item.hash)).size, heroes.length);
-  assert.equal(inline.length, 19);
+  assert.equal(inline.length, 20);
   assert.equal(new Set(inline.slice(0, 10).map(item => item.hash)).size, 10);
+});
+
+test("published heroes never place the same series or scene on two adjacent blog-list cards", () => {
+  const catalog = new Map(require("../data/image-library.json").images.map(item => [item.path, item]));
+  const list = require("../data/blog-index.json");
+  for (let i = 1; i < list.length; i++) {
+    const previous = catalog.get(list[i - 1].image);
+    const current = catalog.get(list[i].image);
+    assert.notEqual(current.series, previous.series,
+      `${list[i].slug} repeats the "${current.series}" composition right after ${list[i - 1].slug}`);
+    assert.notEqual(current.scene, previous.scene,
+      `${list[i].slug} repeats the "${current.scene}" scene right after ${list[i - 1].slug}`);
+  }
 });
 
 test("general inline images are used only when no semantically matched safe image exists", () => {

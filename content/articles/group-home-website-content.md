@@ -3,7 +3,7 @@ type: column
 category_label: ホームページ制作
 title: 障害者グループホームのホームページに何を載せる？入居希望者と家族に伝えたい内容
 date: 2026-05-11
-image: assets/images/blog-library/hero/hero-welfare-010.png
+image: assets/images/blog-library/hero/hero-welfare-001.png
 image_alt: 福祉の現場を支えるイメージ
 published: true
 description: 障害者グループホームのホームページに掲載したい内容を解説。入居希望者やご家族が確認したい情報、居室・生活支援・夜間体制の伝え方、入居者募集や職員採用への活用方法、写真掲載時の配慮点をご紹介します。
@@ -25,8 +25,8 @@ emphasis:
     style: marker
 image_role: hero
 image_category: welfare
-image_series: welfare-consultation
-image_hash: 0a5ca03bd1e4d2cd882bc6c9bdc56afea6b5c43fad5d65577bfff2169d640707
+image_series: welfare-team
+image_hash: 60c554048b171f2cd5de2bb4f7c8b713af70a64dd617d727526cbed926a30840
 image_selection:
   themes:
     - digital
