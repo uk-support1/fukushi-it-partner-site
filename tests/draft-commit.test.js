@@ -11,10 +11,12 @@ const YAML = require("yaml");
 const {
   DraftCommitError,
   defaultRunGit,
+  validateDraft,
   commitDraft,
   failureReport,
   writeCommitResult
 } = require("../scripts/commit-draft");
+const { insertInlineImage } = require("../scripts/article-writer");
 
 const ROOT = path.resolve(__dirname, "..");
 
@@ -46,7 +48,7 @@ function initRepository(t) {
   return { root, remote, work };
 }
 
-function createDraft(fixture, overrides = {}) {
+function createDraft(fixture, { inlineImage = null, ...overrides } = {}) {
   const date = "2026-09-12";
   const slug = "article-2026-09-12-abcdef123456";
   const filename = slug + ".md";
@@ -55,7 +57,7 @@ function createDraft(fixture, overrides = {}) {
   const article = {
     title: "福祉事業所の採用ページを改善する方法",
     description: "福祉事業所の採用ページを改善するための実務的なポイントを紹介します。",
-    bodyMarkdown: "## 採用情報を整理する\n\n応募者が必要とする内容を確認します。"
+    bodyMarkdown: "## 採用情報を整理する\n\n応募者が必要とする内容を確認します。\n\n## 確認を続ける\n\n担当者ごとの確認項目をそろえます。"
   };
   const metadata = {
     type: "column",
@@ -64,12 +66,14 @@ function createDraft(fixture, overrides = {}) {
     date,
     image: "assets/images/services/service-homepage.jpg",
     image_alt: "福祉事業所のホームページ活用を支援するイメージ",
+    ...(inlineImage ? { inline_image: inlineImage, inline_image_alt: "採用活動を補足するイメージ",
+      inline_image_category: "recruit", inline_image_series: "recruit" } : {}),
     published: false,
     description: article.description,
     slug
   };
-  fs.writeFileSync(filePath, "---\n" + YAML.stringify(metadata).trimEnd() + "\n---\n\n" +
-    article.bodyMarkdown + "\n");
+  const savedBody = insertInlineImage(article.bodyMarkdown, inlineImage ? { image: inlineImage } : null);
+  fs.writeFileSync(filePath, "---\n" + YAML.stringify(metadata).trimEnd() + "\n---\n\n" + savedBody + "\n");
   const result = {
     status: "draft_saved",
     articlesCreated: 1,
@@ -83,6 +87,10 @@ function createDraft(fixture, overrides = {}) {
   const resultFile = path.join(fixture.root, "result-" + crypto.randomUUID() + ".json");
   fs.writeFileSync(resultFile, JSON.stringify(result));
   return { result, resultFile, filePath, relativePath: "content/articles/" + filename };
+}
+
+function validateSavedDraft(draft, fixture) {
+  return validateDraft(draft.result, fixture.work, defaultRunGit);
 }
 
 test("Only the generated Markdown is committed and pushed; unrelated files remain untracked", t => {
@@ -106,6 +114,44 @@ test("Only the generated Markdown is committed and pushed; unrelated files remai
     /published: false/);
   assert.equal(fs.readFileSync(path.join(fixture.work, "content", "articles", "existing.md"), "utf8"), existingBefore);
   assert.match(git(["status", "--short"], fixture.work), /\?\? unrelated\.tmp/);
+});
+
+test("Draft validation reproduces the final body from saved inline-image metadata", t => {
+  const fixture = initRepository(t);
+  const draft = createDraft(fixture, { inlineImage: "assets/images/blog-library/inline/saved-inline.png" });
+  assert.doesNotThrow(() => validateSavedDraft(draft, fixture));
+});
+
+test("Draft validation keeps working when no inline image was saved", t => {
+  const fixture = initRepository(t);
+  const draft = createDraft(fixture);
+  assert.doesNotThrow(() => validateSavedDraft(draft, fixture));
+});
+
+test("Changing the saved inline-image Markdown fails exact draft validation", t => {
+  const fixture = initRepository(t);
+  const draft = createDraft(fixture, { inlineImage: "assets/images/blog-library/inline/saved-inline.png" });
+  const original = fs.readFileSync(draft.filePath, "utf8");
+  const imageOffset = original.lastIndexOf("saved-inline.png");
+  const changed = original.slice(0, imageOffset) + "different-inline.png" + original.slice(imageOffset + "saved-inline.png".length);
+  fs.writeFileSync(draft.filePath, changed);
+  assert.throws(() => validateSavedDraft(draft, fixture), { code: "DRAFT_MARKDOWN_INVALID" });
+});
+
+test("Changing draft body or front matter still fails exact draft validation", async t => {
+  await t.test("body", () => {
+    const fixture = initRepository(t);
+    const draft = createDraft(fixture, { inlineImage: "assets/images/blog-library/inline/saved-inline.png" });
+    fs.appendFileSync(draft.filePath, "本文への改変\n");
+    assert.throws(() => validateSavedDraft(draft, fixture), { code: "DRAFT_MARKDOWN_INVALID" });
+  });
+  await t.test("front matter", () => {
+    const fixture = initRepository(t);
+    const draft = createDraft(fixture);
+    const changed = fs.readFileSync(draft.filePath, "utf8").replace("published: false", "published: true");
+    fs.writeFileSync(draft.filePath, changed);
+    assert.throws(() => validateSavedDraft(draft, fixture), { code: "DRAFT_MARKDOWN_INVALID" });
+  });
 });
 
 test("Invalid destination and non-Markdown paths fail before staging", async t => {
@@ -198,4 +244,6 @@ test("Git implementation uses an explicit path and contains no broad add or forc
   assert.doesNotMatch(source, /\["add",\s*"\."\]/);
   assert.doesNotMatch(source, /\["add",\s*"-A"\]/);
   assert.doesNotMatch(source, /--force|push",\s*"-f"/);
+  assert.match(source, /insertInlineImage\(String\(result\.article\.bodyMarkdown/);
+  assert.doesNotMatch(source, /inlineImage\(|articleImage\(|selectImage\(/);
 });

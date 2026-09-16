@@ -4,7 +4,7 @@ const cp = require("child_process");
 const fs = require("fs");
 const path = require("path");
 const lib = require("./lib/articles");
-const { sourceSection } = require("./article-writer");
+const { sourceSection, insertInlineImage } = require("./article-writer");
 
 class DraftCommitError extends Error {
   constructor(code) {
@@ -78,7 +78,9 @@ function validateDraft(result, repoRoot, runGit) {
   let parsed;
   try { parsed = lib.parseFrontmatter(fs.readFileSync(filePath, "utf8")); }
   catch { fail("DRAFT_MARKDOWN_INVALID"); }
-  const expectedBody = `${String(result.article.bodyMarkdown || "").trim()}${sourceSection(result.sources)}`.trim();
+  const savedInlineImage = typeof result.draft.metadata?.inline_image === "string"
+    ? { image: result.draft.metadata.inline_image } : null;
+  const expectedBody = `${insertInlineImage(String(result.article.bodyMarkdown || ""), savedInlineImage)}${sourceSection(result.sources)}`.trim();
   if (parsed.data.published !== false || parsed.data.slug !== result.draft.slug ||
       parsed.data.title !== result.article.title || parsed.data.description !== result.article.description ||
       parsed.data.category_label !== result.topic.category || parsed.body.trim() !== expectedBody) {
