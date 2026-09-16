@@ -583,6 +583,7 @@ section {
   .welfare-photo-hero-img,
   .welfare-photo-hero-line,
   .welfare-photo-hero-light,
+  .cards-grid .card,
   .card h3,
   .card:hover .card-photo img {
     animation: none !important;
@@ -787,32 +788,33 @@ section {
   z-index: 2;
   top: 64%;
   left: 70%;
-  width: 96px;
-  height: 2px;
-  margin-left: -48px;
+  width: 120px;
+  height: 3px;
+  margin-left: -60px;
   border-radius: 999px;
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.95) 42%,
-    rgba(222, 238, 228, 0.95) 58%,
+    rgba(255, 255, 255, 1) 42%,
+    rgba(222, 238, 228, 1) 58%,
     rgba(255, 255, 255, 0) 100%
   );
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.65);
   opacity: 0;
   pointer-events: none;
-  transform: translateX(-24px);
+  transform: translateX(-40px);
 }
 
 .welfare-photo-hero.is-visible .welfare-photo-hero-light {
-  animation: welfare-light-sweep 1.3s ease-out 6.3s 1 forwards;
+  animation: welfare-light-loop 3.4s cubic-bezier(0.4, 0, 0.2, 1) 6s infinite;
 }
 
-@keyframes welfare-light-sweep {
-  0% { opacity: 0; transform: translateX(-24px); }
-  18% { opacity: 1; }
-  72% { opacity: 0.85; }
-  100% { opacity: 0; transform: translateX(24px); }
+@keyframes welfare-light-loop {
+  0% { opacity: 0; transform: translateX(-40px); }
+  10% { opacity: 1; transform: translateX(-14px); }
+  30% { opacity: 0.95; transform: translateX(14px); }
+  44% { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 0; transform: translateX(40px); }
 }
 
 @media (max-width: 768px) {
@@ -877,15 +879,24 @@ section {
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-soft);
-  transition: transform var(--transition), box-shadow var(--transition);
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
+.cards-grid .card {
+  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+              box-shadow 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.cards-grid .card:nth-child(1) { transition-delay: 0s, 0s; }
+.cards-grid .card:nth-child(2) { transition-delay: 0.1s, 0.1s; }
+.cards-grid .card:nth-child(3) { transition-delay: 0.2s, 0.2s; }
+.cards-grid .card:nth-child(4) { transition-delay: 0.3s, 0.3s; }
+
 .cards-grid .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 32px rgba(31, 77, 60, 0.12);
+  transform: translateY(-8px);
+  box-shadow: 0 26px 46px rgba(31, 77, 60, 0.2);
 }
 
 .card-photo {
@@ -899,11 +910,11 @@ section {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease-out;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .card:hover .card-photo img {
-  transform: scale(1.025);
+  transform: scale(1.07) translateY(-3px);
 }
 
 .card-body {
