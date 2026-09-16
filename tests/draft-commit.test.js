@@ -16,9 +16,49 @@ const {
   failureReport,
   writeCommitResult
 } = require("../scripts/commit-draft");
-const { insertInlineImage } = require("../scripts/article-writer");
+const { insertInlineImage, saveArticleDraft } = require("../scripts/article-writer");
 
 const ROOT = path.resolve(__dirname, "..");
+
+function image(root, name, kind = "inline") {
+  const file = path.join(root, "assets", "images", "blog-library", kind, name);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, "image-" + name);
+}
+
+// Builds a draft through the real generation pipeline (saveArticleDraft), not a
+// hand-authored fixture, so these tests fail the same way production would if
+// writer and validator ever drift apart again.
+function createRealDraft(t, fixture, { imageCategory = "welfare", withInlineImage = true } = {}) {
+  const imageRoot = fs.mkdtempSync(path.join(os.tmpdir(), "daily-draft-images-"));
+  t.after(() => fs.rmSync(imageRoot, { recursive: true, force: true }));
+  if (withInlineImage) image(imageRoot, "hero-" + imageCategory + "-01.webp", "inline");
+  const date = "2026-09-12";
+  const title = "福祉事業所の採用ページを改善する方法";
+  const topic = { title, category: "採用" };
+  const article = {
+    title,
+    description: "福祉事業所の採用ページを改善するための実務的なポイントを紹介します。",
+    bodyMarkdown: [
+      "福祉事業所の採用ページでは、応募する方が迷わず次の行動へ進める情報整理が大切です。",
+      "## 応募する方が知りたい情報を整理する",
+      "仕事内容や勤務場所、応募後の流れを分かりやすくまとめます。".repeat(25),
+      "## 入力項目を必要なものに絞る",
+      "最初の連絡で確認する内容と、面談後に確認できる内容を分けます。".repeat(25),
+      "## スマートフォンで操作を確認する",
+      "文字の読みやすさやボタンの位置、エラー表示を確認します。".repeat(25)
+    ].join("\n\n")
+  };
+  const directory = path.join(fixture.work, "content", "articles");
+  const saved = saveArticleDraft({ article, topic, date, directory, imageRoot });
+  const result = {
+    status: "draft_saved", articlesCreated: 1, shouldPublish: false,
+    localDate: date, topic, article, draft: saved
+  };
+  const resultFile = path.join(fixture.root, "result-" + crypto.randomUUID() + ".json");
+  fs.writeFileSync(resultFile, JSON.stringify(result));
+  return { result, resultFile, filePath: saved.filePath, relativePath: "content/articles/" + saved.filename };
+}
 
 function git(args, cwd, allowFailure = false) {
   const result = cp.spawnSync("git", args, { cwd, encoding: "utf8", windowsHide: true });
@@ -39,7 +79,10 @@ function initRepository(t) {
   git(["config", "user.email", "test@example.invalid"], work);
   fs.mkdirSync(path.join(work, "content", "articles"), { recursive: true });
   fs.writeFileSync(path.join(work, "README.md"), "fixture\n");
-  fs.writeFileSync(path.join(work, "content", "articles", "existing.md"), "existing article\n");
+  // Valid minimal frontmatter: saveArticleDraft scans every .md file in this
+  // directory for slug collisions, so a malformed sibling file must not exist.
+  fs.writeFileSync(path.join(work, "content", "articles", "existing.md"),
+    "---\ntype: column\ntitle: existing\ndate: '2026-01-01'\nslug: existing\npublished: false\n---\n\nexisting article\n");
   git(["add", "--", "README.md", "content/articles/existing.md"], work);
   git(["commit", "-m", "fixture"], work);
   git(["remote", "add", "origin", remote], work);
@@ -48,7 +91,7 @@ function initRepository(t) {
   return { root, remote, work };
 }
 
-function createDraft(fixture, { inlineImage = null, ...overrides } = {}) {
+function createDraft(fixture, { inlineImage = null, inlineImageCategory = "recruit", ...overrides } = {}) {
   const date = "2026-09-12";
   const slug = "article-2026-09-12-abcdef123456";
   const filename = slug + ".md";
@@ -67,12 +110,17 @@ function createDraft(fixture, { inlineImage = null, ...overrides } = {}) {
     image: "assets/images/services/service-homepage.jpg",
     image_alt: "福祉事業所のホームページ活用を支援するイメージ",
     ...(inlineImage ? { inline_image: inlineImage, inline_image_alt: "採用活動を補足するイメージ",
-      inline_image_category: "recruit", inline_image_series: "recruit" } : {}),
+      inline_image_category: inlineImageCategory, inline_image_series: inlineImageCategory } : {}),
     published: false,
     description: article.description,
     slug
   };
-  const savedBody = insertInlineImage(article.bodyMarkdown, inlineImage ? { image: inlineImage } : null);
+  // Mirrors buildArticleMarkdown: the real writer passes the full selected-image
+  // object (path + category) to insertInlineImage, since the category drives the
+  // alt text. Omitting category here would silently desync this fixture from
+  // what saveArticleDraft actually writes to disk.
+  const savedBody = insertInlineImage(article.bodyMarkdown,
+    inlineImage ? { image: inlineImage, category: inlineImageCategory } : null);
   fs.writeFileSync(filePath, "---\n" + YAML.stringify(metadata).trimEnd() + "\n---\n\n" + savedBody + "\n");
   const result = {
     status: "draft_saved",
@@ -126,6 +174,35 @@ test("Draft validation keeps working when no inline image was saved", t => {
   const fixture = initRepository(t);
   const draft = createDraft(fixture);
   assert.doesNotThrow(() => validateSavedDraft(draft, fixture));
+});
+
+test("A real draft with a non-general inline-image category commits successfully", t => {
+  const fixture = initRepository(t);
+  const draft = createRealDraft(t, fixture, { imageCategory: "welfare" });
+  assert.equal(draft.result.draft.metadata.inline_image_category, "welfare");
+  assert.notEqual(draft.result.draft.metadata.inline_image_category, "general");
+  assert.doesNotThrow(() => validateSavedDraft(draft, fixture));
+  const outcome = commitDraft({ resultFile: draft.resultFile, cwd: fixture.work });
+  assert.equal(outcome.status, "draft_committed");
+});
+
+test("Draft validation fails when the saved inline-image category metadata is missing (regression guard)", t => {
+  const fixture = initRepository(t);
+  const draft = createRealDraft(t, fixture, { imageCategory: "welfare" });
+  // Simulate the pre-fix bug: writer recorded a real category, but the value
+  // commit-draft.js reconstructs from is missing. This must not silently fall
+  // back to a generic alt text that no longer matches the file on disk.
+  delete draft.result.draft.metadata.inline_image_category;
+  fs.writeFileSync(draft.resultFile, JSON.stringify(draft.result));
+  assert.throws(() => validateSavedDraft(draft, fixture), { code: "DRAFT_MARKDOWN_INVALID" });
+});
+
+test("Draft validation fails when the saved inline-image category does not match the written file (regression guard)", t => {
+  const fixture = initRepository(t);
+  const draft = createRealDraft(t, fixture, { imageCategory: "welfare" });
+  draft.result.draft.metadata.inline_image_category = "ai";
+  fs.writeFileSync(draft.resultFile, JSON.stringify(draft.result));
+  assert.throws(() => validateSavedDraft(draft, fixture), { code: "DRAFT_MARKDOWN_INVALID" });
 });
 
 test("Changing the saved inline-image Markdown fails exact draft validation", t => {

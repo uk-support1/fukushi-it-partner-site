@@ -79,7 +79,7 @@ function validateDraft(result, repoRoot, runGit) {
   try { parsed = lib.parseFrontmatter(fs.readFileSync(filePath, "utf8")); }
   catch { fail("DRAFT_MARKDOWN_INVALID"); }
   const savedInlineImage = typeof result.draft.metadata?.inline_image === "string"
-    ? { image: result.draft.metadata.inline_image } : null;
+    ? { image: result.draft.metadata.inline_image, category: result.draft.metadata.inline_image_category } : null;
   const expectedBody = `${insertInlineImage(String(result.article.bodyMarkdown || ""), savedInlineImage)}${sourceSection(result.sources)}`.trim();
   if (parsed.data.published !== false || parsed.data.slug !== result.draft.slug ||
       parsed.data.title !== result.article.title || parsed.data.description !== result.article.description ||

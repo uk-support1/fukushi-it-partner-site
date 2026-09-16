@@ -51,7 +51,7 @@ function hashFiles(directory, relativeFiles) {
   ]));
 }
 
-function fixture(t) {
+function fixture(t, { imageRoot } = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "daily-publish-git-"));
   const remote = path.join(root, "remote.git");
   const work = path.join(root, "work");
@@ -72,7 +72,8 @@ function fixture(t) {
     article,
     topic,
     date: "2026-09-12",
-    directory: path.join(work, "content", "articles")
+    directory: path.join(work, "content", "articles"),
+    ...(imageRoot ? { imageRoot } : {})
   });
   const relative = "content/articles/" + saved.filename;
   git(["add", "--", relative], work);
@@ -204,6 +205,36 @@ test("A rejected publication push leaves the remote draft unpublished", t => {
   });
   const remoteMarkdown = git(["--git-dir", value.remote, "show", "main:" + value.relative], value.root);
   assert.match(remoteMarkdown, /published: false/);
+});
+
+function image(root, name, kind = "inline") {
+  const file = path.join(root, "assets", "images", "blog-library", kind, name);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, "image-" + name);
+}
+
+test("Publishing preserves the saved inline image and only flips the published flag", t => {
+  const imageRoot = fs.mkdtempSync(path.join(os.tmpdir(), "daily-publish-images-"));
+  t.after(() => fs.rmSync(imageRoot, { recursive: true, force: true }));
+  image(imageRoot, "hero-recruit-01.webp", "inline");
+  const value = fixture(t, { imageRoot });
+
+  const beforeRaw = fs.readFileSync(value.saved.filePath, "utf8");
+  const before = require("../scripts/lib/articles").parseFrontmatter(beforeRaw);
+  assert.equal(before.data.inline_image, "assets/images/blog-library/inline/hero-recruit-01.webp");
+  assert.equal(before.data.published, false);
+  assert.match(before.body, /hero-recruit-01\.webp/);
+
+  publishDraft(publishOptions(value));
+
+  const afterRaw = fs.readFileSync(value.saved.filePath, "utf8");
+  const after = require("../scripts/lib/articles").parseFrontmatter(afterRaw);
+  assert.equal(after.data.published, true);
+  assert.equal(after.data.inline_image, before.data.inline_image);
+  // The body (including the inline image reference and its alt text) must be
+  // byte-identical: publishing only flips the published flag in front matter.
+  assert.equal(after.body, before.body);
+  assert.equal(afterRaw.replace("published: true", "published: false"), beforeRaw);
 });
 
 test("Publication Git commands use explicit files and no broad add, force, merge or rebase", () => {
