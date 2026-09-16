@@ -2,7 +2,7 @@
 const test=require("node:test"),assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path");
 const {markdownBodyToHtml,assertNoMarkdownLeak}=require("../scripts/lib/markdown");
 const {recentStyles,styleDiagnostics,styleProblems,similar,validateEmphasis,editorialReviewSchema}=require("../scripts/lib/editorial");
-const {generateArticle}=require("../scripts/article-generator");
+const {generateArticle,validateArticle}=require("../scripts/article-generator");
 const lib=require("../scripts/lib/articles");
 test("Markdown parses adjacent h1–h6, escaped headings, nested emphasis, lists, code and tables",()=>{
   const html=markdownBodyToHtml('# 大見出し\n本文\n## 区切り\n文章\n### セキュリティ意識の共有\n案内\n#### 小項目\n短文\n##### 詳細\n説明\n###### 補足\n説明\n\\### 旧見出し\n本文\n\n**重要な *言葉* **\n\n**太字**と*斜体*と`入力例`と``コード``\n\n* 項目\n  * 内側\n\n1. 最初\n2. 次\n\n> 引用\n\n|項目|値|\n|---|---|\n|確認|済|\n\n---\n\n==覚える一文==','blog');
@@ -54,16 +54,69 @@ test("Literal duplicate triggers revision, semantic duplicate triggers a second 
   }});
   assert.equal(generated,3);assert.equal(reviews,2);assert.ok(result.buhio.comment.includes('朝'));
 });
-test("Emphasis retries log a stable rule and exhaust with the emphasis error",async()=>{
-  let calls=0;const diagnostics=captureDiagnostics();
-  const invalid={...article,bodyMarkdown:body+'\n\nAPI_KEY_SHOULD_NEVER_APPEAR',emphasis:[{text:'本文にない強調',style:'strong'},{text:'必要な記録がそろったかを点検する時間',style:'marker'}]};
-  await assert.rejects(generateArticle({apiKey:'secret-api-key',topic,sources:[{summary:'SOURCE_BODY_SHOULD_NEVER_APPEAR'}],diagnosticLog:diagnostics.diagnosticLog,request:async()=>{calls++;return JSON.stringify(invalid);}}),{code:'ARTICLE_EMPHASIS_RETRY_EXHAUSTED'});
-  assert.equal(calls,3);assert.deepEqual(diagnostics.lines,[
-    {event:'daily_blog_article_retry',attempt:1,stage:'emphasis',rules:['emphasis_text_not_found'],retry:true},
-    {event:'daily_blog_article_retry',attempt:2,stage:'emphasis',rules:['emphasis_text_not_found'],retry:true},
-    {event:'daily_blog_article_retry',attempt:3,stage:'emphasis',rules:['emphasis_text_not_found'],retry:false}
+test("Invalid emphasis is repaired without regenerating the article body",async()=>{
+  let articleCalls=0,repairCalls=0;const diagnostics=captureDiagnostics();
+  const invalid={...article,emphasis:[{text:'本文にない強調',style:'strong'},{text:'必要な記録がそろったかを点検する時間',style:'marker'}]};
+  const result=await generateArticle({apiKey:'secret-api-key',topic,sources:[{summary:'SOURCE_BODY_SHOULD_NEVER_APPEAR'}],diagnosticLog:diagnostics.diagnosticLog,request:async args=>{
+    if(args.schema===editorialReviewSchema) throw Error('review is not expected');
+    if(args.schema?.required?.[0]==='emphasis') {
+      repairCalls++;
+      assert.deepEqual(args.input.previousFailureRules,['emphasis_text_not_found']);
+      return JSON.stringify({emphasis:article.emphasis});
+    }
+    articleCalls++;return JSON.stringify(invalid);
+  }});
+  assert.equal(articleCalls,1);assert.equal(repairCalls,1);assert.equal(result.bodyMarkdown,article.bodyMarkdown);
+  assert.deepEqual(diagnostics.lines,[{event:'daily_blog_emphasis_repair',attempt:1,success:true}]);
+  const output=JSON.stringify(diagnostics.lines);assert.ok(!output.includes('secret-api-key'));assert.ok(!output.includes('SOURCE_BODY_SHOULD_NEVER_APPEAR'));assert.ok(!output.includes('本文にない強調'));
+});
+test("A second emphasis repair succeeds after strong_too_long without regenerating the article",async()=>{
+  let articleCalls=0,repairCalls=0;const diagnostics=captureDiagnostics();
+  const longStrong='この文章は強調対象として使うには長すぎる重要な説明文であり、短くする必要があります。';
+  const bodyWithLong=body+'\n\n'+longStrong+'補足を添えます。';
+  const invalid={...article,bodyMarkdown:bodyWithLong,emphasis:[{text:longStrong,style:'strong'},{text:'必要な記録がそろったかを点検する時間',style:'marker'}]};
+  const result=await generateArticle({apiKey:'dummy',topic,diagnosticLog:diagnostics.diagnosticLog,request:async args=>{
+    if(args.schema?.required?.[0]==='emphasis') {
+      repairCalls++;
+      if(repairCalls===1) return JSON.stringify({emphasis:invalid.emphasis});
+      assert.deepEqual(args.input.previousFailureRules,['strong_too_long']);
+      return JSON.stringify({emphasis:article.emphasis});
+    }
+    articleCalls++;return JSON.stringify(invalid);
+  }});
+  assert.equal(articleCalls,1);assert.equal(repairCalls,2);assert.equal(result.bodyMarkdown,bodyWithLong);
+  assert.deepEqual(diagnostics.lines,[
+    {event:'daily_blog_emphasis_repair',attempt:1,rules:['strong_too_long'],success:false},
+    {event:'daily_blog_emphasis_repair',attempt:2,success:true}
   ]);
-  const output=JSON.stringify(diagnostics.lines);assert.ok(!output.includes('secret-api-key'));assert.ok(!output.includes('API_KEY_SHOULD_NEVER_APPEAR'));assert.ok(!output.includes('SOURCE_BODY_SHOULD_NEVER_APPEAR'));assert.ok(!output.includes('本文にない強調'));assert.ok(!output.includes('emphasisは本文と完全一致'));
+});
+test("Three failed emphasis repairs use a validated safe fallback",async()=>{
+  let articleCalls=0,repairCalls=0;const diagnostics=captureDiagnostics();
+  const invalid={...article,emphasis:[{text:'本文にない強調',style:'strong'},{text:'必要な記録がそろったかを点検する時間',style:'marker'}]};
+  const result=await generateArticle({apiKey:'dummy',topic,diagnosticLog:diagnostics.diagnosticLog,request:async args=>{
+    if(args.schema?.required?.[0]==='emphasis') {repairCalls++;return JSON.stringify({emphasis:invalid.emphasis});}
+    articleCalls++;return JSON.stringify(invalid);
+  }});
+  assert.equal(articleCalls,1);assert.equal(repairCalls,3);assert.equal(result.bodyMarkdown,article.bodyMarkdown);
+  assert.doesNotThrow(()=>validateEmphasis(result.emphasis,result.bodyMarkdown));
+  assert.doesNotThrow(()=>validateArticle(JSON.stringify(result),topic));
+  assert.deepEqual(diagnostics.lines,[
+    {event:'daily_blog_emphasis_repair',attempt:1,rules:['emphasis_text_not_found'],success:false},
+    {event:'daily_blog_emphasis_repair',attempt:2,rules:['emphasis_text_not_found'],success:false},
+    {event:'daily_blog_emphasis_repair',attempt:3,rules:['emphasis_text_not_found'],success:false},
+    {event:'daily_blog_emphasis_fallback',used:true,success:true}
+  ]);
+});
+test("Exhaustion occurs only when repair and the safe emphasis fallback both fail",async()=>{
+  let articleCalls=0,repairCalls=0;const diagnostics=captureDiagnostics();
+  const noFallbackBody=['## 一','*'.repeat(500),'## 二','*'.repeat(500),'## 三','*'.repeat(500)].join('\n\n');
+  const invalid={...article,bodyMarkdown:noFallbackBody,emphasis:[{text:'本文にない強調',style:'strong'},{text:'別の本文にない強調',style:'marker'}]};
+  await assert.rejects(generateArticle({apiKey:'dummy',topic,diagnosticLog:diagnostics.diagnosticLog,request:async args=>{
+    if(args.schema?.required?.[0]==='emphasis') {repairCalls++;return JSON.stringify({emphasis:invalid.emphasis});}
+    articleCalls++;return JSON.stringify(invalid);
+  }}),{code:'ARTICLE_EMPHASIS_RETRY_EXHAUSTED'});
+  assert.equal(articleCalls,1);assert.equal(repairCalls,3);
+  assert.deepEqual(diagnostics.lines.at(-1),{event:'daily_blog_emphasis_fallback',used:true,success:false});
 });
 test("Local style retries log rule IDs and exhaust with the local-style error",async()=>{
   let calls=0;const diagnostics=captureDiagnostics();

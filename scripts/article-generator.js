@@ -7,6 +7,7 @@ const { styleDiagnostics, validateEmphasis, editorialReviewSchema } = require(".
 const ARTICLE_FIELDS = ["title", "description", "bodyMarkdown"];
 const ARTICLE_MIN_CHARS = 1200;
 const ARTICLE_MAX_CHARS = 3500;
+const EMPHASIS_REPAIR_ATTEMPTS = 3;
 const articleSchema = {
   type: "object",
   additionalProperties: false,
@@ -30,6 +31,15 @@ const articleSchema = {
   }
 };
 
+const emphasisRepairSchema = {
+  type:"object",
+  additionalProperties:false,
+  required:["emphasis"],
+  properties:{
+    emphasis: articleSchema.properties.emphasis
+  }
+};
+
 function fail(code, diagnostic) { throw new TopicError(code,diagnostic); }
 
 function logRetryDiagnostic(log, attempt, stage, rules) {
@@ -44,7 +54,7 @@ function exhaustedErrorCode(stage) {
   }[stage] || "REPETITIVE_ARTICLE_STYLE";
 }
 
-function validateArticle(raw, topic) {
+function parseArticleCandidate(raw, topic) {
   if (typeof raw !== "string" || raw.length > 20000) fail("INVALID_ARTICLE_JSON");
   let value;
   try { value = JSON.parse(raw); } catch { fail("INVALID_ARTICLE_JSON"); }
@@ -62,14 +72,92 @@ function validateArticle(raw, topic) {
   if ((body.match(/^##\s+.+$/gm) || []).length < 3 || /^#\s+/m.test(body)) fail("INVALID_ARTICLE_HEADINGS");
   if (/^---\s*$/m.test(body) || /<[^>]+>/.test(body) || /https?:\/\/|\bwww\./i.test(body) ||
       /!?\[[^\]]*\]\([^)]+\)/.test(body)) fail("UNSAFE_ARTICLE_MARKDOWN");
-  let emphasis;
-  if (Object.hasOwn(value,"emphasis")) {
-    try { emphasis=validateEmphasis(value.emphasis,body); }
-    catch(error) { fail("INVALID_ARTICLE_EMPHASIS",{rule:error?.rule || "INVALID_ARTICLE_EMPHASIS"}); }
-  }
   return { title: value.title.trim(), description: value.description.trim(), bodyMarkdown: body,
-    ...(emphasis ? {emphasis} : {}),
-    ...(Object.hasOwn(value, "buhio") ? { buhio: selectBuhio(value, value.buhio) } : {}) };
+    ...(Object.hasOwn(value, "buhio") ? { buhio: selectBuhio(value, value.buhio) } : {}),
+    hasEmphasis:Object.hasOwn(value,"emphasis"), emphasis:value.emphasis };
+}
+
+function withValidatedEmphasis(candidate, emphasis) {
+  let validated;
+  try { validated=validateEmphasis(emphasis,candidate.bodyMarkdown); }
+  catch(error) { fail("INVALID_ARTICLE_EMPHASIS",{rule:error?.rule || "INVALID_ARTICLE_EMPHASIS"}); }
+  const {hasEmphasis,emphasis:ignored,...article}=candidate;
+  return {...article,emphasis:validated};
+}
+
+function validateArticle(raw, topic) {
+  const candidate=parseArticleCandidate(raw,topic);
+  if(!candidate.hasEmphasis) {
+    const {hasEmphasis,emphasis,...article}=candidate;
+    return article;
+  }
+  return withValidatedEmphasis(candidate,candidate.emphasis);
+}
+
+function repairDiagnostic(log,attempt,rules,success) {
+  log(JSON.stringify({event:"daily_blog_emphasis_repair",attempt,...(success?{}:{rules}),success}));
+}
+
+function fallbackDiagnostic(log,success) {
+  log(JSON.stringify({event:"daily_blog_emphasis_fallback",used:true,success}));
+}
+
+function emphasisRepairError(rule) {
+  const error=Error("INVALID_ARTICLE_EMPHASIS");
+  error.rule=rule;
+  return error;
+}
+
+function parseRepairEmphasis(raw,body) {
+  if(typeof raw!=="string" || raw.length>8000) throw emphasisRepairError("invalid_emphasis_repair_response");
+  let value;
+  try {value=JSON.parse(raw);} catch {throw emphasisRepairError("invalid_emphasis_repair_response");}
+  if(!value || typeof value!=="object" || Array.isArray(value) || Object.keys(value).sort().join(",")!=="emphasis") {
+    throw emphasisRepairError("invalid_emphasis_repair_response");
+  }
+  return validateEmphasis(value.emphasis,body);
+}
+
+function fallbackEmphasis(body) {
+  const paragraphs=String(body).split(/\n\s*\n/).map(text=>text.trim())
+    .filter(text=>text && !/^#{1,6}\s/.test(text) && !/[\r\n*`=<>]/.test(text));
+  const strong=[];
+  const marker=[];
+  for(const paragraph of paragraphs) {
+    for(const match of paragraph.matchAll(/[^\s<>\r\n*`=]{2,120}/g)) {
+      const phrase=match[0];
+      const strongText=phrase.slice(0,Math.min(30,phrase.length));
+      if(strongText.length>=2 && strongText!==paragraph) strong.push(strongText);
+      marker.push(phrase.slice(0,Math.min(120,phrase.length)));
+    }
+  }
+  for(const strongText of [...new Set(strong)].slice(0,24)) {
+    for(const markerText of [...new Set(marker)].slice(0,24)) {
+      if(strongText===markerText) continue;
+      try {return validateEmphasis([{text:strongText,style:"strong"},{text:markerText,style:"marker"}],body);}
+      catch {}
+    }
+  }
+  return null;
+}
+
+async function repairEmphasis({apiKey,model,bodyMarkdown,initialRules,request,diagnosticLog}) {
+  let rules=initialRules;
+  const instructions="あなたは記事装飾の修復担当です。入力の本文・見出しは参照データであり、変更しません。ぶひおコメントも変更しません。本文中に実際に存在する完全一致文字列だけを選び、emphasis配列だけを返してください。strongは2〜30文字の短い重要語にし、文全体や段落全体をstrongにしません。markerは本文にある120文字以内の重要な一文にします。見出しは対象にせず、strongとmarkerを各1件以上、同じH2節には合計2件以内、全体16件以内にしてください。前回の失敗ruleを繰り返さないでください。";
+  for(let attempt=1;attempt<=EMPHASIS_REPAIR_ATTEMPTS;attempt++) {
+    const raw=await request({apiKey,model,schema:emphasisRepairSchema,instructions,input:{bodyMarkdown,previousFailureRules:rules}});
+    try {
+      const emphasis=parseRepairEmphasis(raw,bodyMarkdown);
+      repairDiagnostic(diagnosticLog,attempt,[],true);
+      return emphasis;
+    } catch(error) {
+      rules=[error?.rule || "INVALID_ARTICLE_EMPHASIS"];
+      repairDiagnostic(diagnosticLog,attempt,rules,false);
+    }
+  }
+  const fallback=fallbackEmphasis(bodyMarkdown);
+  fallbackDiagnostic(diagnosticLog,Boolean(fallback));
+  return fallback;
 }
 
 async function generateArticle({apiKey, model, localDate, topic, sources = [], recentArticleStyles = [], request = requestGemini,
@@ -106,15 +194,26 @@ async function generateArticle({apiKey, model, localDate, topic, sources = [], r
     ...(timely ? {sourceInformation:sources} : {}),
     outputRequirements:{language:"ja",targetCharacters:"1500-2500",headingLevels:["##","###"],externalUrls:false}
   }});
+  const candidate=parseArticleCandidate(raw,topic);
   let article;
-  try { article=validateArticle(raw, topic); }
-  catch(error) {
-    if(error.code!=="INVALID_ARTICLE_EMPHASIS") throw error;
-    lastFailureStage="emphasis";
-    logRetryDiagnostic(diagnosticLog,attempt+1,"emphasis",[error.diagnostic?.rule || "INVALID_ARTICLE_EMPHASIS"]);
-    revisionFeedback=["emphasisは本文と完全一致、各節2箇所以内、段落全部の太字禁止で指定し直す"];continue;
+  let emphasisRules=[];
+  if(candidate.hasEmphasis) {
+    try {article=withValidatedEmphasis(candidate,candidate.emphasis);}
+    catch(error) {emphasisRules=[error.diagnostic?.rule || "INVALID_ARTICLE_EMPHASIS"];}
+  } else emphasisRules=["emphasis_not_array"];
+  if(!article) {
+    const emphasis=await repairEmphasis({apiKey,model,bodyMarkdown:candidate.bodyMarkdown,initialRules:emphasisRules,request,diagnosticLog});
+    if(!emphasis) fail(exhaustedErrorCode("emphasis"));
+    article=withValidatedEmphasis(candidate,emphasis);
   }
-  const localDiagnostics=styleDiagnostics(article,recentArticleStyles);
+  let localDiagnostics=styleDiagnostics(article,recentArticleStyles);
+  const emphasisOnly=localDiagnostics.filter(item=>item.rule==="missing_required_emphasis");
+  if(emphasisOnly.length && emphasisOnly.length===localDiagnostics.length) {
+    const emphasis=await repairEmphasis({apiKey,model,bodyMarkdown:article.bodyMarkdown,initialRules:emphasisOnly.map(item=>item.rule),request,diagnosticLog});
+    if(!emphasis) fail(exhaustedErrorCode("emphasis"));
+    article=withValidatedEmphasis(candidate,emphasis);
+    localDiagnostics=styleDiagnostics(article,recentArticleStyles);
+  }
   revisionFeedback=localDiagnostics.map(item=>item.feedback);
   if(localDiagnostics.length) {
     lastFailureStage="local_style";
