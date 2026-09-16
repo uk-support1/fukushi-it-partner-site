@@ -24,7 +24,7 @@ function refreshHeroImages({ root = path.join(__dirname, "..") } = {}) {
   for (const article of articles) {
     const profile = articleImageProfile({ title: article.data.title, body: article.body, category: article.data.category_label });
     const selected = images.selectImage({ category: article.data.category_label, candidates, history,
-      recentLimit: images.HERO_RECENT_ARTICLE_LIMIT, excludedHashes: usedHashes, profile });
+      recentLimit: images.HERO_RECENT_ARTICLE_LIMIT, excludedHashes: usedHashes, profile, diversifyHero: true });
     if (!selected) continue; // Empty library: preserve the safe legacy image.
     const data = { ...article.data, image: selected.path, image_alt: inlineAlt(selected.category),
       image_role: "hero", image_category: selected.category, image_series: selected.series, image_hash: selected.hash };

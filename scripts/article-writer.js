@@ -62,7 +62,7 @@ function articleImage(category, { root = path.join(__dirname, ".."), articlesDir
     candidates: imageLibrary.discoverImages({ root, kind }),
     history: history || imageLibrary.usageHistory({ root, articlesDir, kind }),
     recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT,
-    excludedHashes, profile });
+    excludedHashes, profile, diversifyHero: kind === "hero" });
   if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series, hash: selected.hash, profile };
   if (kind !== "hero") return null;
   const fallback = IMAGE_BY_CATEGORY[category] || DEFAULT_IMAGE;

@@ -140,6 +140,51 @@ test("semantic profiles exclude unrelated strong themes and still choose a match
   assert.equal(images.selectImage({ category: "IT活用", candidates, profile: web }).path, "dx.png");
 });
 
+test("hero diversification (diversifyHero) prefers a different composition, then a different category, before ever reusing the latest image, and never returns nothing", () => {
+  const profile = { themes: ["welfare"], preferredTags: ["福祉", "相談"], preferredScenes: [], excludedThemes: [], allowTechnology: true };
+  const mk = (path, category, series) => ({ path, category, series, hash: path, tags: ["福祉", "相談"], scene: "s", themes: ["welfare"], technology_level: "none" });
+  const consultA = mk("welfare-consult-a.png", "welfare", "consult");
+  const consultB = mk("welfare-consult-b.png", "welfare", "consult");
+  const team = mk("welfare-team.png", "welfare", "team");
+  const recruitOther = mk("recruit-interview.png", "recruit", "interview");
+
+  // Rule 3: the last 3 articles used the same "consult" composition repeatedly,
+  // so a same-category image with a different composition is preferred over
+  // reusing that composition again.
+  const consultHistory = [
+    { image: "d1.png", hash: "d1", category: "welfare", series: "consult" },
+    { image: "d2.png", hash: "d2", category: "welfare", series: "consult" },
+    { image: "d3.png", hash: "d3", category: "welfare", series: "consult" }
+  ];
+  const diversified = images.selectImage({ category: "welfare",
+    candidates: [consultA, consultB, team], history: consultHistory, profile, diversifyHero: true });
+  assert.equal(diversified.series, "team");
+  // Without diversifyHero, only the single latest article's composition is
+  // avoided (existing behavior for inline images stays untouched).
+  const undiversified = images.selectImage({ category: "welfare",
+    candidates: [consultA, consultB, team], history: [consultHistory[0]], profile });
+  assert.equal(undiversified.series, "team");
+
+  // Rule 2: composition candidates are exhausted (every welfare composition
+  // appears in the last 3 articles) but a different, still-relevant category
+  // is available, so category is diversified next instead of repeating "consult".
+  const exhaustedSeriesHistory = [
+    { image: "d1.png", hash: "d1", category: "welfare", series: "team" },
+    { image: "d2.png", hash: "d2", category: "welfare", series: "consult" },
+    { image: "d3.png", hash: "d3", category: "welfare", series: "consult" }
+  ];
+  const categorySwitched = images.selectImage({ category: "welfare",
+    candidates: [consultA, team, recruitOther], history: exhaustedSeriesHistory, profile, diversifyHero: true });
+  assert.equal(categorySwitched.category, "recruit");
+
+  // Rule 4/5: candidates are scarce (only one image, and it is the very image
+  // used in the immediately preceding article) — diversification must still
+  // return an image rather than fail Daily Blog.
+  const onlyOption = images.selectImage({ category: "welfare", candidates: [consultA],
+    history: [{ image: consultA.path, hash: consultA.hash, category: "welfare", series: "consult" }], profile, diversifyHero: true });
+  assert.equal(onlyOption.path, consultA.path);
+});
+
 test("SEO and strong Web heroes are excluded unless the article subject calls for them", () => {
   const candidates = [
     { path: "general.png", category: "general", series: "office", hash: "g", tags: ["一般事務"], scene: "一般的な事務作業", themes: ["general"], technology_level: "none" },

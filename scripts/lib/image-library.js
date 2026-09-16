@@ -11,6 +11,10 @@ const semantics = require("./image-semantics");
 const IMAGE_EXTENSIONS = new Set([".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"]);
 const RECENT_ARTICLE_LIMIT = 10;
 const HERO_RECENT_ARTICLE_LIMIT = 20;
+// How many of the most recent published heroes count toward "the blog list
+// looks repetitive" when diversifying category/composition (not image reuse,
+// which is already handled by HERO_RECENT_ARTICLE_LIMIT above).
+const HERO_DIVERSITY_LOOKBACK = 3;
 const CATEGORIES = ["welfare", "recruit", "ai", "dx", "web", "seo", "subsidy", "security", "general"];
 const NEAR_CATEGORIES = {
   web: ["seo", "dx"], ai: ["dx"], welfare: ["recruit"],
@@ -129,7 +133,27 @@ function sameImage(candidate, use) {
     : candidate.path === use.image;
 }
 
-function selectImage({ category, candidates, history = [], recentLimit = RECENT_ARTICLE_LIMIT, excludedHashes = new Set(), profile = null } = {}) {
+function diversify(eligible, history, latest) {
+  // Scoring/priority, not a hard rule: each tier only applies when it leaves at
+  // least one candidate, so a shallow library always still returns an image.
+  const lookback = history.slice(0, HERO_DIVERSITY_LOOKBACK);
+  const recentCategories = new Set(lookback.map(use => use.category).filter(Boolean));
+  const recentSeries = new Set(lookback.map(use => use.series).filter(Boolean));
+  const notLatest = candidate => !latest || !sameImage(candidate, latest);
+  const tiers = [
+    candidate => notLatest(candidate) && !recentCategories.has(candidate.category) && !recentSeries.has(candidate.series),
+    candidate => notLatest(candidate) && !recentSeries.has(candidate.series),
+    candidate => notLatest(candidate),
+    () => true
+  ];
+  for (const tier of tiers) {
+    const filtered = eligible.filter(tier);
+    if (filtered.length) return filtered;
+  }
+  return eligible;
+}
+
+function selectImage({ category, candidates, history = [], recentLimit = RECENT_ARTICLE_LIMIT, excludedHashes = new Set(), profile = null, diversifyHero = false } = {}) {
   if (!Array.isArray(candidates) || candidates.length === 0) return null;
   const semanticSafe = profile ? candidates.filter(candidate => !semantics.isExcluded(candidate, profile)) : candidates;
   const safeCandidates = semanticSafe.length ? semanticSafe : candidates;
@@ -154,10 +178,14 @@ function selectImage({ category, candidates, history = [], recentLimit = RECENT_
     }
     const recentFree = semanticPool.filter(candidate => !recent.some(use => sameImage(candidate, use)));
     let eligible = recentFree.length ? recentFree : semanticPool;
-    const withoutLatest = eligible.filter(candidate => !latest || !sameImage(candidate, latest));
-    if (withoutLatest.length) eligible = withoutLatest;
-    const withoutLatestSeries = eligible.filter(candidate => !latest || candidate.series !== latest.series);
-    if (withoutLatestSeries.length) eligible = withoutLatestSeries;
+    if (diversifyHero) {
+      eligible = diversify(eligible, history, latest);
+    } else {
+      const withoutLatest = eligible.filter(candidate => !latest || !sameImage(candidate, latest));
+      if (withoutLatest.length) eligible = withoutLatest;
+      const withoutLatestSeries = eligible.filter(candidate => !latest || candidate.series !== latest.series);
+      if (withoutLatestSeries.length) eligible = withoutLatestSeries;
+    }
     const categoryRank = candidate => candidate.category === wanted ? 0 : ((NEAR_CATEGORIES[wanted] || []).includes(candidate.category) ? 1 : 2);
     const lastUse = candidate => history.findIndex(use => sameImage(candidate, use));
     return eligible.slice().sort((a, b) => scores.get(b) - scores.get(a) || categoryRank(a) - categoryRank(b) ||
@@ -185,4 +213,4 @@ function selectImage({ category, candidates, history = [], recentLimit = RECENT_
   })[0];
 }
 
-module.exports = { RECENT_ARTICLE_LIMIT, HERO_RECENT_ARTICLE_LIMIT, categoryFor, seriesFor, imageHash, imageHashForPath, discoverImages, usageHistory, selectImage, sameImage, normalizeObjectPosition, imageObjectPositions, objectPositionForImage };
+module.exports = { RECENT_ARTICLE_LIMIT, HERO_RECENT_ARTICLE_LIMIT, HERO_DIVERSITY_LOOKBACK, categoryFor, seriesFor, imageHash, imageHashForPath, discoverImages, usageHistory, selectImage, sameImage, normalizeObjectPosition, imageObjectPositions, objectPositionForImage };
