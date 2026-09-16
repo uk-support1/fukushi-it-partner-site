@@ -375,6 +375,16 @@ section {
 /* ===== Hero ===== */
 .hero {
   position: relative;
+  padding: 88px 0 80px;
+  overflow: hidden;
+  min-height: 540px;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   background:
     linear-gradient(to right,
       rgba(232, 244, 238, 0.97) 0%,
@@ -383,24 +393,22 @@ section {
       rgba(232, 244, 238, 0.06) 68%,
       transparent 82%),
     url('../images/hero-fukushi-it-partner.jpg') right center / cover no-repeat;
-  padding: 88px 0 80px;
-  overflow: hidden;
-  min-height: 540px;
+  transform: scale(1.035);
+  animation: hero-photo-zoom 7s cubic-bezier(0.25, 0.7, 0.4, 1) forwards;
+}
+
+@keyframes hero-photo-zoom {
+  from { transform: scale(1.035); }
+  to { transform: scale(1); }
 }
 
 .hero-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
   gap: 48px;
-}
-
-.hero-brand {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--green-700);
-  letter-spacing: 0.08em;
-  margin-bottom: 16px;
 }
 
 .hero-title {
@@ -411,6 +419,30 @@ section {
   margin-bottom: 24px;
 }
 
+.hero-title-line {
+  display: block;
+  opacity: 0;
+}
+
+.hero-title-line--1 {
+  transform: translateY(24px);
+  animation: hero-line-float-in 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0s forwards;
+}
+
+.hero-title-line--2 {
+  animation: hero-line-fade-in 2s ease-out 1.5s forwards;
+}
+
+@keyframes hero-line-float-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-line-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .hero-title .accent {
   color: var(--orange-600);
 }
@@ -418,18 +450,21 @@ section {
 .hero-message {
   font-size: 1.05rem;
   color: var(--text-600);
-  margin-bottom: 36px;
   max-width: 480px;
+  opacity: 0;
+  animation: hero-line-fade-in 2s ease-out 4s forwards;
 }
 
 @media (max-width: 900px) {
-  .hero {
+  .hero::before {
     background:
       linear-gradient(to bottom,
         rgba(232, 244, 238, 0.10) 0%,
         rgba(232, 244, 238, 0.90) 52%,
         rgba(232, 244, 238, 1.00) 66%),
       url('../images/hero-fukushi-it-partner.jpg') 65% top / cover no-repeat;
+  }
+  .hero {
     padding: 210px 0 56px;
     min-height: auto;
   }
@@ -448,13 +483,15 @@ section {
 
 /* スマートフォンでは画像をより引きで見せ、人物の顔が切れないようにする */
 @media (max-width: 600px) {
-  .hero {
+  .hero::before {
     background:
       linear-gradient(to bottom,
         rgba(232, 244, 238, 0.05) 0%,
         rgba(232, 244, 238, 0.85) 58%,
         rgba(232, 244, 238, 1.00) 74%),
       url('../images/hero-fukushi-it-partner.jpg') center top / 100% auto no-repeat;
+  }
+  .hero {
     padding-top: calc(100vw * 0.563 + 32px);
   }
 }
@@ -585,13 +622,26 @@ section {
   .welfare-photo-hero-light,
   .cards-grid .card,
   .card h3,
-  .card:hover .card-photo img {
+  .card:hover .card-photo img,
+  .hero::before,
+  .hero-title-line,
+  .hero-message {
     animation: none !important;
     transition: none !important;
   }
 
   .welfare-photo-hero-img {
     transform: scale(1) !important;
+  }
+
+  .hero::before {
+    transform: scale(1) !important;
+  }
+
+  .hero-title-line,
+  .hero-message {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .welfare-photo-hero-line {
