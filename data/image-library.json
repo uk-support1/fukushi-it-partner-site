@@ -746,7 +746,8 @@
         "digital"
       ],
       "technology_level": "strong",
-      "has_person": true
+      "has_person": true,
+      "object_position": "75% 50%"
     },
     {
       "path": "assets/images/blog-library/hero/hero-security-003.png",
