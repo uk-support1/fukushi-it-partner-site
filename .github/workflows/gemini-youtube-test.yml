@@ -1,0 +1,28 @@
+name: Gemini YouTube Test
+
+# Throwaway diagnostic workflow (see scripts/test-gemini-youtube.js). Confirms
+# whether Gemini's native YouTube URL understanding works from GitHub's cloud
+# runners (it should, since Google's servers fetch the video, not this
+# runner) and stays compatible with our strict JSON-schema output. Writes
+# and commits nothing. Delete this workflow once the answer is known.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Call Gemini with a YouTube URL and check JSON-schema compatibility
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL_TEST: ${{ vars.GEMINI_MODEL }}
+        run: node scripts/test-gemini-youtube.js
