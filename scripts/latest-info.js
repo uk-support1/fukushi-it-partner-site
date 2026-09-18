@@ -1,16 +1,25 @@
 "use strict";
 
+// "video" sources are individual creators' commentary/experience, not official
+// documents; article-generator.js treats them with extra care (see `kind`).
 const DEFAULT_SOURCES = Object.freeze([
   { name: "厚生労働省", url: "https://www.mhlw.go.jp/stf/news.rdf", priority: 1 },
   { name: "福祉医療機構（WAM NET）", url: "https://www.wam.go.jp/gyoseiShiryou/new_rss", priority: 1 },
   { name: "デジタル庁", url: "https://www.digital.go.jp/rss/news.xml", priority: 2 },
-  { name: "内閣府", url: "https://www.cao.go.jp/rss/news.rdf", priority: 4 }
+  { name: "内閣府", url: "https://www.cao.go.jp/rss/news.rdf", priority: 4 },
+  { name: "精神保健福祉士うさぎ", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCfG0XDjNIjHm2vmrChrL4SQ", priority: 3, kind: "video" },
+  { name: "精神科医がこころの病気を解説するCh（益田裕介）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC7C5oRm6cGgbjJdPPEVeNMA", priority: 3, kind: "video" },
+  { name: "WithYouチャンネル（精神・発達専門の就労移行支援）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCYG77cJbgyh0clabzxFN6pg", priority: 3, kind: "video" },
+  { name: "ケアきょう（介護職のためのチャンネル）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCNkibDFHKRpY3KNm-jTTIsQ", priority: 3, kind: "video" }
 ]);
-const ALLOWED_HOSTS = new Set(["www.mhlw.go.jp", "www.wam.go.jp", "www.digital.go.jp", "www.cao.go.jp"]);
+const ALLOWED_HOSTS = new Set(["www.mhlw.go.jp", "www.wam.go.jp", "www.digital.go.jp", "www.cao.go.jp", "www.youtube.com"]);
+// Hosts whose article page is a JS-rendered app, not prose: enrichCandidate()
+// would scrape UI/script noise instead of real text, so it is skipped for them.
+const NO_ENRICH_HOSTS = new Set(["www.youtube.com"]);
 const RELEVANT_TERMS = [
   "障害", "福祉", "就労", "雇用", "共同生活", "グループホーム", "精神", "こども", "子ども",
   "デジタル", "dx", "ai", "it", "情報", "システム", "業務", "効率", "広報", "ウェブ", "web",
-  "ホームページ", "検索", "補助", "助成", "支援", "事業者", "法人", "手話"
+  "ホームページ", "検索", "補助", "助成", "支援", "事業者", "法人", "手話", "介護"
 ];
 const MAX_FEED_BYTES = 1_000_000;
 const MAX_PAGE_BYTES = 1_500_000;
@@ -59,8 +68,10 @@ function parseFeed(xml, source) {
     const rawDate = tag(block, ["dc:date", "pubDate", "published", "updated"]);
     const parsedDate = Date.parse(rawDate);
     const publishedAt = Number.isFinite(parsedDate) ? new Date(parsedDate).toISOString() : "";
-    const summary = cleanText(tag(block, ["description", "summary", "content", "content:encoded"]) || title);
-    return title && url && publishedAt ? { title, url, publishedAt, source: source.name, summary } : null;
+    const summary = cleanText(tag(block, ["media:description", "description", "summary", "content", "content:encoded"]) || title);
+    return title && url && publishedAt
+      ? { title, url, publishedAt, source: source.name, summary, ...(source.kind ? { kind: source.kind } : {}) }
+      : null;
   }).filter(Boolean);
 }
 
@@ -137,9 +148,10 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
       seenUrls.add(item.url); seenTitles.add(title); return true;
     }).slice(0, Math.max(3, Math.min(10, limit)))
     .map(({score,priority,...item}) => item);
-  const candidates = await Promise.all(ranked.map(item => enrichCandidate(item,fetchImpl)));
+  const enrichable = item => { try { return !NO_ENRICH_HOSTS.has(new URL(item.url).hostname); } catch { return false; } };
+  const candidates = await Promise.all(ranked.map(item => enrichable(item) ? enrichCandidate(item,fetchImpl) : item));
   return { candidates, attemptedSources:sources.length,
     successfulSources:settled.filter(result => result.status === "fulfilled").length };
 }
 
-module.exports = { DEFAULT_SOURCES, ALLOWED_HOSTS, parseFeed, collectLatestInfo, safeOfficialUrl, relevance, pageSummary };
+module.exports = { DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, parseFeed, collectLatestInfo, safeOfficialUrl, relevance, pageSummary };

@@ -5,7 +5,7 @@ const assert = require("node:assert/strict");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { parseFeed, collectLatestInfo, safeOfficialUrl, DEFAULT_SOURCES, ALLOWED_HOSTS } = require("../scripts/latest-info");
+const { parseFeed, collectLatestInfo, safeOfficialUrl, DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS } = require("../scripts/latest-info");
 const { selectTopic, latestTopicSchema } = require("../scripts/topic-selector");
 const { prepareDailyBlog } = require("../scripts/daily-blog");
 
@@ -28,6 +28,52 @@ test("the welfare-industry WAM NET source is allowed and generic news sites like
   assert.ok(ALLOWED_HOSTS.has("www.wam.go.jp"));
   assert.equal(safeOfficialUrl("https://news.yahoo.co.jp/pickup/1"),null);
   assert.equal(safeOfficialUrl("https://www.wam.go.jp/gyoseiShiryou/detail?gno=1"),"https://www.wam.go.jp/gyoseiShiryou/detail?gno=1");
+});
+
+test("the four requested YouTube channels are registered as video-kind sources with real channel RSS URLs",()=>{
+  const expected=["精神保健福祉士うさぎ","精神科医がこころの病気を解説するCh（益田裕介）","WithYouチャンネル（精神・発達専門の就労移行支援）","ケアきょう（介護職のためのチャンネル）"];
+  const videoSources=DEFAULT_SOURCES.filter(item=>item.kind==="video");
+  assert.equal(videoSources.length,4);
+  for(const name of expected) assert.ok(videoSources.some(item=>item.name===name),name);
+  for(const item of videoSources) {
+    assert.match(item.url,/^https:\/\/www\.youtube\.com\/feeds\/videos\.xml\?channel_id=UC/);
+    assert.ok(ALLOWED_HOSTS.has(new URL(item.url).hostname));
+  }
+  assert.ok(NO_ENRICH_HOSTS.has("www.youtube.com"));
+});
+
+test("a YouTube Atom entry is parsed with its kind and real media:description, not just the title",()=>{
+  const atom=`<feed xmlns:media="http://search.yahoo.com/mrss/"><entry><title>就労移行支援の見学で見るべきポイント</title>` +
+    `<link rel="alternate" href="https://www.youtube.com/watch?v=abc123"/><published>2026-09-16T09:00:00+00:00</published>` +
+    `<media:group><media:description>精神・発達障害の就労移行支援を選ぶときに確認したい3つの視点を紹介します。</media:description></media:group></entry></feed>`;
+  const [candidate]=parseFeed(atom,{name:"WithYouチャンネル（精神・発達専門の就労移行支援）",url:"https://www.youtube.com/feeds/videos.xml?channel_id=UCYG77cJbgyh0clabzxFN6pg",kind:"video"});
+  assert.equal(candidate.url,"https://www.youtube.com/watch?v=abc123");
+  assert.equal(candidate.kind,"video");
+  assert.equal(candidate.summary,"精神・発達障害の就労移行支援を選ぶときに確認したい3つの視点を紹介します。");
+});
+
+test("YouTube candidates skip page enrichment (a JS app, not prose) while official candidates still get enriched",async()=>{
+  const youtubeAtom=`<feed><entry><title>介護職の夜勤の乗り切り方</title><link rel="alternate" href="https://www.youtube.com/watch?v=xyz789"/>` +
+    `<published>2026-09-16T00:00:00+00:00</published><summary>介護職員向けの夜勤対応のコツを紹介する動画です。</summary></entry></feed>`;
+  const sources=[
+    {name:"ケアきょう（介護職のためのチャンネル）",url:"https://www.youtube.com/feeds/videos.xml?channel_id=UCNkibDFHKRpY3KNm-jTTIsQ",priority:3,kind:"video"},
+    source
+  ];
+  const officialBody=feed([item("福祉事業者の業務効率化","https://www.mhlw.go.jp/c","2026-09-16")]);
+  const fetched=[];
+  const result=await collectLatestInfo({now:new Date("2026-09-17T00:00:00Z"),sources,fetchImpl:async url=>{
+    fetched.push(url);
+    if(url.includes("youtube.com/feeds")) return response(youtubeAtom);
+    if(url.includes("youtube.com/watch")) throw new Error("must not scrape the YouTube watch page");
+    if(url===source.url) return response(officialBody);
+    const page=`<main>${"厚生労働省の公式ページ本文がここに入ります。".repeat(5)}</main>`;
+    return {ok:true,status:200,headers:{get:name=>name==="content-type"?"text/html; charset=utf-8":String(Buffer.byteLength(page))},text:async()=>page};
+  }});
+  assert.equal(fetched.filter(url=>url.includes("youtube.com/watch")).length,0);
+  const youtubeCandidate=result.candidates.find(item=>item.url.includes("youtube.com/watch"));
+  assert.equal(youtubeCandidate.summary,"介護職員向けの夜勤対応のコツを紹介する動画です。");
+  const officialCandidate=result.candidates.find(item=>item.url==="https://www.mhlw.go.jp/c");
+  assert.match(officialCandidate.summary,/厚生労働省の公式ページ本文/);
 });
 
 test("Collector tolerates one failed feed and returns three to ten relevant recent candidates",async()=>{

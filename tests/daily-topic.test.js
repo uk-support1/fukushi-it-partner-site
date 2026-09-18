@@ -179,6 +179,20 @@ test("Article JSON returns title, description and bodyMarkdown",async()=>{
   assert.equal(requests[0].input.outputRequirements.language,"ja");assert.equal(requests[0].model,DEFAULT_GEMINI_MODEL);
   assert.match(requests[0].instructions,/存在しない制度/);assert.match(requests[0].instructions,/一般論に留め/);
 });
+test("A video-kind source adds non-authoritative-commentary guidance; other sources do not",async()=>{
+  const videoSources=[{title:"動画タイトル",url:"https://www.youtube.com/watch?v=abc",publishedAt:"2026-09-15T00:00:00.000Z",source:"精神保健福祉士うさぎ",summary:"配信者の説明",kind:"video"}];
+  let videoInstructions;
+  const withVideo=await generateArticle({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,localDate:"2026-09-12",topic,sources:videoSources,
+    request:async args=>{videoInstructions=args.instructions;return JSON.stringify(generatedArticle);}});
+  assert.deepEqual(withVideo,generatedArticle);
+  assert.match(videoInstructions,/個人の配信者・専門職による動画/);
+  const officialSources=[{title:"報酬改定資料",url:"https://www.mhlw.go.jp/a",publishedAt:"2026-09-15T00:00:00.000Z",source:"厚生労働省",summary:"公式資料"}];
+  let officialInstructions;
+  await generateArticle({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,localDate:"2026-09-12",topic,sources:officialSources,
+    request:async args=>{officialInstructions=args.instructions;return JSON.stringify(generatedArticle);}});
+  assert.match(officialInstructions,/入力されたsourceInformationだけ/);
+  assert.ok(!officialInstructions.includes("個人の配信者"));
+});
 test("Article validation rejects empty body, malformed JSON, missing fields and changed title",()=>{
   assert.deepEqual(validateArticle(JSON.stringify(generatedArticle),topic),generatedArticle);
   for(const raw of ["not JSON",JSON.stringify({...generatedArticle,bodyMarkdown:""}),
