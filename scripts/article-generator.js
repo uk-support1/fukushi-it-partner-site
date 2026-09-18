@@ -183,13 +183,20 @@ async function generateArticle({apiKey, model, localDate, topic, sources = [], r
       ? "入力されたsourceInformationだけを最新情報の事実根拠として使い、原文を転載せず要約・再構成します。候補の概要から確認できない詳細は断定しません。構成上はニュースの概要、発表・変更の具体的内容、事業者との関係、現場の対応、当社の考察、次の行動を扱いますが、これは役割であり見出し文言ではありません。記事固有の言葉で自由に見出しを付けます。事実と当社の考察を明確に分け、当社見解では小規模事業者の対応、IT・AIによる業務改善、情報発信・集客、利用者や家族への影響をテーマに即して検討します。"
       : "制度、法律、補助金、報酬改定、金額、期限など最新性の確認が必要な事項は、確認済みの一次情報が入力にないため一般論に留め、断定しません。") +
     (hasVideoSource
-      ? "sourceInformationのうちkindがvideoのものは、公的機関の発表ではなく個人の配信者・専門職による動画での発信です。制度や事実であるかのように断定せず、「〇〇さんが動画で紹介している考え方」のように発信者個人の見解・経験として扱います。診断や治療方針など医療的判断に踏み込む断定はせず、詳しくは動画本編の確認を読者に促してください。"
+      ? "sourceInformationのうちkindがvideoのものは、公的機関の発表ではなく個人の配信者・専門職による動画での発信です。制度や事実であるかのように断定せず、「〇〇さんが動画で紹介している考え方」のように発信者個人の見解・経験として扱います。診断や治療方針など医療的判断に踏み込む断定はせず、詳しくは動画本編の確認を読者に促してください。添付された動画があれば、その実際の内容を確認したうえで要約・言及してください。動画から確認できない内容は断定しません。"
       : "");
+  // Gemini fetches and understands the video itself server-side (confirmed
+  // compatible with responseJsonSchema); this grounds the article in what the
+  // video actually says instead of only the shallow RSS-description summary.
+  const videoFileParts = hasVideoSource
+    ? sources.filter(item => item && item.kind === "video" && typeof item.url === "string")
+        .map(item => ({ fileData: { fileUri: item.url } }))
+    : [];
   let revisionFeedback=[];
   let previousArticle;
   let lastFailureStage;
   for(let attempt=0;attempt<3;attempt++) {
-  const raw = await request({apiKey, model, schema:articleSchema, instructions, input:{
+  const raw = await request({apiKey, model, schema:articleSchema, instructions, fileParts: videoFileParts, input:{
     localDate,
     topic,
     buhioImages: BUHIO_IMAGES,

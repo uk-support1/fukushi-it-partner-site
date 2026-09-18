@@ -132,14 +132,17 @@ async function geminiHttpError(response, apiKey) {
 }
 
 // Native fetch; injectable for local tests. No SDK, filesystem writes or retries.
-async function requestGemini({apiKey, model, instructions, input, schema}, fetchImpl = globalThis.fetch) {
+// fileParts (e.g. {fileData:{fileUri:"https://www.youtube.com/watch?v=..."}})
+// let Gemini's own servers fetch and understand a public YouTube video
+// directly, confirmed to stay compatible with strict responseJsonSchema output.
+async function requestGemini({apiKey, model, instructions, input, schema, fileParts = []}, fetchImpl = globalThis.fetch) {
   try {
     const response = await fetchImpl(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
       method: "POST", redirect: "error", signal: AbortSignal.timeout(60000),
       headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: instructions }] },
-        contents: [{ role: "user", parts: [{ text: JSON.stringify(input) }] }],
+        contents: [{ role: "user", parts: [...fileParts, { text: JSON.stringify(input) }] }],
         generationConfig: { responseMimeType: "application/json", responseJsonSchema: schema, maxOutputTokens: 8000 }
       })
     });

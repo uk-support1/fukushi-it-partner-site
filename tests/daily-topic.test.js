@@ -197,19 +197,21 @@ test("Article JSON returns title, description and bodyMarkdown",async()=>{
   assert.equal(requests[0].input.outputRequirements.language,"ja");assert.equal(requests[0].model,DEFAULT_GEMINI_MODEL);
   assert.match(requests[0].instructions,/存在しない制度/);assert.match(requests[0].instructions,/一般論に留め/);
 });
-test("A video-kind source adds non-authoritative-commentary guidance; other sources do not",async()=>{
+test("A video-kind source adds non-authoritative-commentary guidance and attaches the video via fileParts; other sources do neither",async()=>{
   const videoSources=[{title:"動画タイトル",url:"https://www.youtube.com/watch?v=abc",publishedAt:"2026-09-15T00:00:00.000Z",source:"精神保健福祉士うさぎ",summary:"配信者の説明",kind:"video"}];
-  let videoInstructions;
+  let videoInstructions,videoFileParts;
   const withVideo=await generateArticle({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,localDate:"2026-09-12",topic,sources:videoSources,
-    request:async args=>{videoInstructions=args.instructions;return JSON.stringify(generatedArticle);}});
+    request:async args=>{videoInstructions=args.instructions;videoFileParts=args.fileParts;return JSON.stringify(generatedArticle);}});
   assert.deepEqual(withVideo,generatedArticle);
   assert.match(videoInstructions,/個人の配信者・専門職による動画/);
+  assert.deepEqual(videoFileParts,[{fileData:{fileUri:"https://www.youtube.com/watch?v=abc"}}]);
   const officialSources=[{title:"報酬改定資料",url:"https://www.mhlw.go.jp/a",publishedAt:"2026-09-15T00:00:00.000Z",source:"厚生労働省",summary:"公式資料"}];
-  let officialInstructions;
+  let officialInstructions,officialFileParts;
   await generateArticle({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,localDate:"2026-09-12",topic,sources:officialSources,
-    request:async args=>{officialInstructions=args.instructions;return JSON.stringify(generatedArticle);}});
+    request:async args=>{officialInstructions=args.instructions;officialFileParts=args.fileParts;return JSON.stringify(generatedArticle);}});
   assert.match(officialInstructions,/入力されたsourceInformationだけ/);
   assert.ok(!officialInstructions.includes("個人の配信者"));
+  assert.deepEqual(officialFileParts,[]);
 });
 test("Article validation rejects empty body, malformed JSON, missing fields and changed title",()=>{
   assert.deepEqual(validateArticle(JSON.stringify(generatedArticle),topic),generatedArticle);
@@ -251,6 +253,20 @@ test("Gemini request uses generateContent, API-key header and structured JSON",a
     assert.ok(!options.body.includes("dummy"));assert.equal(options.redirect,"error");assert.ok(options.signal);
     return ok(JSON.stringify(topic));
   });assert.deepEqual(JSON.parse(text),topic);
+});
+test("fileParts (YouTube video understanding) are prepended before the text part; default stays text-only",async()=>{
+  const videoPart={fileData:{fileUri:"https://www.youtube.com/watch?v=abc"}};
+  const text=await requestGemini({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,instructions:"instructions",input:{articles},schema:topicSchema,fileParts:[videoPart]},async(url,options)=>{
+    const body=JSON.parse(options.body);
+    assert.deepEqual(body.contents[0].parts[0],videoPart);
+    assert.deepEqual(JSON.parse(body.contents[0].parts[1].text),{articles});
+    assert.equal(body.contents[0].parts.length,2);
+    return ok(JSON.stringify(topic));
+  });assert.deepEqual(JSON.parse(text),topic);
+  await requestGemini({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,instructions:"instructions",input:{articles},schema:topicSchema},async(url,options)=>{
+    assert.equal(JSON.parse(options.body).contents[0].parts.length,1);
+    return ok(JSON.stringify(topic));
+  });
 });
 test("Malformed responses, timeout and request failures are rejected without raw messages",async()=>{
   const args={apiKey:"secret-test-value",model:DEFAULT_GEMINI_MODEL,schema:topicSchema,input:{},instructions:"test"};

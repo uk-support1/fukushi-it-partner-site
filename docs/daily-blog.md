@@ -86,6 +86,24 @@ HTTPSの公式ホストを固定の許可リストにし、応答サイズ、15�
 「公的機関の発表ではなく発信者個人の見解・経験として扱い、断定せず、詳しくは動画本編の
 確認を読者に促す」よう追加指示します。医学的判断（診断・治療方針）に踏み込む断定もしません。
 
+### 記事生成時はGeminiに動画そのものを直接理解させる（ハイブリッド方式）
+
+`data/youtube-cache.json`にある概要欄の要約はRSS由来で浅い（タイトルとせいぜい数行）ため、
+選ばれたテーマの出典に`kind: "video"`が含まれる場合、記事生成のリクエストに動画URLを
+`fileData`パートとして直接添付します（`scripts/topic-selector.js`の`requestGemini`の
+`fileParts`引数）。Gemini APIはYouTubeの公開動画URLを渡すと、Google側のサーバーが
+その動画（音声・映像）を直接取得・理解してくれる公式機能を持っており、これは
+`responseJsonSchema`による厳密なJSON出力とも問題なく組み合わせられることを実機検証済み
+です。この経路はYouTube動画専用の特別な仕組みで、GitHub Actions側からYouTubeへ
+直接アクセスするわけではないため、動画一覧の取得（RSS）で起きているブロック問題とは
+無関係に機能します。
+
+一方で、Geminiの汎用Web取得ツール（`urlContext`）でYouTubeのRSSフィードURLを
+取得させる方式は`URL_RETRIEVAL_STATUS_ERROR`で失敗することを実機検証で確認済みです。
+そのため「新着動画の一覧を知る」部分は次項のセルフホストランナー方式のまま維持し、
+「選ばれた動画の中身を理解して書く」部分だけをGeminiのYouTube動画理解に任せる
+ハイブリッド構成になっています。
+
 ### GitHub Actionsから直接取得しない理由とキャッシュ方式
 
 検証の結果、YouTubeのフィードURLはGitHub Actionsの共有クラウドランナーからの
