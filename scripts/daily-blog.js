@@ -3,16 +3,20 @@ const fs = require("fs");
 const { selectTopic, TopicError } = require("./topic-selector");
 const { generateArticle } = require("./article-generator");
 const { saveArticleDraft } = require("./article-writer");
-const { collectLatestInfo } = require("./latest-info");
+const { collectLatestInfo, DEFAULT_SOURCES } = require("./latest-info");
 
 async function prepareDailyBlog({now = new Date(), env = process.env, request, articleRequest, load,
   collect = collectLatestInfo, save = saveArticleDraft, articlesDir} = {}) {
   const localDate = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
   }).format(now);
+  // Debugging knob only: workflow_dispatch can isolate the YouTube sources to
+  // check they still fetch, without changing the scheduled run's normal sources.
+  const sourcesOverride = env.DAILY_BLOG_SOURCES_FILTER === "video_only"
+    ? DEFAULT_SOURCES.filter(source => source.kind === "video") : undefined;
   let latest = {candidates:[],attemptedSources:0,successfulSources:0};
   try {
-    const collected = await collect({now});
+    const collected = await collect(sourcesOverride ? {now, sources: sourcesOverride} : {now});
     if (collected && Array.isArray(collected.candidates)) latest = collected;
   } catch {
     // Collection is optional. Gemini's established evergreen path remains available.

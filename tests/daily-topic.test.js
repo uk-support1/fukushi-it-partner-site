@@ -112,6 +112,20 @@ test("Topic selection flows into article generation, saves one draft and never p
   assert.equal(requests.length,4);assert.deepEqual(requests[0].input.existingArticles,articles);assert.deepEqual(requests[1].input.candidate,topic);
   assert.deepEqual(requests[2].input.topic,topic);assert.deepEqual(requests[2].schema,articleSchema);
 });
+test("DAILY_BLOG_SOURCES_FILTER=video_only isolates the YouTube sources for debugging; unset uses every default source",async t=>{
+  const directory=temporaryArticles(t);
+  let collectArgs;
+  await prepareDailyBlog({env:{...env,DAILY_BLOG_SOURCES_FILTER:"video_only"},now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
+    collect:async args=>{collectArgs=args;return {candidates:[],attemptedSources:0,successfulSources:0};},
+    request:async()=>JSON.stringify(topic),articlesDir:directory}).catch(()=>{});
+  assert.ok(Array.isArray(collectArgs.sources) && collectArgs.sources.length===4);
+  assert.ok(collectArgs.sources.every(source=>source.kind==="video"));
+  let defaultCollectArgs;
+  await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
+    collect:async args=>{defaultCollectArgs=args;return {candidates:[],attemptedSources:0,successfulSources:0};},
+    request:async()=>JSON.stringify(topic),articlesDir:directory}).catch(()=>{});
+  assert.equal(defaultCollectArgs.sources,undefined);
+});
 test("Generated article is saved with compatible front matter and body",t=>{
   const directory=temporaryArticles(t),date="2026-09-12";
   const saved=saveArticleDraft({article:generatedArticle,topic,date,directory});

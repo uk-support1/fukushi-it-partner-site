@@ -88,7 +88,11 @@ YouTubeの動画ページはJavaScriptアプリのため、本文相当のテキ
 
 なお、YouTubeのフィードURLはデータセンターからの自動アクセスに対して一時的に404や500を
 返すことがある（実装時の検証で確認済み）ため、その日は自動的に候補から外れるだけで
-Daily Blog全体は失敗しません。
+Daily Blog全体は失敗しません。YouTube側の取得だけを切り分けて確認したい場合は、
+Actionsの「Run workflow」から`sources_filter`を`video_only`にして手動実行すると、
+その回だけ厚労省等の公式ソースを使わずYouTubeの4チャンネルだけで候補収集を試せます
+（`DAILY_BLOG_SOURCES_FILTER`環境変数、`scripts/daily-blog.js`）。指定しない場合や
+スケジュール実行では、常に全ソース（`all`）を使います。
 
 ## 記事JSON
 
