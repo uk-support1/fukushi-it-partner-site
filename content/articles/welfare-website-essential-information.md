@@ -1,7 +1,7 @@
 ---
 type: column
 title: 福祉事業所のホームページで最初に整えたい5つの情報
-date: 2026-09-02
+date: 2026-07-15
 image: assets/images/blog-library/hero/hero-welfare-016.png
 image_alt: 福祉の現場を支えるイメージ
 published: true
