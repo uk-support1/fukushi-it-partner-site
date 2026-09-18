@@ -75,24 +75,50 @@ HTTPSの公式ホストを固定の許可リストにし、応答サイズ、15�
 
 障害福祉・精神保健・介護の現場に詳しい発信者4チャンネル（精神保健福祉士うさぎ、精神科医
 がこころの病気を解説するCh／益田裕介、WithYouチャンネル、ケアきょう）の公式チャンネルRSS
-（`youtube.com/feeds/videos.xml?channel_id=...`）も同じ`collectLatestInfo`で並行取得します。
-これはGoogleが提供する公式機能で、Yahoo!ニュースのような商用利用禁止規約はありません。
-取得できるのは動画タイトルと概要欄だけで、実際の発話内容（文字起こし）は取得しません。
-YouTubeの動画ページはJavaScriptアプリのため、本文相当のテキストが取れず記事生成が誤った
-情報を作る原因になり得るので、`NO_ENRICH_HOSTS`によりページ本文の追加取得（enrichCandidate）
-はスキップします。
+（`youtube.com/feeds/videos.xml?channel_id=...`）も候補として扱います。これはGoogleが
+提供する公式機能で、Yahoo!ニュースのような商用利用禁止規約はありません。取得できるのは
+動画タイトルと概要欄だけで、実際の発話内容（文字起こし）は取得しません。YouTubeの動画
+ページはJavaScriptアプリのため、本文相当のテキストが取れず記事生成が誤った情報を作る
+原因になり得るので、`NO_ENRICH_HOSTS`によりページ本文の追加取得（enrichCandidate）は
+スキップします。
 
 これらの候補は`kind: "video"`を持ち、`scripts/article-generator.js`が記事生成時に
 「公的機関の発表ではなく発信者個人の見解・経験として扱い、断定せず、詳しくは動画本編の
 確認を読者に促す」よう追加指示します。医学的判断（診断・治療方針）に踏み込む断定もしません。
 
-なお、YouTubeのフィードURLはデータセンターからの自動アクセスに対して一時的に404や500を
-返すことがある（実装時の検証で確認済み）ため、その日は自動的に候補から外れるだけで
-Daily Blog全体は失敗しません。YouTube側の取得だけを切り分けて確認したい場合は、
-Actionsの「Run workflow」から`sources_filter`を`video_only`にして手動実行すると、
-その回だけ厚労省等の公式ソースを使わずYouTubeの4チャンネルだけで候補収集を試せます
-（`DAILY_BLOG_SOURCES_FILTER`環境変数、`scripts/daily-blog.js`）。指定しない場合や
-スケジュール実行では、常に全ソース（`all`）を使います。
+### GitHub Actionsから直接取得しない理由とキャッシュ方式
+
+検証の結果、YouTubeのフィードURLはGitHub Actionsの共有クラウドランナーからの
+自動アクセスに対して一時的に404や500を返すことが多く、実運用でもYouTube候補が
+ほぼ選ばれませんでした。個人のPCなど別のネットワークからは同じURLが問題なく
+取得できたため、共有クラウドランナー（データセンターIP）側が継続的に不利な扱いを
+受けていると考えられます。
+
+そのためDaily Blog本体（`scripts/daily-blog.js`、GitHub Actionsのクラウドランナー）は
+YouTubeへ直接アクセスしません。代わりに、`.github/workflows/youtube-cache.yml`が
+別リポジトリ内の**セルフホストランナー（自宅PC等）**上で`scripts/fetch-youtube-cache.js`
+を実行し、4チャンネル分の候補を`data/youtube-cache.json`にコミットします。Daily Blog
+本体は`loadYoutubeCache()`でこのファイルを読み、7日以内に更新されていれば候補として
+合流させ（`collectLatestInfo`の`extraCandidates`）、古い・存在しない場合は無視します。
+
+この分離により、セルフホストランナー（自宅PCの電源やネットワーク）が何日オフラインでも
+Daily Blog自体の毎日の公開は一切影響を受けません（既存の「候補3件未満なら通常テーマへ
+自動フォールバック」がそのまま効きます）。YouTube側の取得だけを切り分けて確認したい
+場合は、Actionsの「Run workflow」から`sources_filter`を`video_only`にしてDaily Blogを
+手動実行すると、その回だけYouTubeの4チャンネルへ直接ライブ接続を試せます
+（`DAILY_BLOG_SOURCES_FILTER`環境変数）。通常のスケジュール実行では常にキャッシュ経由
+（`all`）です。
+
+### セルフホストランナーのセットアップ（初回のみ）
+
+1. リポジトリの Settings → Actions → Runners → “New self-hosted runner” を開く
+2. 表示されるコマンドを、自宅ネットワークに接続するPCのターミナルにコピペ実行
+3. Node.js 24とgitがそのPCに入っていることを確認（`actions/setup-node`がNodeは
+   自動導入しますが、gitは事前にインストールされている必要があります）
+4. `run.sh`（Windowsは`run.cmd`）を実行してランナーを起動したままにしておく
+
+このリポジトリは自分だけが変更する非公開の業務サイトなので、セルフホストランナーを
+使っても安全です（不特定多数がPRを送れる公開リポジトリでは使わないでください）。
 
 ## 記事JSON
 

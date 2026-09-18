@@ -3,20 +3,26 @@ const fs = require("fs");
 const { selectTopic, TopicError } = require("./topic-selector");
 const { generateArticle } = require("./article-generator");
 const { saveArticleDraft } = require("./article-writer");
-const { collectLatestInfo, DEFAULT_SOURCES } = require("./latest-info");
+const { collectLatestInfo, DEFAULT_SOURCES, loadYoutubeCache } = require("./latest-info");
+
+const OFFICIAL_SOURCES = DEFAULT_SOURCES.filter(source => source.kind !== "video");
+const VIDEO_SOURCES = DEFAULT_SOURCES.filter(source => source.kind === "video");
 
 async function prepareDailyBlog({now = new Date(), env = process.env, request, articleRequest, load,
-  collect = collectLatestInfo, save = saveArticleDraft, articlesDir} = {}) {
+  collect = collectLatestInfo, loadCache = loadYoutubeCache, save = saveArticleDraft, articlesDir} = {}) {
   const localDate = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
   }).format(now);
-  // Debugging knob only: workflow_dispatch can isolate the YouTube sources to
-  // check they still fetch, without changing the scheduled run's normal sources.
-  const sourcesOverride = env.DAILY_BLOG_SOURCES_FILTER === "video_only"
-    ? DEFAULT_SOURCES.filter(source => source.kind === "video") : undefined;
+  // GitHub's shared cloud runners get intermittently blocked fetching YouTube
+  // feeds directly (see docs/daily-blog.md), so the scheduled run never live-fetches
+  // them: it reads the cache a self-hosted runner keeps refreshed instead.
+  // workflow_dispatch can still isolate a live YouTube-only fetch for debugging.
+  const videoOnly = env.DAILY_BLOG_SOURCES_FILTER === "video_only";
+  const sources = videoOnly ? VIDEO_SOURCES : OFFICIAL_SOURCES;
+  const extraCandidates = videoOnly ? [] : loadCache({now});
   let latest = {candidates:[],attemptedSources:0,successfulSources:0};
   try {
-    const collected = await collect(sourcesOverride ? {now, sources: sourcesOverride} : {now});
+    const collected = await collect({now, sources, extraCandidates});
     if (collected && Array.isArray(collected.candidates)) latest = collected;
   } catch {
     // Collection is optional. Gemini's established evergreen path remains available.

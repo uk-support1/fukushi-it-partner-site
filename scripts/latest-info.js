@@ -1,5 +1,8 @@
 "use strict";
 
+const fs = require("fs");
+const path = require("path");
+
 // "video" sources are individual creators' commentary/experience, not official
 // documents; article-generator.js treats them with extra care (see `kind`).
 const DEFAULT_SOURCES = Object.freeze([
@@ -124,7 +127,7 @@ async function enrichCandidate(candidate, fetchImpl) {
   finally { clearTimeout(timer); }
 }
 
-async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date(), sources = DEFAULT_SOURCES, limit = 10} = {}) {
+async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date(), sources = DEFAULT_SOURCES, limit = 10, extraCandidates = []} = {}) {
   const settled = await Promise.allSettled(sources.map(source => fetchFeed(source, fetchImpl)));
   // A week keeps articles feeling timely; the evergreen fallback already covers
   // days when nothing relevant published this recently (see topic-selector.js).
@@ -140,6 +143,16 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
       }
     }
   });
+  // Pre-fetched candidates (e.g. the self-hosted YouTube cache) go through the
+  // same relevance/freshness/dedup pipeline as a live-fetched source would.
+  for (const item of extraCandidates) {
+    if (!item || typeof item.title !== "string" || typeof item.publishedAt !== "string" || !safeOfficialUrl(item.url)) continue;
+    const score = relevance(item);
+    const time = Date.parse(item.publishedAt);
+    if (score > 0 && time >= cutoff && time <= now.getTime() + 24 * 60 * 60 * 1000) {
+      rows.push({...item, score, priority: item.priority ?? 3});
+    }
+  }
   const seenUrls = new Set(), seenTitles = new Set();
   const ranked = rows.sort((a,b) => b.score-a.score || Date.parse(b.publishedAt)-Date.parse(a.publishedAt) || a.priority-b.priority)
     .filter(item => {
@@ -154,4 +167,22 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
     successfulSources:settled.filter(result => result.status === "fulfilled").length };
 }
 
-module.exports = { DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, parseFeed, collectLatestInfo, safeOfficialUrl, relevance, pageSummary };
+const YOUTUBE_CACHE_MAX_AGE_DAYS = 7;
+const YOUTUBE_CACHE_FILE = path.join(__dirname, "..", "data", "youtube-cache.json");
+
+// Populated by the self-hosted youtube-cache workflow (scripts/fetch-youtube-cache.js),
+// which runs on a home network that YouTube does not block, unlike GitHub's
+// shared cloud runners. Stale or missing data safely yields no candidates.
+function loadYoutubeCache({ file = YOUTUBE_CACHE_FILE, now = new Date(), maxAgeDays = YOUTUBE_CACHE_MAX_AGE_DAYS } = {}) {
+  let data;
+  try { data = JSON.parse(fs.readFileSync(file, "utf8")); } catch { return []; }
+  if (!data || typeof data.fetchedAt !== "string" || !Array.isArray(data.candidates)) return [];
+  const age = now.getTime() - Date.parse(data.fetchedAt);
+  if (!Number.isFinite(age) || age < 0 || age > maxAgeDays * 24 * 60 * 60 * 1000) return [];
+  return data.candidates.filter(item => item && typeof item.title === "string" && typeof item.url === "string" &&
+    typeof item.publishedAt === "string" && typeof item.source === "string" && typeof item.summary === "string" &&
+    safeOfficialUrl(item.url));
+}
+
+module.exports = { DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, YOUTUBE_CACHE_FILE, YOUTUBE_CACHE_MAX_AGE_DAYS,
+  parseFeed, collectLatestInfo, safeOfficialUrl, relevance, pageSummary, loadYoutubeCache };

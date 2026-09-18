@@ -1,0 +1,37 @@
+name: YouTube Cache
+
+# Refreshes data/youtube-cache.json from a self-hosted runner (a home network),
+# because GitHub's shared cloud runners get intermittently 404/500'd fetching
+# YouTube's channel feeds directly. This workflow is best-effort and fully
+# decoupled from Daily Blog: if the self-hosted runner is offline, this run
+# simply never starts (or times out unclaimed), and Daily Blog keeps
+# publishing normally from stale-or-missing cache, exactly as it does today.
+# It must never share Daily Blog's concurrency group, or an offline runner
+# here could stall that pipeline.
+
+on:
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: youtube-cache
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.ref == 'refs/heads/main'
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fetch the 4 YouTube channels and commit the cache if changed
+        run: node scripts/fetch-youtube-cache.js

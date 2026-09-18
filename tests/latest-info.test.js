@@ -5,7 +5,7 @@ const assert = require("node:assert/strict");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { parseFeed, collectLatestInfo, safeOfficialUrl, DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS } = require("../scripts/latest-info");
+const { parseFeed, collectLatestInfo, safeOfficialUrl, DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, loadYoutubeCache } = require("../scripts/latest-info");
 const { selectTopic, latestTopicSchema } = require("../scripts/topic-selector");
 const { prepareDailyBlog } = require("../scripts/daily-blog");
 
@@ -74,6 +74,30 @@ test("YouTube candidates skip page enrichment (a JS app, not prose) while offici
   assert.equal(youtubeCandidate.summary,"介護職員向けの夜勤対応のコツを紹介する動画です。");
   const officialCandidate=result.candidates.find(item=>item.url==="https://www.mhlw.go.jp/c");
   assert.match(officialCandidate.summary,/厚生労働省の公式ページ本文/);
+});
+
+test("collectLatestInfo merges extraCandidates through the same relevance/freshness/dedup pipeline",async()=>{
+  const fresh={title:"就労移行支援の見学ポイント",url:"https://www.youtube.com/watch?v=cached1",publishedAt:"2026-09-16T00:00:00.000Z",source:"WithYouチャンネル",summary:"就労移行支援の見学で確認したい点を紹介します。",kind:"video"};
+  const stale={title:"古い動画",url:"https://www.youtube.com/watch?v=stale",publishedAt:"2026-01-01T00:00:00.000Z",source:"WithYouチャンネル",summary:"障害福祉に関する古い動画です。"};
+  const irrelevant={title:"今日のランチ",url:"https://www.youtube.com/watch?v=off-topic",publishedAt:"2026-09-16T00:00:00.000Z",source:"WithYouチャンネル",summary:"今日食べたお昼ご飯の感想を話す雑談回です。"};
+  const unsafeHost={title:"許可されていないホスト",url:"https://example.com/a",publishedAt:"2026-09-16T00:00:00.000Z",source:"不明"};
+  const result=await collectLatestInfo({now:new Date("2026-09-17T00:00:00Z"),sources:[],fetchImpl:async()=>{throw new Error("no live sources expected");},
+    extraCandidates:[fresh,stale,unsafeHost,irrelevant]});
+  assert.deepEqual(result.candidates.map(item=>item.url),["https://www.youtube.com/watch?v=cached1"]);
+});
+
+test("loadYoutubeCache returns fresh cached candidates and safely ignores missing, stale, or corrupt files",t=>{
+  const file=path.join(fs.mkdtempSync(path.join(os.tmpdir(),"youtube-cache-")),"youtube-cache.json");
+  t.after(()=>fs.rmSync(path.dirname(file),{recursive:true,force:true}));
+  assert.deepEqual(loadYoutubeCache({file}),[]);
+  const candidate={title:"障がい者施設のクッキーについて",url:"https://www.youtube.com/watch?v=k596ZRNsvsU",publishedAt:"2026-09-16T09:00:39.000Z",source:"精神保健福祉士うさぎ",summary:"福祉施設に関する動画です。",kind:"video"};
+  fs.writeFileSync(file,JSON.stringify({fetchedAt:"2026-09-16T09:00:00.000Z",candidates:[candidate]}));
+  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-17T00:00:00Z")}),[candidate]);
+  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-24T00:00:00Z")}),[],"9 days old exceeds the 7-day default");
+  fs.writeFileSync(file,JSON.stringify({fetchedAt:"2026-09-16T09:00:00.000Z",candidates:[{...candidate,url:"https://example.com/not-allowed"}]}));
+  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-17T00:00:00Z")}),[]);
+  fs.writeFileSync(file,"not json");
+  assert.deepEqual(loadYoutubeCache({file}),[]);
 });
 
 test("Collector tolerates one failed feed and returns three to ten relevant recent candidates",async()=>{
