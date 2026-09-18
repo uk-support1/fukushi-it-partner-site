@@ -5,7 +5,7 @@ const assert = require("node:assert/strict");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { parseFeed, collectLatestInfo, safeOfficialUrl } = require("../scripts/latest-info");
+const { parseFeed, collectLatestInfo, safeOfficialUrl, DEFAULT_SOURCES, ALLOWED_HOSTS } = require("../scripts/latest-info");
 const { selectTopic, latestTopicSchema } = require("../scripts/topic-selector");
 const { prepareDailyBlog } = require("../scripts/daily-blog");
 
@@ -21,6 +21,13 @@ test("Official RSS/Atom entries are normalized and non-official URLs are rejecte
   const atom=`<feed><entry><title>福祉DX</title><link href="https://www.digital.go.jp/news/a"/><updated>2026-09-10T00:00:00Z</updated><summary>事業者向け情報</summary></entry></feed>`;
   assert.equal(parseFeed(atom,{name:"デジタル庁"})[0].url,"https://www.digital.go.jp/news/a");
   assert.equal(safeOfficialUrl("https://example.com/fake"),null);
+});
+
+test("the welfare-industry WAM NET source is allowed and generic news sites like Yahoo are not",()=>{
+  assert.ok(DEFAULT_SOURCES.some(item=>item.url==="https://www.wam.go.jp/gyoseiShiryou/new_rss"));
+  assert.ok(ALLOWED_HOSTS.has("www.wam.go.jp"));
+  assert.equal(safeOfficialUrl("https://news.yahoo.co.jp/pickup/1"),null);
+  assert.equal(safeOfficialUrl("https://www.wam.go.jp/gyoseiShiryou/detail?gno=1"),"https://www.wam.go.jp/gyoseiShiryou/detail?gno=1");
 });
 
 test("Collector tolerates one failed feed and returns three to ten relevant recent candidates",async()=>{

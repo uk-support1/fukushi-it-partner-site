@@ -2,10 +2,11 @@
 
 const DEFAULT_SOURCES = Object.freeze([
   { name: "厚生労働省", url: "https://www.mhlw.go.jp/stf/news.rdf", priority: 1 },
+  { name: "福祉医療機構（WAM NET）", url: "https://www.wam.go.jp/gyoseiShiryou/new_rss", priority: 1 },
   { name: "デジタル庁", url: "https://www.digital.go.jp/rss/news.xml", priority: 2 },
   { name: "内閣府", url: "https://www.cao.go.jp/rss/news.rdf", priority: 4 }
 ]);
-const ALLOWED_HOSTS = new Set(["www.mhlw.go.jp", "www.digital.go.jp", "www.cao.go.jp"]);
+const ALLOWED_HOSTS = new Set(["www.mhlw.go.jp", "www.wam.go.jp", "www.digital.go.jp", "www.cao.go.jp"]);
 const RELEVANT_TERMS = [
   "障害", "福祉", "就労", "雇用", "共同生活", "グループホーム", "精神", "こども", "子ども",
   "デジタル", "dx", "ai", "it", "情報", "システム", "業務", "効率", "広報", "ウェブ", "web",
@@ -114,7 +115,9 @@ async function enrichCandidate(candidate, fetchImpl) {
 
 async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date(), sources = DEFAULT_SOURCES, limit = 10} = {}) {
   const settled = await Promise.allSettled(sources.map(source => fetchFeed(source, fetchImpl)));
-  const cutoff = now.getTime() - 60 * 24 * 60 * 60 * 1000;
+  // A week keeps articles feeling timely; the evergreen fallback already covers
+  // days when nothing relevant published this recently (see topic-selector.js).
+  const cutoff = now.getTime() - 7 * 24 * 60 * 60 * 1000;
   const rows = [];
   settled.forEach((result, index) => {
     if (result.status !== "fulfilled") return;
