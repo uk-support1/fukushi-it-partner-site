@@ -26,6 +26,9 @@ const RELEVANT_TERMS = [
 ];
 const MAX_FEED_BYTES = 1_000_000;
 const MAX_PAGE_BYTES = 1_500_000;
+// Out of the final candidate list (max 10), no single source may take more
+// than this many seats on the first pass. See collectLatestInfo.
+const PER_SOURCE_CAP = 3;
 
 function decodeXml(value) {
   return String(value || "")
@@ -154,13 +157,25 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
     }
   }
   const seenUrls = new Set(), seenTitles = new Set();
-  const ranked = rows.sort((a,b) => b.score-a.score || Date.parse(b.publishedAt)-Date.parse(a.publishedAt) || a.priority-b.priority)
+  const deduped = rows.sort((a,b) => b.score-a.score || Date.parse(b.publishedAt)-Date.parse(a.publishedAt) || a.priority-b.priority)
     .filter(item => {
       const title = item.title.normalize("NFKC").replace(/\s+/g, "").toLowerCase();
       if (seenUrls.has(item.url) || seenTitles.has(title)) return false;
       seenUrls.add(item.url); seenTitles.add(title); return true;
-    }).slice(0, Math.max(3, Math.min(10, limit)))
-    .map(({score,priority,...item}) => item);
+    });
+  const maxTotal = Math.max(3, Math.min(10, limit));
+  // A single prolific source (e.g. a channel that repeats the same promotional
+  // boilerplate in every description, inflating relevance for unrelated
+  // videos too) must not crowd out every other source. Cap it, but only after
+  // every source has had a fair shot at PER_SOURCE_CAP slots each; overflow
+  // fills any remaining seats so this never shrinks the candidate count.
+  const sourceCounts = new Map(), primary = [], overflow = [];
+  for (const item of deduped) {
+    const count = sourceCounts.get(item.source) || 0;
+    if (count < PER_SOURCE_CAP) { primary.push(item); sourceCounts.set(item.source, count + 1); }
+    else overflow.push(item);
+  }
+  const ranked = [...primary, ...overflow].slice(0, maxTotal).map(({score,priority,...item}) => item);
   const enrichable = item => { try { return !NO_ENRICH_HOSTS.has(new URL(item.url).hostname); } catch { return false; } };
   const candidates = await Promise.all(ranked.map(item => enrichable(item) ? enrichCandidate(item,fetchImpl) : item));
   return { candidates, attemptedSources:sources.length,
@@ -184,5 +199,5 @@ function loadYoutubeCache({ file = YOUTUBE_CACHE_FILE, now = new Date(), maxAgeD
     safeOfficialUrl(item.url));
 }
 
-module.exports = { DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, YOUTUBE_CACHE_FILE, YOUTUBE_CACHE_MAX_AGE_DAYS,
+module.exports = { DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, YOUTUBE_CACHE_FILE, YOUTUBE_CACHE_MAX_AGE_DAYS, PER_SOURCE_CAP,
   parseFeed, collectLatestInfo, safeOfficialUrl, relevance, pageSummary, loadYoutubeCache };

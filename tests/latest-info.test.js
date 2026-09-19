@@ -5,7 +5,7 @@ const assert = require("node:assert/strict");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { parseFeed, collectLatestInfo, safeOfficialUrl, DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, loadYoutubeCache } = require("../scripts/latest-info");
+const { parseFeed, collectLatestInfo, safeOfficialUrl, DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, loadYoutubeCache, PER_SOURCE_CAP } = require("../scripts/latest-info");
 const { selectTopic, latestTopicSchema } = require("../scripts/topic-selector");
 const { prepareDailyBlog } = require("../scripts/daily-blog");
 
@@ -84,6 +84,30 @@ test("collectLatestInfo merges extraCandidates through the same relevance/freshn
   const result=await collectLatestInfo({now:new Date("2026-09-17T00:00:00Z"),sources:[],fetchImpl:async()=>{throw new Error("no live sources expected");},
     extraCandidates:[fresh,stale,unsafeHost,irrelevant]});
   assert.deepEqual(result.candidates.map(item=>item.url),["https://www.youtube.com/watch?v=cached1"]);
+});
+
+test("no single source crowds out the others (e.g. one channel's boilerplate scoring high on every video)",async()=>{
+  const day=i=>`2026-09-${String(10+i).padStart(2,"0")}T00:00:00.000Z`;
+  const prolific=Array.from({length:12},(_,i)=>({title:`宣伝文つき動画${i}`,url:`https://www.youtube.com/watch?v=prolific${i}`,
+    publishedAt:day(i%7),source:"多作チャンネル",summary:"障害福祉就労雇用精神支援に関するお知らせです。",kind:"video"}));
+  const rareSources=["A","B","C","D"];
+  const rare=rareSources.flatMap(name=>Array.from({length:2},(_,i)=>({title:`${name}の動画${i}`,url:`https://www.youtube.com/watch?v=${name}${i}`,
+    publishedAt:day(i),source:`チャンネル${name}`,summary:"福祉の現場を紹介します。",kind:"video"})));
+  const result=await collectLatestInfo({now:new Date("2026-09-17T00:00:00Z"),sources:[],fetchImpl:async()=>{throw new Error("no live sources expected");},
+    extraCandidates:[...prolific,...rare]});
+  assert.equal(result.candidates.length,10);
+  const counts={};
+  result.candidates.forEach(item=>{counts[item.source]=(counts[item.source]||0)+1;});
+  assert.equal(counts["多作チャンネル"],PER_SOURCE_CAP);
+  assert.equal(Object.keys(counts).filter(source=>source!=="多作チャンネル").length,4,"all 4 lower-scoring channels still get represented");
+});
+
+test("the per-source cap relaxes automatically when there are not enough other candidates to fill the list",async()=>{
+  const prolific=Array.from({length:6},(_,i)=>({title:`動画${i}`,url:`https://www.youtube.com/watch?v=solo${i}`,
+    publishedAt:"2026-09-16T00:00:00.000Z",source:"唯一のチャンネル",summary:"福祉と障害に関する動画です。",kind:"video"}));
+  const result=await collectLatestInfo({now:new Date("2026-09-17T00:00:00Z"),sources:[],fetchImpl:async()=>{throw new Error("no live sources expected");},
+    extraCandidates:prolific});
+  assert.equal(result.candidates.length,6,"never fewer candidates than are actually available, even from one source");
 });
 
 test("loadYoutubeCache returns fresh cached candidates and safely ignores missing, stale, or corrupt files",t=>{
