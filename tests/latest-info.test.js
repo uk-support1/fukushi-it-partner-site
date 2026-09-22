@@ -6,7 +6,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const { parseFeed, collectLatestInfo, safeOfficialUrl, DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, loadYoutubeCache, PER_SOURCE_CAP } = require("../scripts/latest-info");
-const { selectTopic, latestTopicSchema } = require("../scripts/topic-selector");
+const { selectTopic, latestTopicSchema, normalizeSourceUrl } = require("../scripts/topic-selector");
 const { prepareDailyBlog } = require("../scripts/daily-blog");
 
 const source = {name:"厚生労働省",url:"https://www.mhlw.go.jp/stf/news.rdf",priority:1};
@@ -192,4 +192,30 @@ test("A source URL already used by the previous article is removed before topic 
       ?JSON.stringify({title:"福祉事業所の広報計画",category:"福祉事業所の広報",target:"福祉事業者",keyword:"福祉 広報",reason:"別テーマ",angle:"月次計画",service:"広報支援"})
       :JSON.stringify({comparisons:[{slug:"previous",duplicate:false,reason:"異なるテーマ"}]});}});
   assert.equal(result.contentMode,"evergreen");
+});
+
+test("normalizeSourceUrl treats a YouTube Shorts URL and its /watch?v= equivalent as the same source",()=>{
+  assert.equal(normalizeSourceUrl("https://www.youtube.com/shorts/abc123"),normalizeSourceUrl("https://www.youtube.com/watch?v=abc123"));
+  assert.notEqual(normalizeSourceUrl("https://www.youtube.com/shorts/abc123"),normalizeSourceUrl("https://www.youtube.com/shorts/xyz789"));
+  assert.equal(normalizeSourceUrl("https://www.mhlw.go.jp/a"),"https://www.mhlw.go.jp/a","non-YouTube URLs pass through unchanged");
+});
+
+test("Gemini echoing the /watch?v= form of a candidate given as /shorts/ still validates and resolves to that candidate (regression: production INVALID_AI_SOURCE)",async()=>{
+  const shortsCandidate={title:"障がい者施設が作ったクッキーについて",url:"https://www.youtube.com/shorts/k596ZRNsvsU",
+    publishedAt:"2026-09-16T09:00:39.000Z",source:"精神保健福祉士うさぎ",summary:"福祉施設に関する動画です。",kind:"video"};
+  const others=["b","c"].map(id=>({title:"他の候補"+id,url:`https://www.mhlw.go.jp/${id}`,publishedAt:"2026-09-15T00:00:00Z",source:"厚生労働省",summary:"福祉"}));
+  const latest=[shortsCandidate,...others];
+  let count=0;
+  const result=await selectTopic({apiKey:"dummy",localDate:"2026-09-17",latestInfo:latest,load:()=>[],
+    request:async args=>{count++;
+      if(count===1){
+        assert.deepEqual(args.input.latestInformationCandidates,latest);
+        return JSON.stringify({title:"福祉施設のうわさ話にどう向き合うか",category:"福祉事業所の広報",target:"福祉事業者",keyword:"福祉 施設 噂",
+          reason:"SNSでの誤解に備える",angle:"事実確認の姿勢",service:"広報支援",
+          sourceUrls:["https://www.youtube.com/watch?v=k596ZRNsvsU"],importance:"standard"});
+      }
+      return JSON.stringify({comparisons:[]});
+    }});
+  assert.equal(result.contentMode,"latest_info");
+  assert.deepEqual(result.sources,[shortsCandidate]);
 });

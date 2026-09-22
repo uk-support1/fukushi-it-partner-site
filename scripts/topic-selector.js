@@ -66,16 +66,36 @@ function validateTopic(raw, articles) {
   }
   return value;
 }
+// A YouTube video is reachable at both /watch?v=ID and /shorts/ID; Gemini
+// sometimes echoes back whichever canonical form it prefers instead of the
+// exact candidate URL it was given, which a byte-for-byte match would then
+// wrongly reject as a hallucinated source (observed in production). Compare
+// by video ID instead so either form of the same video still matches.
+function normalizeSourceUrl(url) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname !== "www.youtube.com") return url;
+    const shortsMatch = parsed.pathname.match(/^\/shorts\/([\w-]+)$/);
+    if (shortsMatch) return "youtube:" + shortsMatch[1];
+    if (parsed.pathname === "/watch") {
+      const id = parsed.searchParams.get("v");
+      if (id) return "youtube:" + id;
+    }
+    return url;
+  } catch { return url; }
+}
 function validateLatestTopic(raw, articles, latestInfo) {
   const value = parseJson(raw); objectKeys(value, latestFields);
   for (const f of fields) validText(value[f], f === "title" ? 140 : 1000);
   if (!CATEGORIES.includes(value.category) || !["standard", "high"].includes(value.importance) ||
       !Array.isArray(value.sourceUrls) || value.sourceUrls.length < 1 || value.sourceUrls.length > 3) fail("INVALID_AI_FIELDS");
-  const allowed = new Map(latestInfo.map(item => [item.url, item]));
+  const allowed = new Map(latestInfo.map(item => [normalizeSourceUrl(item.url), item]));
   const urls = new Set();
   for (const url of value.sourceUrls) {
-    if (typeof url !== "string" || !allowed.has(url) || urls.has(url)) fail("INVALID_AI_SOURCE");
-    urls.add(url);
+    if (typeof url !== "string") fail("INVALID_AI_SOURCE");
+    const key = normalizeSourceUrl(url);
+    if (!allowed.has(key) || urls.has(key)) fail("INVALID_AI_SOURCE");
+    urls.add(key);
   }
   for(const article of articles) {
     const exact = normalize(value.title) === normalize(article.title);
@@ -196,7 +216,7 @@ async function selectTopic({apiKey, model, localDate, latestInfo = [], request =
         instructions: common + "あなたの役割は独立した重複チェックです。候補のreasonを信用せず、タイトル・angle・keywordの実質的な問いと解決策を各既存記事と比較します。同じ読者の課題にほぼ同じ答えとなるものは、表現が違ってもduplicate:trueとします。判断が曖昧な場合もtrueにします。既存記事を1件も省略せず、各slugについてduplicateと判断根拠をJSONで返してください。",
         input: {candidate:topic,existingArticles:articles} });
       validateReview(review,articles);
-      const sources = timely ? topic.sourceUrls.map(url => availableLatestInfo.find(item => item.url === url)) : [];
+      const sources = timely ? topic.sourceUrls.map(url => availableLatestInfo.find(item => normalizeSourceUrl(item.url) === normalizeSourceUrl(url))) : [];
       return {topic,existingArticlesCount:articles.length,contentMode:timely ? "latest_info" : "evergreen",sources,
         recentArticleStyles:require("./lib/editorial").recentStyles(articles)};
     } catch (error) {
@@ -207,4 +227,4 @@ async function selectTopic({apiKey, model, localDate, latestInfo = [], request =
     }
   }
 }
-module.exports={TopicError,CATEGORIES,existingArticleInfo,validateTopic,validateLatestTopic,validateReview,requestGemini,selectTopic,topicSchema,latestTopicSchema,reviewSchema,resolveGeminiModel,DEFAULT_GEMINI_MODEL,ALLOWED_GEMINI_MODELS};
+module.exports={TopicError,CATEGORIES,existingArticleInfo,validateTopic,validateLatestTopic,validateReview,requestGemini,selectTopic,topicSchema,latestTopicSchema,reviewSchema,resolveGeminiModel,DEFAULT_GEMINI_MODEL,ALLOWED_GEMINI_MODELS,normalizeSourceUrl};
