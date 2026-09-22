@@ -188,6 +188,11 @@ async function generateArticle({apiKey, model, localDate, topic, sources = [], r
   // Gemini fetches and understands the video itself server-side (confirmed
   // compatible with responseJsonSchema); this grounds the article in what the
   // video actually says instead of only the shallow RSS-description summary.
+  // Attaching it costs ~65-90k input tokens per call (measured), and the free
+  // tier's token quota is per-minute: re-attaching on every one of the up to 3
+  // retry attempts blew through it and failed Daily Blog outright (observed in
+  // production). Attach it only once; a style/duplicate-heading retry revises
+  // the already video-grounded previousArticle text, not the raw video again.
   const videoFileParts = hasVideoSource
     ? sources.filter(item => item && item.kind === "video" && typeof item.url === "string")
         .map(item => ({ fileData: { fileUri: item.url } }))
@@ -196,7 +201,7 @@ async function generateArticle({apiKey, model, localDate, topic, sources = [], r
   let previousArticle;
   let lastFailureStage;
   for(let attempt=0;attempt<3;attempt++) {
-  const raw = await request({apiKey, model, schema:articleSchema, instructions, fileParts: videoFileParts, input:{
+  const raw = await request({apiKey, model, schema:articleSchema, instructions, fileParts: attempt===0 ? videoFileParts : [], input:{
     localDate,
     topic,
     buhioImages: BUHIO_IMAGES,

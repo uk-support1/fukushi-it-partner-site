@@ -213,6 +213,20 @@ test("A video-kind source adds non-authoritative-commentary guidance and attache
   assert.ok(!officialInstructions.includes("個人の配信者"));
   assert.deepEqual(officialFileParts,[]);
 });
+test("the video is attached only on the first generation attempt, never on style retries (avoids burning the free-tier token quota per attempt)",async()=>{
+  const videoSources=[{title:"動画タイトル",url:"https://www.youtube.com/watch?v=abc",publishedAt:"2026-09-15T00:00:00.000Z",source:"精神保健福祉士うさぎ",summary:"配信者の説明",kind:"video"}];
+  const duplicateHistory=[{slug:"old",title:"別の記事",headings:["応募する方が知りたい情報を整理する"],comment:"既存のコメント",summary:"既存の記事です"}];
+  const seenFileParts=[];
+  await assert.rejects(generateArticle({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,localDate:"2026-09-12",topic,sources:videoSources,
+    recentArticleStyles:duplicateHistory,diagnosticLog:()=>{},request:async args=>{
+      seenFileParts.push(args.fileParts);
+      return JSON.stringify(generatedArticle);
+    }}));
+  assert.equal(seenFileParts.length,3);
+  assert.deepEqual(seenFileParts[0],[{fileData:{fileUri:"https://www.youtube.com/watch?v=abc"}}]);
+  assert.deepEqual(seenFileParts[1],[]);
+  assert.deepEqual(seenFileParts[2],[]);
+});
 test("Article validation rejects empty body, malformed JSON, missing fields and changed title",()=>{
   assert.deepEqual(validateArticle(JSON.stringify(generatedArticle),topic),generatedArticle);
   for(const raw of ["not JSON",JSON.stringify({...generatedArticle,bodyMarkdown:""}),
