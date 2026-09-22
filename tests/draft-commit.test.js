@@ -91,7 +91,7 @@ function initRepository(t) {
   return { root, remote, work };
 }
 
-function createDraft(fixture, { inlineImage = null, inlineImageCategory = "recruit", ...overrides } = {}) {
+function createDraft(fixture, { inlineImage = null, inlineImageCategory = "recruit", image = null, ...overrides } = {}) {
   const date = "2026-09-12";
   const slug = "article-2026-09-12-abcdef123456";
   const filename = slug + ".md";
@@ -107,7 +107,7 @@ function createDraft(fixture, { inlineImage = null, inlineImageCategory = "recru
     category_label: topic.category,
     title: article.title,
     date,
-    image: "assets/images/services/service-homepage.jpg",
+    image: image || "assets/images/services/service-homepage.jpg",
     image_alt: "福祉事業所のホームページ活用を支援するイメージ",
     ...(inlineImage ? { inline_image: inlineImage, inline_image_alt: "採用活動を補足するイメージ",
       inline_image_category: inlineImageCategory, inline_image_series: inlineImageCategory } : {}),
@@ -162,6 +162,35 @@ test("Only the generated Markdown is committed and pushed; unrelated files remai
     /published: false/);
   assert.equal(fs.readFileSync(path.join(fixture.work, "content", "articles", "existing.md"), "utf8"), existingBefore);
   assert.match(git(["status", "--short"], fixture.work), /\?\? unrelated\.tmp/);
+});
+
+test("A video thumbnail hero image is committed in the same commit as the draft, leaving nothing untracked", t => {
+  const fixture = initRepository(t);
+  const imagePath = "assets/images/blog-library/hero-video/tiRjtXeAa-4.jpg";
+  fs.mkdirSync(path.join(fixture.work, "assets", "images", "blog-library", "hero-video"), { recursive: true });
+  fs.writeFileSync(path.join(fixture.work, imagePath), "fake-jpeg-bytes");
+  const draft = createDraft(fixture, { image: imagePath });
+  const outcome = commitDraft({ resultFile: draft.resultFile, cwd: fixture.work });
+  assert.equal(outcome.status, "draft_committed");
+  assert.equal(outcome.image, imagePath);
+  assert.deepEqual(
+    git(["diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD"], fixture.work).split(/\r?\n/).sort(),
+    [draft.relativePath, imagePath].sort());
+  // The whole point: after the commit, nothing about this draft is left
+  // untracked (this is exactly what production hit on 2026-09-22, where the
+  // thumbnail was downloaded but never committed and later failed publish-draft.js).
+  assert.equal(git(["status", "--porcelain"], fixture.work), "");
+  assert.match(git(["--git-dir", fixture.remote, "show", "main:" + imagePath], fixture.root),
+    /fake-jpeg-bytes/);
+});
+
+test("A missing video thumbnail file fails safely instead of committing a broken image reference", t => {
+  const fixture = initRepository(t);
+  const imagePath = "assets/images/blog-library/hero-video/missing.jpg";
+  const draft = createDraft(fixture, { image: imagePath });
+  assert.throws(() => commitDraft({ resultFile: draft.resultFile, cwd: fixture.work }),
+    { code: "DRAFT_IMAGE_MISSING" });
+  assert.equal(git(["diff", "--cached", "--name-only"], fixture.work), "");
 });
 
 test("Draft validation reproduces the final body from saved inline-image metadata", t => {
@@ -317,7 +346,7 @@ test("A rejected normal push is reported as failure and never treated as committ
 
 test("Git implementation uses an explicit path and contains no broad add or force push", () => {
   const source = fs.readFileSync(path.join(ROOT, "scripts", "commit-draft.js"), "utf8");
-  assert.match(source, /\["add", "--", draft\.relativePath\]/);
+  assert.match(source, /\["add", "--", \.\.\.filesToAdd\]/);
   assert.doesNotMatch(source, /\["add",\s*"\."\]/);
   assert.doesNotMatch(source, /\["add",\s*"-A"\]/);
   assert.doesNotMatch(source, /--force|push",\s*"-f"/);

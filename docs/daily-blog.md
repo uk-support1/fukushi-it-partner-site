@@ -171,6 +171,17 @@ Daily Blog自体の毎日の公開は一切影響を受けません（既存の�
 そのまま使われ、通常の候補選定（`imageLibrary.selectImage`）を経由しません。記事本文中の
 挿し込み画像（インライン画像）には影響しません。
 
+サムネイル画像ファイルは、その記事のMarkdown下書きと**同じcommit**で
+`scripts/commit-draft.js`がコミットします（`draftImage()`が
+`draft.metadata.image`から`hero-video/`配下のパスを検出し、下書きファイルと
+まとめてstage・commitします）。2026-09-22の手動テストで、これを怠って
+サムネイル画像だけがコミットされずuntrackedのまま残り、後続の
+`scripts/publish-draft.js`の「作業ツリーがクリーンであること」チェックに
+引っかかって公開が失敗する事例が実際に発生しました。`scripts/publish-draft.js`
+側も、下書きcommitに含まれる想定ファイル一覧にこの画像（`committed.image`）を
+組み込むよう対応済みです。動画サムネイルを使わない通常の記事では
+`committed.image`は`null`で、挙動は変わりません。
+
 ネットワーク失敗、HTTP以外のステータス、`image/jpeg`以外のcontent-type、2MB超過
 （宣言サイズ・実サイズどちらでも）、12秒のタイムアウト、`i.ytimg.com`以外へのリダイレクトなど、
 どのような失敗が起きてもnullを返すだけで例外を投げません（`scripts/daily-blog.js`でも

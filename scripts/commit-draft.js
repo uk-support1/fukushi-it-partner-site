@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const lib = require("./lib/articles");
 const { sourceSection, insertInlineImage } = require("./article-writer");
+const { THUMBNAIL_DIR } = require("./lib/video-thumbnail");
 
 class DraftCommitError extends Error {
   constructor(code) {
@@ -31,6 +32,10 @@ function defaultRunGit(args, { cwd, failureCode = "DRAFT_GIT_FAILED", allowFailu
 
 function nulList(value) {
   return String(value || "").split("\0").filter(Boolean);
+}
+
+function sameList(actual, expected) {
+  return actual.slice().sort().join("\0") === expected.slice().sort().join("\0");
 }
 
 function readResult(resultFile) {
@@ -89,6 +94,28 @@ function validateDraft(result, repoRoot, runGit) {
   return { filePath, relativePath };
 }
 
+// A video-sourced draft's hero is a thumbnail downloaded straight to disk by
+// scripts/lib/video-thumbnail.js (see docs/daily-blog.md); it never goes
+// through the curated image library, so nothing else commits it. It must
+// ride in the same commit as the draft or the file stays untracked forever
+// and later trips publish-draft.js's clean-repository check.
+function draftImage(result, repoRoot, runGit) {
+  const image = result.draft && result.draft.metadata && result.draft.metadata.image;
+  if (typeof image !== "string" || !image.startsWith(THUMBNAIL_DIR + "/")) return null;
+  if (!/^[\w-]+\.jpg$/.test(image.slice(THUMBNAIL_DIR.length + 1))) fail("DRAFT_IMAGE_PATH_INVALID");
+  const filePath = path.resolve(repoRoot, image);
+  if (path.relative(repoRoot, filePath).split(path.sep).join("/") !== image) fail("DRAFT_IMAGE_PATH_INVALID");
+  let stat;
+  try { stat = fs.lstatSync(filePath); } catch { fail("DRAFT_IMAGE_MISSING"); }
+  if (!stat.isFile() || stat.isSymbolicLink()) fail("DRAFT_IMAGE_PATH_INVALID");
+  if (runGit(["ls-files", "--error-unmatch", "--", image],
+      { cwd: repoRoot, allowFailure: true }) !== null) fail("DRAFT_IMAGE_NOT_NEW");
+  const untracked = nulList(runGit(["ls-files", "--others", "--exclude-standard", "-z", "--", image],
+    { cwd: repoRoot }));
+  if (untracked.length !== 1 || untracked[0] !== image) fail("DRAFT_IMAGE_NOT_NEW");
+  return image;
+}
+
 function requireCleanTrackedState(repoRoot, runGit) {
   if (nulList(runGit(["diff", "--name-only", "-z"], { cwd: repoRoot })).length ||
       nulList(runGit(["diff", "--cached", "--name-only", "-z"], { cwd: repoRoot })).length) {
@@ -105,18 +132,19 @@ function commitDraft({ resultFile = process.env.DAILY_BLOG_RESULT_FILE, cwd = pr
   if (branch !== "main") fail("DRAFT_BRANCH_INVALID");
   requireCleanTrackedState(repoRoot, runGit);
   const draft = validateDraft(result, repoRoot, runGit);
+  const image = draftImage(result, repoRoot, runGit);
+  const filesToAdd = image ? [draft.relativePath, image] : [draft.relativePath];
 
   runGit(["fetch", "--no-tags", "origin", "main"], { cwd: repoRoot, failureCode: "DRAFT_FETCH_FAILED" });
   const baseCommit = String(runGit(["rev-parse", "HEAD"], { cwd: repoRoot })).trim();
   const remoteCommit = String(runGit(["rev-parse", "origin/main"], { cwd: repoRoot })).trim();
   if (baseCommit !== remoteCommit) fail("DRAFT_MAIN_CHANGED");
 
-  runGit(["add", "--", draft.relativePath], { cwd: repoRoot, failureCode: "DRAFT_STAGE_FAILED" });
+  runGit(["add", "--", ...filesToAdd], { cwd: repoRoot, failureCode: "DRAFT_STAGE_FAILED" });
   const staged = nulList(runGit(["diff", "--cached", "--name-only", "-z"], { cwd: repoRoot }));
   const stagedAdded = nulList(runGit(["diff", "--cached", "--diff-filter=A", "--name-only", "-z"],
     { cwd: repoRoot }));
-  if (staged.length !== 1 || staged[0] !== draft.relativePath ||
-      stagedAdded.length !== 1 || stagedAdded[0] !== draft.relativePath) fail("DRAFT_STAGE_INVALID");
+  if (!sameList(staged, filesToAdd) || !sameList(stagedAdded, filesToAdd)) fail("DRAFT_STAGE_INVALID");
 
   runGit(["config", "user.name", "github-actions[bot]"], { cwd: repoRoot });
   runGit(["config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], { cwd: repoRoot });
@@ -125,7 +153,7 @@ function commitDraft({ resultFile = process.env.DAILY_BLOG_RESULT_FILE, cwd = pr
   const commit = String(runGit(["rev-parse", "HEAD"], { cwd: repoRoot })).trim();
   const committed = nulList(runGit(["diff-tree", "--no-commit-id", "--name-only", "-r", "-z", commit],
     { cwd: repoRoot }));
-  if (committed.length !== 1 || committed[0] !== draft.relativePath) fail("DRAFT_COMMIT_INVALID");
+  if (!sameList(committed, filesToAdd)) fail("DRAFT_COMMIT_INVALID");
 
   runGit(["fetch", "--no-tags", "origin", "main"], { cwd: repoRoot, failureCode: "DRAFT_FETCH_FAILED" });
   const latestRemote = String(runGit(["rev-parse", "origin/main"], { cwd: repoRoot })).trim();
@@ -140,6 +168,7 @@ function commitDraft({ resultFile = process.env.DAILY_BLOG_RESULT_FILE, cwd = pr
     localDate: result.localDate,
     slug: result.draft.slug,
     file: draft.relativePath,
+    image,
     commit
   };
 }

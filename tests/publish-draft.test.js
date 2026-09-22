@@ -51,7 +51,7 @@ function hashFiles(directory, relativeFiles) {
   ]));
 }
 
-function fixture(t, { imageRoot } = {}) {
+function fixture(t, { imageRoot, videoThumbnail } = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "daily-publish-git-"));
   const remote = path.join(root, "remote.git");
   const work = path.join(root, "work");
@@ -73,10 +73,17 @@ function fixture(t, { imageRoot } = {}) {
     topic,
     date: "2026-09-12",
     directory: path.join(work, "content", "articles"),
-    ...(imageRoot ? { imageRoot } : {})
+    ...(imageRoot ? { imageRoot } : {}),
+    ...(videoThumbnail ? { videoThumbnail } : {})
   });
   const relative = "content/articles/" + saved.filename;
-  git(["add", "--", relative], work);
+  const filesToAdd = [relative];
+  if (videoThumbnail) {
+    fs.mkdirSync(path.dirname(path.join(work, videoThumbnail.image)), { recursive: true });
+    fs.writeFileSync(path.join(work, videoThumbnail.image), "fake-jpeg-bytes");
+    filesToAdd.push(videoThumbnail.image);
+  }
+  git(["add", "--", ...filesToAdd], work);
   git(["commit", "-m", "blog: add daily draft 2026-09-12"], work);
   git(["push", "origin", "main"], work);
   const draftCommit = git(["rev-parse", "HEAD"], work);
@@ -96,6 +103,7 @@ function fixture(t, { imageRoot } = {}) {
     localDate: "2026-09-12",
     slug: saved.slug,
     file: relative,
+    image: videoThumbnail ? videoThumbnail.image : null,
     commit: draftCommit
   };
   const dailyResultFile = path.join(root, "daily.json");
@@ -235,6 +243,23 @@ test("Publishing preserves the saved inline image and only flips the published f
   // byte-identical: publishing only flips the published flag in front matter.
   assert.equal(after.body, before.body);
   assert.equal(afterRaw.replace("published: true", "published: false"), beforeRaw);
+});
+
+test("A video-thumbnail draft (committed with an extra image file) publishes cleanly end to end", t => {
+  const videoThumbnail = { image: "assets/images/blog-library/hero-video/tiRjtXeAa-4.jpg",
+    imageAlt: "", category: "video", series: "video-thumbnail", hash: "deadbeef" };
+  const value = fixture(t, { videoThumbnail });
+  // This is exactly the production failure from 2026-09-22: a video thumbnail
+  // committed alongside the draft must not be treated as a stray untracked
+  // file, and publishing must succeed and leave the image tracked as-is.
+  const result = publishDraft(publishOptions(value));
+  assert.equal(result.status, "publication_committed");
+  assert.equal(fs.readFileSync(path.join(value.work, videoThumbnail.image), "utf8"), "fake-jpeg-bytes");
+  assert.equal(git(["status", "--porcelain"], value.work), "");
+  const after = require("../scripts/lib/articles")
+    .parseFrontmatter(fs.readFileSync(value.saved.filePath, "utf8"));
+  assert.equal(after.data.published, true);
+  assert.equal(after.data.image, videoThumbnail.image);
 });
 
 test("Publication Git commands use explicit files and no broad add, force, merge or rebase", () => {

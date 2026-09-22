@@ -6,6 +6,7 @@ const lib = require("./lib/articles");
 const { generateBlog } = require("./generate-blog");
 const { DraftCommitError, defaultRunGit } = require("./commit-draft");
 const { sourceSection } = require("./article-writer");
+const { THUMBNAIL_DIR } = require("./lib/video-thumbnail");
 
 function fail(code) { throw new DraftCommitError(code); }
 function nulList(value) { return String(value || "").split("\0").filter(Boolean); }
@@ -37,7 +38,12 @@ function validateInputs(daily, committed, repoRoot, runGit) {
       typeof committed.slug !== "string" || !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(committed.slug) ||
       typeof committed.file !== "string" || typeof daily.draft.filePath !== "string" ||
       typeof daily.draft.filename !== "string" || typeof daily.draft.slug !== "string" ||
-      committed.slug !== daily.draft.slug || committed.file !== "content/articles/" + daily.draft.filename) {
+      committed.slug !== daily.draft.slug || committed.file !== "content/articles/" + daily.draft.filename ||
+      (committed.image !== null && typeof committed.image !== "string")) {
+    fail("PUBLICATION_RESULT_INVALID");
+  }
+  if (committed.image !== null &&
+      !new RegExp("^" + THUMBNAIL_DIR.replace(/[/]/g, "\\/") + "/[\\w-]+\\.jpg$").test(committed.image)) {
     fail("PUBLICATION_RESULT_INVALID");
   }
   const expectedPath = path.resolve(repoRoot, committed.file);
@@ -47,12 +53,18 @@ function validateInputs(daily, committed, repoRoot, runGit) {
   let stat;
   try { stat = fs.lstatSync(expectedPath); } catch { fail("PUBLICATION_FILE_MISSING"); }
   if (!stat.isFile() || stat.isSymbolicLink()) fail("PUBLICATION_PATH_INVALID");
+  if (committed.image !== null) {
+    let imageStat;
+    try { imageStat = fs.lstatSync(path.resolve(repoRoot, committed.image)); } catch { fail("PUBLICATION_FILE_MISSING"); }
+    if (!imageStat.isFile() || imageStat.isSymbolicLink()) fail("PUBLICATION_PATH_INVALID");
+  }
 
+  const expectedCommitFiles = committed.image ? [committed.file, committed.image] : [committed.file];
   const committedFiles = nulList(runGit(["diff-tree", "--no-commit-id", "--name-only", "-r", "-z",
     committed.commit], { cwd: repoRoot }));
   const committedAdds = nulList(runGit(["diff-tree", "--no-commit-id", "--diff-filter=A",
     "--name-only", "-r", "-z", committed.commit], { cwd: repoRoot }));
-  if (!sameList(committedFiles, [committed.file]) || !sameList(committedAdds, [committed.file])) {
+  if (!sameList(committedFiles, expectedCommitFiles) || !sameList(committedAdds, expectedCommitFiles)) {
     fail("PUBLICATION_DRAFT_COMMIT_INVALID");
   }
   return { articlePath: expectedPath, articleRelative: committed.file, slug: committed.slug };
