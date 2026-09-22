@@ -4,12 +4,14 @@ const { selectTopic, TopicError } = require("./topic-selector");
 const { generateArticle } = require("./article-generator");
 const { saveArticleDraft } = require("./article-writer");
 const { collectLatestInfo, DEFAULT_SOURCES, loadYoutubeCache } = require("./latest-info");
+const { fetchVideoThumbnail } = require("./lib/video-thumbnail");
 
 const OFFICIAL_SOURCES = DEFAULT_SOURCES.filter(source => source.kind !== "video");
 const VIDEO_SOURCES = DEFAULT_SOURCES.filter(source => source.kind === "video");
 
 async function prepareDailyBlog({now = new Date(), env = process.env, request, articleRequest, load,
-  collect = collectLatestInfo, loadCache = loadYoutubeCache, save = saveArticleDraft, articlesDir} = {}) {
+  collect = collectLatestInfo, loadCache = loadYoutubeCache, fetchThumbnail = fetchVideoThumbnail,
+  save = saveArticleDraft, articlesDir} = {}) {
   const localDate = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
   }).format(now);
@@ -32,7 +34,12 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
     latestInfo:candidates,request,load});
   const article = await generateArticle({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
     topic:selection.topic,sources:selection.sources,recentArticleStyles:selection.recentArticleStyles,request:articleRequest === undefined ? request : articleRequest});
-  const draft = save({article,topic:selection.topic,sources:selection.sources,date:localDate,directory:articlesDir});
+  // A thumbnail is a nice-to-have (see docs/daily-blog.md); fetchThumbnail()
+  // already resolves to null on any failure, so a network hiccup here can
+  // never turn into a failed Daily Blog run, only a normal stock-photo hero.
+  let videoThumbnail = null;
+  try { videoThumbnail = await fetchThumbnail({sources:selection.sources}); } catch { /* stock hero fallback below */ }
+  const draft = save({article,topic:selection.topic,sources:selection.sources,date:localDate,directory:articlesDir,videoThumbnail});
   return {startedAt:now.toISOString(),localDate,timeZone:"Asia/Tokyo",status:"draft_saved",
     articlesCreated:1,shouldPublish:false,latestInformation:{attemptedSources:latest.attemptedSources || 0,
       successfulSources:latest.successfulSources || 0,candidateCount:candidates.length},...selection,article,draft};

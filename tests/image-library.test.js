@@ -90,6 +90,25 @@ test("reuses the oldest eligible candidate only after exhaustion and falls back 
   assert.match(fs.readFileSync(saved.filePath, "utf8"), /assets\/images\/services\/service-ai-support\.jpg/);
 });
 
+test("a precomputed video thumbnail (scripts/lib/video-thumbnail.js) is used as the hero instead of the curated library, but never as the inline image", t => {
+  const value = fixture(t);
+  image(value.root, "hero-ai-01.webp", "inline");
+  const topic = { title: "動画から書いた記事", category: "AI活用", target: "福祉事業所", keyword: "AI", reason: "動画紹介", angle: "動画の要点", service: "IT支援" };
+  const articleData = { title: "動画から書いた記事", description: "説明".repeat(20),
+    bodyMarkdown: "## 一つ目\n\n" + "本文".repeat(250) + "\n\n## 二つ目\n\n" + "本文".repeat(250) + "\n\n## 三つ目\n\n" + "本文".repeat(250) };
+  const videoThumbnail = { image: "assets/images/blog-library/hero-video/abc123.jpg", imageAlt: "", category: "video", series: "video-thumbnail", hash: "deadbeef" };
+  const saved = saveArticleDraft({ article: articleData, topic, date: "2026-09-13", directory: value.articles, imageRoot: value.root, videoThumbnail });
+  const parsed = require("../scripts/lib/articles").parseFrontmatter(fs.readFileSync(saved.filePath, "utf8"));
+  assert.equal(parsed.data.image, videoThumbnail.image);
+  assert.equal(parsed.data.image_hash, videoThumbnail.hash);
+  assert.equal(parsed.data.image_category, "video");
+  assert.equal(parsed.data.image_series, "video-thumbnail");
+  // The inline image is a separate slot with its own selection; the video
+  // thumbnail must never leak into it.
+  assert.notEqual(parsed.data.inline_image, videoThumbnail.image);
+  assert.match(parsed.data.inline_image, /hero-ai-01\.webp/);
+});
+
 test("SHA-256 treats renamed byte-identical heroes as one image and refreshes published cards uniquely", t => {
   const value = fixture(t);
   image(value.root, "hero-welfare-01.webp"); image(value.root, "hero-welfare-copy.webp");
@@ -212,7 +231,12 @@ test("the committed image catalog covers every hero with stored semantic metadat
   const heroes = catalog.filter(item => item.path.includes("/hero/"));
   assert.equal(heroes.length, 86);
   for (const item of heroes) assert.ok(item.path && item.category && item.scene && item.tags.length && item.themes.length);
-  const publishedImages = new Set(require("../data/blog-index.json").map(item => item.image));
+  // A video-sourced article's hero is its own YouTube thumbnail (scripts/lib/
+  // video-thumbnail.js), deliberately outside the curated hero/ library this
+  // catalog describes, so it is excluded from this "every published hero is
+  // cataloged" expectation rather than failing it.
+  const publishedImages = new Set(require("../data/blog-index.json").map(item => item.image)
+    .filter(image => !image.includes("/hero-video/")));
   const focused = heroes.filter(item => publishedImages.has(item.path));
   // Every distinct published hero path must carry catalog metadata; this count
   // grows with each Daily Blog publication, so it is derived, not hardcoded.
@@ -288,6 +312,10 @@ test("published heroes never place the same series or scene on two adjacent blog
   for (let i = 1; i < list.length; i++) {
     const previous = catalog.get(list[i - 1].image);
     const current = catalog.get(list[i].image);
+    // A video-sourced article's hero is its own YouTube thumbnail, not a
+    // shared stock photo, so it isn't in this catalog and has no series/scene
+    // to repeat by definition; skip the pair rather than crash on undefined.
+    if (!previous || !current) continue;
     assert.notEqual(current.series, previous.series,
       `${list[i].slug} repeats the "${current.series}" composition right after ${list[i - 1].slug}`);
     assert.notEqual(current.scene, previous.scene,

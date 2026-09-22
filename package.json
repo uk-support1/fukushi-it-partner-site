@@ -5,7 +5,7 @@
     "build:blog": "node scripts/generate-blog.js",
     "build:course": "node scripts/generate-course.js",
     "images:dedupe-hero": "node scripts/prune-duplicate-hero-images.js",
-    "test": "node --test tests/blog.test.js tests/daily-topic.test.js tests/image-library.test.js tests/latest-info.test.js tests/draft-commit.test.js tests/publish-draft.test.js tests/buhio.test.js tests/editorial.test.js tests/course.test.js tests/youtube-cache.test.js"
+    "test": "node --test tests/blog.test.js tests/daily-topic.test.js tests/image-library.test.js tests/latest-info.test.js tests/draft-commit.test.js tests/publish-draft.test.js tests/buhio.test.js tests/editorial.test.js tests/course.test.js tests/youtube-cache.test.js tests/video-thumbnail.test.js"
   },
   "engines": {
     "node": ">=24"

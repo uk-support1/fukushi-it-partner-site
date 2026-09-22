@@ -112,6 +112,30 @@ test("Topic selection flows into article generation, saves one draft and never p
   assert.equal(requests.length,4);assert.deepEqual(requests[0].input.existingArticles,articles);assert.deepEqual(requests[1].input.candidate,topic);
   assert.deepEqual(requests[2].input.topic,topic);assert.deepEqual(requests[2].schema,articleSchema);
 });
+test("The resolved video thumbnail is passed to save(); a thumbnail-fetch failure never fails the run (falls back to null)",async t=>{
+  const directory=temporaryArticles(t);
+  const thumbnail={image:"assets/images/blog-library/hero-video/abc123.jpg",imageAlt:"",category:"video",series:"video-thumbnail",hash:"deadbeef"};
+  let seenSources,seenThumbnail,calls=0;
+  const result=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
+    collect:async()=>({candidates:[],attemptedSources:3,successfulSources:0}),
+    fetchThumbnail:async args=>{seenSources=args.sources;return thumbnail;},
+    request:async args=>{calls++;return isEditorial(args)?editorialReview:calls===1?JSON.stringify(topic):calls===2?review(articles):JSON.stringify(generatedArticle);},
+    save:args=>{seenThumbnail=args.videoThumbnail;return{slug:"s",filename:"s.md",filePath:path.join(directory,"s.md"),metadata:{}};}
+  });
+  assert.equal(result.status,"draft_saved");
+  assert.deepEqual(seenSources,result.sources);
+  assert.deepEqual(seenThumbnail,thumbnail);
+
+  let throwCalls=0;
+  const safeResult=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
+    collect:async()=>({candidates:[],attemptedSources:3,successfulSources:0}),
+    fetchThumbnail:async()=>{throw new Error("thumbnail fetch exploded");},
+    request:async args=>{throwCalls++;return isEditorial(args)?editorialReview:throwCalls===1?JSON.stringify(topic):throwCalls===2?review(articles):JSON.stringify(generatedArticle);},
+    save:args=>{seenThumbnail=args.videoThumbnail;return{slug:"s2",filename:"s2.md",filePath:path.join(directory,"s2.md"),metadata:{}};}
+  });
+  assert.equal(safeResult.status,"draft_saved");
+  assert.equal(seenThumbnail,null);
+});
 test("The scheduled run never live-fetches YouTube directly; DAILY_BLOG_SOURCES_FILTER=video_only isolates it for debugging",async t=>{
   const directory=temporaryArticles(t);
   let collectArgs;

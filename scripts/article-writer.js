@@ -56,8 +56,11 @@ function baseSlugFor(title, date) {
   return `article-${date}-${digest}`;
 }
 
-function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {}, history = null, excludedHashes = new Set() } = {}) {
+function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {}, history = null, excludedHashes = new Set(), precomputedHero = null } = {}) {
   const profile = articleImageProfile({ ...content, category });
+  // A video's own thumbnail (fetched once, beforehand, by scripts/lib/video-thumbnail.js)
+  // takes priority over the curated stock library, but only for the hero image.
+  if (kind === "hero" && precomputedHero) return { ...precomputedHero, profile };
   const selected = imageLibrary.selectImage({ category,
     candidates: imageLibrary.discoverImages({ root, kind }),
     history: history || imageLibrary.usageHistory({ root, articlesDir, kind }),
@@ -184,14 +187,14 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [], imageO
   return { markdown, metadata };
 }
 
-function saveArticleDraft({ article, topic, date, sources = [], directory = lib.ARTICLES_DIR, imageRoot, imageKind = "hero" }) {
+function saveArticleDraft({ article, topic, date, sources = [], directory = lib.ARTICLES_DIR, imageRoot, imageKind = "hero", videoThumbnail = null }) {
   validateTopicForDraft(topic);
   for (let attempt = 0; attempt < 9999; attempt += 1) {
     const slug = availableSlug(article && article.title, date, directory);
     const filename = `${slug}.md`;
     const filePath = path.join(directory, filename);
     const built = buildArticleMarkdown({ article, topic, date, slug, sources,
-      imageOptions: { root: imageRoot || path.join(__dirname, ".."), articlesDir: directory, kind: imageKind } });
+      imageOptions: { root: imageRoot || path.join(__dirname, ".."), articlesDir: directory, kind: imageKind, precomputedHero: videoThumbnail } });
     try {
       fs.writeFileSync(filePath, built.markdown, { encoding: "utf8", flag: "wx" });
       return { slug, filename, filePath, metadata: built.metadata };
