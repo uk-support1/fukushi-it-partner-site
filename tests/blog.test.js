@@ -64,7 +64,9 @@ test("Published article, index, and blog card always share the Markdown hero", (
     assert.equal(entry.object_position, metadata.get(expected)?.object_position || "50% 50%", article.slug + " focal point");
     assert.equal(imageLibrary.imageHashForPath(ROOT, entry.image), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " index hash");
     const page = text(ROOT, "blog/" + article.slug + ".html");
-    const hero = page.match(/<div class="article-eyecatch">\s*<img src="([^"]+)"/);
+    // A video-sourced article wraps its hero in a link to the source video
+    // (article-eyecatch-video-link); every other article has the <img> directly.
+    const hero = page.match(/<div class="article-eyecatch">\s*(?:<a[^>]*class="article-eyecatch-video-link"[^>]*>\s*)?<img src="([^"]+)"/);
     assert.ok(hero, article.slug + " article hero");
     assert.equal(hero[1].replace(/^\.\.\//, ""), expected, article.slug + " article image");
     assert.equal(imageLibrary.imageHashForPath(ROOT, hero[1].replace(/^\.\.\//, "")), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " article hash");
