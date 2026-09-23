@@ -85,6 +85,24 @@ test("Blog list thumbnails use a consistent three-by-two cover frame", () => {
   assert.match(css, /@media\s*\(max-width:\s*700px\)\s*\{[\s\S]*?\.blog-list-thumb\s*\{[^}]*width:\s*100%;[^}]*height:\s*auto;[^}]*aspect-ratio:\s*3\s*\/\s*2;/);
 });
 
+test("A video-sourced article's eyecatch links to its source video; other articles are unaffected", t => {
+  const dir = sandbox(t);
+  article(dir, "with-video", true, "video_url: https://www.youtube.com/watch?v=k596ZRNsvsU\n");
+  article(dir, "without-video", true);
+  article(dir, "unsafe-video-url", true, "video_url: https://evil.example.com/\n");
+  run(dir);
+  const withVideo = text(dir, "blog/with-video.html");
+  assert.match(withVideo,
+    /<div class="article-eyecatch">\s*<a class="article-eyecatch-video-link" href="https:\/\/www\.youtube\.com\/watch\?v=k596ZRNsvsU" target="_blank" rel="noopener noreferrer"[^>]*>\s*<img src="[^"]+"[^>]*>\s*<\/a>\s*<\/div>/);
+  const withoutVideo = text(dir, "blog/without-video.html");
+  assert.match(withoutVideo, /<div class="article-eyecatch">\s*<img src="[^"]+"[^>]*>\s*<\/div>/);
+  assert.doesNotMatch(withoutVideo, /article-eyecatch-video-link/);
+  // A non-YouTube video_url must never become a clickable link on the page.
+  const unsafe = text(dir, "blog/unsafe-video-url.html");
+  assert.doesNotMatch(unsafe, /article-eyecatch-video-link/);
+  assert.doesNotMatch(unsafe, /evil\.example\.com/);
+});
+
 test("B: new draft excluded everywhere", t => {
   const dir = sandbox(t); article(dir,"test-draft",false); run(dir); visibility(dir,"test-draft",false);
 });

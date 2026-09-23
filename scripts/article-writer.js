@@ -168,6 +168,7 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [], imageO
     image_category: image.category,
     image_series: image.series,
     ...(image.hash ? { image_hash: image.hash } : {}),
+    ...(image.videoUrl ? { video_url: image.videoUrl } : {}),
     image_selection: image.profile,
     ...(inline ? { inline_image: inline.image, inline_image_alt: inlineAlt(inline.category),
       inline_image_category: inline.category, inline_image_series: inline.series,

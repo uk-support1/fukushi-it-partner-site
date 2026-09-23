@@ -52,6 +52,19 @@ function formatDateDisplay(isoDate) {
   return String(isoDate || "").split("-").join(".");
 }
 
+// Frontmatter is read straight from Markdown, not from a trusted API response,
+// so video_url is re-validated here (not just trusted from where it was
+// written) before ever being placed into an href.
+function safeVideoUrl(value) {
+  if (typeof value !== "string") return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:" || url.hostname !== "www.youtube.com") return null;
+    url.hash = "";
+    return url.toString();
+  } catch { return null; }
+}
+
 function buildRelatedCardHtml(slug, articlesBySlug, imagePositions = new Map()) {
   const cms = articlesBySlug[slug];
   if (!cms || cms.data.published !== true) return "";
@@ -149,6 +162,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
   const categoryLabel = lib.categoryLabelOf(data);
   const dateDisplay = formatDateDisplay(data.date);
   const imageSrc = lib.toSiteImagePath(data.image, "blog");
+  const videoUrl = safeVideoUrl(data.video_url);
   const bodyHtml = renderBuhio({title: data.title, description: data.description, bodyMarkdown: article.body}, data.buhio, lib.escapeHtml) + "\n\n" + lib.markdownBodyToHtml(article.body, "blog", data.emphasis || []);
   const description = lib.escapeHtml(lib.descriptionOf(data, article.body));
   const title = lib.escapeHtml(data.title);
@@ -259,11 +273,21 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     "      </div>\n" +
     "\n" +
     '      <div class="article-eyecatch">\n' +
-    '        <img src="' +
-    imageSrc +
-    '" alt="' +
-    lib.escapeHtml(data.image_alt || "") +
-    '">\n' +
+    (videoUrl
+      ? '        <a class="article-eyecatch-video-link" href="' +
+        lib.escapeHtml(videoUrl) +
+        '" target="_blank" rel="noopener noreferrer" aria-label="YouTubeで元の動画を見る">\n' +
+        '          <img src="' +
+        imageSrc +
+        '" alt="' +
+        lib.escapeHtml(data.image_alt || "") +
+        '">\n' +
+        "        </a>\n"
+      : '        <img src="' +
+        imageSrc +
+        '" alt="' +
+        lib.escapeHtml(data.image_alt || "") +
+        '">\n') +
     "      </div>\n" +
     "\n" +
     bodyHtml +

@@ -28,10 +28,17 @@ const videoSource = { title: "動画タイトル", url: "https://www.youtube.com
 const officialSource = { title: "資料", url: "https://www.mhlw.go.jp/a", publishedAt: "2026-09-16T00:00:00.000Z", source: "厚生労働省", summary: "説明" };
 
 test("extractYoutubeVideoId reads both /watch?v= and /shorts/ forms, and rejects non-YouTube URLs",()=>{
-  assert.equal(extractYoutubeVideoId("https://www.youtube.com/watch?v=abc123"),"abc123");
-  assert.equal(extractYoutubeVideoId("https://www.youtube.com/shorts/abc123"),"abc123");
-  assert.equal(extractYoutubeVideoId("https://example.com/watch?v=abc123"),null);
+  assert.equal(extractYoutubeVideoId("https://www.youtube.com/watch?v=k596ZRNsvsU"),"k596ZRNsvsU");
+  assert.equal(extractYoutubeVideoId("https://www.youtube.com/shorts/k596ZRNsvsU"),"k596ZRNsvsU");
+  assert.equal(extractYoutubeVideoId("https://example.com/watch?v=k596ZRNsvsU"),null);
   assert.equal(extractYoutubeVideoId("not a url"),null);
+});
+
+test("extractYoutubeVideoId rejects an id that isn't exactly 11 safe characters (regression: path traversal via v=)",()=>{
+  assert.equal(extractYoutubeVideoId("https://www.youtube.com/watch?v=../../etc/passwd"),null);
+  assert.equal(extractYoutubeVideoId("https://www.youtube.com/watch?v=tooshort"),null);
+  assert.equal(extractYoutubeVideoId("https://www.youtube.com/watch?v=waytoolongtobeanid"),null);
+  assert.equal(extractYoutubeVideoId("https://www.youtube.com/shorts/../../etc/passwd"),null);
 });
 
 test("downloads and saves the thumbnail, returning a hero-shaped result with a real sha256 hash",async t=>{
@@ -42,7 +49,8 @@ test("downloads and saves the thumbnail, returning a hero-shaped result with a r
   assert.equal(requestedUrl, "https://i.ytimg.com/vi/k596ZRNsvsU/hqdefault.jpg");
   const expectedPath = `${THUMBNAIL_DIR}/k596ZRNsvsU.jpg`;
   assert.deepEqual(result, { image: expectedPath, imageAlt: "", category: "video", series: "video-thumbnail",
-    hash: crypto.createHash("sha256").update(jpegBytes).digest("hex") });
+    hash: crypto.createHash("sha256").update(jpegBytes).digest("hex"),
+    videoUrl: "https://www.youtube.com/watch?v=k596ZRNsvsU" });
   assert.deepEqual(fs.readFileSync(path.join(root, expectedPath)), jpegBytes);
 });
 

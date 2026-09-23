@@ -17,13 +17,22 @@ const REQUEST_TIMEOUT_MS = 12000;
 // unique to its video already, not something to catalog and reselect later.
 const THUMBNAIL_DIR = "assets/images/blog-library/hero-video";
 
+// YouTube video IDs are always exactly 11 characters from this set. Enforcing
+// that shape here (rather than accepting whatever a URL happens to contain)
+// keeps a hallucinated or malformed "v="/"/shorts/" value from ever reaching
+// the thumbnail file path or the video link built from it.
+const VIDEO_ID_PATTERN = /^[\w-]{11}$/;
+
 function extractYoutubeVideoId(url) {
   try {
     const parsed = new URL(url);
     if (parsed.hostname !== "www.youtube.com") return null;
     const shortsMatch = parsed.pathname.match(/^\/shorts\/([\w-]+)$/);
-    if (shortsMatch) return shortsMatch[1];
-    if (parsed.pathname === "/watch") return parsed.searchParams.get("v");
+    if (shortsMatch) return VIDEO_ID_PATTERN.test(shortsMatch[1]) ? shortsMatch[1] : null;
+    if (parsed.pathname === "/watch") {
+      const id = parsed.searchParams.get("v");
+      return id && VIDEO_ID_PATTERN.test(id) ? id : null;
+    }
     return null;
   } catch { return null; }
 }
@@ -53,7 +62,8 @@ async function fetchVideoThumbnail({ sources = [], root = path.join(__dirname, "
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     fs.writeFileSync(filePath, buffer);
     const hash = crypto.createHash("sha256").update(buffer).digest("hex");
-    return { image: relativePath, imageAlt: "", category: "video", series: "video-thumbnail", hash };
+    return { image: relativePath, imageAlt: "", category: "video", series: "video-thumbnail", hash,
+      videoUrl: `https://www.youtube.com/watch?v=${videoId}` };
   } catch {
     return null;
   } finally {

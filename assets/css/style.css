@@ -1666,6 +1666,37 @@ section {
   display: block;
 }
 
+/* 動画由来の記事だけ：サムネイルをクリックすると出典のYouTube動画を新しいタブで開く */
+.article-eyecatch-video-link {
+  position: relative;
+  display: block;
+}
+
+.article-eyecatch-video-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease;
+}
+
+.article-eyecatch-video-link::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 68px;
+  height: 68px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--orange-500) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon points='9,6 9,18 18,12' fill='white'/></svg>") no-repeat center / 24px 24px;
+  box-shadow: var(--shadow-soft);
+}
+
+.article-eyecatch-video-link:hover::after {
+  background: rgba(0, 0, 0, 0.3);
+}
+
 /* 本文中の補足画像。heroとは別の、読了のリズムを作る要素。 */
 .article-inline-image {
   display: block;
