@@ -291,7 +291,7 @@ test("the committed inline library is content-classified, cataloged, semantic-sa
   assert.notEqual(repeated.hash, selected.hash);
 });
 
-test("published heroes are hash-unique and the latest ten inline images are hash-unique", () => {
+test("published heroes are hash-unique within the recent window, and the latest ten inline images are hash-unique", () => {
   const root = path.resolve(__dirname, "..");
   const articlesDir = path.join(root, "content", "articles");
   const published = new Set(require("../scripts/lib/articles").loadArticles(articlesDir)
@@ -301,7 +301,12 @@ test("published heroes are hash-unique and the latest ten inline images are hash
   // Every published article carries a hero and an inline image; this count grows
   // with each Daily Blog publication, so it is derived from `published`, not hardcoded.
   assert.equal(heroes.length, published.size);
-  assert.equal(new Set(heroes.map(item => item.hash)).size, heroes.length);
+  // selectImage() only avoids reuse within HERO_RECENT_ARTICLE_LIMIT articles (see
+  // "reuses the oldest eligible candidate only after exhaustion" below); once an
+  // image falls out of that window it becomes eligible again, so uniqueness only
+  // holds inside the same window, not across the site's entire publishing history.
+  const recentHeroes = heroes.slice(0, images.HERO_RECENT_ARTICLE_LIMIT);
+  assert.equal(new Set(recentHeroes.map(item => item.hash)).size, recentHeroes.length);
   assert.equal(inline.length, published.size);
   assert.equal(new Set(inline.slice(0, 10).map(item => item.hash)).size, Math.min(10, inline.length));
 });
