@@ -9,6 +9,7 @@ image_role: hero
 image_category: video
 image_series: video-thumbnail
 image_hash: be9c3f76c65a624caa4be69f680df0c8111d98ca3e3d634f2cddf4c5c78d0de5
+video_url: https://www.youtube.com/watch?v=tiRjtXeAa-4
 image_selection:
   themes:
     - digital
