@@ -56,7 +56,7 @@ inline_image_selection:
     - recruit
     - seo
   allowTechnology: true
-published: false
+published: true
 description: 特例子会社の仕事内容や配慮の公開事例を手がかりに、就労移行支援などの福祉事業所がホームページでどのような情報を発信し、信頼と透明性を高めるべきかを実務目線で解説します。
 slug: article-2026-09-23-cdce55caafb6
 buhio:
