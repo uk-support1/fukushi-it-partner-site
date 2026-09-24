@@ -541,27 +541,23 @@ section {
 .problem-figure-stage {
   position: relative;
   width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
 }
 
 .problem-figure-img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
-  animation: home-float 7s ease-in-out infinite;
 }
 
-.problem-figure--1 .problem-figure-img { animation-delay: 0s; }
-.problem-figure--2 .problem-figure-img { animation-delay: -1.2s; }
-.problem-figure--3 .problem-figure-img { animation-delay: -2.4s; }
-.problem-figure--4 .problem-figure-img { animation-delay: -3.6s; }
-
-/* 04は元画像の背景が縁まで塗られており四角く見えやすいため、
-   下端をごく軽くフェードさせて背景との境目をやわらげている
-   （元画像ファイルは無編集。境目を完全には消せないため、CSSでの緩和にとどまる） */
-.problem-figure--4 .problem-figure-img {
-  -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 16%, #000 100%);
-  mask-image: linear-gradient(to top, transparent 0%, #000 16%, #000 100%);
-}
+.problem-figure--1 .problem-figure-img { object-position: 72% 42%; }
+.problem-figure--2 .problem-figure-img { object-position: center center; }
+.problem-figure--3 .problem-figure-img { object-position: 78% 48%; }
+.problem-figure--4 .problem-figure-img { object-position: 80% 38%; }
 
 .problem-figure-caption {
   margin-top: 14px;
@@ -571,52 +567,7 @@ section {
   line-height: 1.5;
 }
 
-/* ===== hover / pointer接近で現れる補助イラスト（お悩み・サービス共通） ===== */
-.hover-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.hover-item {
-  position: absolute;
-  width: 17%;
-  max-width: 48px;
-  opacity: 0;
-  transform: translateY(10px) scale(0.82);
-  transition: opacity 0.5s cubic-bezier(0.22, 0.8, 0.32, 1),
-    transform 0.5s cubic-bezier(0.22, 0.8, 0.32, 1);
-}
-
-.problem-figure:hover .hover-item,
-.problem-figure:focus-within .hover-item {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.hover-item:nth-child(1) { top: -8%; left: -8%; transition-delay: 0ms; }
-.hover-item:nth-child(2) { top: -10%; right: -6%; transition-delay: 70ms; }
-.hover-item:nth-child(3) { bottom: -2%; left: -10%; transition-delay: 140ms; }
-.hover-item:nth-child(4) { bottom: -6%; right: -8%; transition-delay: 210ms; }
-.hover-item:nth-child(5) { top: 42%; left: -14%; transition-delay: 280ms; }
-
-.hover-item-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  transform: translate(calc(var(--px, 0) * 10px), calc(var(--py, 0) * 10px));
-  transition: transform 0.2s ease-out;
-}
-
-@keyframes home-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .problem-figure-img,
-  .hover-item,
-  .hover-item-img,
   .welfare-photo-hero-img,
   .welfare-photo-hero-line,
   .welfare-photo-hero-light,
@@ -681,23 +632,6 @@ section {
     width: 100%;
     max-width: 230px;
     padding: 8px;
-  }
-}
-
-@media (max-width: 700px) {
-  /* スマホはhoverがないため、補助イラストは2点だけ常時表示し、
-     残りは非表示にして情報過多を避ける */
-  .hover-item:nth-child(1),
-  .hover-item:nth-child(2) {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    transition: none;
-  }
-
-  .hover-item:nth-child(3),
-  .hover-item:nth-child(4),
-  .hover-item:nth-child(5) {
-    display: none;
   }
 }
 
