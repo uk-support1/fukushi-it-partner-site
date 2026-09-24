@@ -741,7 +741,8 @@ section {
 }
 
 .welfare-photo-hero-line--2 {
-  transition-delay: 1.5s;
+  transform: none;
+  transition: opacity 1.8s ease-out 1.5s;
 }
 
 .welfare-photo-hero-line--3 {
@@ -1687,15 +1688,18 @@ section {
 .blog-article h4, .blog-article h5, .blog-article h6 { color: var(--green-900); font-size: 1rem; margin: 22px 0 10px; }
 .blog-article strong { color: var(--green-900); font-weight: 700; }
 .blog-article .article-marker {
-  background-image: linear-gradient(#edc9a0, #edc9a0);
+  background-image: linear-gradient(#ffe066, #ffe066);
   background-repeat: no-repeat;
-  background-position: left 92%;
-  background-size: 100% 0.3em;
+  background-position: left 60%;
+  background-size: 100% 0.92em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
-  transition: background-size 0.65s ease-out;
+  transition-property: background-size;
+  transition-timing-function: linear;
+  transition-duration: var(--marker-duration, 0.65s);
+  transition-delay: var(--marker-delay, 0s);
 }
-.blog-article .article-marker.marker-pending { background-size: 0% 0.3em; }
+.blog-article .article-marker.marker-pending { background-size: 0% 0.92em; }
 .blog-article .article-notice { background: #fff7ed; border-left: 3px solid #cc995d; border-radius: 0 8px 8px 0; padding: 16px 18px; margin: 20px 0; }
 .blog-article .article-notice p:last-child { margin-bottom: 0; }
 .blog-article .article-inline-image { display: block; max-width: 100%; height: auto; margin: 24px auto; border-radius: 10px; }
@@ -1705,7 +1709,7 @@ section {
 .blog-article table { display: block; overflow-x: auto; border-collapse: collapse; margin: 20px 0; }
 .blog-article th, .blog-article td { padding: 8px 12px; border: 1px solid #d5e4d9; }
 @media (prefers-reduced-motion: reduce) {
-  .blog-article .article-marker, .blog-article .article-marker.marker-pending { transition: none; background-size: 100% 0.3em; }
+  .blog-article .article-marker, .blog-article .article-marker.marker-pending { transition: none; background-size: 100% 0.92em; }
 }
 
 .blog-article p {

@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
       revealEls.forEach(function (el) {
         el.classList.add("is-visible");
       });
-    }, 1500);
+    }, 8000);
   } else {
     revealEls.forEach(function (el) {
       el.classList.add("is-visible");
