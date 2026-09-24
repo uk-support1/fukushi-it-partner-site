@@ -237,6 +237,19 @@ test("A video-kind source adds non-authoritative-commentary guidance and attache
   assert.ok(!officialInstructions.includes("個人の配信者"));
   assert.deepEqual(officialFileParts,[]);
 });
+test("A video-kind source also asks for a company-voice reaction (福祉ITパートナーとして) to what the creator said, not just neutral commentary",async()=>{
+  const videoSources=[{title:"動画タイトル",url:"https://www.youtube.com/watch?v=abc",publishedAt:"2026-09-15T00:00:00.000Z",source:"精神保健福祉士うさぎ",summary:"配信者の説明",kind:"video"}];
+  let videoInstructions;
+  await generateArticle({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,localDate:"2026-09-12",topic,sources:videoSources,
+    request:async args=>{videoInstructions=args.instructions;return JSON.stringify(generatedArticle);}});
+  assert.match(videoInstructions,/福祉ITパートナーとしても/);
+  assert.match(videoInstructions,/当社として力になりたい姿勢/);
+  const officialSources=[{title:"報酬改定資料",url:"https://www.mhlw.go.jp/a",publishedAt:"2026-09-15T00:00:00.000Z",source:"厚生労働省",summary:"公式資料"}];
+  let officialInstructions;
+  await generateArticle({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,localDate:"2026-09-12",topic,sources:officialSources,
+    request:async args=>{officialInstructions=args.instructions;return JSON.stringify(generatedArticle);}});
+  assert.ok(!officialInstructions.includes("福祉ITパートナーとしても"));
+});
 test("the video is attached only on the first generation attempt, never on style retries (avoids burning the free-tier token quota per attempt)",async()=>{
   const videoSources=[{title:"動画タイトル",url:"https://www.youtube.com/watch?v=abc",publishedAt:"2026-09-15T00:00:00.000Z",source:"精神保健福祉士うさぎ",summary:"配信者の説明",kind:"video"}];
   const duplicateHistory=[{slug:"old",title:"別の記事",headings:["応募する方が知りたい情報を整理する"],comment:"既存のコメント",summary:"既存の記事です"}];
