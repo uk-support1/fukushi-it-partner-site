@@ -147,22 +147,21 @@ test("The resolved video thumbnail is passed to save(); a thumbnail-fetch failur
   assert.equal(safeResult.status,"draft_saved");
   assert.equal(seenThumbnail,null);
 });
-test("The scheduled run never live-fetches YouTube directly; DAILY_BLOG_SOURCES_FILTER=video_only isolates it for debugging",async t=>{
+test("The scheduled run only ever selects from the 4 YouTube channels via the cache, never official RSS sources, and never live-fetches YouTube by default; DAILY_BLOG_SOURCES_FILTER=live isolates a direct fetch for debugging",async t=>{
   const directory=temporaryArticles(t);
-  let collectArgs;
-  await prepareDailyBlog({env:{...env,DAILY_BLOG_SOURCES_FILTER:"video_only"},now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
-    collect:async args=>{collectArgs=args;return {candidates:[],attemptedSources:0,successfulSources:0};},
+  let liveCollectArgs;
+  await prepareDailyBlog({env:{...env,DAILY_BLOG_SOURCES_FILTER:"live"},now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
+    collect:async args=>{liveCollectArgs=args;return {candidates:[],attemptedSources:0,successfulSources:0};},
     request:async()=>JSON.stringify(topic),articlesDir:directory}).catch(()=>{});
-  assert.ok(Array.isArray(collectArgs.sources) && collectArgs.sources.length===4);
-  assert.ok(collectArgs.sources.every(source=>source.kind==="video"));
-  assert.deepEqual(collectArgs.extraCandidates,[]);
+  assert.ok(Array.isArray(liveCollectArgs.sources) && liveCollectArgs.sources.length===4);
+  assert.ok(liveCollectArgs.sources.every(source=>source.kind==="video"));
+  assert.deepEqual(liveCollectArgs.extraCandidates,[]);
   let defaultCollectArgs;
   const cached=[{title:"介護職の夜勤対応のコツ",url:"https://www.youtube.com/watch?v=cached1",publishedAt:"2026-09-11T00:00:00.000Z",source:"ケアきょう（介護職のためのチャンネル）",summary:"夜勤対応のコツを紹介する動画です。",kind:"video"}];
   await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
     collect:async args=>{defaultCollectArgs=args;return {candidates:[],attemptedSources:0,successfulSources:0};},
     loadCache:()=>cached,request:async()=>JSON.stringify(topic),articlesDir:directory}).catch(()=>{});
-  assert.ok(Array.isArray(defaultCollectArgs.sources) && defaultCollectArgs.sources.length===4);
-  assert.ok(defaultCollectArgs.sources.every(source=>source.kind!=="video"));
+  assert.deepEqual(defaultCollectArgs.sources,[]);
   assert.deepEqual(defaultCollectArgs.extraCandidates,cached);
 });
 test("Generated article is saved with compatible front matter and body",t=>{

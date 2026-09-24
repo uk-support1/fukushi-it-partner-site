@@ -6,7 +6,6 @@ const { saveArticleDraft } = require("./article-writer");
 const { collectLatestInfo, DEFAULT_SOURCES, loadYoutubeCache } = require("./latest-info");
 const { fetchVideoThumbnail } = require("./lib/video-thumbnail");
 
-const OFFICIAL_SOURCES = DEFAULT_SOURCES.filter(source => source.kind !== "video");
 const VIDEO_SOURCES = DEFAULT_SOURCES.filter(source => source.kind === "video");
 
 async function prepareDailyBlog({now = new Date(), env = process.env, request, articleRequest, load,
@@ -15,13 +14,15 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
   const localDate = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
   }).format(now);
-  // GitHub's shared cloud runners get intermittently blocked fetching YouTube
-  // feeds directly (see docs/daily-blog.md), so the scheduled run never live-fetches
-  // them: it reads the cache a self-hosted runner keeps refreshed instead.
-  // workflow_dispatch can still isolate a live YouTube-only fetch for debugging.
-  const videoOnly = env.DAILY_BLOG_SOURCES_FILTER === "video_only";
-  const sources = videoOnly ? VIDEO_SOURCES : OFFICIAL_SOURCES;
-  const extraCandidates = videoOnly ? [] : loadCache({now});
+  // The scheduled run only ever selects from the 4 YouTube channels; official
+  // government/agency RSS sources are no longer used for topic selection (see
+  // docs/daily-blog.md). GitHub's shared cloud runners get intermittently
+  // blocked fetching YouTube feeds directly, so it reads the cache a
+  // self-hosted runner keeps refreshed instead of live-fetching. workflow_dispatch
+  // can still isolate a live YouTube fetch to debug that cloud-runner block.
+  const liveDebug = env.DAILY_BLOG_SOURCES_FILTER === "live";
+  const sources = liveDebug ? VIDEO_SOURCES : [];
+  const extraCandidates = liveDebug ? [] : loadCache({now});
   let latest = {candidates:[],attemptedSources:0,successfulSources:0};
   try {
     const collected = await collect({now, sources, extraCandidates});

@@ -12,13 +12,13 @@ on:
         type: boolean
         default: false
       sources_filter:
-        description: '最新情報の取得元を絞り込む（動作確認用。通常はallのまま）'
+        description: 'YouTubeの取得方法（動作確認用。通常はcacheのまま）'
         required: false
         type: choice
         options:
-          - all
-          - video_only
-        default: all
+          - cache
+          - live
+        default: cache
 
 permissions:
   contents: write
