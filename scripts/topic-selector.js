@@ -32,11 +32,19 @@ function existingArticleInfo(articles = lib.loadArticles()) {
     date: a.data.date || "",
       published: a.data.published === true,
       buhioComment: require("./lib/buhio").selectBuhio({title:a.data.title,bodyMarkdown:a.body},a.data.buhio).comment,
-    summary: plain(a.data.description || a.data.excerpt || "") + " " + plain(a.body).slice(0, 2400),
+    // Duplicate detection leans on title/description/headings; a shorter body
+    // preview still carries the article's angle without ballooning per-article
+    // size as the archive keeps growing daily.
+    summary: plain(a.data.description || a.data.excerpt || "") + " " + plain(a.body).slice(0, 1200),
     headings: String(a.body).split(/\r?\n/).filter(l => /^#{1,6}\s/.test(l)).map(plain),
     sourceUrls: [...new Set(String(a.body).match(/https:\/\/[^\s<>"'\])]+/g) || [])]
   }));
-  if (Buffer.byteLength(JSON.stringify(result), "utf8") > 180000) fail("ARTICLE_CONTEXT_TOO_LARGE");
+  // Every existing article is sent in full on every run (duplicate review must
+  // never omit one), so this grows by ~1 article/day forever. gemini-3.5-flash-lite
+  // accepts over 1,048,576 input tokens per call, so 900,000 bytes leaves ample
+  // margin under any reasonable bytes-per-token ratio while still catching a
+  // genuinely pathological article (not just organic growth) before it reaches Gemini.
+  if (Buffer.byteLength(JSON.stringify(result), "utf8") > 900000) fail("ARTICLE_CONTEXT_TOO_LARGE");
   if (new Set(result.map(a=>a.slug)).size !== result.length) fail("DUPLICATE_ARTICLE_SLUG");
   return result;
 }

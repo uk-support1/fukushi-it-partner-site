@@ -40,6 +40,17 @@ test("1/2: Markdown context includes published articles and drafts for duplicate
   assert.deepEqual(data.map(item=>item.published),[true,false]);
   assert.throws(()=>validateTopic(JSON.stringify({...topic,title:"Title"}),data),{code:"DUPLICATE_TOPIC"});
 });
+test("The real published archive comfortably fits the context-size guard, which still rejects a pathologically large archive",()=>{
+  const real=existingArticleInfo();
+  assert.ok(Buffer.byteLength(JSON.stringify(real),"utf8")<900000);
+  // Per-article size is capped by the 1200-character summary slice regardless of
+  // body length, so the guard is really protecting against unbounded article
+  // *count*; simulate that directly rather than one implausibly huge article.
+  const headings=Array.from({length:200},(_, i)=>"## 見出し"+i).join("\n\n");
+  const template={data:{published:true,title:"タイトルの繰り返しサンプル文章です",type:"column"},body:headings};
+  assert.throws(()=>existingArticleInfo(Array.from({length:2000},(_, i)=>({...template,slug:"a"+i}))),
+    {code:"ARTICLE_CONTEXT_TOO_LARGE"});
+});
 test("Workflow keeps 06:17 JST schedule and connects draft, publish and Pages deployment",()=>{
   const workflow=YAML.parse(fs.readFileSync(path.join(ROOT,".github/workflows/daily-blog.yml"),"utf8"));
   assert.equal(workflow.on.schedule[0].cron,"17 21 * * *");
