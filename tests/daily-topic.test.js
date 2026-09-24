@@ -1,7 +1,7 @@
 "use strict";
 const test=require("node:test"),assert=require("node:assert/strict"),fs=require("fs"),path=require("path"),cp=require("child_process"),crypto=require("crypto"),os=require("os");
 const {existingArticleInfo,validateTopic,validateReview,requestGemini,selectTopic,topicSchema,DEFAULT_GEMINI_MODEL}=require("../scripts/topic-selector");
-const {prepareDailyBlog,failureReport,writeResultFile}=require("../scripts/daily-blog");
+const {prepareDailyBlog,failureReport,writeResultFile,hasArticleDatedToday}=require("../scripts/daily-blog");
 const {generateArticle,validateArticle,articleSchema}=require("../scripts/article-generator");
 const {baseSlugFor,buildArticleMarkdown,saveArticleDraft}=require("../scripts/article-writer");
 const YAML=require("yaml");
@@ -54,7 +54,8 @@ test("The real published archive comfortably fits the context-size guard, which 
 test("Workflow keeps 06:17 JST schedule and connects draft, publish and Pages deployment",()=>{
   const workflow=YAML.parse(fs.readFileSync(path.join(ROOT,".github/workflows/daily-blog.yml"),"utf8"));
   assert.equal(workflow.on.schedule[0].cron,"17 21 * * *");
-  assert.equal(workflow.on.schedule.length,1);
+  assert.equal(workflow.on.schedule[1].cron,"17 0 * * *");
+  assert.equal(workflow.on.schedule.length,2);
   assert.equal(workflow.on.workflow_dispatch.inputs.continuous_trial.type,"boolean");
   assert.equal(workflow.on.workflow_dispatch.inputs.continuous_trial.default,false);
   assert.deepEqual(workflow.permissions,{contents:"write"});
@@ -64,14 +65,23 @@ test("Workflow keeps 06:17 JST schedule and connects draft, publish and Pages de
   assert.equal(select.env.GEMINI_API_KEY,"${{ secrets.GEMINI_API_KEY }}");
   assert.equal(select.env.GEMINI_MODEL,"${{ vars.GEMINI_MODEL }}");
   assert.equal(select.env.DAILY_BLOG_RESULT_FILE,"${{ runner.temp }}/daily-blog-result.json");
+  // The backup cron above only ever no-ops via daily-blog.js's own status; the
+  // workflow itself must skip commit/publish/deploy whenever that happens.
+  assert.equal(select.id,"select-topic");
+  assert.equal(select.env.DAILY_BLOG_EVENT_NAME,"${{ github.event_name }}");
+  assert.match(select.run,/status=\$\(node -e/);
+  assert.equal(workflow.jobs.start.outputs.status,"${{ steps.select-topic.outputs.status }}");
   const commit=workflow.jobs.start.steps.find(step=>step.name==="Commit and push only the generated draft");
+  assert.equal(commit.if,"steps.select-topic.outputs.status == 'draft_saved'");
   assert.equal(commit.run,"node scripts/commit-draft.js");
   assert.equal(commit.env.DAILY_BLOG_RESULT_FILE,"${{ runner.temp }}/daily-blog-result.json");
   assert.equal(commit.env.DAILY_DRAFT_COMMIT_RESULT_FILE,"${{ runner.temp }}/daily-draft-commit-result.json");
   const publish=workflow.jobs.start.steps.find(step=>step.name==="Publish and push only the generated article");
+  assert.equal(publish.if,"steps.select-topic.outputs.status == 'draft_saved'");
   assert.equal(publish.run,"node scripts/publish-draft.js");
   assert.equal(workflow.concurrency.group,"github-pages");
   assert.equal(workflow.jobs.deploy.needs,"start");
+  assert.equal(workflow.jobs.deploy.if,"needs.start.outputs.status == 'draft_saved'");
   assert.equal(workflow.jobs.deploy.permissions.pages,"write");
   assert.equal(workflow.jobs.deploy.permissions["id-token"],"write");
   assert.equal(workflow.jobs.deploy.steps.find(step=>step.id==="deployment").uses,"actions/deploy-pages@v4");
@@ -163,6 +173,45 @@ test("The scheduled run only ever selects from the 4 YouTube channels via the ca
     loadCache:()=>cached,request:async()=>JSON.stringify(topic),articlesDir:directory}).catch(()=>{});
   assert.deepEqual(defaultCollectArgs.sources,[]);
   assert.deepEqual(defaultCollectArgs.extraCandidates,cached);
+});
+test("hasArticleDatedToday finds a same-date article regardless of published status",t=>{
+  const directory=temporaryArticles(t);
+  assert.equal(hasArticleDatedToday("2026-09-24",directory),false);
+  fs.writeFileSync(path.join(directory,"article-2026-09-24-abc123.md"),
+    "---\ntype: column\ntitle: t\ndate: 2026-09-24\nslug: article-2026-09-24-abc123\npublished: false\n---\n\nbody\n");
+  assert.equal(hasArticleDatedToday("2026-09-24",directory),true);
+  assert.equal(hasArticleDatedToday("2026-09-25",directory),false);
+});
+test("A scheduled backup firing is a safe no-op when today's article already exists; workflow_dispatch is never guarded this way",async t=>{
+  const directory=temporaryArticles(t);
+  let requested=false,collected=false;
+  const scheduledNoop=await prepareDailyBlog({env:{...env,DAILY_BLOG_EVENT_NAME:"schedule"},
+    now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,articlesDir:directory,
+    alreadyPublishedToday:()=>true,
+    collect:async()=>{collected=true;return{candidates:[],attemptedSources:0,successfulSources:0};},
+    request:async()=>{requested=true;return JSON.stringify(topic);}});
+  assert.equal(scheduledNoop.status,"already_published_today");
+  assert.equal(scheduledNoop.articlesCreated,0);
+  assert.equal(scheduledNoop.shouldPublish,false);
+  // The whole point: it must return before doing any work, not just before saving.
+  assert.equal(collected,false);
+  assert.equal(requested,false);
+
+  let count=0;
+  const scheduledProceeds=await prepareDailyBlog({env:{...env,DAILY_BLOG_EVENT_NAME:"schedule"},
+    now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,articlesDir:directory,
+    alreadyPublishedToday:()=>false,
+    collect:async()=>({candidates:[],attemptedSources:0,successfulSources:0}),
+    request:async args=>isEditorial(args)?editorialReview:++count===1?JSON.stringify(topic):count===2?review(articles):JSON.stringify(generatedArticle)});
+  assert.equal(scheduledProceeds.status,"draft_saved");
+
+  let manualCount=0,manualRequested=false;
+  const manualRun=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,articlesDir:directory,
+    alreadyPublishedToday:()=>true,
+    collect:async()=>({candidates:[],attemptedSources:0,successfulSources:0}),
+    request:async args=>{manualRequested=true;return isEditorial(args)?editorialReview:++manualCount===1?JSON.stringify(topic):manualCount===2?review(articles):JSON.stringify(generatedArticle);}});
+  assert.equal(manualRun.status,"draft_saved");
+  assert.equal(manualRequested,true);
 });
 test("Generated article is saved with compatible front matter and body",t=>{
   const directory=temporaryArticles(t),date="2026-09-12";

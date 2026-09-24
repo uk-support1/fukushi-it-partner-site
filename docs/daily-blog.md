@@ -11,6 +11,22 @@ mainであることが前提です。workflow_dispatchによるmainでの手動�
 GitHub Actionsのスケジュールは定刻を保証せず、混雑による遅延・取りこぼしがあり得ます。
 公開リポジトリでは60日間活動がないとスケジュールが自動無効化される点にも注意してください。
 
+**バックアップの2回目起動（2026-09-24〜）：** 2026-09-22・09-23・09-24の3日間、
+06:17の起動自体が実行履歴に一切現れない事例が本番で連続発生しました（GitHub Status
+でも同時期に複数のインシデントを確認済みですが、明確に一致する原因は特定できていません）。
+単なる遅延ではなく起動そのものが行われないケースへの備えとして、`UTC 0:17`
+（日本時間09:17ごろ）にも同じワークフローを起動するcronを追加しています。この2回目は
+純粋なバックアップで、その日すでに記事がある場合は`scripts/daily-blog.js`が
+`status: "already_published_today"`を返して何もせず終了します（`hasArticleDatedToday()`が
+`content/articles/`の`date`を確認）。06:17が正常に動いた日は、09:17側は判定だけ行って
+即座に終わります。この判定は`schedule`起動（`DAILY_BLOG_EVENT_NAME`環境変数）だけに
+適用され、workflow_dispatchによる手動実行は対象外です（同じ日に手動で追加の記事を
+公開したい場合のため）。
+
+ワークフロー側では、`Select today's topic`ステップの結果ステータスを
+`steps.select-topic.outputs.status`として出力し、`draft_saved`でない場合は
+以降のcommit・publish・Pages公開の各ステップとdeployジョブ全体をスキップします。
+
 起動 → checkout → Node.js 24 → 依存導入 → 全ローカルテスト → scripts/daily-blog.js
 → 新規下書き1件だけを検証・commit・push → 対象記事だけを公開化・生成・commit・push
 → Pages artifact作成・デプロイ → 正常終了です。スクリプトは公開済み記事と下書きからタイトル・カテゴリ・

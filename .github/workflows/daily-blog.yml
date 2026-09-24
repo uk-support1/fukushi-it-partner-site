@@ -4,6 +4,11 @@ on:
   schedule:
     # UTC 21:17 = next day 06:17 Asia/Tokyo. GitHub may delay scheduled runs.
     - cron: '17 21 * * *'
+    # Backup: UTC 0:17 = 09:17 Asia/Tokyo. GitHub silently dropped the primary
+    # firing above on 2026-09-22, 09-23 and 09-24 in production (no run at all,
+    # not just a delay). daily-blog.js skips this firing as a no-op whenever
+    # today's article already exists, so it never creates a second one.
+    - cron: '17 0 * * *'
   workflow_dispatch:
     inputs:
       continuous_trial:
@@ -32,6 +37,8 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      status: ${{ steps.select-topic.outputs.status }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,30 +54,39 @@ jobs:
       - name: Run tests with mocked APIs and local Git remotes
         run: npm test
       - name: Select today's topic
+        id: select-topic
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
           DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
           DAILY_BLOG_SOURCES_FILTER: ${{ inputs.sources_filter }}
-        run: node scripts/daily-blog.js
+          DAILY_BLOG_EVENT_NAME: ${{ github.event_name }}
+        run: |
+          node scripts/daily-blog.js
+          echo "status=$(node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(process.env.DAILY_BLOG_RESULT_FILE,"utf8")).status)')" >> "$GITHUB_OUTPUT"
       - name: Commit and push only the generated draft
+        if: steps.select-topic.outputs.status == 'draft_saved'
         env:
           DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
           DAILY_DRAFT_COMMIT_RESULT_FILE: ${{ runner.temp }}/daily-draft-commit-result.json
         run: node scripts/commit-draft.js
       - name: Publish and push only the generated article
+        if: steps.select-topic.outputs.status == 'draft_saved'
         env:
           DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
           DAILY_DRAFT_COMMIT_RESULT_FILE: ${{ runner.temp }}/daily-draft-commit-result.json
         run: node scripts/publish-draft.js
       - name: Prepare public files only
+        if: steps.select-topic.outputs.status == 'draft_saved'
         run: node scripts/prepare-pages.js "$RUNNER_TEMP/fukushi-pages"
       - uses: actions/upload-pages-artifact@v4
+        if: steps.select-topic.outputs.status == 'draft_saved'
         with:
           path: ${{ runner.temp }}/fukushi-pages
 
   deploy:
     needs: start
+    if: needs.start.outputs.status == 'draft_saved'
     runs-on: ubuntu-latest
     permissions:
       pages: write

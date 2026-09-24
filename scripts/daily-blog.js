@@ -1,5 +1,6 @@
 "use strict";
 const fs = require("fs");
+const lib = require("./lib/articles");
 const { selectTopic, TopicError } = require("./topic-selector");
 const { generateArticle } = require("./article-generator");
 const { saveArticleDraft } = require("./article-writer");
@@ -8,12 +9,27 @@ const { fetchVideoThumbnail } = require("./lib/video-thumbnail");
 
 const VIDEO_SOURCES = DEFAULT_SOURCES.filter(source => source.kind === "video");
 
+function hasArticleDatedToday(localDate, articlesDir) {
+  try { return lib.loadArticles(articlesDir).some(a => a && a.data && a.data.date === localDate); }
+  catch { return false; }
+}
+
 async function prepareDailyBlog({now = new Date(), env = process.env, request, articleRequest, load,
   collect = collectLatestInfo, loadCache = loadYoutubeCache, fetchThumbnail = fetchVideoThumbnail,
-  save = saveArticleDraft, articlesDir} = {}) {
+  save = saveArticleDraft, articlesDir, alreadyPublishedToday = hasArticleDatedToday} = {}) {
   const localDate = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
   }).format(now);
+  // A second, later cron exists as a backup for when the primary 06:17 JST
+  // trigger is delayed or silently dropped by GitHub (observed in production
+  // on 2026-09-22, 09-23 and 09-24 — see docs/daily-blog.md). Both firings
+  // are `schedule` events, so guard here: if today's date already has an
+  // article, the backup run is a safe no-op instead of a second article.
+  // workflow_dispatch (manual) runs are never guarded this way.
+  if (env.DAILY_BLOG_EVENT_NAME === "schedule" && alreadyPublishedToday(localDate, articlesDir)) {
+    return {startedAt:now.toISOString(),localDate,timeZone:"Asia/Tokyo",
+      status:"already_published_today",articlesCreated:0,shouldPublish:false};
+  }
   // The scheduled run only ever selects from the 4 YouTube channels; official
   // government/agency RSS sources are no longer used for topic selection (see
   // docs/daily-blog.md). GitHub's shared cloud runners get intermittently
@@ -78,4 +94,4 @@ if(require.main === module) {
     process.exitCode=1;
   });
 }
-module.exports={prepareDailyBlog,failureReport,writeResultFile};
+module.exports={prepareDailyBlog,failureReport,writeResultFile,hasArticleDatedToday};
