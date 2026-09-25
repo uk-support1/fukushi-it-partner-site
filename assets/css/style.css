@@ -318,7 +318,7 @@ section {
   transition: var(--transition);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .nav-cta {
     display: none;
   }
@@ -366,7 +366,7 @@ section {
   display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .nav-cta-mobile {
     display: flex;
   }
@@ -1124,7 +1124,7 @@ section {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 40px;
   margin-bottom: 40px;
 }
@@ -1133,32 +1133,6 @@ section {
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 28px;
-  }
-}
-
-.footer-brand .brand-name {
-  font-size: 1.2rem;
-}
-
-.footer-logo {
-  display: block;
-  width: 100%;
-  max-width: 160px;
-  height: auto;
-  object-fit: contain;
-  margin-bottom: 16px;
-}
-
-.footer-brand p {
-  margin-top: 12px;
-  color: var(--text-600);
-  font-size: 0.9rem;
-  max-width: 320px;
-}
-
-@media (max-width: 480px) {
-  .footer-logo {
-    max-width: 130px;
   }
 }
 

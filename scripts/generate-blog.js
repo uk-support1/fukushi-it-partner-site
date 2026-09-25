@@ -327,11 +327,6 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '<footer class="site-footer">\n' +
     '  <div class="container">\n' +
     '    <div class="footer-grid">\n' +
-    '      <div class="footer-brand">\n' +
-    '        <img src="../assets/images/logo.png" alt="福祉ITパートナー ロゴ" class="footer-logo">\n' +
-    '        <span class="brand-name">福祉ITパートナー</span>\n' +
-    "        <p>福祉の現場に、ITという安心を。<br>福祉事業所・団体のホームページ制作・IT支援を行っています。</p>\n" +
-    "      </div>\n" +
     '      <div class="footer-col">\n' +
     "        <h4>サイトメニュー</h4>\n" +
     "        <ul>\n" +
@@ -573,11 +568,6 @@ function buildBlogHtml(blogIndex) {
     '<footer class="site-footer">\n' +
     '  <div class="container">\n' +
     '    <div class="footer-grid">\n' +
-    '      <div class="footer-brand">\n' +
-    '        <img src="assets/images/logo.png" alt="福祉ITパートナー ロゴ" class="footer-logo">\n' +
-    '        <span class="brand-name">福祉ITパートナー</span>\n' +
-    "        <p>福祉の現場に、ITという安心を。<br>福祉事業所・団体のホームページ制作・IT支援を行っています。</p>\n" +
-    "      </div>\n" +
     '      <div class="footer-col">\n' +
     "        <h4>サイトメニュー</h4>\n" +
     "        <ul>\n" +
