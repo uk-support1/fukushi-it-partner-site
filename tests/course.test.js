@@ -180,6 +180,15 @@ test("BUHIO type maps to an existing buhio asset for every documented type", () 
   }
 });
 
+test("BUHIO talking motion uses the animated asset while preserving the type label", () => {
+  const body = '[BUHIO type="point" motion="talking"]話しているコメント[/BUHIO]';
+  const { html } = courseBodyToHtml(body, "course");
+  assert.match(html, /assets\/images\/buhio\/buhio-talking\.gif/);
+  assert.match(html, /<span class="course-buhio-tag">POINT<\/span>/);
+  const image = fs.readFileSync(path.join(ROOT, "assets/images/buhio/buhio-talking.gif"));
+  assert.match(image.subarray(0, 6).toString("ascii"), /^GIF8[79]a$/);
+});
+
 test("E: existing blog is unaffected by running the course generator", t => {
   const dir = sandbox(t);
   const blogHtmlBefore = text(dir, "blog.html");

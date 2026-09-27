@@ -19,7 +19,7 @@ slug: sample-course-design-check
 
 福祉事業所がホームページを制作するときは、おおまかに「相談」「構成づくり」「デザイン」「公開」という流れで進みます。**何を伝えたいホームページにするか**を最初に決めておくと、その後の作業がスムーズになります。
 
-[BUHIO type="point"]
+[BUHIO type="point" motion="talking"]
 まずは「誰に」「何を伝えたいか」を紙に書き出してみると、あとの打ち合わせがぐっとスムーズになるよ。
 [/BUHIO]
 
@@ -45,7 +45,7 @@ slug: sample-course-design-check
 
 ホームページは公開して終わりではなく、**公開してからが本当のスタート**です。情報の更新や、問い合わせへの対応を続けることが大切です。
 
-[BUHIO type="caution"]
+[BUHIO type="caution" motion="talking"]
 連絡先や空室状況など、変わりやすい情報は特に忘れずに更新しよう。
 [/BUHIO]
 
@@ -55,7 +55,7 @@ slug: sample-course-design-check
 - 更新しやすい仕組み（CMSなど）を選んでおく
 - 月に1回など、見直すタイミングを決めておく
 
-[BUHIO type="success"]
+[BUHIO type="success" motion="talking"]
 小さな更新でも、続けることで検索にも表示されやすくなっていくよ。
 [/BUHIO]
 

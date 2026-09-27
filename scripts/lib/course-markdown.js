@@ -36,6 +36,7 @@ const BUHIO_TYPE_MAP = {
   note: { file: "buhio-01-standing.png", label: "ひとこと" },
 };
 const DEFAULT_BUHIO_TYPE = "note";
+const TALKING_BUHIO_FILE = "buhio-talking.gif";
 
 function buhioForType(type) {
   const key = typeof type === "string" && BUHIO_TYPE_MAP[type] ? type : DEFAULT_BUHIO_TYPE;
@@ -130,7 +131,7 @@ function cautionExtension() {
 function buhioExtension() {
   // type属性は未知の値でも受理し、buhioForType()側のフォールバックへ委ねる
   // （記法ミスでBUHIOブロックごと未変換にならないようにするため）。
-  const openRe = /^\[BUHIO(?:\s+type="([a-zA-Z0-9_-]+)")?\]\r?\n?/;
+  const openRe = /^\[BUHIO(?:\s+type="([a-zA-Z0-9_-]+)")?(?:\s+motion="([a-zA-Z0-9_-]+)")?\]\r?\n?/;
   const closeToken = "[/BUHIO]";
   return {
     name: "courseBuhio",
@@ -150,17 +151,19 @@ function buhioExtension() {
         type: "courseBuhio",
         raw: raw,
         buhioType: openMatch[1] || "",
+        buhioMotion: openMatch[2] || "",
         text: inner,
         tokens: this.lexer.inlineTokens(inner),
       };
     },
     renderer(token) {
       const meta = buhioForType(token.buhioType);
+      const imageFile = token.buhioMotion === "talking" ? TALKING_BUHIO_FILE : meta.file;
       const comment = this.parser.parseInline(token.tokens);
       const labelHtml = meta.label ? '<span class="course-buhio-tag">' + escapeHtml(meta.label) + "</span>" : "";
       return (
         '<div class="course-buhio">' +
-        '<img src="../' + BUHIO_DIRECTORY + meta.file + '" alt="ぶひお" width="96" height="96" loading="lazy" decoding="async" class="course-buhio-img">' +
+        '<img src="../' + BUHIO_DIRECTORY + imageFile + '" alt="ぶひお" width="96" height="96" loading="lazy" decoding="async" class="course-buhio-img">' +
         '<div class="course-buhio-bubble">' +
         '<p class="course-buhio-name">ぶひお' + labelHtml + "</p>" +
         '<p class="course-buhio-comment">' + comment + "</p>" +
