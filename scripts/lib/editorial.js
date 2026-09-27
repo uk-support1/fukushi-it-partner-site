@@ -35,8 +35,8 @@ function styleDiagnostics(article, history) {
   const headings=headingsOf(article.bodyMarkdown);
   const fixed=/^(今回の最新情報|何が発表・変更されたのか|何が変わるのか|福祉事業者にどう関係するのか|福祉事業者への影響|現場で考えるべきポイント|福祉ITパートナーとしての見解|福祉事業所としての見解|まとめ)$/;
   if(headings.some(h=>fixed.test(h))) add("forbidden_fixed_heading","固定見出しを使わず、節の内容に固有の問いを付ける");
-  if(headings.some((h,i)=>headings.slice(0,i).some(old=>similar(h,old)))) add("duplicate_internal_heading","記事内の見出し同士の重複を避ける");
-  if(headings.some(h=>history.some(a=>a.headings.some(old=>similar(h,old))))) add("duplicate_recent_heading","直近10記事と似た見出しを別の問い・切り口にする");
+  if(headings.some((h,i)=>headings.slice(0,i).some(old=>normalize(h)===normalize(old)))) add("duplicate_internal_heading","記事内で同じ見出しを繰り返さない");
+  if(headings.some(h=>history.some(a=>a.headings.some(old=>normalize(h)===normalize(old))))) add("duplicate_recent_heading","直近10記事と同じ見出しを避ける（似ているだけなら問題ない）");
   const comment=article.buhio?.comment||"";
   if(comment.length<20 || comment.length>60) add("invalid_buhio_comment_length","ぶひおコメントを20〜60文字にする");
   if(history.some(a=>a.comment && similar(comment,a.comment))) add("duplicate_recent_buhio_comment","ぶひおコメントを直近10記事と異なる具体的な行動・要点にする");
