@@ -57,7 +57,7 @@ inline_image_selection:
     - recruit
     - seo
   allowTechnology: true
-published: false
+published: true
 description: 就労継続支援B型での身だしなみ支援の意図に関する動画の視点をヒントに、利用者の不安を和らげるホームページでの支援方針の伝え方を解説します。
 slug: article-2026-09-28-eaccbc0375b9
 buhio:
