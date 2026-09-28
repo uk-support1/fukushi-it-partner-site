@@ -2730,6 +2730,16 @@ section {
     color: var(--orange-600);
   }
 
+  .plan-compare-cards-head-price {
+    color: var(--green-700);
+    font-weight: 800;
+    font-size: 1.05rem;
+  }
+
+  .plan-compare-cards-head-item--featured .plan-compare-cards-head-price {
+    color: var(--orange-500);
+  }
+
   .plan-compare-cards-head-copy {
     color: var(--green-900);
     font-weight: 700;
@@ -2795,6 +2805,11 @@ section {
     color: var(--text-600);
     margin: 0;
     line-height: 1.6;
+  }
+
+  .plan-compare-card-row--none p {
+    color: var(--text-600);
+    opacity: 0.55;
   }
 }
 
