@@ -383,25 +383,27 @@ section {
   min-height: 540px;
 }
 
-/* 写真専用レイヤー。縦に大きめに表示し、スクロールに応じてJSで
-   background-positionをゆっくり動かすことで、写真だけが手前のコンテンツより
-   はるかにゆっくり動く（ほぼ静止して見える）パララックスを実現する。 */
+/* 写真専用レイヤー。上下に大きくはみ出させ、スクロールに応じてJSで
+   transform: translateY() を動かすことで、写真だけが手前のコンテンツより
+   はるかにゆっくり動く（ほぼ静止して見える）パララックスを実現する。
+   background-positionではなくtransformを使うのは、transformはGPU合成のみで
+   再描画が発生せず、スクロール時になめらかに動くため（background-positionは
+   毎フレーム再描画が必要でカクつきの原因になる）。 */
 .hero-photo {
   position: absolute;
-  inset: 0;
+  inset: -80% 0;
   z-index: 0;
   background-image: url('../images/hero-fukushi-it-partner.jpg');
   opacity: 0;
   animation: hero-photo-fade-in 1.4s ease-out forwards;
+  will-change: transform;
 }
 
 /* .bg-parallaxの共通値（center基準）より優先させるため、詳細度を上げて指定 */
 .hero-photo.bg-parallax {
   background-repeat: no-repeat;
-  /* JS側のHERO_OVERSIZE（1.3 = 230% - 100%）と対応させている。
-     写真が完全に静止して見えるよう、スクロールを打ち消せるだけの余白を確保する。 */
-  background-size: auto 230%;
-  background-position: right 45%;
+  background-size: cover;
+  background-position: right center;
 }
 
 @keyframes hero-photo-fade-in {
@@ -512,7 +514,7 @@ section {
 /* スマートフォンでは画像をより引きで見せ、人物の顔が切れないようにする */
 @media (max-width: 600px) {
   .hero-photo.bg-parallax {
-    background: url('../images/hero-fukushi-it-partner.jpg') center top / 100% auto no-repeat;
+    background: url('../images/hero-fukushi-it-partner.jpg') center top / cover no-repeat;
   }
   .hero::before {
     background:
@@ -556,13 +558,16 @@ section {
 }
 
 /* ===== 写真パララックス（写真は画面上でほぼ静止し、手前をコンテンツが通り過ぎる） =====
-   background-attachment:fixedは環境によって正しく描画されないことがあるため使わず、
-   写真を縦に大きめ（auto 210%）に表示し、スクロール量に応じてJSでbackground-positionを
-   動かすことで、写真の動きをコンテンツのスクロール速度よりはるかに遅くしている。 */
+   写真を上下に大きくはみ出させておき、スクロール量に応じてJSでtransform: translateY()を
+   動かすことで、写真の動きをコンテンツのスクロール速度よりゆっくりにしている。
+   （transformはGPU合成のみで再描画が発生せず、スクロール時になめらかに動く） */
 .bg-parallax {
-  background-size: auto 210%;
-  background-position: center 0%;
+  position: absolute;
+  inset: -30% 0;
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
+  will-change: transform;
 }
 
 .service-featured-photo {
@@ -652,8 +657,6 @@ section {
 }
 
 .value-prop-media {
-  position: absolute;
-  inset: 0;
   z-index: 0;
 }
 
@@ -1169,6 +1172,7 @@ section {
 }
 
 .card-photo {
+  position: relative;
   aspect-ratio: 16 / 9;
   background-color: var(--green-100);
   overflow: hidden;
