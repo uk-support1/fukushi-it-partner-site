@@ -398,8 +398,10 @@ section {
 /* .bg-parallaxの共通値（center基準）より優先させるため、詳細度を上げて指定 */
 .hero-photo.bg-parallax {
   background-repeat: no-repeat;
-  background-size: auto 190%;
-  background-position: right 0%;
+  /* JS側のHERO_OVERSIZE（1.3 = 230% - 100%）と対応させている。
+     写真が完全に静止して見えるよう、スクロールを打ち消せるだけの余白を確保する。 */
+  background-size: auto 230%;
+  background-position: right 45%;
 }
 
 @keyframes hero-photo-fade-in {

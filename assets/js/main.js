@@ -172,32 +172,52 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 写真パララックス（写真だけがコンテンツよりはるかにゆっくり動く演出）
+  // 写真パララックス（写真だけがコンテンツよりゆっくり動く演出）
   // background-attachment:fixedは環境により正しく描画されないことがあるため使わず、
   // 縦に大きめの写真のbackground-positionをスクロール量に応じてJSで動かしている。
   var parallaxEls = document.querySelectorAll(".bg-parallax");
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var heroMobileQuery = window.matchMedia("(max-width: 900px)");
+  var heroPhotoEl = document.querySelector(".hero-photo.bg-parallax");
+
+  // ヒーロー写真は「完全に静止して見える」ことが目標なので、
+  // スクロール量そのものに正比例させて打ち消す専用の計算にする。
+  // HERO_OVERSIZE は hero-photoのbackground-size: auto 230% に対応する超過分（2.3 - 1）。
+  var HERO_OVERSIZE = 1.3;
+  var HERO_REST_POSITION = 45; // スクロール0の時点の表示位置（%）
+
+  // それ以外の写真は「少しだけ遅れて動く」程度に留めたいので、
+  // 動く範囲を0〜100%ではなく、要素ごとに指定した狭い範囲に制限する。
+  var DEFAULT_MIN = 40;
+  var DEFAULT_MAX = 60;
 
   if (parallaxEls.length && !prefersReducedMotion) {
     var parallaxTicking = false;
 
     var updateParallax = function () {
       var vh = window.innerHeight;
+
+      if (heroPhotoEl && !heroMobileQuery.matches) {
+        var heroRect = heroPhotoEl.getBoundingClientRect();
+        var k = (HERO_OVERSIZE * heroRect.height) / 100;
+        var heroPos = HERO_REST_POSITION - window.scrollY / k;
+        heroPos = Math.min(100, Math.max(0, heroPos));
+        heroPhotoEl.style.backgroundPosition = "right " + heroPos.toFixed(1) + "%";
+      }
+
       parallaxEls.forEach(function (el) {
-        // ヒーロー写真はモバイル幅では人物の顔が切れないよう個別に調整済みのため、
-        // その表示はそのまま維持し、JSでは動かさない
-        if (el.classList.contains("hero-photo") && heroMobileQuery.matches) {
-          return;
+        if (el.classList.contains("hero-photo")) {
+          return; // 上で個別に処理済み（モバイルでは何もしない）
         }
         var rect = el.getBoundingClientRect();
         var total = vh + rect.height;
         var progress = Math.min(1, Math.max(0, (vh - rect.top) / total));
-        var hAnchor = el.classList.contains("hero-photo") ? "right" : "center";
-        // progressをそのまま使うと写真がコンテンツと同じ向き（下スクロールで上）に
-        // 余計に動いてしまうため、逆向き（1 - progress）にして写真がその場に
-        // とどまるように見せる
-        el.style.backgroundPosition = hAnchor + " " + ((1 - progress) * 100).toFixed(1) + "%";
+        var min = parseFloat(el.dataset.parallaxMin || DEFAULT_MIN);
+        var max = parseFloat(el.dataset.parallaxMax || DEFAULT_MAX);
+        // progressが大きい（スクロールが進んでいる）ほど値を小さくすることで、
+        // 写真がコンテンツより遅れて動くようにする
+        var pos = max - progress * (max - min);
+        el.style.backgroundPosition = "center " + pos.toFixed(1) + "%";
       });
       parallaxTicking = false;
     };
