@@ -376,6 +376,26 @@ section {
 }
 
 /* ===== Hero ===== */
+/* PC（901px以上）では.heroをposition:stickyにして、写真も文字も
+   画面上部に固定表示させ、後続セクションがその上をスクロールして
+   覆っていくようにする。.hero-sticky-holdの高さの分だけ「固定され続ける」
+   スクロール量を確保している（wrap側のpadding-bottomでは、Chromeで
+   position:stickyの固定範囲が正しく計算されないことを確認したため、
+   実体のある空divで高さを確保している）。 */
+.hero-sticky-wrap {
+  position: relative;
+}
+
+.hero-sticky-hold {
+  height: 0;
+}
+
+@media (min-width: 901px) {
+  .hero-sticky-hold {
+    height: 280px;
+  }
+}
+
 .hero {
   position: relative;
   padding: 88px 0 80px;
@@ -383,15 +403,22 @@ section {
   min-height: 540px;
 }
 
-/* 写真専用レイヤー。上下に大きくはみ出させ、スクロールに応じてJSで
-   transform: translateY() を動かすことで、写真だけが手前のコンテンツより
-   はるかにゆっくり動く（ほぼ静止して見える）パララックスを実現する。
+@media (min-width: 901px) {
+  .hero {
+    position: sticky;
+    /* ヘッダー（sticky, 高さ約85px）と重ならないよう、その分だけ下げて固定する */
+    top: 85px;
+  }
+}
+
+/* 写真専用レイヤー。PCではheroごとposition:stickyで固定するためJSでは動かさない。
+   モバイルのみ、上下に大きくはみ出させたレイヤーをJSのtransform: translateY()で
+   動かし、写真だけがコンテンツよりゆっくり動く（ほぼ静止して見える）ようにする。
    background-positionではなくtransformを使うのは、transformはGPU合成のみで
-   再描画が発生せず、スクロール時になめらかに動くため（background-positionは
-   毎フレーム再描画が必要でカクつきの原因になる）。 */
+   再描画が発生せず、スクロール時になめらかに動くため。 */
 .hero-photo {
   position: absolute;
-  inset: -80% 0;
+  inset: 0;
   z-index: 0;
   background-image: url('../images/hero-fukushi-it-partner.jpg');
   opacity: 0;
@@ -404,6 +431,12 @@ section {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: right center;
+}
+
+@media (max-width: 900px) {
+  .hero-photo.bg-parallax {
+    inset: -8% 0;
+  }
 }
 
 @keyframes hero-photo-fade-in {
@@ -514,7 +547,7 @@ section {
 /* スマートフォンでは画像をより引きで見せ、人物の顔が切れないようにする */
 @media (max-width: 600px) {
   .hero-photo.bg-parallax {
-    background: url('../images/hero-fukushi-it-partner.jpg') center top / cover no-repeat;
+    background: url('../images/hero-fukushi-it-partner.jpg') center top / 116% auto no-repeat;
   }
   .hero::before {
     background:

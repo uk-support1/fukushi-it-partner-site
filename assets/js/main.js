@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 遅れて（factor=1なら完全に静止して）見えるようにする。
   var parallaxEls = document.querySelectorAll(".bg-parallax");
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var heroDesktopQuery = window.matchMedia("(min-width: 901px)");
   var DEFAULT_FACTOR = 0.2;
 
   if (parallaxEls.length && !prefersReducedMotion) {
@@ -187,6 +188,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var updateParallax = function () {
       parallaxEls.forEach(function (el) {
+        // PC幅ではheroごとposition:stickyで固定しているため、
+        // ヒーロー写真はJSでは動かさない（二重に動いてしまうのを防ぐ）。
+        // リサイズでモバイル→PCに切り替わった際に古いtransformが
+        // 残らないよう、念のためリセットしておく。
+        if (el.classList.contains("hero-photo") && heroDesktopQuery.matches) {
+          if (el.style.transform) {
+            el.style.transform = "";
+          }
+          return;
+        }
         var container = el.parentElement;
         var rect = container.getBoundingClientRect();
         var factor = parseFloat(el.dataset.parallaxFactor || DEFAULT_FACTOR);
