@@ -513,6 +513,87 @@ section {
   letter-spacing: 0.02em;
 }
 
+.catch-banner-accent {
+  color: var(--orange-500);
+  font-size: 1.15em;
+  font-weight: 800;
+}
+
+/* ===== サービス（メイン：ホームページ制作 + 3つの支援） ===== */
+.service-featured {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.service-featured-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.service-featured-body {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.service-featured-body .badge {
+  align-self: flex-start;
+}
+
+.service-featured-body h3 {
+  font-size: 1.7rem;
+  color: var(--green-900);
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.service-featured-body p {
+  color: var(--text-600);
+  margin-bottom: 24px;
+  line-height: 1.8;
+}
+
+.service-featured-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.cards-grid--compact .card-body {
+  padding: 22px 18px 18px;
+}
+
+.cards-grid--compact .card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+}
+
+.cards-grid--compact .card-cta .btn {
+  padding: 10px 18px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 760px) {
+  .service-featured {
+    grid-template-columns: 1fr;
+  }
+  .service-featured-photo {
+    aspect-ratio: 16 / 9;
+  }
+  .service-featured-body {
+    padding: 28px 22px;
+  }
+}
+
 /* ===== 選ばれる理由 ===== */
 .value-prop-section {
   padding: 88px 0;
@@ -641,12 +722,7 @@ section {
   }
 }
 
-/* ===== 機能・カスタマイズ ===== */
-.feature-strip-section {
-  padding: 88px 0;
-  background: var(--cream-100);
-}
-
+/* ===== 機能・カスタマイズ（選ばれる理由セクションに統合） ===== */
 .feature-strip-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -655,8 +731,12 @@ section {
   margin: 0 auto;
 }
 
+.feature-strip-grid--merged {
+  margin-top: 56px;
+}
+
 .feature-strip-item {
-  background: var(--white);
+  background: var(--cream-100);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
   padding: 32px 26px;
@@ -677,41 +757,13 @@ section {
 }
 
 @media (max-width: 768px) {
-  .feature-strip-section {
-    padding: 60px 0;
-  }
   .feature-strip-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-}
-
-/* ===== 対応分野（一言） ===== */
-.focus-line-section {
-  padding: 40px 0;
-  background: var(--green-100);
-  text-align: center;
-}
-
-.focus-line-text {
-  font-size: 1.05rem;
-  color: var(--green-900);
-  font-weight: 600;
-}
-
-.focus-line-text strong {
-  color: var(--orange-600);
-  font-weight: 800;
-}
-
-/* ===== その他のサポート ===== */
-.other-support-section {
-  background: var(--white);
-  text-align: center;
-}
-
-.other-support-btn-group {
-  justify-content: center;
+  .feature-strip-grid--merged {
+    margin-top: 40px;
+  }
 }
 
 /* ===== Problem section（イラスト＋hover演出） ===== */
