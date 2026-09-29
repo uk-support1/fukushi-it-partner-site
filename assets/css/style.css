@@ -531,11 +531,20 @@ section {
   margin-bottom: 32px;
 }
 
+.service-featured-photo {
+  position: relative;
+  overflow: hidden;
+}
+
 .service-featured-photo img {
+  position: absolute;
+  top: -15%;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 130%;
   object-fit: cover;
   display: block;
+  will-change: transform;
 }
 
 .service-featured-body {
@@ -626,11 +635,15 @@ section {
 }
 
 .value-prop-media img {
+  position: absolute;
+  top: -15%;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 130%;
   object-fit: cover;
   object-position: center 65%;
   display: block;
+  will-change: transform;
 }
 
 .value-prop-card::after {
