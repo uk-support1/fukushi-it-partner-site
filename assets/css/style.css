@@ -635,6 +635,51 @@ section {
   }
 }
 
+/* ===== 機能・カスタマイズ ===== */
+.feature-strip-section {
+  padding: 88px 0;
+  background: var(--cream-100);
+}
+
+.feature-strip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.feature-strip-item {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 32px 26px;
+}
+
+.feature-strip-item h3 {
+  color: var(--green-900);
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.feature-strip-item p {
+  font-size: 0.9rem;
+  color: var(--text-600);
+  line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .feature-strip-section {
+    padding: 60px 0;
+  }
+  .feature-strip-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
 /* ===== Problem section（イラスト＋hover演出） ===== */
 .problem-section {
   background: var(--cream-100);
