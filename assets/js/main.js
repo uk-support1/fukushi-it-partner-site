@@ -194,7 +194,10 @@ document.addEventListener("DOMContentLoaded", function () {
         var total = vh + rect.height;
         var progress = Math.min(1, Math.max(0, (vh - rect.top) / total));
         var hAnchor = el.classList.contains("hero-photo") ? "right" : "center";
-        el.style.backgroundPosition = hAnchor + " " + (progress * 100).toFixed(1) + "%";
+        // progressをそのまま使うと写真がコンテンツと同じ向き（下スクロールで上）に
+        // 余計に動いてしまうため、逆向き（1 - progress）にして写真がその場に
+        // とどまるように見せる
+        el.style.backgroundPosition = hAnchor + " " + ((1 - progress) * 100).toFixed(1) + "%";
       });
       parallaxTicking = false;
     };
