@@ -171,34 +171,4 @@ document.addEventListener("DOMContentLoaded", function () {
       el.classList.add("is-visible");
     });
   }
-
-  // 写真の背景パララックス（スクロール時に写真だけゆっくり動いて奥行きを出す）
-  var parallaxEls = document.querySelectorAll(".js-parallax");
-  var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (parallaxEls.length && !prefersReducedMotion) {
-    var parallaxTicking = false;
-
-    var updateParallax = function () {
-      var viewportCenter = window.innerHeight / 2;
-      parallaxEls.forEach(function (img) {
-        var rect = img.parentElement.getBoundingClientRect();
-        var elementCenter = rect.top + rect.height / 2;
-        var offset = (elementCenter - viewportCenter) * 0.12;
-        img.style.transform = "translateY(" + offset.toFixed(1) + "px)";
-      });
-      parallaxTicking = false;
-    };
-
-    var onParallaxScroll = function () {
-      if (!parallaxTicking) {
-        window.requestAnimationFrame(updateParallax);
-        parallaxTicking = true;
-      }
-    };
-
-    window.addEventListener("scroll", onParallaxScroll, { passive: true });
-    window.addEventListener("resize", onParallaxScroll);
-    updateParallax();
-  }
 });
