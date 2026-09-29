@@ -376,23 +376,19 @@ section {
 }
 
 /* ===== Hero ===== */
-/* PC（901px以上）では.heroをposition:stickyにして、写真も文字も
-   画面上部に固定表示させ、後続セクションがその上をスクロールして
-   覆っていくようにする。.hero-sticky-holdの高さの分だけ「固定され続ける」
-   スクロール量を確保している（wrap側のpadding-bottomでは、Chromeで
-   position:stickyの固定範囲が正しく計算されないことを確認したため、
-   実体のある空divで高さを確保している）。 */
+/* PC（901px以上）では.heroをposition:fixedにして、写真も文字も
+   常に画面上部に固定表示させ、後続セクションがその上をスクロールして
+   覆っていくようにする（固定を解除するタイミングを作らないことで、
+   途中で写真が一緒に動き出してしまうことがないようにしている）。
+   .hero-sticky-wrapは、position:fixedで通常フローから外れるheroの分だけ
+   高さを確保するためのプレースホルダー。 */
 .hero-sticky-wrap {
   position: relative;
 }
 
-.hero-sticky-hold {
-  height: 0;
-}
-
 @media (min-width: 901px) {
-  .hero-sticky-hold {
-    height: 280px;
+  .hero-sticky-wrap {
+    height: 540px;
   }
 }
 
@@ -405,9 +401,13 @@ section {
 
 @media (min-width: 901px) {
   .hero {
-    position: sticky;
-    /* ヘッダー（sticky, 高さ約85px）と重ならないよう、その分だけ下げて固定する */
+    position: fixed;
     top: 85px;
+    left: 0;
+    right: 0;
+    /* ヘッダー(z-index:100)や後続セクションより下に敷き、
+       スクロールすると後続コンテンツが上からかぶさるようにする */
+    z-index: -1;
   }
 }
 
@@ -544,20 +544,23 @@ section {
   }
 }
 
-/* スマートフォンでは画像をより引きで見せ、人物の顔が切れないようにする */
+/* スマートフォンでは画像をより引きで見せ、人物の顔が切れないようにする。
+   文言はできる限り写真の枠に重ねたいので、写真を少し大きく・下まで見せつつ、
+   テキストの開始位置も写真に重なる高さまで引き上げている。 */
 @media (max-width: 600px) {
   .hero-photo.bg-parallax {
-    background: url('../images/hero-fukushi-it-partner.jpg') center top / 116% auto no-repeat;
+    background: url('../images/hero-fukushi-it-partner.jpg') center top / 145% auto no-repeat;
   }
   .hero::before {
     background:
       linear-gradient(to bottom,
-        rgba(232, 244, 238, 0.05) 0%,
-        rgba(232, 244, 238, 0.85) 58%,
-        rgba(232, 244, 238, 1.00) 74%);
+        rgba(232, 244, 238, 0.00) 0%,
+        rgba(232, 244, 238, 0.55) 40%,
+        rgba(232, 244, 238, 0.92) 62%,
+        rgba(232, 244, 238, 1.00) 78%);
   }
   .hero {
-    padding-top: calc(100vw * 0.563 + 32px);
+    padding-top: 130px;
   }
 }
 
@@ -664,6 +667,13 @@ section {
   }
 }
 
+/* PC版ヒーローをposition:fixedで常時固定表示にしたため、後続のセクションには
+   必ず不透明な背景を持たせる必要がある（透明のままだと、スクロールしても
+   背後に固定されたヒーローが透けて見えてしまう） */
+.services-section {
+  background: var(--white);
+}
+
 /* ===== 選ばれる理由 ===== */
 .value-prop-section {
   padding: 88px 0;
@@ -691,6 +701,14 @@ section {
 
 .value-prop-media {
   z-index: 0;
+}
+
+/* カードの縦横比と写真の縦横比が近く、background-size:coverだけでは
+   上下に動かす余地（スラック）がほとんどないため、明示的に写真を拡大し、
+   下寄り（机・PC・電卓側）が中心に写るようにする */
+.value-prop-media.bg-parallax {
+  background-size: auto 160%;
+  background-position: center 88%;
 }
 
 .value-prop-card::after {
