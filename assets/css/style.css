@@ -32,6 +32,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* bodyではなくhtmlにoverflow-xを持たせる。bodyにoverflowを設定すると、
+     ブラウザがbodyを独自のスクロールコンテナとして扱ってしまい、
+     background-attachment:fixed（写真固定パララックス）が効かなくなるため */
+  overflow-x: hidden;
 }
 
 body {
@@ -42,7 +46,6 @@ body {
   line-height: 1.85;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
 img {
@@ -380,32 +383,46 @@ section {
   min-height: 540px;
 }
 
+/* 写真専用レイヤー。縦に大きめに表示し、スクロールに応じてJSで
+   background-positionをゆっくり動かすことで、写真だけが手前のコンテンツより
+   はるかにゆっくり動く（ほぼ静止して見える）パララックスを実現する。 */
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url('../images/hero-fukushi-it-partner.jpg');
+  opacity: 0;
+  animation: hero-photo-fade-in 1.4s ease-out forwards;
+}
+
+/* .bg-parallaxの共通値（center基準）より優先させるため、詳細度を上げて指定 */
+.hero-photo.bg-parallax {
+  background-repeat: no-repeat;
+  background-size: auto 190%;
+  background-position: right 0%;
+}
+
+@keyframes hero-photo-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 0;
-  background:
-    linear-gradient(to right,
+  z-index: 1;
+  background: linear-gradient(to right,
       rgba(232, 244, 238, 0.97) 0%,
       rgba(232, 244, 238, 0.93) 26%,
       rgba(232, 244, 238, 0.50) 50%,
       rgba(232, 244, 238, 0.06) 68%,
-      transparent 82%),
-    url('../images/hero-fukushi-it-partner.jpg') right center / cover no-repeat;
-  background-attachment: fixed;
-  transform: scale(1.035);
-  animation: hero-photo-zoom 7s cubic-bezier(0.25, 0.7, 0.4, 1) forwards;
-}
-
-@keyframes hero-photo-zoom {
-  from { transform: scale(1.035); }
-  to { transform: scale(1); }
+      transparent 82%);
 }
 
 .hero-grid {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
@@ -463,13 +480,15 @@ section {
 }
 
 @media (max-width: 900px) {
+  .hero-photo.bg-parallax {
+    background: url('../images/hero-fukushi-it-partner.jpg') 65% top / cover no-repeat;
+  }
   .hero::before {
     background:
       linear-gradient(to bottom,
         rgba(232, 244, 238, 0.10) 0%,
         rgba(232, 244, 238, 0.90) 52%,
-        rgba(232, 244, 238, 1.00) 66%),
-      url('../images/hero-fukushi-it-partner.jpg') 65% top / cover no-repeat;
+        rgba(232, 244, 238, 1.00) 66%);
   }
   .hero {
     padding: 210px 0 56px;
@@ -490,13 +509,15 @@ section {
 
 /* スマートフォンでは画像をより引きで見せ、人物の顔が切れないようにする */
 @media (max-width: 600px) {
+  .hero-photo.bg-parallax {
+    background: url('../images/hero-fukushi-it-partner.jpg') center top / 100% auto no-repeat;
+  }
   .hero::before {
     background:
       linear-gradient(to bottom,
         rgba(232, 244, 238, 0.05) 0%,
         rgba(232, 244, 238, 0.85) 58%,
-        rgba(232, 244, 238, 1.00) 74%),
-      url('../images/hero-fukushi-it-partner.jpg') center top / 100% auto no-repeat;
+        rgba(232, 244, 238, 1.00) 74%);
   }
   .hero {
     padding-top: calc(100vw * 0.563 + 32px);
@@ -532,19 +553,14 @@ section {
   margin-bottom: 32px;
 }
 
-/* ===== 写真固定パララックス（写真は画面にほぼ静止し、手前をコンテンツが通り過ぎる） ===== */
+/* ===== 写真パララックス（写真は画面上でほぼ静止し、手前をコンテンツが通り過ぎる） =====
+   background-attachment:fixedは環境によって正しく描画されないことがあるため使わず、
+   写真を縦に大きめ（auto 210%）に表示し、スクロール量に応じてJSでbackground-positionを
+   動かすことで、写真の動きをコンテンツのスクロール速度よりはるかに遅くしている。 */
 .bg-parallax {
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
-@media (max-width: 768px) {
-  /* iOS Safari等はbackground-attachment:fixedに対応していないため、
-     モバイルは通常のスクロール（写真も一緒に流れる）にフォールバックする */
-  .bg-parallax {
-    background-attachment: scroll;
-  }
+  background-size: auto 210%;
+  background-position: center 0%;
+  background-repeat: no-repeat;
 }
 
 .service-featured-photo {
@@ -637,7 +653,6 @@ section {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-position: center 65%;
 }
 
 .value-prop-card::after {
@@ -837,7 +852,7 @@ section {
   .cards-grid .card,
   .card h3,
   .card:hover .card-photo img,
-  .hero::before,
+  .hero-photo,
   .hero-title-line,
   .hero-message {
     animation: none !important;
@@ -848,8 +863,8 @@ section {
     transform: scale(1) !important;
   }
 
-  .hero::before {
-    transform: scale(1) !important;
+  .hero-photo {
+    opacity: 1 !important;
   }
 
   .hero-title-line,
@@ -2431,7 +2446,10 @@ section {
 
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  /* translateY(0)ではなくnoneにする。transformが1以外の値を持つ要素は
+     background-attachment:fixedの基準（包含ブロック）を作ってしまい、
+     子要素の固定パララックスが効かなくなるため */
+  transform: none;
 }
 
 /* 小見出し→大見出し→ビジュアルのように時間差で出現させるための

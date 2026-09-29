@@ -171,4 +171,43 @@ document.addEventListener("DOMContentLoaded", function () {
       el.classList.add("is-visible");
     });
   }
+
+  // 写真パララックス（写真だけがコンテンツよりはるかにゆっくり動く演出）
+  // background-attachment:fixedは環境により正しく描画されないことがあるため使わず、
+  // 縦に大きめの写真のbackground-positionをスクロール量に応じてJSで動かしている。
+  var parallaxEls = document.querySelectorAll(".bg-parallax");
+  var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var heroMobileQuery = window.matchMedia("(max-width: 900px)");
+
+  if (parallaxEls.length && !prefersReducedMotion) {
+    var parallaxTicking = false;
+
+    var updateParallax = function () {
+      var vh = window.innerHeight;
+      parallaxEls.forEach(function (el) {
+        // ヒーロー写真はモバイル幅では人物の顔が切れないよう個別に調整済みのため、
+        // その表示はそのまま維持し、JSでは動かさない
+        if (el.classList.contains("hero-photo") && heroMobileQuery.matches) {
+          return;
+        }
+        var rect = el.getBoundingClientRect();
+        var total = vh + rect.height;
+        var progress = Math.min(1, Math.max(0, (vh - rect.top) / total));
+        var hAnchor = el.classList.contains("hero-photo") ? "right" : "center";
+        el.style.backgroundPosition = hAnchor + " " + (progress * 100).toFixed(1) + "%";
+      });
+      parallaxTicking = false;
+    };
+
+    var onParallaxScroll = function () {
+      if (!parallaxTicking) {
+        window.requestAnimationFrame(updateParallax);
+        parallaxTicking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onParallaxScroll, { passive: true });
+    window.addEventListener("resize", onParallaxScroll);
+    updateParallax();
+  }
 });
