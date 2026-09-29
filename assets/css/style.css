@@ -455,6 +455,12 @@ section {
   animation: hero-line-fade-in 2s ease-out 4s forwards;
 }
 
+.hero-message-emphasis {
+  font-size: 1.3em;
+  font-weight: 800;
+  color: var(--green-900);
+}
+
 @media (max-width: 900px) {
   .hero::before {
     background:
@@ -680,16 +686,43 @@ section {
   }
 }
 
+/* ===== 対応分野（一言） ===== */
+.focus-line-section {
+  padding: 40px 0;
+  background: var(--green-100);
+  text-align: center;
+}
+
+.focus-line-text {
+  font-size: 1.05rem;
+  color: var(--green-900);
+  font-weight: 600;
+}
+
+.focus-line-text strong {
+  color: var(--orange-600);
+  font-weight: 800;
+}
+
+/* ===== その他のサポート ===== */
+.other-support-section {
+  background: var(--white);
+  text-align: center;
+}
+
+.other-support-btn-group {
+  justify-content: center;
+}
+
 /* ===== Problem section（イラスト＋hover演出） ===== */
 .problem-section {
   background: var(--cream-100);
   overflow-x: hidden;
 }
 
-/* お悩みは4項目になったため、均等4列のグリッドでシンプルに並べる */
 .problem-illustrated {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 34px 28px;
   max-width: 980px;
   margin: 0 auto;
@@ -709,7 +742,6 @@ section {
 .problem-illustrated .problem-figure:nth-child(1) { transition-delay: 0s; }
 .problem-illustrated .problem-figure:nth-child(2) { transition-delay: 0.06s; }
 .problem-illustrated .problem-figure:nth-child(3) { transition-delay: 0.12s; }
-.problem-illustrated .problem-figure:nth-child(4) { transition-delay: 0.18s; }
 
 .problem-figure-stage {
   position: relative;
@@ -730,7 +762,6 @@ section {
 .problem-figure--1 .problem-figure-img { object-position: 72% 42%; }
 .problem-figure--2 .problem-figure-img { object-position: center center; }
 .problem-figure--3 .problem-figure-img { object-position: 78% 48%; }
-.problem-figure--4 .problem-figure-img { object-position: 80% 38%; }
 
 .problem-figure-caption {
   margin-top: 14px;
@@ -1023,6 +1054,10 @@ section {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
+}
+
+.cards-grid--three {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 @media (max-width: 1024px) {
