@@ -94,8 +94,9 @@ function excerptFromText(text, len) {
     .replace(/\[[A-Z]+(?:\s+[a-zA-Z]+="[^"]*")?\]/g, "")
     .replace(/\[\/[A-Z]+\]/g, "")
     .replace(/^#{1,6}\s*/gm, "")
+    .replace(/^[ \t]*(?:[-*+]|\d+\.)[ \t]+/gm, "")
     .replace(/[*_`]/g, "")
-    .replace(/\r?\n+/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
   return plain.length > len ? plain.slice(0, len) + "…" : plain;
 }
@@ -158,6 +159,7 @@ function siteHeader(depth) {
     '      <ul class="nav-links">\n' +
     '        <li><a href="' + prefix + 'index.html">HOME</a></li>\n' +
     '        <li><a href="' + prefix + 'index.html#services">サービス</a></li>\n' +
+    '        <li><a href="' + prefix + 'homepage-plan.html">料金プラン</a></li>\n' +
     '        <li><a href="' + prefix + 'works.html">制作実績</a></li>\n' +
     '        <li><a href="' + prefix + 'flow.html">制作までの流れ</a></li>\n' +
     '        <li><a href="' + prefix + 'course.html" class="active">お役立ち講座</a></li>\n' +
@@ -172,7 +174,7 @@ function siteHeader(depth) {
     '    <div class="nav-cta">\n' +
     '      <a href="' + prefix + 'contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>\n' +
     "    </div>\n" +
-    '    <button class="nav-toggle" aria-label="メニューを開く">\n' +
+    '    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">\n' +
     "      <span></span><span></span><span></span>\n" +
     "    </button>\n" +
     "  </div>\n" +
@@ -187,11 +189,13 @@ function siteFooter(depth) {
     '  <div class="container">\n' +
     '    <div class="footer-grid">\n' +
     '      <div class="footer-col">\n' +
-    "        <h4>サイトメニュー</h4>\n" +
+    "        <h2 class=\"footer-title\">サイトメニュー</h2>\n" +
     "        <ul>\n" +
     '          <li><a href="' + prefix + 'index.html">HOME</a></li>\n' +
     '          <li><a href="' + prefix + 'index.html#services">サービス</a></li>\n' +
+    '          <li><a href="' + prefix + 'homepage-plan.html">料金プラン</a></li>\n' +
     '          <li><a href="' + prefix + 'works.html">制作実績</a></li>\n' +
+    '          <li><a href="' + prefix + 'flow.html">制作までの流れ</a></li>\n' +
     '          <li><a href="' + prefix + 'course.html">お役立ち講座</a></li>\n' +
     '          <li><a href="' + prefix + 'blog.html">ブログ</a></li>\n' +
     '          <li><a href="' + prefix + 'profile.html">プロフィール</a></li>\n' +
@@ -199,7 +203,7 @@ function siteFooter(depth) {
     "        </ul>\n" +
     "      </div>\n" +
     '      <div class="footer-col">\n' +
-    "        <h4>お問い合わせ</h4>\n" +
+    "        <h2 class=\"footer-title\">お問い合わせ</h2>\n" +
     "        <ul>\n" +
     '          <li><a href="' + prefix + 'contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>\n' +
     '          <li><a href="' + prefix + 'privacy.html">プライバシーポリシー</a></li>\n' +
@@ -353,6 +357,7 @@ function buildCourseTopHtml(courseIndex) {
     "  </section>\n\n" +
     "  <section>\n" +
     '    <div class="container">\n' +
+    '      <h2 class="visually-hidden">講座一覧</h2>\n' +
     '      <div class="blog-list">\n\n' +
     cards +
     "\n\n      </div>\n" +

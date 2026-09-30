@@ -89,14 +89,20 @@ document.addEventListener("DOMContentLoaded", function () {
   var navLinks = document.querySelector(".nav-links");
 
   if (toggle && navLinks) {
+    var setNavOpen = function (isOpen) {
+      navLinks.classList.toggle("open", isOpen);
+      toggle.classList.toggle("is-active", isOpen);
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      toggle.setAttribute("aria-label", isOpen ? "メニューを閉じる" : "メニューを開く");
+    };
+
     toggle.addEventListener("click", function () {
-      navLinks.classList.toggle("open");
-      toggle.classList.toggle("is-active");
+      setNavOpen(!navLinks.classList.contains("open"));
     });
 
     navLinks.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
-        navLinks.classList.remove("open");
+        setNavOpen(false);
       });
     });
   }
@@ -173,11 +179,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // 写真パララックス（写真だけがコンテンツよりゆっくり動く演出）
-  // background-position（要再描画）ではなくtransform: translateY()（GPU合成のみ、
-  // 再描画なし）を使うことで、スクロール時になめらかに動くようにしている。
-  // 各要素は自分の親（overflow:hiddenでクリップする箱）の位置を基準に、
-  // 「親の移動量 × data-parallax-factor」だけ逆方向に動いて、コンテンツより
-  // 遅れて（factor=1なら完全に静止して）見えるようにする。
+  // 写真レイヤー（.bg-parallax）は親の枠より上下に大きく作ってあり、
+  // transform: translateY()（GPU合成のみで再描画なし）で枠の中を動かす。
+  // ・通常の写真：枠が画面中央にあるとき0、そこからのずれ×factorだけ逆方向に動かす
+  // ・ヒーロー写真：スクロール量×factorだけ動かす（factor=1で静止して見える）
+  // どちらも、写真のはみ出し幅を超えて動かすと枠の中に隙間ができるため上限を設ける。
   var parallaxEls = document.querySelectorAll(".bg-parallax");
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var heroDesktopQuery = window.matchMedia("(min-width: 901px)");
@@ -187,12 +193,12 @@ document.addEventListener("DOMContentLoaded", function () {
     var parallaxTicking = false;
 
     var updateParallax = function () {
+      var vh = window.innerHeight;
       parallaxEls.forEach(function (el) {
-        // PC幅ではheroごとposition:stickyで固定しているため、
-        // ヒーロー写真はJSでは動かさない（二重に動いてしまうのを防ぐ）。
-        // リサイズでモバイル→PCに切り替わった際に古いtransformが
-        // 残らないよう、念のためリセットしておく。
-        if (el.classList.contains("hero-photo") && heroDesktopQuery.matches) {
+        var isHero = el.classList.contains("hero-photo");
+        // PC幅ではheroごとposition:fixedで固定しているため、ヒーロー写真はJSでは動かさない。
+        // リサイズでモバイル→PCに切り替わった際に古いtransformが残らないようリセットする。
+        if (isHero && heroDesktopQuery.matches) {
           if (el.style.transform) {
             el.style.transform = "";
           }
@@ -200,10 +206,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         var container = el.parentElement;
         var rect = container.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > vh) {
+          return;
+        }
         var factor = parseFloat(el.dataset.parallaxFactor || DEFAULT_FACTOR);
         var rest = parseFloat(el.dataset.parallaxRest || 0);
-        var translateY = rest - factor * rect.top;
-        el.style.transform = "translateY(" + translateY.toFixed(1) + "px)";
+        var maxShift = Math.max(0, (el.offsetHeight - container.offsetHeight) / 2);
+        var shift = isHero
+          ? factor * window.scrollY
+          : factor * (vh / 2 - (rect.top + rect.height / 2));
+        shift = Math.max(-maxShift, Math.min(maxShift, shift + rest));
+        el.style.transform = "translate3d(0, " + shift.toFixed(1) + "px, 0)";
       });
       parallaxTicking = false;
     };

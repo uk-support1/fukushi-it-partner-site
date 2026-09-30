@@ -841,7 +841,6 @@ body.jlp-body {
   .jlp-sim-row {
     grid-template-columns: 1fr;
   }
-  .jlp-sim-op { transform: rotate(90deg); }
 }
 
 .jlp-sim-note {
@@ -891,14 +890,17 @@ body.jlp-body {
 
 /* ===== 活用してできることカード =====
    写真を廃止しサービス一覧を主役にするため、4列→3列にしてカードを一回り大きく見せる ===== */
+/* 7枚のカードを3列で並べると最後の1枚が左に寄るため、flexで最終行を中央にそろえる */
 .jlp-use-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   margin-bottom: 32px;
 }
 
 .jlp-use-card {
+  flex: 0 1 calc((100% - 40px) / 3);
   background: var(--white);
   border-radius: var(--radius-md);
   padding: 30px 22px;
@@ -933,10 +935,10 @@ body.jlp-body {
 }
 
 @media (max-width: 900px) {
-  .jlp-use-grid { grid-template-columns: repeat(2, 1fr); }
+  .jlp-use-card { flex-basis: calc((100% - 20px) / 2); }
 }
 @media (max-width: 480px) {
-  .jlp-use-grid { grid-template-columns: 1fr; }
+  .jlp-use-card { flex-basis: 100%; }
 }
 
 /* ===== 支援内容／立ち位置 ===== */
@@ -983,7 +985,7 @@ body.jlp-body {
   padding: 24px 26px;
 }
 
-.jlp-support-note h4 {
+.jlp-support-note h3 {
   color: var(--green-900);
   font-size: 1rem;
   margin-bottom: 12px;
@@ -1417,4 +1419,19 @@ body.jlp-body {
   text-align: center;
   min-width: 0;
   max-width: 100%;
+}
+
+/* カード内の短い文章が「見ても／らう」のように語の途中で改行されないよう、文節単位で折り返す */
+.jlp-head-lead,
+.jlp-problem-item,
+.jlp-use-card,
+.jlp-reason-card,
+.jlp-subsidy-card,
+.jlp-info-box,
+.jlp-flow-step,
+.jlp-support-list,
+.jlp-support-note,
+.jlp-sim-support-item {
+  word-break: auto-phrase;
+  text-wrap: pretty;
 }

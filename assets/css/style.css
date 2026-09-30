@@ -67,6 +67,33 @@ ul {
   white-space: nowrap;
 }
 
+/* 見出しは文節の区切りで改行し、行の長さをそろえて「くださ／い。」のような
+   1〜2文字だけの行ができないようにする（非対応ブラウザでは通常の改行になる） */
+h1,
+h2,
+h3,
+.section-lead,
+.hero-message,
+.page-hero p,
+.plan-card-target {
+  word-break: auto-phrase;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+/* 画面には表示せず、読み上げソフトにだけ伝えるテキスト */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .container {
   width: 100%;
   max-width: var(--container-width);
@@ -291,6 +318,17 @@ section {
   width: 100%;
 }
 
+/* ハンバーガーメニューに切り替わる直前の幅では、メニュー9項目が
+   ロゴ・相談ボタンと重ならないよう間隔と文字を少しだけ詰める */
+@media (min-width: 1201px) and (max-width: 1360px) {
+  .nav-links {
+    gap: 14px;
+  }
+  .nav-links a {
+    font-size: 0.86rem;
+  }
+}
+
 .nav-cta {
   display: flex;
   gap: 10px;
@@ -433,9 +471,12 @@ section {
   background-position: right center;
 }
 
+/* モバイルでは写真レイヤーの上端をヒーローの上端（ヘッダーの真下）にそろえ、
+   人物の頭がヘッダー側に隠れないようにする。スクロール時は下方向にだけ動くため、
+   はみ出し分は下側にだけ持たせる。 */
 @media (max-width: 900px) {
   .hero-photo.bg-parallax {
-    inset: -8% 0;
+    inset: 0 0 -16% 0;
   }
 }
 
@@ -560,7 +601,7 @@ section {
         rgba(232, 244, 238, 1.00) 78%);
   }
   .hero {
-    padding-top: 130px;
+    padding-top: 175px;
   }
 }
 
@@ -768,6 +809,8 @@ section {
   border-radius: 999px;
   box-shadow: var(--shadow-soft);
   transition: transform var(--transition), background var(--transition);
+  word-break: auto-phrase;
+  text-wrap: balance;
 }
 
 .value-prop-more span {
@@ -999,6 +1042,101 @@ section {
   }
 }
 
+/* ===== 制作までの流れ：費用の目安・公開後のサポート ===== */
+.flow-cost-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.flow-cost-item {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 22px 18px 20px;
+}
+
+.flow-cost-item--featured {
+  border: 2px solid var(--orange-500);
+}
+
+.value-box .flow-cost-name {
+  color: var(--green-900);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.value-box .flow-cost-price {
+  color: var(--green-900);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.3;
+  margin: 4px 0 8px;
+}
+
+.value-box .flow-cost-item--featured .flow-cost-price {
+  color: var(--orange-600);
+}
+
+.flow-cost-price span {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.value-box .flow-cost-desc {
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.value-box .flow-cost-note {
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+.flow-aftercare-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.flow-aftercare-list li {
+  position: relative;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 18px 20px 18px 56px;
+  color: var(--green-900);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.flow-aftercare-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  border-radius: 50%;
+  background: var(--green-100);
+  color: var(--green-700);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  .flow-cost-grid,
+  .flow-aftercare-list {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ===== 福祉×IT 写真ヒーロー ===== */
 .welfare-photo-hero {
   position: relative;
@@ -1193,6 +1331,18 @@ section {
 @media (max-width: 1024px) {
   .cards-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  /* 3枚のカードが2列になると最後の1枚だけ左に寄るため、中央にそろえる */
+  .cards-grid--three > .card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 12px);
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-grid--three > .card:last-child:nth-child(odd) {
+    width: calc(50% - 7px);
   }
 }
 
@@ -1476,12 +1626,19 @@ section {
     grid-template-columns: 1fr;
     gap: 28px;
   }
+  /* スマホではサイトメニューを2列にして、フッターが縦に長くなりすぎないようにする */
+  .footer-col:first-child ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+  }
 }
 
-.footer-col h4 {
+.footer-title {
   color: var(--green-900);
   margin-bottom: 16px;
   font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .footer-col li {
@@ -1546,9 +1703,11 @@ section {
 }
 
 .contact-hero-list {
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto;
   text-align: left;
+  word-break: auto-phrase;
+  text-wrap: pretty;
 }
 
 .contact-hero-list li {
@@ -1798,7 +1957,7 @@ section {
   justify-content: center;
 }
 
-.blog-featured-body h2 {
+.blog-featured-body h3 {
   color: var(--green-900);
   font-size: 1.5rem;
   line-height: 1.5;
@@ -1992,13 +2151,27 @@ section {
   margin: 0 auto;
 }
 
+/* 記事タイトルは長いものが多いため、スマホでは文字を少し小さく・行間を詰めて
+   「プロフ／ィール」のような語の途中の改行と、見出しだけで画面が埋まるのを防ぐ */
 .blog-article h1 {
   color: var(--green-900);
   margin-bottom: 16px;
+  font-size: clamp(1.45rem, 1.1rem + 1.6vw, 2rem);
+  line-height: 1.5;
 }
 
 .blog-article .blog-date {
   margin-bottom: 32px;
+}
+
+/* カテゴリと日付を横に並べる行では、日付の余白でカテゴリと高さがずれないよう、
+   下の余白は行全体にもたせる */
+.blog-article .meta-row {
+  margin-bottom: 32px;
+}
+
+.blog-article .meta-row .blog-date {
+  margin-bottom: 0;
 }
 
 .blog-article h2 {
@@ -2063,6 +2236,27 @@ section {
   color: var(--green-700);
 }
 
+/* 本文中のリンクは、まわりの文章と見分けがつくよう色と下線をつける */
+.blog-article p a:not(.btn),
+.blog-article li a:not(.btn),
+.blog-article td a:not(.btn),
+.blog-article blockquote a:not(.btn) {
+  color: var(--green-700);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+  transition: color var(--transition);
+}
+
+.blog-article p a:not(.btn):hover,
+.blog-article li a:not(.btn):hover,
+.blog-article td a:not(.btn):hover,
+.blog-article blockquote a:not(.btn):hover {
+  color: var(--orange-600);
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -2087,6 +2281,15 @@ section {
   }
   .profile-main .profile-portrait-wrap {
     margin: 0 auto;
+  }
+  /* 長い本文は中央揃えだと行頭がそろわず読みにくいため、スマホでも左揃えにする */
+  .profile-bio {
+    margin: 0 auto;
+    text-align: left;
+  }
+  .profile-bio .profile-intro,
+  .profile-bio .profile-catch {
+    text-align: center;
   }
 }
 
@@ -2169,6 +2372,10 @@ section {
 .profile-catch {
   font-weight: 700;
   color: var(--green-900);
+  background: var(--green-100);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  text-align: center;
 }
 
 .qualification-box {
@@ -2178,6 +2385,7 @@ section {
   margin-top: 24px;
 }
 
+.qualification-box h3,
 .qualification-box h4 {
   color: var(--green-900);
   margin-bottom: 10px;
@@ -2197,7 +2405,7 @@ section {
   align-items: center;
   gap: 16px;
   max-width: 380px;
-  margin: 0 0 0 auto;
+  margin: 0 auto;
   background: var(--white);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-md);
@@ -2344,7 +2552,7 @@ section {
 
 /* ===== お問い合わせフォーム ===== */
 .contact-form-section {
-  padding: 24px 0 48px;
+  padding: 64px 0 48px;
 }
 
 .contact-form-lead {
@@ -2429,7 +2637,7 @@ section {
   padding-right: 40px;
 }
 
-.form-group--checkbox {
+.contact-form .form-group--checkbox {
   margin-bottom: 28px;
 }
 
@@ -2810,83 +3018,305 @@ section {
   }
 }
 
-/* ===== ホームページ制作 料金プラン：入口カード ===== */
-.plan-intro-grid {
+/* ===== ホームページ制作 料金プラン ===== */
+/* 短い項目が多いため、「作／成」のような語の途中で改行されないよう文節単位で折り返す */
+.plan-grid,
+.plan-common,
+.plan-compare-table,
+.plan-notes {
+  word-break: auto-phrase;
+  text-wrap: pretty;
+}
+
+.plan-promise {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 12px;
+  margin-top: 28px;
+  list-style: none;
+}
+
+.plan-promise li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  box-shadow: var(--shadow-soft);
+  color: var(--green-900);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.plan-promise li::before {
+  content: "✓";
+  color: var(--orange-600);
+  font-weight: 800;
+}
+
+.plan-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
-  align-items: start;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
+  align-items: stretch;
 }
 
-.plan-intro-card {
+.plan-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   background: var(--white);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   overflow: hidden;
-  transition: transform var(--transition), box-shadow var(--transition);
 }
 
-.plan-intro-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 32px rgba(31, 77, 60, 0.12);
-}
-
-.plan-intro-card--featured {
+.plan-card--featured {
   border: 2px solid var(--orange-500);
-  box-shadow: 0 16px 40px rgba(217, 127, 63, 0.18);
+  box-shadow: 0 18px 44px rgba(217, 127, 63, 0.18);
 }
 
-.plan-intro-name {
-  margin: 24px 24px 20px;
-  padding: 16px 12px;
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-md);
-  background: var(--green-100);
-  color: var(--green-900);
-  font-size: 2rem;
+.plan-card-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 1;
+  padding: 6px 16px;
+  background: var(--orange-500);
+  color: var(--white);
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(217, 127, 63, 0.35);
+  font-size: 0.82rem;
   font-weight: 800;
-  line-height: 1.3;
-  text-align: center;
+  letter-spacing: 0.06em;
 }
 
-.plan-intro-card--featured .plan-intro-name {
+.plan-card-media {
+  aspect-ratio: 3 / 2;
+  background: var(--green-100);
+  overflow: hidden;
+}
+
+.plan-card--featured .plan-card-media {
   background: var(--orange-100);
-  border-color: var(--orange-100);
-  color: var(--orange-600);
 }
 
-.plan-intro-card img {
+.plan-card-media img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 
-.plan-intro-foot {
-  padding: 20px 24px;
+.plan-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 30px 32px 34px;
 }
 
-.plan-intro-foot .btn {
+.plan-card-target {
+  margin-bottom: 4px;
+  color: var(--green-700);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.plan-card--featured .plan-card-target {
+  color: var(--orange-600);
+}
+
+.plan-card-name {
+  margin-bottom: 8px;
+  color: var(--green-900);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.plan-card-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  color: var(--green-900);
+}
+
+.plan-card--featured .plan-card-price {
+  color: var(--orange-600);
+}
+
+.plan-card-price-num {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+.plan-card-price-unit {
+  margin-left: 2px;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.plan-card-lead {
+  margin-bottom: 20px;
+  color: var(--text-600);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.plan-card-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 26px;
+}
+
+.plan-card-specs div {
+  padding: 12px 6px;
+  background: var(--cream-100);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.plan-card--featured .plan-card-specs div {
+  background: var(--orange-100);
+}
+
+.plan-card-specs dt {
+  margin-bottom: 2px;
+  color: var(--text-600);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.plan-card-specs dd {
+  color: var(--green-900);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.plan-card-specs dd small {
+  display: block;
+  color: var(--text-600);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.plan-card-subhead {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--green-900);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.plan-card-plus {
+  align-self: flex-start;
+  margin-bottom: 12px;
+  padding: 4px 12px;
+  background: var(--orange-100);
+  color: var(--orange-600);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.plan-card-list {
+  margin-bottom: 24px;
+  list-style: none;
+}
+
+.plan-card-list li {
+  position: relative;
+  margin-bottom: 8px;
+  padding-left: 26px;
+  color: var(--text-900);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.plan-card-list li::before {
+  content: "✓";
+  position: absolute;
+  top: 0.15em;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  background: var(--green-100);
+  color: var(--green-700);
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.plan-card--featured .plan-card-list li::before {
+  background: var(--orange-100);
+  color: var(--orange-600);
+}
+
+.plan-card-list--for li::before {
+  content: "♥";
+  font-size: 0.6rem;
+}
+
+.plan-card-foot {
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.plan-card-foot .btn {
   width: 100%;
 }
 
-@media (max-width: 800px) {
-  .plan-intro-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
+.plan-common {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+  max-width: 1000px;
+  margin: 36px auto 0;
+  padding: 24px 30px;
+  background: var(--cream-100);
+  border-radius: var(--radius-lg);
 }
 
-@media (max-width: 480px) {
-  .plan-intro-name {
-    font-size: 1.6rem;
-  }
+.plan-common-title {
+  color: var(--green-900);
+  font-size: 1rem;
+  font-weight: 800;
 }
 
-/* ===== ホームページ制作 料金プラン：2プラン比較表 ===== */
+.plan-common-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.plan-common-list li {
+  padding: 6px 14px;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  color: var(--green-900);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* 比較表 */
 .plan-compare-section {
   background: var(--cream-100);
 }
@@ -2894,82 +3324,76 @@ section {
 .plan-compare-table-wrap {
   max-width: 900px;
   margin: 0 auto;
-  overflow-x: auto;
+  background: var(--white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
-  border: 1px solid var(--border-soft);
+  overflow: hidden;
 }
 
 .plan-compare-table {
   width: 100%;
-  min-width: 640px;
   border-collapse: collapse;
-  background: var(--white);
+  table-layout: fixed;
 }
 
 .plan-compare-table th,
 .plan-compare-table td {
   padding: 16px 18px;
-  text-align: left;
-  font-size: 0.85rem;
-  line-height: 1.6;
   border-bottom: 1px solid var(--border-soft);
-  vertical-align: top;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .plan-compare-table thead th {
+  padding: 20px 16px;
   background: var(--green-900);
   color: var(--white);
-  font-weight: 700;
-  font-size: 0.85rem;
-  padding: 22px 18px;
-}
-
-.plan-compare-table th.plan-compare-th-plan {
-  text-align: center;
-}
-
-.plan-compare-th-name,
-.plan-compare-th-copy {
-  text-align: center;
-}
-
-.plan-compare-th-featured {
-  background: var(--orange-100);
-  color: var(--orange-600);
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.plan-compare-th-name {
-  display: block;
-  font-size: 1.5rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  line-height: 1.3;
-  margin-bottom: 8px;
+  line-height: 1.4;
 }
 
-.plan-compare-th-copy {
+.plan-compare-table thead th.is-featured {
+  background: var(--orange-500);
+}
+
+.plan-compare-table thead th small {
   display: block;
-  font-size: 0.9rem;
+  margin-top: 4px;
+  font-size: 0.75rem;
   font-weight: 700;
-  line-height: 1.6;
+  opacity: 0.92;
 }
 
-.plan-compare-table tbody th {
-  color: var(--green-900);
-  font-weight: 700;
-  font-size: 0.82rem;
-  background: var(--cream-100);
+.plan-compare-table thead .plan-compare-corner {
   width: 24%;
 }
 
-.plan-compare-table tbody td {
-  text-align: center;
+.plan-compare-table tbody th {
+  background: var(--cream-100);
+  color: var(--green-900);
+  font-weight: 800;
+  text-align: left;
 }
 
-.plan-compare-featured-col {
-  background: var(--orange-100);
-  font-weight: 500;
+.plan-compare-table td.is-featured {
+  background: #fff8f1;
+}
+
+.plan-compare-table td.is-none {
+  color: var(--text-600);
+}
+
+.plan-compare-price-row td {
+  color: var(--green-900);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.plan-compare-price-row td.is-featured {
+  color: var(--orange-600);
 }
 
 .plan-compare-table tbody tr:last-child th,
@@ -2977,262 +3401,114 @@ section {
   border-bottom: none;
 }
 
-.plan-compare-cards {
-  display: none;
-}
-
-.plan-compare-cards-head {
-  display: none;
-}
-
-@media (max-width: 700px) {
-  .plan-compare-table-wrap {
-    display: none;
-  }
-
-  .plan-compare-cards-head {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    max-width: 480px;
-    margin: 0 auto 14px;
-    text-align: center;
-  }
-
-  .plan-compare-cards-head-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .plan-compare-cards-head-name {
-    color: var(--green-900);
-    font-weight: 800;
-    font-size: 1.1rem;
-    line-height: 1.3;
-  }
-
-  .plan-compare-cards-head-item--featured .plan-compare-cards-head-name {
-    color: var(--orange-600);
-  }
-
-  .plan-compare-cards-head-price {
-    color: var(--green-700);
-    font-weight: 800;
-    font-size: 1.05rem;
-  }
-
-  .plan-compare-cards-head-item--featured .plan-compare-cards-head-price {
-    color: var(--orange-500);
-  }
-
-  .plan-compare-cards-head-copy {
-    color: var(--green-900);
-    font-weight: 700;
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-
-  .plan-compare-cards-head-item--featured .plan-compare-cards-head-copy {
-    color: var(--orange-600);
-  }
-
-  .plan-compare-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-
-  .plan-compare-card {
-    background: var(--white);
-    border: 1px solid var(--border-soft);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-soft);
-    padding: 16px 18px;
-  }
-
-  .plan-compare-card-title {
-    color: var(--green-900);
-    font-weight: 700;
-    font-size: 0.92rem;
-    margin-bottom: 10px;
-  }
-
-  .plan-compare-card-row {
-    padding: 8px 10px;
-    border-radius: var(--radius-sm);
-    margin-bottom: 6px;
-  }
-
-  .plan-compare-card-row:last-child {
-    margin-bottom: 0;
-  }
-
-  .plan-compare-card-row--featured {
-    background: var(--orange-100);
-  }
-
-  .plan-compare-card-plan {
-    display: block;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--green-700);
-    margin-bottom: 2px;
-  }
-
-  .plan-compare-card-row--featured .plan-compare-card-plan {
-    color: var(--orange-600);
-  }
-
-  .plan-compare-card-row p {
-    font-size: 0.88rem;
-    color: var(--text-600);
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  .plan-compare-card-row--none p {
-    color: var(--text-600);
-    opacity: 0.55;
-  }
-}
-
-/* ===== ホームページ制作 料金プラン：詳細 ===== */
-.plan-detail-section {
-  scroll-margin-top: 90px;
-}
-
-.plan-detail-section + .plan-detail-section {
-  padding-top: 0;
-}
-
-.plan-detail {
-  position: relative;
-  max-width: 760px;
+/* ご確認事項 */
+.plan-notes {
+  max-width: 900px;
   margin: 0 auto;
+  padding: 30px 34px;
   background: var(--white);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
-  padding: 40px;
 }
 
-.plan-detail--featured {
-  border: 2px solid var(--orange-500);
-  box-shadow: 0 16px 40px rgba(217, 127, 63, 0.18);
-}
-
-.plan-recommend-badge {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  z-index: 2;
-  margin-bottom: 0;
-  background: var(--orange-500);
-  color: var(--white);
-}
-
-.plan-name {
+.plan-notes-title {
+  margin-bottom: 14px;
   color: var(--green-900);
-  font-size: 1.4rem;
-  margin-bottom: 12px;
-}
-
-.plan-price {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.plan-price-amount {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--green-900);
-  line-height: 1;
-}
-
-.plan-detail--featured .plan-price-amount {
-  color: var(--orange-600);
-}
-
-.plan-price-yen {
   font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.plan-notes-list {
+  margin-bottom: 18px;
+  list-style: none;
+}
+
+.plan-notes-list li {
+  position: relative;
+  margin-bottom: 6px;
+  padding-left: 1.2em;
+  color: var(--text-600);
+  font-size: 0.88rem;
+  line-height: 1.8;
+}
+
+.plan-notes-list li::before {
+  content: "※";
+  position: absolute;
+  left: 0;
+}
+
+.plan-notes-link {
+  color: var(--green-700);
+  font-size: 0.92rem;
   font-weight: 700;
-  margin-left: 2px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.plan-price-tax {
-  font-size: 0.85rem;
-  color: var(--text-600);
-}
-
-.plan-desc {
-  color: var(--text-600);
-  font-size: 0.95rem;
-  margin-bottom: 8px;
-}
-
-.plan-subhead {
-  color: var(--green-900);
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin: 24px 0 10px;
-}
-
-.plan-list {
-  margin: 0 0 4px;
-}
-
-.plan-card-foot {
-  margin-top: 28px;
-}
-
-.plan-card-foot .btn {
-  width: 100%;
-}
-
-.plan-btn-note {
-  margin-top: 10px;
-  font-size: 0.75rem;
-  color: var(--text-600);
-  text-align: center;
-}
-
-.plan-notes {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 20px 24px;
-  background: var(--cream-100);
-  border-radius: var(--radius-md);
-}
-
-.plan-notes p {
-  font-size: 0.78rem;
-  color: var(--text-600);
-  line-height: 1.7;
-  margin-bottom: 4px;
-}
-
-.plan-notes p:last-child {
-  margin-bottom: 0;
-}
-
-@media (max-width: 600px) {
-  .plan-detail {
-    padding: 24px 20px;
+@media (max-width: 860px) {
+  .plan-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    max-width: 560px;
   }
-  .plan-price-amount {
-    font-size: 1.8rem;
+  .plan-common {
+    max-width: 560px;
   }
-  .plan-recommend-badge {
-    top: 20px;
-    right: 20px;
+}
+
+@media (max-width: 640px) {
+  .plan-card-body {
+    padding: 24px 20px 28px;
+  }
+  .plan-card-name {
+    font-size: 1.4rem;
+  }
+  .plan-card-price-num {
+    font-size: 2.3rem;
+  }
+  .plan-card-specs dd {
+    font-size: 0.92rem;
+  }
+  .plan-common {
+    padding: 20px;
   }
   .plan-notes {
-    padding: 16px 18px;
+    padding: 22px 20px;
+  }
+
+  /* スマホでは項目名を1行使い、2プランを左右に並べて比較できるようにする */
+  .plan-compare-table,
+  .plan-compare-table thead,
+  .plan-compare-table tbody {
+    display: block;
+  }
+  .plan-compare-table tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .plan-compare-table thead .plan-compare-corner {
+    display: none;
+  }
+  .plan-compare-table thead th {
+    padding: 14px 8px;
+    font-size: 0.95rem;
+  }
+  .plan-compare-table tbody th {
+    grid-column: 1 / -1;
+    padding: 8px 14px;
+    border-bottom: none;
+    font-size: 0.8rem;
+  }
+  .plan-compare-table td {
+    padding: 12px 10px;
+    font-size: 0.85rem;
+  }
+  .plan-compare-table td + td {
+    border-left: 1px solid var(--border-soft);
+  }
+  .plan-compare-price-row td {
+    font-size: 1.05rem;
   }
 }
 
@@ -3329,6 +3605,7 @@ section {
 
 .flow-step-media img {
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   object-position: center;
@@ -3440,7 +3717,7 @@ section {
   padding-right: 30px;
 }
 
-.modal-box h4 {
+.modal-box h3 {
   color: var(--green-900);
   font-size: 1rem;
   margin: 28px 0 10px;

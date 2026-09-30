@@ -234,6 +234,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '      <ul class="nav-links">\n' +
     '        <li><a href="../index.html">HOME</a></li>\n' +
     '        <li><a href="../index.html#services">サービス</a></li>\n' +
+    '        <li><a href="../homepage-plan.html">料金プラン</a></li>\n' +
     '        <li><a href="../works.html">制作実績</a></li>\n' +
     '        <li><a href="../flow.html">制作までの流れ</a></li>\n' +
     '        <li><a href="../course.html">お役立ち講座</a></li>\n' +
@@ -248,7 +249,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '    <div class="nav-cta">\n' +
     '      <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>\n' +
     "    </div>\n" +
-    '    <button class="nav-toggle" aria-label="メニューを開く">\n' +
+    '    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">\n' +
     "      <span></span><span></span><span></span>\n" +
     "    </button>\n" +
     "  </div>\n" +
@@ -328,11 +329,13 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '  <div class="container">\n' +
     '    <div class="footer-grid">\n' +
     '      <div class="footer-col">\n' +
-    "        <h4>サイトメニュー</h4>\n" +
+    "        <h2 class=\"footer-title\">サイトメニュー</h2>\n" +
     "        <ul>\n" +
     '          <li><a href="../index.html">HOME</a></li>\n' +
     '          <li><a href="../index.html#services">サービス</a></li>\n' +
+    '          <li><a href="../homepage-plan.html">料金プラン</a></li>\n' +
     '          <li><a href="../works.html">制作実績</a></li>\n' +
+    '          <li><a href="../flow.html">制作までの流れ</a></li>\n' +
     '          <li><a href="../course.html">お役立ち講座</a></li>\n' +
     '          <li><a href="../blog.html">ブログ</a></li>\n' +
     '          <li><a href="../profile.html">プロフィール</a></li>\n' +
@@ -340,7 +343,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     "        </ul>\n" +
     "      </div>\n" +
     '      <div class="footer-col">\n' +
-    "        <h4>お問い合わせ</h4>\n" +
+    "        <h2 class=\"footer-title\">お問い合わせ</h2>\n" +
     "        <ul>\n" +
     '          <li><a href="../contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>\n' +
     '          <li><a href="../privacy.html">プライバシーポリシー</a></li>\n' +
@@ -394,7 +397,7 @@ function buildBlogCardHtml(entry, variant) {
   const linkClass = isFeatured ? "blog-featured" : "blog-list-item";
   const thumbClass = isFeatured ? "blog-featured-thumb" : "blog-list-thumb";
   const bodyClass = isFeatured ? "blog-featured-body" : "blog-list-body";
-  const headingTag = isFeatured ? "h2" : "h3";
+  const headingTag = "h3";
   const indent = isFeatured ? "      " : "        ";
 
   return (
@@ -507,6 +510,7 @@ function buildBlogHtml(blogIndex) {
     '      <ul class="nav-links">\n' +
     '        <li><a href="index.html">HOME</a></li>\n' +
     '        <li><a href="index.html#services">サービス</a></li>\n' +
+    '        <li><a href="homepage-plan.html">料金プラン</a></li>\n' +
     '        <li><a href="works.html">制作実績</a></li>\n' +
     '        <li><a href="flow.html">制作までの流れ</a></li>\n' +
     '        <li><a href="course.html">お役立ち講座</a></li>\n' +
@@ -521,7 +525,7 @@ function buildBlogHtml(blogIndex) {
     '    <div class="nav-cta">\n' +
     '      <a href="contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>\n' +
     "    </div>\n" +
-    '    <button class="nav-toggle" aria-label="メニューを開く">\n' +
+    '    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">\n' +
     "      <span></span><span></span><span></span>\n" +
     "    </button>\n" +
     "  </div>\n" +
@@ -539,6 +543,7 @@ function buildBlogHtml(blogIndex) {
     "\n" +
     "  <section>\n" +
     '    <div class="container">\n' +
+    '      <h2 class="visually-hidden">記事一覧</h2>\n' +
     "\n" +
     "      <!-- 注目記事：公開中の記事のうち投稿日が最も新しい1件を自動採用（data/blog-index.jsonの先頭） -->\n" +
     featuredHtml +
@@ -569,11 +574,13 @@ function buildBlogHtml(blogIndex) {
     '  <div class="container">\n' +
     '    <div class="footer-grid">\n' +
     '      <div class="footer-col">\n' +
-    "        <h4>サイトメニュー</h4>\n" +
+    "        <h2 class=\"footer-title\">サイトメニュー</h2>\n" +
     "        <ul>\n" +
     '          <li><a href="index.html">HOME</a></li>\n' +
     '          <li><a href="index.html#services">サービス</a></li>\n' +
+    '          <li><a href="homepage-plan.html">料金プラン</a></li>\n' +
     '          <li><a href="works.html">制作実績</a></li>\n' +
+    '          <li><a href="flow.html">制作までの流れ</a></li>\n' +
     '          <li><a href="course.html">お役立ち講座</a></li>\n' +
     '          <li><a href="blog.html">ブログ</a></li>\n' +
     '          <li><a href="profile.html">プロフィール</a></li>\n' +
@@ -581,7 +588,7 @@ function buildBlogHtml(blogIndex) {
     "        </ul>\n" +
     "      </div>\n" +
     '      <div class="footer-col">\n' +
-    "        <h4>お問い合わせ</h4>\n" +
+    "        <h2 class=\"footer-title\">お問い合わせ</h2>\n" +
     "        <ul>\n" +
     '          <li><a href="contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>\n' +
     '          <li><a href="privacy.html">プライバシーポリシー</a></li>\n' +
