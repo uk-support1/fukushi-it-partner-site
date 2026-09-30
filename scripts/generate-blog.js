@@ -203,7 +203,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '.html">\n' +
     '<meta property="og:site_name" content="福祉ITパートナー">\n' +
     '<meta property="og:image" content="' +
-    imageSrc +
+    new URL(imageSrc, "https://fukushi-it-partner.com/blog/").href +
     '">\n' +
     '<meta name="twitter:card" content="summary_large_image">\n' +
     "\n" +
@@ -480,7 +480,7 @@ function buildBlogHtml(blogIndex) {
     '<meta property="og:description" content="福祉事業所のホームページづくり、IT活用、Googleサービス、AI活用などに関する情報を発信しています。">\n' +
     '<meta property="og:url" content="https://fukushi-it-partner.com/blog.html">\n' +
     '<meta property="og:site_name" content="福祉ITパートナー">\n' +
-    '<meta property="og:image" content="assets/images/logo.png">\n' +
+    '<meta property="og:image" content="https://fukushi-it-partner.com/assets/images/logo.png">\n' +
     '<meta name="twitter:card" content="summary_large_image">\n' +
     "\n" +
     '<link rel="icon" href="favicon.ico" sizes="any">\n' +

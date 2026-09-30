@@ -123,7 +123,7 @@ function siteHead({ title, description, canonicalPath, ogImage, depth }) {
     '<meta property="og:description" content="' + escapeHtml(description) + '">\n' +
     '<meta property="og:url" content="https://fukushi-it-partner.com' + canonicalPath + '">\n' +
     '<meta property="og:site_name" content="福祉ITパートナー">\n' +
-    '<meta property="og:image" content="' + escapeHtml(ogImage) + '">\n' +
+    '<meta property="og:image" content="' + escapeHtml(new URL(ogImage, "https://fukushi-it-partner.com" + canonicalPath).href) + '">\n' +
     '<meta name="twitter:card" content="summary_large_image">\n' +
     "\n" +
     '<link rel="icon" href="' + prefix + 'favicon.ico" sizes="any">\n' +
