@@ -3835,8 +3835,14 @@ section {
   }
 }
 
+/* スマホ用の短い説明文。PCでは非表示（PCは詳しい説明文を表示する） */
+.flow-step-short {
+  display: none;
+}
+
 /* スマホ：PCと同じく、文字カードと写真を左右交互に配置する
-   （奇数＝文字が左・写真が右／偶数＝写真が左・文字が右）。カードの高さは文字量に合わせる */
+   （奇数＝文字が左・写真が右／偶数＝写真が左・文字が右）。
+   カードは小さめにして写真を大きく見せ、文章はポイントだけの短い説明に差し替える */
 @media (max-width: 640px) {
   .flow-steps {
     --stack-top: 80px;
@@ -3844,11 +3850,11 @@ section {
   }
   .flow-step {
     height: auto;
-    min-height: 280px;
-    margin-bottom: 28px;
+    min-height: 210px;
+    margin-bottom: 24px;
   }
   .flow-step-body {
-    width: 68%;
+    width: 50%;
     margin-left: 3%;
   }
   .flow-step:nth-child(even) .flow-step-body {
@@ -3856,27 +3862,32 @@ section {
     margin-right: 3%;
   }
   .flow-step-head {
-    gap: 10px;
-    padding: 6px 14px;
+    flex-wrap: wrap;
+    gap: 2px 8px;
+    padding: 6px 10px;
   }
   .flow-step-num {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
   .flow-step-num::before {
-    font-size: 0.65rem;
-    margin-right: 4px;
+    font-size: 0.6rem;
+    margin-right: 3px;
   }
   .flow-step-body h3 {
-    font-size: 0.98rem;
+    font-size: 0.86rem;
   }
   .flow-step-body p {
-    padding: 12px 14px 16px;
-    font-size: 0.8rem;
-    line-height: 1.75;
+    display: none;
   }
-  /* 写真は帯が細くなるので、顔が写りやすい上寄りの位置を中心に切り出す */
+  .flow-step-body p.flow-step-short {
+    display: block;
+    padding: 10px 10px 14px;
+    font-size: 0.76rem;
+    line-height: 1.7;
+  }
+  /* 写真は広めに見せ、顔が写りやすい上寄りの位置を中心に切り出す */
   .flow-step-media {
-    width: 42%;
+    width: 62%;
   }
   .flow-step-media img {
     object-position: 50% 30%;
