@@ -327,28 +327,33 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '  <div class="container">\n' +
     '    <div class="footer-grid">\n' +
     '      <div class="footer-col">\n' +
-    "        <h2 class=\"footer-title\">サイトメニュー</h2>\n" +
-    "        <ul>\n" +
+    '        <h2 class="footer-title">サイトメニュー</h2>\n' +
+    '        <ul>\n' +
     '          <li><a href="../index.html">HOME</a></li>\n' +
     '          <li><a href="../index.html#services">サービス</a></li>\n' +
     '          <li><a href="../homepage-plan.html">料金プラン</a></li>\n' +
     '          <li><a href="../works.html">制作実績</a></li>\n' +
     '          <li><a href="../flow.html">制作までの流れ</a></li>\n' +
-    '          <li><a href="../blog.html">ブログ</a></li>\n' +
-    '          <li><a href="../profile.html">プロフィール</a></li>\n' +
-    '          <li><a href="../contact.html">お問い合わせ</a></li>\n' +
-    "        </ul>\n" +
-    "      </div>\n" +
+    '        </ul>\n' +
+    '      </div>\n' +
     '      <div class="footer-col">\n' +
-    "        <h2 class=\"footer-title\">お問い合わせ</h2>\n" +
-    "        <ul>\n" +
-    '          <li><a href="../contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>\n' +
-    '          <li><a href="../privacy.html">プライバシーポリシー</a></li>\n' +
+    '        <h2 class="footer-title">情報発信・学び</h2>\n' +
+    '        <ul>\n' +
+    '          <li><a href="../blog.html">ブログ</a></li>\n' +
     '          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>\n' +
     '          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>\n' +
     '          <li><a href="../course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>お役立ち講座</a></li>\n' +
-    "        </ul>\n" +
-    "      </div>\n" +
+    '        </ul>\n' +
+    '      </div>\n' +
+    '      <div class="footer-col">\n' +
+    '        <h2 class="footer-title">ご相談・運営者情報</h2>\n' +
+    '        <ul>\n' +
+    '          <li><a href="../contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>\n' +
+    '          <li><a href="../contact.html">お問い合わせ</a></li>\n' +
+    '          <li><a href="../profile.html">プロフィール</a></li>\n' +
+    '          <li><a href="../privacy.html">プライバシーポリシー</a></li>\n' +
+    '        </ul>\n' +
+    '      </div>\n' +
     "    </div>\n" +
     '    <div class="footer-bottom">\n' +
     "      &copy; 2026 福祉ITパートナー｜上原健太\n" +
@@ -570,28 +575,33 @@ function buildBlogHtml(blogIndex) {
     '  <div class="container">\n' +
     '    <div class="footer-grid">\n' +
     '      <div class="footer-col">\n' +
-    "        <h2 class=\"footer-title\">サイトメニュー</h2>\n" +
-    "        <ul>\n" +
+    '        <h2 class="footer-title">サイトメニュー</h2>\n' +
+    '        <ul>\n' +
     '          <li><a href="index.html">HOME</a></li>\n' +
     '          <li><a href="index.html#services">サービス</a></li>\n' +
     '          <li><a href="homepage-plan.html">料金プラン</a></li>\n' +
     '          <li><a href="works.html">制作実績</a></li>\n' +
     '          <li><a href="flow.html">制作までの流れ</a></li>\n' +
-    '          <li><a href="blog.html">ブログ</a></li>\n' +
-    '          <li><a href="profile.html">プロフィール</a></li>\n' +
-    '          <li><a href="contact.html">お問い合わせ</a></li>\n' +
-    "        </ul>\n" +
-    "      </div>\n" +
+    '        </ul>\n' +
+    '      </div>\n' +
     '      <div class="footer-col">\n' +
-    "        <h2 class=\"footer-title\">お問い合わせ</h2>\n" +
-    "        <ul>\n" +
-    '          <li><a href="contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>\n' +
-    '          <li><a href="privacy.html">プライバシーポリシー</a></li>\n' +
+    '        <h2 class="footer-title">情報発信・学び</h2>\n' +
+    '        <ul>\n' +
+    '          <li><a href="blog.html">ブログ</a></li>\n' +
     '          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>\n' +
     '          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>\n' +
     '          <li><a href="course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>お役立ち講座</a></li>\n' +
-    "        </ul>\n" +
-    "      </div>\n" +
+    '        </ul>\n' +
+    '      </div>\n' +
+    '      <div class="footer-col">\n' +
+    '        <h2 class="footer-title">ご相談・運営者情報</h2>\n' +
+    '        <ul>\n' +
+    '          <li><a href="contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>\n' +
+    '          <li><a href="contact.html">お問い合わせ</a></li>\n' +
+    '          <li><a href="profile.html">プロフィール</a></li>\n' +
+    '          <li><a href="privacy.html">プライバシーポリシー</a></li>\n' +
+    '        </ul>\n' +
+    '      </div>\n' +
     "    </div>\n" +
     '    <div class="footer-bottom">\n' +
     "      &copy; 2026 福祉ITパートナー｜上原健太\n" +
