@@ -227,8 +227,10 @@ test("G: without any course content, blog sitemap generation is byte-identical t
   assert.ok(!text(dir, "sitemap.xml").includes("/course"));
 });
 
-test("Nav: course link is present in the blog header and footer templates", () => {
+test("Nav: course link is in the blog footer (under YouTube) and not in the header, in both templates", () => {
   const src = text(ROOT, "scripts/generate-blog.js");
-  const navMatches = src.match(/<li><a href="\.?\.?\/?course\.html"[^<]*>お役立ち講座<\/a><\/li>/g) || [];
-  assert.equal(navMatches.length, 4, "expected 2 nav + 2 footer course links across both templates");
+  const footerLinks = src.match(/<li><a href="(?:\.\.\/)?course\.html" class="footer-sns-link"><svg[^]*?<\/svg>お役立ち講座<\/a><\/li>/g) || [];
+  assert.equal(footerLinks.length, 2, "expected 1 footer course link (with icon) in each of the 2 templates");
+  const plainLinks = src.match(/<li><a href="(?:\.\.\/)?course\.html"(?: class="active")?>お役立ち講座<\/a><\/li>/g) || [];
+  assert.equal(plainLinks.length, 0, "the header and site-menu lists no longer carry the course link");
 });
