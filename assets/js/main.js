@@ -178,6 +178,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // 制作の流れ：Stickyカードスタック
+  // パネル自体はCSSのposition: stickyで重なっていく。ここでは、次のパネルが
+  // 重なってくる割合に応じて、下になったパネルを少し縮小・暗くして奥行きを出す。
+  var stackCards = document.querySelectorAll(".flow-steps .flow-step");
+
+  if (stackCards.length > 1 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var stackTicking = false;
+
+    var updateStack = function () {
+      for (var i = 0; i < stackCards.length - 1; i++) {
+        var cur = stackCards[i].getBoundingClientRect();
+        var next = stackCards[i + 1].getBoundingClientRect();
+        // 次のパネルの上端が、今のパネルの上端からパネル1枚分の距離→重なりきるまでを0→1にする
+        var progress = 1 - (next.top - cur.top) / cur.height;
+        progress = Math.max(0, Math.min(1, progress));
+        stackCards[i].style.transform = progress > 0 ? "scale(" + (1 - progress * 0.05).toFixed(4) + ")" : "";
+        stackCards[i].style.setProperty("--stack-dim", (progress * 0.25).toFixed(3));
+      }
+      stackTicking = false;
+    };
+
+    var onStackScroll = function () {
+      if (!stackTicking) {
+        window.requestAnimationFrame(updateStack);
+        stackTicking = true;
+      }
+    };
+
+    window.addEventListener("scroll", onStackScroll, { passive: true });
+    window.addEventListener("resize", onStackScroll);
+    updateStack();
+  }
+
   // 写真パララックス（写真だけがコンテンツよりゆっくり動く演出）
   // 写真レイヤー（.bg-parallax）は親の枠より上下に大きく作ってあり、
   // transform: translateY()（GPU合成のみで再描画なし）で枠の中を動かす。
