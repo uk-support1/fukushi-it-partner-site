@@ -3835,60 +3835,51 @@ section {
   }
 }
 
-/* スマホ：カードを上、写真を下に置き、写真の上辺を斜めにカット */
+/* スマホ：PCと同じく、文字カードと写真を左右交互に配置する
+   （奇数＝文字が左・写真が右／偶数＝写真が左・文字が右）。カードの高さは文字量に合わせる */
 @media (max-width: 640px) {
   .flow-steps {
     --stack-top: 80px;
     --stack-step: 48px;
   }
-  .flow-step,
-  .flow-step:nth-child(even) {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+  .flow-step {
     height: auto;
+    min-height: 280px;
     margin-bottom: 28px;
   }
-  .flow-step-body,
+  .flow-step-body {
+    width: 68%;
+    margin-left: 3%;
+  }
   .flow-step:nth-child(even) .flow-step-body {
-    width: auto;
-    max-width: none;
-    margin: 0;
-    border: 0;
-    box-shadow: none;
+    margin-left: 0;
+    margin-right: 3%;
   }
   .flow-step-head {
-    gap: 12px;
-    padding: 6px 18px;
+    gap: 10px;
+    padding: 6px 14px;
   }
   .flow-step-num {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
   }
   .flow-step-num::before {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
+    margin-right: 4px;
   }
   .flow-step-body h3 {
-    font-size: 1.05rem;
+    font-size: 0.98rem;
   }
   .flow-step-body p {
-    padding: 14px 18px 16px;
-    font-size: 0.86rem;
-    line-height: 1.8;
+    padding: 12px 14px 16px;
+    font-size: 0.8rem;
+    line-height: 1.75;
   }
-  .flow-step-media,
-  .flow-step:nth-child(even) .flow-step-media {
-    position: relative;
-    left: auto;
-    right: auto;
-    width: auto;
-    height: 130px;
-    clip-path: polygon(0 22%, 100% 0, 100% 100%, 0 100%);
-  }
-  .flow-step-body {
-    order: 0;
-  }
+  /* 写真は帯が細くなるので、顔が写りやすい上寄りの位置を中心に切り出す */
   .flow-step-media {
-    order: 1;
+    width: 42%;
+  }
+  .flow-step-media img {
+    object-position: 50% 30%;
   }
 }
 
