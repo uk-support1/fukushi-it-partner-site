@@ -190,11 +190,13 @@ document.addEventListener("DOMContentLoaded", function () {
       for (var i = 0; i < stackCards.length - 1; i++) {
         var cur = stackCards[i].getBoundingClientRect();
         var next = stackCards[i + 1].getBoundingClientRect();
-        // 次のパネルの上端が、今のパネルの上端からパネル1枚分の距離→重なりきるまでを0→1にする
-        var progress = 1 - (next.top - cur.top) / cur.height;
+        // 次のパネルが重なり始めてから重なりきるまでを0→1にする
+        // （見出し1行分＝--stack-stepだけ残して重なりきったところで1になる）
+        var strip = parseFloat(getComputedStyle(stackCards[i].parentElement).getPropertyValue("--stack-step")) || 0;
+        var progress = 1 - (next.top - cur.top - strip) / Math.max(1, cur.height - strip);
         progress = Math.max(0, Math.min(1, progress));
         stackCards[i].style.transform = progress > 0 ? "scale(" + (1 - progress * 0.05).toFixed(4) + ")" : "";
-        stackCards[i].style.setProperty("--stack-dim", (progress * 0.25).toFixed(3));
+        stackCards[i].style.setProperty("--stack-dim", (progress * 0.12).toFixed(3));
       }
       stackTicking = false;
     };

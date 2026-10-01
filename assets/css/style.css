@@ -3666,32 +3666,33 @@ section {
 }
 
 /* ===== 制作の7ステップ：Stickyカードスタック =====
-   各ステップのパネルを position: sticky で画面上部に貼りつけ、
-   次のパネルが下から重なっていくように見せる（少しずつ上にずらして段を見せる）。
-   重なられたパネルは main.js で少しだけ縮小・暗くして奥行きを出す。
-   パネル内は、斜めにカットした写真の上に文字カードを重ねるレイアウト。 */
+   各ステップのパネルを position: sticky で画面上部に貼りつけ、次のパネルが
+   下から重なっていくように見せる。貼りつく位置をステップ見出し1行分ずつ
+   下げているので、重なったあとも前のステップの「STEP 番号＋ステップ名」が見える。
+   重なられたパネルは main.js で少しだけ縮小・暗くして奥行きを出す。 */
 .flow-steps {
-  --stack-top: 104px;
-  --stack-step: 16px;
+  --stack-top: 100px;
+  --stack-step: 62px;
+  --stack-count: 7;
   max-width: 1080px;
   margin: 0 auto;
-  padding-bottom: 40px;
 }
 
 .flow-step {
   position: sticky;
   top: calc(var(--stack-top) + var(--stack-index, 0) * var(--stack-step));
   display: flex;
-  align-items: center;
-  height: 460px;
-  margin-bottom: 56px;
-  padding: 0 4%;
+  align-items: flex-start;
+  /* 最後のパネルが貼りついたときにも画面内に収まる高さにする */
+  height: clamp(320px, calc(100vh - var(--stack-top) - (var(--stack-count) - 1) * var(--stack-step) - 24px), 420px);
+  margin-bottom: 48px;
   overflow: hidden;
   background:
     radial-gradient(circle, rgba(31, 77, 60, 0.07) 1px, transparent 1.5px) 0 0 / 18px 18px,
     var(--white);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 -6px 24px rgba(31, 77, 60, 0.08), var(--shadow-soft);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  box-shadow: 0 -4px 18px rgba(31, 77, 60, 0.07), var(--shadow-soft);
   transform-origin: center top;
   will-change: transform;
 }
@@ -3719,14 +3720,14 @@ section {
   pointer-events: none;
 }
 
-/* 写真：パネルの右側いっぱいに置き、左辺を斜めにカット */
+/* 写真：パネルの右側に置き、左辺を斜めにカット（白い余白を広めに残す） */
 .flow-step-media {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 64%;
-  clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%);
+  width: 48%;
+  clip-path: polygon(26% 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .flow-step-media img {
@@ -3737,23 +3738,34 @@ section {
   display: block;
 }
 
-/* 文字カード：写真に少しかぶせて重ねる */
+/* 文字カード：パネルの一番上に置き、角のないシャープな箱にする */
 .flow-step-body {
   position: relative;
   z-index: 2;
-  width: 46%;
-  max-width: 470px;
-  padding: 44px 44px 46px;
-  background: var(--green-900);
-  border-radius: var(--radius-md);
-  box-shadow: 0 18px 40px rgba(31, 77, 60, 0.25);
+  width: 58%;
+  max-width: 600px;
+  margin-left: 4%;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-top: 0;
+  box-shadow: 0 14px 30px rgba(31, 77, 60, 0.10);
+}
+
+/* 見出し行（STEP番号＋ステップ名）。重なったときに見える高さ＝--stack-step */
+.flow-step-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: var(--stack-step);
+  padding: 10px 28px;
+  background: var(--green-100);
+  border-top: 4px solid var(--green-700);
 }
 
 .flow-step-num {
-  display: block;
-  margin-bottom: 10px;
-  color: #f6c28f;
-  font-size: 2rem;
+  flex-shrink: 0;
+  color: var(--orange-600);
+  font-size: 1.7rem;
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0.04em;
@@ -3761,23 +3773,24 @@ section {
 
 .flow-step-num::before {
   content: "STEP";
-  margin-right: 8px;
-  font-size: 0.95rem;
+  margin-right: 6px;
+  font-size: 0.8rem;
   letter-spacing: 0.12em;
 }
 
 .flow-step-body h3 {
-  color: var(--white);
-  font-size: 1.5rem;
-  line-height: 1.5;
-  margin-bottom: 14px;
+  margin: 0;
+  color: var(--green-900);
+  font-size: 1.25rem;
+  line-height: 1.4;
 }
 
 .flow-step-body p {
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 0.95rem;
-  line-height: 1.95;
   margin: 0;
+  padding: 20px 28px 24px;
+  color: var(--text-600);
+  font-size: 0.95rem;
+  line-height: 1.9;
 }
 
 /* 偶数ステップは左右を反転（写真が左、カードが右） */
@@ -3785,34 +3798,69 @@ section {
   justify-content: flex-end;
 }
 
+.flow-step:nth-child(even) .flow-step-body {
+  margin-left: 0;
+  margin-right: 4%;
+}
+
 .flow-step:nth-child(even) .flow-step-media {
   right: auto;
   left: 0;
-  clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 74% 100%, 0 100%);
 }
 
 @media (max-width: 900px) {
   .flow-step-body {
-    width: 54%;
-    padding: 34px 30px 36px;
+    width: 64%;
   }
-  .flow-step-body h3 {
-    font-size: 1.3rem;
+  .flow-step-body p {
+    font-size: 0.9rem;
+    padding: 16px 22px 20px;
+  }
+  .flow-step-head {
+    padding: 8px 22px;
   }
 }
 
-/* スマホ：写真を上、カードを下に重ね、写真の下辺を斜めにカット */
+/* スマホ：カードを上、写真を下に置き、写真の上辺を斜めにカット */
 @media (max-width: 640px) {
   .flow-steps {
-    --stack-top: 84px;
-    --stack-step: 10px;
+    --stack-top: 80px;
+    --stack-step: 48px;
   }
   .flow-step,
   .flow-step:nth-child(even) {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     height: auto;
-    margin-bottom: 32px;
-    padding: 0 16px 20px;
+    margin-bottom: 28px;
+  }
+  .flow-step-body,
+  .flow-step:nth-child(even) .flow-step-body {
+    width: auto;
+    max-width: none;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+  }
+  .flow-step-head {
+    gap: 12px;
+    padding: 6px 18px;
+  }
+  .flow-step-num {
+    font-size: 1.35rem;
+  }
+  .flow-step-num::before {
+    font-size: 0.7rem;
+  }
+  .flow-step-body h3 {
+    font-size: 1.05rem;
+  }
+  .flow-step-body p {
+    padding: 14px 18px 16px;
+    font-size: 0.86rem;
+    line-height: 1.8;
   }
   .flow-step-media,
   .flow-step:nth-child(even) .flow-step-media {
@@ -3820,27 +3868,14 @@ section {
     left: auto;
     right: auto;
     width: auto;
-    height: 200px;
-    margin: 0 -16px;
-    clip-path: polygon(0 0, 100% 0, 100% 78%, 0 100%);
+    height: 130px;
+    clip-path: polygon(0 22%, 100% 0, 100% 100%, 0 100%);
   }
   .flow-step-body {
-    width: auto;
-    max-width: none;
-    margin-top: -36px;
-    padding: 24px 22px 26px;
+    order: 0;
   }
-  .flow-step-num {
-    font-size: 1.6rem;
-    margin-bottom: 8px;
-  }
-  .flow-step-body h3 {
-    font-size: 1.2rem;
-    margin-bottom: 8px;
-  }
-  .flow-step-body p {
-    font-size: 0.9rem;
-    line-height: 1.85;
+  .flow-step-media {
+    order: 1;
   }
 }
 
