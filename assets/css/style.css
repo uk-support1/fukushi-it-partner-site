@@ -3680,13 +3680,12 @@ section {
    各ステップのパネルを position: sticky で画面上部に貼りつけ、次のパネルが
    下から重なっていくように見せる。貼りつく位置をステップ見出し1行分ずつ
    下げているので、重なったあとも前のステップの「STEP 番号＋ステップ名」が見える。
-   STEP 5からは貼りつく位置をまた先頭に戻し、STEP 1〜4の上にかぶせて重ねる
-   （下にあるSTEP 1〜4はmain.jsで徐々に薄くする）。STEP 7まで重なったら全体が上へスクロールされる。
+   STEP 5はSTEP 4の位置にかぶさって重なり、STEP 7まで重なったら全体が上へスクロールされる。
    重なられたパネルは main.js で少しだけ縮小・暗くして奥行きを出す。 */
 .flow-steps {
   --stack-top: 100px;
   --stack-step: 62px;
-  --stack-count: 4;
+  --stack-count: 6;
   max-width: 1080px;
   margin: 0 auto;
 }
@@ -3718,10 +3717,10 @@ section {
 .flow-step:nth-child(2) { --stack-index: 1; }
 .flow-step:nth-child(3) { --stack-index: 2; }
 .flow-step:nth-child(4) { --stack-index: 3; }
-/* STEP 5からは貼りつく位置を先頭に戻し、STEP 1〜4の上に重ねていく */
-.flow-step:nth-child(5) { --stack-index: 0; }
-.flow-step:nth-child(6) { --stack-index: 1; }
-.flow-step:nth-child(7) { --stack-index: 2; }
+/* STEP 5はSTEP 4の位置にかぶさり、STEP 6・7はその下へ見出し1行分ずつずらして重なる */
+.flow-step:nth-child(5) { --stack-index: 3; }
+.flow-step:nth-child(6) { --stack-index: 4; }
+.flow-step:nth-child(7) { --stack-index: 5; }
 
 /* 重なられたときに暗くするための膜（不透明度はmain.jsで指定） */
 .flow-step::after {

@@ -199,26 +199,6 @@ document.addEventListener("DOMContentLoaded", function () {
         stackCards[i].style.setProperty("--stack-dim", (progress * 0.12).toFixed(3));
       }
 
-      // 貼りつく位置が先頭に戻るカード（STEP 5）が上がってくる間、
-      // その下に残るSTEP 1〜4を薄くして、はみ出して見えないようにする
-      var resetIndex = -1;
-      for (var r = 1; r < stackCards.length; r++) {
-        if ((parseInt(getComputedStyle(stackCards[r]).getPropertyValue("--stack-index"), 10) || 0) === 0) {
-          resetIndex = r;
-          break;
-        }
-      }
-      if (resetIndex > 0) {
-        var prev = stackCards[resetIndex - 1].getBoundingClientRect();
-        var reset = stackCards[resetIndex].getBoundingClientRect();
-        var stackTop = parseFloat(getComputedStyle(stackCards[0].parentElement).getPropertyValue("--stack-top")) || 0;
-        var fadeStart = prev.bottom;
-        var fade = (fadeStart - reset.top) / Math.max(1, fadeStart - stackTop);
-        fade = Math.max(0, Math.min(1, fade));
-        for (var k = 0; k < resetIndex; k++) {
-          stackCards[k].style.opacity = fade > 0 ? (1 - fade).toFixed(3) : "";
-        }
-      }
       stackTicking = false;
     };
 
