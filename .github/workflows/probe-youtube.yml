@@ -1,0 +1,23 @@
+name: Probe YouTube (temporary diagnostic)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fetch each channel feed in two URL forms from a cloud runner
+        shell: bash
+        run: |
+          for id in UCfG0XDjNIjHm2vmrChrL4SQ UC7C5oRm6cGgbjJdPPEVeNMA UCYG77cJbgyh0clabzxFN6pg UCNkibDFHKRpY3KNm-jTTIsQ; do
+            up="UU${id:2}"
+            for url in "https://www.youtube.com/feeds/videos.xml?channel_id=$id" "https://www.youtube.com/feeds/videos.xml?playlist_id=$up"; do
+              code=$(curl -s -o /tmp/feed.xml -w '%{http_code}' -A 'Mozilla/5.0' -H 'Accept: application/atom+xml' "$url")
+              echo "$code entries=$(grep -c '<entry>' /tmp/feed.xml) $url"
+            done
+          done
