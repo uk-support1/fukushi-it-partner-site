@@ -224,11 +224,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '<header class="site-header">\n' +
     '  <div class="nav-bar">\n' +
     '    <a href="../index.html" class="brand">\n' +
-    '      <img src="../assets/images/logo-mark.png" alt="福祉ITパートナー ロゴ" class="brand-logo">\n' +
-    '      <span class="brand-text">\n' +
-    '        <span class="brand-name">福祉ITパートナー</span>\n' +
-    '        <span class="brand-sub">上原健太</span>\n' +
-    "      </span>\n" +
+    '      <img src="../assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">\n' +
     "    </a>\n" +
     "    <nav>\n" +
     '      <ul class="nav-links">\n' +
@@ -503,11 +499,7 @@ function buildBlogHtml(blogIndex) {
     '<header class="site-header">\n' +
     '  <div class="nav-bar">\n' +
     '    <a href="index.html" class="brand">\n' +
-    '      <img src="assets/images/logo-mark.png" alt="福祉ITパートナー ロゴ" class="brand-logo">\n' +
-    '      <span class="brand-text">\n' +
-    '        <span class="brand-name">福祉ITパートナー</span>\n' +
-    '        <span class="brand-sub">上原健太</span>\n' +
-    "      </span>\n" +
+    '      <img src="assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">\n' +
     "    </a>\n" +
     "    <nav>\n" +
     '      <ul class="nav-links">\n' +

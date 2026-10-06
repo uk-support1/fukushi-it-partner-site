@@ -248,6 +248,13 @@ section {
   flex-shrink: 0;
 }
 
+/* 名前入りのロゴ画像（マーク＋福祉ITパートナー）。横長なので幅は自動 */
+.brand-logo.brand-logo--full {
+  height: 46px;
+  width: auto;
+  max-width: 100%;
+}
+
 .brand-text {
   display: flex;
   flex-direction: column;
@@ -270,6 +277,10 @@ section {
   .brand-logo {
     height: 40px;
     width: 40px;
+  }
+  .brand-logo.brand-logo--full {
+    height: 34px;
+    width: auto;
   }
   .brand-name {
     font-size: 0.9rem;
