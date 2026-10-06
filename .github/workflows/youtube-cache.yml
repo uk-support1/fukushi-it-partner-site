@@ -35,4 +35,15 @@ jobs:
         with:
           node-version: '24'
       - name: Fetch the 4 YouTube channels and commit the cache if changed
-        run: node scripts/fetch-youtube-cache.js
+        # main gets frequent bot commits; the script refuses to push over a moved
+        # main (YOUTUBE_CACHE_MAIN_CHANGED), so retry from a fresh origin/main.
+        # This checkout is throwaway, so the reset is safe here.
+        run: |
+          for i in 1 2 3; do
+            node scripts/fetch-youtube-cache.js && exit 0
+            echo "attempt $i failed; retrying from a fresh origin/main"
+            git fetch --no-tags origin main
+            git reset --hard origin/main
+            sleep 20
+          done
+          exit 1
