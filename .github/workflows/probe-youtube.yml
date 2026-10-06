@@ -11,13 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Fetch each channel feed in two URL forms from a cloud runner
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run the repo's own collector against the 4 channels, 3 times
         shell: bash
         run: |
-          for id in UCfG0XDjNIjHm2vmrChrL4SQ UC7C5oRm6cGgbjJdPPEVeNMA UCYG77cJbgyh0clabzxFN6pg UCNkibDFHKRpY3KNm-jTTIsQ; do
-            up="UU${id:2}"
-            for url in "https://www.youtube.com/feeds/videos.xml?channel_id=$id" "https://www.youtube.com/feeds/videos.xml?playlist_id=$up"; do
-              code=$(curl -s -o /tmp/feed.xml -w '%{http_code}' -A 'Mozilla/5.0' -H 'Accept: application/atom+xml' "$url")
-              echo "$code entries=$(grep -c '<entry>' /tmp/feed.xml) $url"
-            done
+          for i in 1 2 3; do
+            node -e "
+              const {collectLatestInfo,DEFAULT_SOURCES}=require('./scripts/latest-info');
+              collectLatestInfo({sources:DEFAULT_SOURCES.filter(s=>s.kind==='video'),limit:50}).then(r=>console.log('PROBE attempt $i attempted',r.attemptedSources,'successful',r.successfulSources,'candidates',r.candidates.length));
+            "
+            sleep 20
           done
+      - name: curl without a browser user agent (what Node's fetch is closer to)
+        shell: bash
+        run: |
+          code=$(curl -s -o /tmp/f.xml -w '%{http_code}' -A 'node' "https://www.youtube.com/feeds/videos.xml?channel_id=UCfG0XDjNIjHm2vmrChrL4SQ")
+          echo "PROBE node-ua $code entries=$(grep -c '<entry>' /tmp/f.xml)"
