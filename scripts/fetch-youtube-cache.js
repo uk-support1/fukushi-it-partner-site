@@ -7,7 +7,7 @@
 const cp = require("child_process");
 const fs = require("fs");
 const path = require("path");
-const { DEFAULT_SOURCES, collectLatestInfo } = require("./latest-info");
+const { DEFAULT_SOURCES, collectLatestInfo, loadYoutubeCache } = require("./latest-info");
 
 class YoutubeCacheError extends Error {
   constructor(code) {
@@ -28,9 +28,25 @@ function defaultRunGit(args, { cwd, failureCode = "YOUTUBE_CACHE_GIT_FAILED", al
 
 function nulList(value) { return String(value || "").split("\0").filter(Boolean); }
 
-async function fetchYoutubeCache({ now = new Date(), collect = collectLatestInfo } = {}) {
+const sleepMs = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// A channel's feed only lists its latest ~15 videos, so a month of history can't
+// be fetched directly; instead each run folds the previous cache back in
+// (collect's extraCandidates) and keeps up to 30 days of videos. `previous`
+// carries videos not yet used as an article source across days the machine was off.
+async function fetchYoutubeCache({ now = new Date(), collect = collectLatestInfo, previous = loadYoutubeCache({ now }),
+  attempts = 3, retryDelayMs = 30000, sleep = sleepMs } = {}) {
   const videoSources = DEFAULT_SOURCES.filter(source => source.kind === "video");
-  const result = await collect({ now, sources: videoSources });
+  let result;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    result = await collect({ now, sources: videoSources, limit: 60, maxAgeDays: 30, extraCandidates: previous });
+    if (result.successfulSources > 0) break;
+    // Often just a network that isn't up yet right after the PC boots.
+    if (attempt < attempts) await sleep(retryDelayMs);
+  }
+  // Every feed failing means "we learned nothing", not "there are no videos".
+  // Writing an empty cache would erase the backlog and look freshly checked.
+  if (!(result.successfulSources > 0)) fail("YOUTUBE_FETCH_ALL_FAILED");
   return {
     fetchedAt: now.toISOString(),
     candidates: result.candidates,

@@ -17,13 +17,14 @@ on:
         type: boolean
         default: false
       sources_filter:
-        description: 'YouTubeの取得方法（動作確認用。通常はcacheのまま）'
+        description: 'YouTubeの取得方法（動作確認用。通常はautoのまま。auto=直接取得+キャッシュ、cache=キャッシュのみ、live=直接取得のみ）'
         required: false
         type: choice
         options:
+          - auto
           - cache
           - live
-        default: cache
+        default: auto
 
 permissions:
   contents: write

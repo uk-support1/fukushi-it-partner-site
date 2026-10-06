@@ -130,18 +130,23 @@ async function enrichCandidate(candidate, fetchImpl) {
   finally { clearTimeout(timer); }
 }
 
-async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date(), sources = DEFAULT_SOURCES, limit = 10, extraCandidates = []} = {}) {
+// maxAgeDays: official news stays a week; video commentary keeps a month-long
+// backlog so a stretch of unused videos still gets used.
+// exclude(item): drops already-used items BEFORE the top-N cut, otherwise used
+// videos occupy the slots and starve the unused ones behind them.
+async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date(), sources = DEFAULT_SOURCES, limit = 10, extraCandidates = [],
+  maxAgeDays = 7, exclude = () => false} = {}) {
   const settled = await Promise.allSettled(sources.map(source => fetchFeed(source, fetchImpl)));
-  // A week keeps articles feeling timely; the evergreen fallback already covers
-  // days when nothing relevant published this recently (see topic-selector.js).
-  const cutoff = now.getTime() - 7 * 24 * 60 * 60 * 1000;
+  // The evergreen fallback already covers days when nothing relevant published
+  // within the window (see topic-selector.js).
+  const cutoff = now.getTime() - maxAgeDays * 24 * 60 * 60 * 1000;
   const rows = [];
   settled.forEach((result, index) => {
     if (result.status !== "fulfilled") return;
     for (const item of result.value) {
       const score = relevance(item);
       const time = Date.parse(item.publishedAt);
-      if (score > 0 && time >= cutoff && time <= now.getTime() + 24 * 60 * 60 * 1000) {
+      if (score > 0 && time >= cutoff && time <= now.getTime() + 24 * 60 * 60 * 1000 && !exclude(item)) {
         rows.push({...item, score, priority:sources[index].priority});
       }
     }
@@ -152,7 +157,7 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
     if (!item || typeof item.title !== "string" || typeof item.publishedAt !== "string" || !safeOfficialUrl(item.url)) continue;
     const score = relevance(item);
     const time = Date.parse(item.publishedAt);
-    if (score > 0 && time >= cutoff && time <= now.getTime() + 24 * 60 * 60 * 1000) {
+    if (score > 0 && time >= cutoff && time <= now.getTime() + 24 * 60 * 60 * 1000 && !exclude(item)) {
       rows.push({...item, score, priority: item.priority ?? 3});
     }
   }
@@ -163,7 +168,7 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
       if (seenUrls.has(item.url) || seenTitles.has(title)) return false;
       seenUrls.add(item.url); seenTitles.add(title); return true;
     });
-  const maxTotal = Math.max(3, Math.min(10, limit));
+  const maxTotal = Math.max(3, Math.min(100, limit));
   // A single prolific source (e.g. a channel that repeats the same promotional
   // boilerplate in every description, inflating relevance for unrelated
   // videos too) must not crowd out every other source. Cap it, but only after
@@ -182,7 +187,7 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
     successfulSources:settled.filter(result => result.status === "fulfilled").length };
 }
 
-const YOUTUBE_CACHE_MAX_AGE_DAYS = 7;
+const YOUTUBE_CACHE_MAX_AGE_DAYS = 30;
 const YOUTUBE_CACHE_FILE = path.join(__dirname, "..", "data", "youtube-cache.json");
 
 // Populated by the self-hosted youtube-cache workflow (scripts/fetch-youtube-cache.js),

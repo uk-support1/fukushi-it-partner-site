@@ -56,6 +56,29 @@ test("fetchYoutubeCache only ever live-fetches the video sources, never the offi
   assert.deepEqual(result,{fetchedAt:"2026-09-18T03:00:00.000Z",candidates:[video],attemptedSources:4,successfulSources:4});
 });
 
+test("fetchYoutubeCache folds the previous cache back in over a 30-day window, so unused videos survive days the machine was off",async()=>{
+  let seen;
+  await fetchYoutubeCache({now:new Date("2026-09-18T03:00:00Z"),previous:[video],
+    collect:async args=>{seen=args;return {candidates:[video],attemptedSources:4,successfulSources:4};}});
+  assert.deepEqual(seen.extraCandidates,[video]);
+  assert.equal(seen.maxAgeDays,30);
+  assert.equal(seen.limit,60);
+});
+
+test("A transient total failure is retried, and a persistent one throws instead of caching an empty list as fresh",async()=>{
+  let calls=0,slept=0;
+  const recovered=await fetchYoutubeCache({now:new Date("2026-09-18T03:00:00Z"),previous:[],sleep:async()=>{slept++;},
+    collect:async()=>{calls++;return calls<3?{candidates:[],attemptedSources:4,successfulSources:0}:{candidates:[video],attemptedSources:4,successfulSources:4};}});
+  assert.equal(calls,3);
+  assert.equal(slept,2);
+  assert.deepEqual(recovered.candidates,[video]);
+  let failedCalls=0;
+  await assert.rejects(fetchYoutubeCache({now:new Date("2026-09-18T03:00:00Z"),previous:[video],sleep:async()=>{},
+    collect:async()=>{failedCalls++;return {candidates:[],attemptedSources:4,successfulSources:0};}}),
+    {code:"YOUTUBE_FETCH_ALL_FAILED"});
+  assert.equal(failedCalls,3);
+});
+
 test("A fresh cache file is written and committed, and the second run with no new content is a no-op", t => {
   const fixture = initRepository(t);
   const first = writeAndCommitCache({ cache: cache([video]), cwd: fixture.work });

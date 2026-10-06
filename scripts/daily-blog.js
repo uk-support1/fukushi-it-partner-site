@@ -1,13 +1,20 @@
 "use strict";
 const fs = require("fs");
 const lib = require("./lib/articles");
-const { selectTopic, TopicError } = require("./topic-selector");
+const { selectTopic, TopicError, existingArticleInfo, normalizeSourceUrl } = require("./topic-selector");
 const { generateArticle } = require("./article-generator");
 const { saveArticleDraft } = require("./article-writer");
 const { collectLatestInfo, DEFAULT_SOURCES, loadYoutubeCache } = require("./latest-info");
 const { fetchVideoThumbnail } = require("./lib/video-thumbnail");
 
 const VIDEO_SOURCES = DEFAULT_SOURCES.filter(source => source.kind === "video");
+
+function usedSourceKeys(load) {
+  try {
+    return new Set((load || existingArticleInfo)()
+      .flatMap(article => Array.isArray(article.sourceUrls) ? article.sourceUrls : []).map(normalizeSourceUrl));
+  } catch { return new Set(); }
+}
 
 function hasArticleDatedToday(localDate, articlesDir) {
   try { return lib.loadArticles(articlesDir).some(a => a && a.data && a.data.date === localDate); }
@@ -30,18 +37,22 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
     return {startedAt:now.toISOString(),localDate,timeZone:"Asia/Tokyo",
       status:"already_published_today",articlesCreated:0,shouldPublish:false};
   }
-  // The scheduled run only ever selects from the 4 YouTube channels; official
+  // The run only ever selects from the 4 YouTube channels; official
   // government/agency RSS sources are no longer used for topic selection (see
-  // docs/daily-blog.md). GitHub's shared cloud runners get intermittently
-  // blocked fetching YouTube feeds directly, so it reads the cache a
-  // self-hosted runner keeps refreshed instead of live-fetching. workflow_dispatch
-  // can still isolate a live YouTube fetch to debug that cloud-runner block.
-  const liveDebug = env.DAILY_BLOG_SOURCES_FILTER === "live";
-  const sources = liveDebug ? VIDEO_SOURCES : [];
-  const extraCandidates = liveDebug ? [] : loadCache({now});
+  // docs/daily-blog.md). By default it fetches the feeds live from the cloud
+  // runner (works most days; a failed fetch is just swallowed) AND merges in the
+  // cache a self-hosted runner keeps (covers days YouTube blocks the cloud).
+  // DAILY_BLOG_SOURCES_FILTER=cache / live isolates one path for debugging.
+  const filter = env.DAILY_BLOG_SOURCES_FILTER;
+  const sources = filter === "cache" ? [] : VIDEO_SOURCES;
+  const extraCandidates = filter === "live" ? [] : loadCache({now});
+  // Already-used videos are dropped before the top-10 cut so they can't crowd
+  // out unused ones, and unused videos stay eligible for a month.
+  const used = usedSourceKeys(load);
   let latest = {candidates:[],attemptedSources:0,successfulSources:0};
   try {
-    const collected = await collect({now, sources, extraCandidates});
+    const collected = await collect({now, sources, extraCandidates, maxAgeDays:30,
+      exclude:item => used.has(normalizeSourceUrl(item.url))});
     if (collected && Array.isArray(collected.candidates)) latest = collected;
   } catch {
     // Collection is optional. Gemini's established evergreen path remains available.

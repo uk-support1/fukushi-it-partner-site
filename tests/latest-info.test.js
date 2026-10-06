@@ -110,6 +110,18 @@ test("the per-source cap relaxes automatically when there are not enough other c
   assert.equal(result.candidates.length,6,"never fewer candidates than are actually available, even from one source");
 });
 
+test("maxAgeDays widens the window and exclude() drops used items before the top-N cut, so used videos can't starve unused ones",async()=>{
+  const mk=(n,day)=>({title:"福祉施設の動画"+n,url:"https://www.youtube.com/watch?v=vid"+String(n).padStart(8,"0"),publishedAt:day+"T09:00:00.000Z",source:"精神保健福祉士うさぎ"+n,summary:"福祉施設に関する動画です。",kind:"video"});
+  const now=new Date("2026-10-06T00:00:00Z");
+  const old=mk(1,"2026-09-20"),fresh=mk(2,"2026-10-05"),usedFresh=mk(3,"2026-10-05");
+  const base={now,sources:[],fetchImpl:async()=>{throw new Error("no live sources expected");},extraCandidates:[old,fresh,usedFresh]};
+  assert.equal((await collectLatestInfo(base)).candidates.length,2,"default 7-day window drops the 16-day-old video");
+  const wide=await collectLatestInfo({...base,maxAgeDays:30,limit:60});
+  assert.equal(wide.candidates.length,3);
+  const filtered=await collectLatestInfo({...base,maxAgeDays:30,limit:3,exclude:item=>item.url===usedFresh.url});
+  assert.deepEqual(filtered.candidates.map(item=>item.url).sort(),[old.url,fresh.url].sort());
+});
+
 test("loadYoutubeCache returns fresh cached candidates and safely ignores missing, stale, or corrupt files",t=>{
   const file=path.join(fs.mkdtempSync(path.join(os.tmpdir(),"youtube-cache-")),"youtube-cache.json");
   t.after(()=>fs.rmSync(path.dirname(file),{recursive:true,force:true}));
@@ -117,7 +129,8 @@ test("loadYoutubeCache returns fresh cached candidates and safely ignores missin
   const candidate={title:"障がい者施設のクッキーについて",url:"https://www.youtube.com/watch?v=k596ZRNsvsU",publishedAt:"2026-09-16T09:00:39.000Z",source:"精神保健福祉士うさぎ",summary:"福祉施設に関する動画です。",kind:"video"};
   fs.writeFileSync(file,JSON.stringify({fetchedAt:"2026-09-16T09:00:00.000Z",candidates:[candidate]}));
   assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-17T00:00:00Z")}),[candidate]);
-  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-24T00:00:00Z")}),[],"9 days old exceeds the 7-day default");
+  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-25T00:00:00Z")}),[candidate],"9 days old is still within the 30-day default, so unused videos survive a stretch with the machine off");
+  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-10-20T00:00:00Z")}),[],"34 days old exceeds the 30-day default");
   fs.writeFileSync(file,JSON.stringify({fetchedAt:"2026-09-16T09:00:00.000Z",candidates:[{...candidate,url:"https://example.com/not-allowed"}]}));
   assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-17T00:00:00Z")}),[]);
   fs.writeFileSync(file,"not json");
