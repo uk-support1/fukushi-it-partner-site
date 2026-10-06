@@ -151,7 +151,7 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
       }
     }
   });
-  // Pre-fetched candidates (e.g. the self-hosted YouTube cache) go through the
+  // Pre-fetched candidates (e.g. the YouTube cache) go through the
   // same relevance/freshness/dedup pipeline as a live-fetched source would.
   for (const item of extraCandidates) {
     if (!item || typeof item.title !== "string" || typeof item.publishedAt !== "string" || !safeOfficialUrl(item.url)) continue;
@@ -190,9 +190,9 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
 const YOUTUBE_CACHE_MAX_AGE_DAYS = 30;
 const YOUTUBE_CACHE_FILE = path.join(__dirname, "..", "data", "youtube-cache.json");
 
-// Populated by the self-hosted youtube-cache workflow (scripts/fetch-youtube-cache.js),
-// which runs on a home network that YouTube does not block, unlike GitHub's
-// shared cloud runners. Stale or missing data safely yields no candidates.
+// Populated daily by the youtube-cache workflow (scripts/fetch-youtube-cache.js),
+// which accumulates up to 30 days of videos. Stale or missing data safely yields
+// no candidates.
 function loadYoutubeCache({ file = YOUTUBE_CACHE_FILE, now = new Date(), maxAgeDays = YOUTUBE_CACHE_MAX_AGE_DAYS } = {}) {
   let data;
   try { data = JSON.parse(fs.readFileSync(file, "utf8")); } catch { return []; }

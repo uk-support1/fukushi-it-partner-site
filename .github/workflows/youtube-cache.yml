@@ -1,13 +1,14 @@
 name: YouTube Cache
 
-# Refreshes data/youtube-cache.json from a self-hosted runner (a home network),
-# because GitHub's shared cloud runners get intermittently 404/500'd fetching
-# YouTube's channel feeds directly. This workflow is best-effort and fully
-# decoupled from Daily Blog: if the self-hosted runner is offline, this run
-# simply never starts (or times out unclaimed), and Daily Blog keeps
-# publishing normally from stale-or-missing cache, exactly as it does today.
-# It must never share Daily Blog's concurrency group, or an offline runner
-# here could stall that pipeline.
+# Refreshes data/youtube-cache.json on a GitHub cloud runner, once a day before
+# Daily Blog. Each run folds the previous cache back in and keeps up to 30 days
+# of videos, so unused videos accumulate (a channel feed only lists ~15 videos).
+# It used to run on a self-hosted home PC because the cloud was being 404/500'd
+# by YouTube; the cloud was verified working again on 2026-10-06, so no PC is
+# needed any more. If YouTube blocks the cloud again, a total fetch failure
+# fails this run WITHOUT overwriting the cache, and Daily Blog falls back to
+# its normal evergreen topic. Best-effort and decoupled from Daily Blog: it must
+# never share Daily Blog's concurrency group.
 
 on:
   schedule:
@@ -24,7 +25,7 @@ concurrency:
 jobs:
   refresh:
     if: github.ref == 'refs/heads/main'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4

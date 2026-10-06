@@ -1,9 +1,8 @@
 "use strict";
 
-// Runs on a self-hosted runner (a home network YouTube does not block), not on
-// GitHub's shared cloud runners: those get intermittently 404/500'd by YouTube's
-// feed endpoint. This script only ever touches data/youtube-cache.json; it must
-// never be relied on for Daily Blog's own reliability (see docs/daily-blog.md).
+// Runs daily on a GitHub cloud runner (see .github/workflows/youtube-cache.yml).
+// This script only ever touches data/youtube-cache.json; it must never be
+// relied on for Daily Blog's own reliability (see docs/daily-blog.md).
 const cp = require("child_process");
 const fs = require("fs");
 const path = require("path");
