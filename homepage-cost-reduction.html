@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/cost-switch.css?v=5">
+<link rel="stylesheet" href="assets/css/cost-switch.css?v=7">
 <script src="assets/js/ga4.js"></script>
 <script type="application/ld+json">
 {
@@ -284,23 +284,40 @@
         </div>
       </div>
 
-      <div class="cs-chart reveal" role="group" aria-label="3年間の費用の比較イメージ">
-        <p class="cs-chart-title">3年間でかかる費用のイメージ</p>
-        <div class="cs-chart-row">
-          <p class="cs-chart-label">現在（管理費のみ）</p>
-          <div class="cs-chart-bar-wrap">
-            <div class="cs-chart-bar cs-chart-bar--before" style="--w: 100%;"><span>356,400円</span></div>
+      <div class="cs-chart reveal" role="group" aria-label="3年間の費用の比較：現在の管理費は356,400円、当社への乗り換え費用は49,500円で、6分の1以下です">
+        <p class="cs-chart-title">3年間でかかる費用の比較（料金例）</p>
+
+        <div class="cs-vchart">
+          <div class="cs-vcol cs-vcol--before">
+            <div class="cs-vplot">
+              <div class="cs-vbarwrap" style="--h: 100%;">
+                <div class="cs-vlabels">
+                  <p class="cs-vamount"><span class="cs-num">356,400</span>円</p>
+                </div>
+                <div class="cs-vbar"></div>
+              </div>
+            </div>
+            <p class="cs-vname">現在の管理費</p>
+            <p class="cs-vsub">月額9,900円 × 36か月</p>
+          </div>
+
+          <div class="cs-vcol cs-vcol--after">
+            <div class="cs-vplot">
+              <div class="cs-vbarwrap" style="--h: 13.9%;">
+                <div class="cs-vlabels">
+                  <p class="cs-vamount"><span class="cs-num">49,500</span>円</p>
+                  <p class="cs-vbadge">6分の1以下</p>
+                </div>
+                <div class="cs-vbar"></div>
+              </div>
+            </div>
+            <p class="cs-vname">当社への乗り換え費用</p>
+            <p class="cs-vsub">制作・移行費用の料金例</p>
           </div>
         </div>
-        <div class="cs-chart-row">
-          <p class="cs-chart-label">乗り換え後（乗り換え費用のみ）</p>
-          <div class="cs-chart-bar-wrap">
-            <div class="cs-chart-bar cs-chart-bar--after" style="--w: 13.9%;"></div>
-            <span class="cs-chart-value">49,500円</span>
-            <p class="cs-chart-bar-note">＋ 公開環境の実費（環境により異なります）</p>
-          </div>
-        </div>
-        <p class="cs-chart-foot">この料金例で3年間比べると、乗り換え費用は管理費の<strong>6分の1以下</strong>です。</p>
+
+        <p class="cs-vdiff">3年間で<strong class="cs-num">306,900円</strong>の差</p>
+        <p class="cs-chart-foot">この料金例では、3年間の管理費と比べて、乗り換え費用は<strong>6分の1以下</strong>です。</p>
       </div>
 
       <div class="cs-months reveal" role="group" aria-label="管理費の累計が49,500円になる時期">
@@ -681,6 +698,7 @@
   </div>
 </footer>
 
+<script src="assets/js/cost-switch.js?v=1"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>
