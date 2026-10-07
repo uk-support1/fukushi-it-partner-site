@@ -394,7 +394,7 @@
 }
 
 .cs-compare-col-price {
-  margin: 4px 0 16px;
+  margin: 2px 0 8px;
   font-size: 1.3rem;
   font-weight: 800;
   color: var(--text-600);
@@ -407,6 +407,50 @@
 
 .cs-compare-col--after .cs-compare-col-price {
   color: var(--orange-600);
+}
+
+.cs-compare-col-label {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-600);
+}
+
+.cs-compare-col--after .cs-compare-col-label {
+  color: var(--green-700);
+}
+
+/* 比較の主役の数字：現在は「年間」、右は「乗り換え費用」。同じ大きさでそろえる */
+.cs-compare-col-price--big .cs-num {
+  font-size: clamp(2.8rem, 2.2rem + 2.2vw, 3.8rem);
+}
+
+.cs-compare-col-sub {
+  margin-bottom: 14px;
+  font-size: 0.85rem;
+  color: var(--text-600);
+}
+
+/* 3年間の金額：年間額より小さく、でも目立たせる */
+.cs-compare-col-3y {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-900);
+  background: var(--white);
+  border: 1px solid #cfd6d2;
+  border-left: 5px solid #8a948f;
+  border-radius: var(--radius-sm);
+}
+
+.cs-compare-col-3y strong {
+  margin-left: 6px;
+  color: var(--text-900);
+}
+
+.cs-compare-col-3y .cs-num {
+  font-size: 1.75rem;
 }
 
 .cs-compare-col-price small {
@@ -1274,13 +1318,6 @@
 
 .cs-hero-stat-note strong {
   color: var(--green-900);
-}
-
-/* 棒グラフ：安心サポートを付けた場合 */
-.cs-chart-bar--care {
-  min-width: 14px;
-  padding: 0;
-  background: linear-gradient(90deg, #8fc0a7, var(--green-500));
 }
 
 /* ---------------- 乗り換え後のサポート（3つの選び方） ---------------- */
