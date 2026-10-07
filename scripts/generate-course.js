@@ -212,7 +212,7 @@ function siteFooter(depth) {
     '      </div>\n' +
     "    </div>\n" +
     '    <div class="footer-bottom">\n' +
-    "      &copy; 2026 福祉ITパートナー｜上原健太\n" +
+    "      &copy; 2026 福祉ITパートナー\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</footer>\n\n" +
