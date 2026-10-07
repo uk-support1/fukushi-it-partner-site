@@ -3678,6 +3678,66 @@ section {
   }
 }
 
+/* ===== 既存HPをお持ちの方への案内（維持費削減・乗り換えプラン）===== */
+.cost-teaser-section {
+  padding: 56px 0;
+  background: var(--white);
+}
+
+.cost-teaser {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+  padding: 28px 36px;
+  background: var(--cream-100);
+  border: 1px solid var(--border-soft);
+  border-left: 6px solid var(--orange-500);
+  border-radius: var(--radius-md);
+}
+
+.cost-teaser-eyebrow {
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--green-700);
+}
+
+.cost-teaser-title {
+  margin-bottom: 8px;
+  font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
+  line-height: 1.5;
+  color: var(--green-900);
+}
+
+.cost-teaser-text {
+  font-size: 0.92rem;
+  line-height: 1.85;
+  color: var(--text-600);
+}
+
+.cost-teaser-text strong {
+  color: var(--orange-600);
+}
+
+.cost-teaser-btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .cost-teaser-section {
+    padding: 40px 0;
+  }
+  .cost-teaser {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 22px;
+  }
+  .cost-teaser-btn {
+    width: 100%;
+  }
+}
+
 /* ===== 制作までの流れ ===== */
 .page-hero-compact {
   padding-bottom: 8px;

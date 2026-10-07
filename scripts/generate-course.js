@@ -188,6 +188,7 @@ function siteFooter(depth) {
     '          <li><a href="' + prefix + 'index.html">HOME</a></li>\n' +
     '          <li><a href="' + prefix + 'index.html#services">サービス</a></li>\n' +
     '          <li><a href="' + prefix + 'homepage-plan.html">料金プラン</a></li>\n' +
+    '          <li><a href="' + prefix + 'homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="' + prefix + 'works.html">制作実績</a></li>\n' +
     '          <li><a href="' + prefix + 'flow.html">制作までの流れ</a></li>\n' +
     '        </ul>\n' +

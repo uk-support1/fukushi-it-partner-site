@@ -40,6 +40,7 @@ const STATIC_PAGES = [
   "https://fukushi-it-partner.com/works.html",
   "https://fukushi-it-partner.com/flow.html",
   "https://fukushi-it-partner.com/homepage-plan.html",
+  "https://fukushi-it-partner.com/homepage-cost-reduction.html",
   "https://fukushi-it-partner.com/blog.html",
 ];
 const STATIC_PAGES_AFTER_ARTICLES = [
@@ -328,6 +329,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '          <li><a href="../index.html">HOME</a></li>\n' +
     '          <li><a href="../index.html#services">サービス</a></li>\n' +
     '          <li><a href="../homepage-plan.html">料金プラン</a></li>\n' +
+    '          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="../works.html">制作実績</a></li>\n' +
     '          <li><a href="../flow.html">制作までの流れ</a></li>\n' +
     '        </ul>\n' +
@@ -572,6 +574,7 @@ function buildBlogHtml(blogIndex) {
     '          <li><a href="index.html">HOME</a></li>\n' +
     '          <li><a href="index.html#services">サービス</a></li>\n' +
     '          <li><a href="homepage-plan.html">料金プラン</a></li>\n' +
+    '          <li><a href="homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="works.html">制作実績</a></li>\n' +
     '          <li><a href="flow.html">制作までの流れ</a></li>\n' +
     '        </ul>\n' +
