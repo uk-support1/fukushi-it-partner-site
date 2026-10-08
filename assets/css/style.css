@@ -3689,41 +3689,70 @@ section {
   }
 }
 
-/* ===== 既存HPをお持ちの方への案内（維持費削減・乗り換えプラン）===== */
+/* ===== 既存HPをお持ちの方への案内（維持費削減・乗り換えプラン）=====
+   背景に電卓と書類の写真をうすく敷き、「高い硬貨の山→低い硬貨の山」のイラストで
+   「乗り換えると固定費が下がる」イメージを伝える */
 .cost-teaser-section {
-  padding: 56px 0;
+  padding: 88px 0;
   background: var(--white);
 }
 
 .cost-teaser {
-  display: flex;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   align-items: center;
-  justify-content: space-between;
   gap: 24px 40px;
-  padding: 28px 36px;
+  min-height: 360px;
+  padding: 52px 56px;
   background: var(--cream-100);
   border: 1px solid var(--border-soft);
-  border-left: 6px solid var(--orange-500);
-  border-radius: var(--radius-md);
+  border-left: 8px solid var(--orange-500);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.cost-teaser::before,
+.cost-teaser::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cost-teaser::before {
+  background: url("../images/home/cost-teaser-bg.jpg") center right / cover no-repeat;
+  opacity: 0.6;
+}
+
+.cost-teaser::after {
+  background: linear-gradient(90deg, var(--cream-100) 0%, rgba(251, 246, 236, 0.93) 46%, rgba(251, 246, 236, 0.3) 100%);
+}
+
+.cost-teaser > * {
+  position: relative;
+  z-index: 1;
 }
 
 .cost-teaser-eyebrow {
-  margin-bottom: 4px;
-  font-size: 0.85rem;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--green-700);
 }
 
 .cost-teaser-title {
-  margin-bottom: 8px;
-  font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
+  margin-bottom: 14px;
+  font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2.2rem);
   line-height: 1.5;
   color: var(--green-900);
 }
 
 .cost-teaser-text {
-  font-size: 0.92rem;
-  line-height: 1.85;
+  margin-bottom: 26px;
+  font-size: 1rem;
+  line-height: 1.9;
   color: var(--text-600);
 }
 
@@ -3731,18 +3760,36 @@ section {
   color: var(--orange-600);
 }
 
-.cost-teaser-btn {
-  flex-shrink: 0;
+.cost-teaser-art {
+  padding: 18px 20px 12px;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 28px rgba(31, 77, 60, 0.1);
+}
+
+.cost-teaser-art svg {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
   .cost-teaser-section {
-    padding: 40px 0;
+    padding: 56px 0;
   }
   .cost-teaser {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 24px 22px;
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding: 32px 24px;
+  }
+  .cost-teaser::after {
+    background: linear-gradient(180deg, var(--cream-100) 0%, rgba(251, 246, 236, 0.92) 55%, rgba(251, 246, 236, 0.5) 100%);
+  }
+  .cost-teaser-art {
+    max-width: 340px;
+    margin: 0 auto;
   }
   .cost-teaser-btn {
     width: 100%;
