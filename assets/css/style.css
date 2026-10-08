@@ -2499,6 +2499,17 @@ section {
   gap: 8px;
 }
 
+/* 電話番号（代表電話・担当者直通）を縦に並べる */
+.contact-other-phones {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-other-phones .contact-other-note {
+  margin-top: -8px;
+}
+
 .contact-other-item {
   display: flex;
   align-items: center;
