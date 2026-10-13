@@ -25,6 +25,11 @@ on:
           - cache
           - live
         default: auto
+      simulate_failure:
+        description: '失敗通知の動作確認用。trueにすると、記事を作らず最初のステップで意図的に失敗させ、失敗通知（Issue）が作られるかを確認する'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -46,6 +51,11 @@ jobs:
           persist-credentials: true
           # Preserve same-day creation order for the last ten editorial comparisons.
           fetch-depth: 0
+      - name: Simulated failure (notification test only)
+        if: inputs.simulate_failure == true
+        run: |
+          echo "::error title=通知テスト::失敗通知の動作確認のため、意図的に失敗させました（記事は作られません）"
+          exit 1
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -129,3 +139,45 @@ jobs:
           if (( $(date -u +%s) <= deadline_epoch )); then
             gh workflow run daily-blog.yml --repo "$GITHUB_REPOSITORY" --ref main -f continuous_trial=true
           fi
+
+  # ---- 失敗通知：start / deploy のどちらかが失敗したら、GitHub Issue を作って管理者へ知らせる ----
+  # 公開処理（start・deploy）の後に動く別ジョブなので、通知に失敗しても記事の公開には影響しない。
+  notify-failure:
+    needs: [start, deploy]
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    permissions:
+      contents: read
+      issues: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Open or update the failure issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOTIFY_SIMULATED: ${{ inputs.simulate_failure == true }}
+        run: node scripts/notify-workflow-failure.js failure
+
+  # ---- 復旧：自動投稿が成功したら、開いている失敗Issueを閉じる（開いていなければ何もしない） ----
+  recover-failure-issue:
+    needs: [start, deploy]
+    if: ${{ always() && needs.start.result == 'success' && needs.deploy.result != 'failure' && needs.deploy.result != 'cancelled' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    permissions:
+      contents: read
+      issues: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Close the failure issue if one is open
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/notify-workflow-failure.js recover

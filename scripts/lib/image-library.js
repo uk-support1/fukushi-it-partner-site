@@ -153,11 +153,16 @@ function diversify(eligible, history, latest) {
   return eligible;
 }
 
-function selectImage({ category, candidates, history = [], recentLimit = RECENT_ARTICLE_LIMIT, excludedHashes = new Set(), profile = null, diversifyHero = false } = {}) {
+// reuseWhenExhausted:false（記事内画像の自動投稿用）では、直近で使った画像・内容に合わない画像しか
+// 残らないときに「再利用」せず null を返す。呼び出し側は null のとき画像を省略して公開を続ける。
+// 既定値(true)の従来動作（ヒーロー画像など）は変えない。
+function selectImage({ category, candidates, history = [], recentLimit = RECENT_ARTICLE_LIMIT, excludedHashes = new Set(), profile = null, diversifyHero = false, reuseWhenExhausted = true } = {}) {
   if (!Array.isArray(candidates) || candidates.length === 0) return null;
   const semanticSafe = profile ? candidates.filter(candidate => !semantics.isExcluded(candidate, profile)) : candidates;
+  if (!reuseWhenExhausted && semanticSafe.length === 0) return null;
   const safeCandidates = semanticSafe.length ? semanticSafe : candidates;
   const usable = safeCandidates.filter(candidate => !candidate.hash || !excludedHashes.has(candidate.hash));
+  if (!reuseWhenExhausted && usable.length === 0) return null;
   // Only relax page-level exclusions after every distinct image has been tried.
   const pool = usable.length ? usable : candidates;
   const wanted = categoryFor(category);
@@ -178,6 +183,11 @@ function selectImage({ category, candidates, history = [], recentLimit = RECENT_
     }
     const recentFree = semanticPool.filter(candidate => !recent.some(use => sameImage(candidate, use)));
     let eligible = recentFree.length ? recentFree : semanticPool;
+    if (!reuseWhenExhausted && !recentFree.length) {
+      // テーマに合う候補が直近で使い切られていても、ほかのカテゴリに適切な未使用画像があればそちらを使う。
+      eligible = pool.filter(candidate => !recent.some(use => sameImage(candidate, use)));
+      if (!eligible.length) return null;
+    }
     if (diversifyHero) {
       eligible = diversify(eligible, history, latest);
     } else {
@@ -194,6 +204,7 @@ function selectImage({ category, candidates, history = [], recentLimit = RECENT_
   const exact = pool.filter(candidate => candidate.category === wanted);
   const nearby = pool.filter(candidate => (NEAR_CATEGORIES[wanted] || []).includes(candidate.category));
   const unused = list => list.filter(candidate => !recent.some(use => sameImage(candidate, use)));
+  if (!reuseWhenExhausted && !unused(pool).length) return null;
   // Prefer exact-category images, but let nearby categories fill a depleted
   // exact pool before reusing a recent image.
   let eligible = unused(exact);

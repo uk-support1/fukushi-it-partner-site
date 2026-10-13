@@ -307,7 +307,8 @@ test("published heroes are hash-unique within the recent window, and the latest 
   // holds inside the same window, not across the site's entire publishing history.
   const recentHeroes = heroes.slice(0, images.HERO_RECENT_ARTICLE_LIMIT);
   assert.equal(new Set(recentHeroes.map(item => item.hash)).size, recentHeroes.length);
-  assert.equal(inline.length, published.size);
+  // 記事内画像の候補が尽きた日は画像を省略して公開できるため、「全記事に必須」ではなく「あれば重複しない」を確認する。
+  assert.ok(inline.length <= published.size);
   assert.equal(new Set(inline.slice(0, 10).map(item => item.hash)).size, Math.min(10, inline.length));
 });
 

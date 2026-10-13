@@ -312,3 +312,28 @@ stage前、commit後、push直前に対象一覧を検査します。origin/main
 
 Daily BlogとGenerate Blogは同じ `github-pages` concurrency groupを使い、CMS更新と
 自動投稿の生成・デプロイを直列化します。既存Generate BlogはCMS更新用として維持します。
+
+## 失敗通知と、画像が足りないときの動作（2026-10-14〜）
+
+### 失敗したら GitHub Issue で通知します
+Daily Blog の `start` または `deploy` ジョブが失敗すると、`notify-failure` ジョブが
+`scripts/notify-workflow-failure.js failure` を実行し、リポジトリに Issue（ラベル `daily-blog-failure`）を作ります。
+Issue には、失敗した日時（日本時間）、ワークフロー名、失敗したジョブ／ステップ、原因を確認する実行ログのURLが入ります。
+リポジトリ所有者が担当者に設定されるため、GitHub のメール／モバイル通知が届きます。
+
+- 同じ失敗が続いている間は、新しい Issue は作らず、開いている Issue にコメントを追加します。
+- 次に自動投稿が成功すると、`recover-failure-issue` ジョブが Issue に復旧コメントを書いて閉じます。
+- 通知ジョブは公開処理（start・deploy）より後の別ジョブで、`continue-on-error: true` です。通知に失敗しても公開には影響しません。
+- 動作確認：Actions → Daily Blog → Run workflow で `simulate_failure` を true にして実行すると、記事を作らずに最初のステップで
+  意図的に失敗し、通知（【テスト】付きの Issue）が作られます。確認後は Issue を閉じてください。
+- 補足：GitHub 標準のワークフロー失敗通知（Settings → Notifications → Actions）も併用できます。
+
+### 記事内画像が足りないとき
+記事内画像は、次の優先順位で選びます（ヒーロー画像の選び方は変わりません）。
+
+1. 内容に合い、直近10本で使っていない画像
+2. 1がなければ、ほかのカテゴリで内容に合う、直近10本で未使用の画像
+3. それもなければ、**記事内画像を省略して公開**します（自動投稿全体は止めません）。
+
+省略したときは、Actions のログに警告（`記事内画像なしで公開します`）が残ります。
+記事内画像の枚数は、画像ライブラリ（`assets/images/blog-library/inline`）に画像を足すと増やせます。

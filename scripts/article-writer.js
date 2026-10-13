@@ -56,7 +56,7 @@ function baseSlugFor(title, date) {
   return `article-${date}-${digest}`;
 }
 
-function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {}, history = null, excludedHashes = new Set(), precomputedHero = null } = {}) {
+function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {}, history = null, excludedHashes = new Set(), precomputedHero = null, omitWhenExhausted = false } = {}) {
   const profile = articleImageProfile({ ...content, category });
   // A video's own thumbnail (fetched once, beforehand, by scripts/lib/video-thumbnail.js)
   // takes priority over the curated stock library, but only for the hero image.
@@ -72,7 +72,9 @@ function articleImage(category, { root = path.join(__dirname, ".."), articlesDir
     candidates: imageLibrary.discoverImages({ root, kind }),
     history: imageHistory,
     recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT,
-    excludedHashes: new Set([...excludedHashes, ...recentInlineHashes]), profile, diversifyHero: kind === "hero" });
+    excludedHashes: new Set([...excludedHashes, ...recentInlineHashes]), profile, diversifyHero: kind === "hero",
+    // 記事内画像の自動投稿では、候補が尽きたら再利用せず null（=画像を省略）にする
+    reuseWhenExhausted: !(kind === "inline" && omitWhenExhausted) });
   if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series, hash: selected.hash, profile };
   if (kind !== "hero") return null;
   const fallback = IMAGE_BY_CATEGORY[category] || DEFAULT_IMAGE;
@@ -80,6 +82,15 @@ function articleImage(category, { root = path.join(__dirname, ".."), articlesDir
 }
 
 function inlineImage(category, options) { return articleImage(category, { ...options, kind: "inline" }); }
+
+// 記事内画像を省略したことを、GitHub Actionsのログ（警告アノテーション）に残す。
+function warnInlineImageOmitted(category) {
+  const message = "記事内画像に使える画像（直近10本で未使用で、内容に合うもの）が見つからないため、" +
+    "記事内画像なしで公開します（カテゴリ: " + String(category || "不明") + "）。" +
+    "画像ライブラリ（assets/images/blog-library/inline）への追加をご検討ください。";
+  if (process.env.GITHUB_ACTIONS === "true") console.log("::warning title=記事内画像を省略して公開::" + message);
+  else console.warn("WARNING: " + message);
+}
 
 function inlineAlt(category) {
   const labels = { welfare: "福祉の現場を支えるイメージ", recruit: "採用活動を支えるイメージ",
@@ -163,7 +174,8 @@ function buildArticleMarkdown({ article, topic, date, slug, sources = [], imageO
   if (typeof slug !== "string" || !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(slug)) fail("INVALID_ARTICLE_SLUG");
   const content = { title: cleanArticle.title, body: cleanArticle.bodyMarkdown };
   const image = articleImage(topic.category, { ...imageOptions, content });
-  const inline = inlineImage(topic.category, { ...imageOptions, content });
+  const inline = inlineImage(topic.category, { ...imageOptions, content, omitWhenExhausted: true });
+  if (!inline) warnInlineImageOmitted(topic.category);
   const metadata = {
     type: "column",
     category_label: topic.category,
@@ -221,6 +233,7 @@ module.exports = {
   articleImage,
   inlineImage,
   inlineAlt,
+  warnInlineImageOmitted,
   insertInlineImage,
   availableSlug,
   sourceSection,
