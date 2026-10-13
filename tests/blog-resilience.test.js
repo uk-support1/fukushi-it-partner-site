@@ -216,13 +216,13 @@ test("自動投稿スクリプトは、エラー時に終了コード1で終わ�
 // ---------------------------------------------------------------------------
 // 失敗通知スクリプト（GitHub Issue）
 // ---------------------------------------------------------------------------
-function fakeGh({ open = null, jobs = [], failCreateWithAssignee = false, failAll = false } = {}) {
+function fakeGh({ open = null, jobs = [], failCreateWithAssignee = false, failAll = false, logText = "" } = {}) {
   const calls = [];
   const gh = (args, input) => {
     calls.push({ args, input });
     if (failAll) throw new Error("gh: unreachable");
     const [a, b] = args;
-    if (a === "api") return JSON.stringify({ jobs });
+    if (a === "api") return String(b).endsWith("/logs") ? logText : JSON.stringify({ jobs });
     if (a === "label") return "";
     if (a === "issue" && b === "list") return JSON.stringify(open ? [open] : []);
     if (a === "issue" && b === "create") {
@@ -290,4 +290,131 @@ test("復旧：成功したら、開いている失敗Issueを閉じる。なけ
   const none = fakeGh();
   assert.equal(notify.recover({ env: ENV, gh: none.gh }).action, "none");
   assert.ok(!none.calls.some(call => call.args[1] === "close" || call.args[1] === "comment"));
+});
+
+// ---------------------------------------------------------------------------
+// Generate Blog（サイトの生成・公開）の失敗通知
+// ---------------------------------------------------------------------------
+const generate = YAML.parse(fs.readFileSync(path.join(ROOT, ".github", "workflows", "generate-blog.yml"), "utf8"));
+const GENERATE_ENV = { ...ENV, GITHUB_WORKFLOW: "Generate Blog", GITHUB_EVENT_NAME: "push", GITHUB_RUN_ID: "777" };
+const TEST_LOG = [
+  "2026-10-13T04:26:05.9999999Z ℹ pass 161",
+  "2026-10-13T04:26:05.9999999Z ℹ fail 1",
+  "2026-10-13T04:26:06.0068617Z ✖ failing tests:",
+  "2026-10-13T04:26:06.0068841Z ",
+  "2026-10-13T04:26:06.0070619Z test at tests/image-library.test.js:294:1",
+  "2026-10-13T04:26:06.0070620Z ✖ published heroes are hash-unique within the recent window, and the latest ten inline images are hash-unique (282.273377ms)",
+  "2026-10-13T04:26:06.0072219Z   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal: 9 !== 10"
+].join("\n");
+const TEST_FAILED_JOBS = [{ id: 55, name: "build-blog", conclusion: "failure", html_url: "https://github.com/x/y/actions/runs/777/job/55",
+  steps: [{ name: "Run npm test", conclusion: "failure" }, { name: "Run node scripts/generate-blog.js", conclusion: "skipped" }] }];
+
+test("Generate Blog：テスト（npm test）の失敗はジョブの失敗になり、握りつぶす設定がない", () => {
+  for (const name of ["build-blog", "deploy"]) {
+    const job = generate.jobs[name];
+    assert.notEqual(job["continue-on-error"], true);
+    for (const step of job.steps) {
+      assert.notEqual(step["continue-on-error"], true, `${name}: "${step.name || step.uses || step.run}" must not continue on error`);
+      if (typeof step.run === "string") assert.ok(!/\|\|\s*true|\|\|\s*:|set \+e|exit 0/.test(step.run), `${name}: "${step.run}" swallows errors`);
+    }
+  }
+  const steps = generate.jobs["build-blog"].steps;
+  const npmTest = steps.findIndex(step => step.run === "npm test");
+  const generateStep = steps.findIndex(step => /scripts\/generate-blog\.js/.test(String(step.run || "")));
+  assert.ok(npmTest >= 0 && npmTest < generateStep, "image-duplication etc. are caught by npm test before anything is generated or published");
+});
+
+test("Generate Blog：失敗通知ジョブは、build-blog か deploy が失敗したときだけ動き、公開には影響しない", () => {
+  const job = generate.jobs["notify-failure"];
+  assert.ok(job);
+  assert.deepEqual([...job.needs].sort(), ["build-blog", "deploy"]);
+  assert.match(String(job.if), /failure\(\)/);
+  assert.equal(job["continue-on-error"], true);
+  assert.equal(job.permissions.issues, "write");
+  assert.match(job.steps.map(step => String(step.run || "")).join("\n"), /notify-workflow-failure\.js failure/);
+  for (const name of ["build-blog", "deploy"]) {
+    assert.ok(![].concat(generate.jobs[name].needs || []).some(dep => /notify|recover/.test(dep)), "publishing never waits for the notification");
+  }
+});
+
+test("Generate Blog：復旧ジョブは、生成・公開まで成功したときだけ失敗Issueを閉じる", () => {
+  const job = generate.jobs["recover-failure-issue"];
+  assert.ok(job);
+  assert.match(String(job.if), /needs\.build-blog\.result == 'success'/);
+  assert.match(String(job.if), /needs\.deploy\.result == 'success'/);
+  assert.equal(job["continue-on-error"], true);
+  assert.match(job.steps.map(step => String(step.run || "")).join("\n"), /notify-workflow-failure\.js recover/);
+});
+
+test("Generate Blog：通知テスト用の疑似失敗は、生成・コミット・公開より前に必ず失敗し、サイトを変更しない", () => {
+  const input = generate.on.workflow_dispatch.inputs.simulate_failure;
+  assert.equal(input.type, "boolean");
+  assert.equal(input.default, false);
+  const steps = generate.jobs["build-blog"].steps;
+  const simulate = steps.findIndex(step => /inputs\.simulate_failure == true/.test(String(step.if || "")));
+  const firstRealStep = steps.findIndex(step => /npm ci|npm test|generate-blog|git push|prepare-pages/.test(String(step.run || "")));
+  assert.ok(simulate >= 0 && simulate < firstRealStep);
+  assert.match(steps[simulate].run, /exit 1/);
+  assert.equal(generate.on.push.branches[0], "main", "normal pushes still deploy as before");
+});
+
+test("Daily Blog と Generate Blog は、ラベル・題名・本文で区別でき、互いのIssueに触れない", () => {
+  const daily = notify.runInfo(ENV);
+  const gen = notify.runInfo(GENERATE_ENV);
+  assert.equal(daily.settings.label, "daily-blog-failure");
+  assert.equal(gen.settings.label, "generate-blog-failure");
+  const a = fakeGh({ jobs: FAILED_JOBS }); notify.notifyFailure({ env: ENV, gh: a.gh });
+  const b = fakeGh({ jobs: TEST_FAILED_JOBS, logText: TEST_LOG }); notify.notifyFailure({ env: GENERATE_ENV, gh: b.gh });
+  const titleOf = calls => { const c = calls.find(call => call.args[0] === "issue" && call.args[1] === "create"); return c.args[c.args.indexOf("--title") + 1]; };
+  assert.match(titleOf(a.calls), /^【自動投稿エラー】Daily Blog が失敗しました/);
+  assert.match(titleOf(b.calls), /^【公開エラー】Generate Blog が失敗しました/);
+  const listLabel = calls => { const c = calls.find(call => call.args[0] === "issue" && call.args[1] === "list"); return c.args[c.args.indexOf("--label") + 1]; };
+  assert.equal(listLabel(a.calls), "daily-blog-failure");
+  assert.equal(listLabel(b.calls), "generate-blog-failure");
+  // 復旧も自分のラベルだけを見る
+  const r = fakeGh({ open: { number: 3, url: "u" } }); notify.recover({ env: GENERATE_ENV, gh: r.gh });
+  assert.equal(listLabel(r.calls), "generate-blog-failure");
+});
+
+test("Generate Blog の失敗通知：テスト失敗（画像の重複など）のテスト名・日時・失敗箇所・ログURLを載せる", () => {
+  const { gh, calls } = fakeGh({ jobs: TEST_FAILED_JOBS, logText: TEST_LOG });
+  const result = notify.notifyFailure({ env: GENERATE_ENV, gh, now: new Date("2026-10-13T04:26:00Z") });
+  assert.equal(result.action, "created");
+  assert.equal(result.label, "generate-blog-failure");
+  const create = calls.find(call => call.args[0] === "issue" && call.args[1] === "create");
+  for (const expected of ["2026-10-13 13:26", "Generate Blog（公開エラー）", "mainへのpush", "Run npm test",
+    "published heroes are hash-unique within the recent window", "https://github.com/uk-support1/fukushi-it-partner-site/actions/runs/777",
+    "サイトの更新やブログの公開は止まったまま", "次に Generate Blog が成功すると"]) {
+    assert.ok(create.input.includes(expected), "the report mentions: " + expected);
+  }
+  assert.ok(create.args.includes("generate-blog-failure"));
+});
+
+test("Generate Blog：同じ障害が続くときは既存Issueにコメントを追加し、復旧したら閉じる", () => {
+  const open = { number: 9, url: "https://github.com/x/y/issues/9" };
+  const again = fakeGh({ open, jobs: TEST_FAILED_JOBS, logText: TEST_LOG });
+  assert.equal(notify.notifyFailure({ env: GENERATE_ENV, gh: again.gh }).action, "commented");
+  assert.ok(again.calls.some(call => call.args[1] === "comment" && call.args[2] === "9"));
+  assert.ok(!again.calls.some(call => call.args[0] === "issue" && call.args[1] === "create"));
+  const fixed = fakeGh({ open });
+  assert.equal(notify.recover({ env: GENERATE_ENV, gh: fixed.gh }).action, "closed");
+  assert.ok(fixed.calls.some(call => call.args[1] === "close" && call.args[2] === "9"));
+});
+
+test("失敗したテスト名の取り出し：タイムスタンプ付きログから最大5件、重複なし", () => {
+  assert.deepEqual(notify.failingTestNames(TEST_LOG), ["published heroes are hash-unique within the recent window, and the latest ten inline images are hash-unique"]);
+  assert.deepEqual(notify.failingTestNames("all good"), []);
+  const many = ["✖ failing tests:", ...Array.from({ length: 8 }, (_, i) => `✖ case ${i % 7} (1.5ms)`)].join("\n");
+  assert.equal(notify.failingTestNames(many).length, 5);
+  assert.equal(new Set(notify.failingTestNames(many)).size, 5);
+});
+
+test("Generate Blog の通知が失敗しても、例外にならず終了コード0（サイトの公開に影響しない）", () => {
+  const { gh } = fakeGh({ failAll: true });
+  const { value } = captureWarnings(() => notify.main("failure", { env: GENERATE_ENV, gh }));
+  assert.equal(value.action, "error");
+});
+
+test("ほかのワークフローでも、名前から専用ラベルを決めて通知できる", () => {
+  assert.equal(notify.workflowSettings("Generate Course").label, "generate-course-failure");
 });
