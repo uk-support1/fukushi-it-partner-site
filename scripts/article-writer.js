@@ -61,11 +61,18 @@ function articleImage(category, { root = path.join(__dirname, ".."), articlesDir
   // A video's own thumbnail (fetched once, beforehand, by scripts/lib/video-thumbnail.js)
   // takes priority over the curated stock library, but only for the hero image.
   if (kind === "hero" && precomputedHero) return { ...precomputedHero, profile };
+  const imageHistory = history || imageLibrary.usageHistory({ root, articlesDir, kind });
+  // 記事内画像は、直近の記事で使った画像（同一内容＝同じハッシュ）を必ず避ける。
+  // 採用など「強いテーマ」の画像が少ないカテゴリでは、テーマ一致を優先する選び方だと
+  // 直近の記事と同じ画像を繰り返してしまい、公開前の自動テスト（直近10本は重複なし）で
+  // 公開が止まる原因になった。除外に加えておけば、候補が尽きない限り重複しない。
+  const recentInlineHashes = kind === "inline"
+    ? imageHistory.slice(0, imageLibrary.RECENT_ARTICLE_LIMIT).map(use => use.hash).filter(Boolean) : [];
   const selected = imageLibrary.selectImage({ category,
     candidates: imageLibrary.discoverImages({ root, kind }),
-    history: history || imageLibrary.usageHistory({ root, articlesDir, kind }),
+    history: imageHistory,
     recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT,
-    excludedHashes, profile, diversifyHero: kind === "hero" });
+    excludedHashes: new Set([...excludedHashes, ...recentInlineHashes]), profile, diversifyHero: kind === "hero" });
   if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series, hash: selected.hash, profile };
   if (kind !== "hero") return null;
   const fallback = IMAGE_BY_CATEGORY[category] || DEFAULT_IMAGE;

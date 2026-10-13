@@ -7,7 +7,7 @@ const os = require("os");
 const path = require("path");
 const YAML = require("yaml");
 const images = require("../scripts/lib/image-library");
-const { saveArticleDraft } = require("../scripts/article-writer");
+const { saveArticleDraft, inlineImage } = require("../scripts/article-writer");
 const { refreshInlineImages } = require("../scripts/refresh-inline-images");
 const { refreshHeroImages } = require("../scripts/refresh-hero-images");
 const { chooseSurvivor, pruneDuplicateHeroes } = require("../scripts/prune-duplicate-hero-images");
@@ -326,6 +326,19 @@ test("published heroes never place the same series or scene on two adjacent blog
     assert.notEqual(current.scene, previous.scene,
       `${list[i].slug} repeats the "${current.scene}" scene right after ${list[i - 1].slug}`);
   }
+});
+
+test("an inline image never repeats one used by the latest ten articles, even when a strong-theme category (recruit) is exhausted", () => {
+  // 回帰テスト：採用の記事内画像は2枚しかなく、両方が直近10本に入っていると、
+  // 以前は「テーマ一致」を優先して直近と同じ画像を選び、公開前テストで公開が止まった。
+  const root = path.resolve(__dirname, "..");
+  const recruit = images.discoverImages({ root, kind: "inline" }).filter(candidate => candidate.category === "recruit");
+  assert.equal(recruit.length, 2);
+  const history = recruit.map((candidate, index) => ({ image: candidate.path, hash: candidate.hash, category: candidate.category,
+    series: candidate.series, article: "article-" + index, date: "2026-10-0" + (index + 1) })).reverse();
+  const selected = inlineImage("採用", { root, history, content: { title: "採用面談の準備を整える", body: "応募者と職員の面談を行います" } });
+  assert.ok(selected && selected.hash, "an inline image is still selected");
+  assert.ok(!history.some(use => use.hash === selected.hash), "the selected image must not repeat one from the latest ten articles");
 });
 
 test("general inline images are used only when no semantically matched safe image exists", () => {
