@@ -35,11 +35,11 @@ image_selection:
     - subsidy
     - seo
   allowTechnology: true
-inline_image: assets/images/blog-library/inline/inline-recruit-001.png
-inline_image_alt: 採用活動を支えるイメージ
-inline_image_category: recruit
-inline_image_series: recruit
-inline_image_hash: 3ea69537d10b6dbdcd4758e0406e8256c39d4cd415f05d5e7987e158e3f3ef1c
+inline_image: assets/images/blog-library/inline/inline-welfare-009.png
+inline_image_alt: 福祉の現場を支えるイメージ
+inline_image_category: welfare
+inline_image_series: consultation
+inline_image_hash: cd84021bd3fcfd5a1549b36bd87bd5dfef710ec873436b7994309d90ab857c27
 inline_image_selection:
   themes:
     - recruit
@@ -89,7 +89,7 @@ emphasis:
 
 こうした雇用の現場が直面している背景を踏まえると、就労移行支援事業所のホームページにおいては、単に「何名就職しました」という実績の数字だけを掲載するのではなく、一人ひとりの個性や希望に合わせたマッチングのプロセスを丁寧に伝えることが求められます。利用検討者やご家族は、「自分の特性に合った職種を紹介してもらえるのだろうか」「企業との間に入って適切な配慮を調整してくれるだろうか」という不安を抱えて見学に訪れます。職種の偏りや企業の受け入れ体制といった背景を踏まえながら、事業所がどのようなプロセスでマッチングを行っているかを丁寧に伝えることが重要です。ホームページ上では事業所がどのように企業の業務設計に関わり、どのような手順で職場開拓や定着支援を行っているのかを具体的な言葉で表現することが大切です。
 
-![採用活動を支えるイメージ](assets/images/blog-library/inline/inline-recruit-001.png)
+![福祉の現場を支えるイメージ](assets/images/blog-library/inline/inline-welfare-009.png)
 
 ## 企業連携と具体的な業務設計の工夫を言語化する
 
