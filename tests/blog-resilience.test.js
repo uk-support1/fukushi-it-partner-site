@@ -401,6 +401,23 @@ test("Generate Blog：同じ障害が続くときは既存Issueにコメント�
   assert.ok(fixed.calls.some(call => call.args[1] === "close" && call.args[2] === "9"));
 });
 
+test("失敗したテスト名の取り出し：色付けの制御文字が混ざった本物のログ形式でも読める", () => {
+  const colored = "2026-10-13T04:26:06.0068617Z \u001b[31m✖ failing tests:\u001b[39m\n2026-10-13T04:26:06.0070620Z \u001b[31m✖ sample failing case (12.5ms)\u001b[39m";
+  assert.deepEqual(notify.failingTestNames(colored), ["sample failing case"]);
+});
+
+test("ログ取得で制御文字の出力を許可するオプションを付け、古いghで使えなくても通知は続く", () => {
+  const calls = [];
+  const gh = args => {
+    calls.push(args);
+    if (args[1] && String(args[1]).endsWith("/logs")) { if (args.includes("--allow-escape-sequences")) throw new Error("unknown flag"); return TEST_LOG; }
+    return JSON.stringify({ jobs: TEST_FAILED_JOBS });
+  };
+  const failed = notify.failedSteps(notify.runInfo(GENERATE_ENV), gh);
+  assert.ok(calls.some(args => args.includes("--allow-escape-sequences")), "the option is tried first");
+  assert.equal(failed[0].tests.length, 1, "falls back and still finds the failing test");
+});
+
 test("失敗したテスト名の取り出し：タイムスタンプ付きログから最大5件、重複なし", () => {
   assert.deepEqual(notify.failingTestNames(TEST_LOG), ["published heroes are hash-unique within the recent window, and the latest ten inline images are hash-unique"]);
   assert.deepEqual(notify.failingTestNames("all good"), []);

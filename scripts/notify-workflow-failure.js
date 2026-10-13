@@ -75,7 +75,9 @@ function runInfo(env) {
 
 // ログから「失敗したテスト」の名前を取り出す（node --test の "✖ failing tests:" 以降の "✖ <名前> (…ms)" 行）
 function failingTestNames(logText) {
-  const lines = String(logText || "").split(/\r?\n/).map(line => line.replace(/^\d{4}-\d{2}-\d{2}T[\d:.]+Z\s?/, ""));
+  // 実際のログには色付けの制御文字（ESC[...m）が含まれるので、取り除いてから読む
+  const lines = String(logText || "").replace(/\u001b\[[0-9;]*[A-Za-z]/g, "").split(/\r?\n/)
+    .map(line => line.replace(/^\d{4}-\d{2}-\d{2}T[\d:.]+Z\s?/, ""));
   const start = lines.findIndex(line => /✖\s*failing tests:/.test(line));
   if (start < 0) return [];
   const names = [];
@@ -101,7 +103,14 @@ function failedSteps(info, gh) {
     const steps = (job.steps || []).filter(step => step.conclusion === "failure").map(step => step.name);
     let tests = [];
     if (steps.some(name => /test/i.test(name)) && job.id) {
-      try { tests = failingTestNames(gh(["api", `repos/${info.repo}/actions/jobs/${job.id}/logs`])); } catch { /* ログが取れなくても続ける */ }
+      const logPath = `repos/${info.repo}/actions/jobs/${job.id}/logs`;
+      try {
+        // ログには制御文字が含まれ、ghは既定で出力を拒否するため、許可するオプションを付ける
+        // （古いghでオプションがなければ、付けずにもう一度試す）
+        let text;
+        try { text = gh(["api", logPath, "--allow-escape-sequences"]); } catch { text = gh(["api", logPath]); }
+        tests = failingTestNames(text);
+      } catch { /* ログが取れなくても続ける */ }
     }
     return { job: job.name, url: job.html_url, steps, tests };
   });
