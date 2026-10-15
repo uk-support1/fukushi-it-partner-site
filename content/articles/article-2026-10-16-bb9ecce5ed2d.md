@@ -63,7 +63,7 @@ inline_image_selection:
     - recruit
     - seo
   allowTechnology: true
-published: false
+published: true
 description: 国の会議で議論が始まった障害福祉へのAI導入の動向を背景に、事業所がホームページ上でどのようにITやAI活用への前向きな姿勢を発信し、利用検討者や関係機関に安心感を届けるか、実務的な広報のコツを解説します。
 slug: article-2026-10-16-bb9ecce5ed2d
 buhio:
