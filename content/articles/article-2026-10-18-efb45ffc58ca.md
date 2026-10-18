@@ -57,7 +57,7 @@ inline_image_selection:
     - recruit
     - seo
   allowTechnology: true
-published: false
+published: true
 description: グループホームからの卒業や一人暮らしを考える障害のある方へ、住宅セーフティネット法や居住支援法人の仕組みを活用した住まい探しの不安解消法と、ホームページでの分かりやすい情報発信のコツを解説します。
 slug: article-2026-10-18-efb45ffc58ca
 buhio:
