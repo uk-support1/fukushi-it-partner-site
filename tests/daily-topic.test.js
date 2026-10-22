@@ -366,6 +366,101 @@ test("Incomplete/invalid semantic review fails closed",()=>{
   for(const raw of ["{}",review([]),review([{slug:"unknown"}]),JSON.stringify({comparisons:[{slug:"vacancy",duplicate:"false",reason:"reason"}]})])assert.throws(()=>validateReview(raw,articles));
   assert.throws(()=>validateReview(review([articles[0],articles[0]]),[articles[0],{...articles[0],slug:"other"}]));
 });
+// --- 2026-10-22: INCOMPLETE_DUPLICATE_REVIEW が、記事数の増加とともに定時実行を止めていた問題の回帰テスト ---
+const manyArticles=n=>Array.from({length:n},(_,i)=>({slug:`archive-${String(i).padStart(3,"0")}`,title:`既存の記事${i}：別の課題を扱う`,category:"集客",summary:`要約${i}`,headings:[`見出し${i}`]}));
+test("Duplicate review asks about the archive in chunks of at most 16 and covers every article exactly once, even for a model that cannot answer more than 20 rows at a time",async()=>{
+  const archive=manyArticles(64),reviews=[];let selections=0;
+  const result=await selectTopic({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,load:()=>archive,request:async args=>{
+    if(!args.input.candidate){selections++;return JSON.stringify(topic);}
+    reviews.push(args.input.existingArticles.map(a=>a.slug));
+    assert.equal(args.input.expectedComparisons,args.input.existingArticles.length);
+    // The production failure: a long answer that silently stops early. Anything past 20 rows is dropped.
+    return review(args.input.existingArticles.slice(0,20));
+  }});
+  assert.deepEqual(result.topic,topic);assert.equal(selections,1);
+  assert.deepEqual(reviews.map(r=>r.length),[16,16,16,16]);
+  assert.deepEqual(reviews.flat(),archive.map(a=>a.slug),"every article is reviewed once, in order");
+});
+test("A whole-archive review of 64 articles by a model that stops after 20 rows is exactly what failed before (regression guard for the old single request)",()=>{
+  const archive=manyArticles(64);
+  assert.throws(()=>validateReview(review(archive.slice(0,20)),archive),{code:"INCOMPLETE_DUPLICATE_REVIEW"});
+});
+test("An incomplete chunk is retried on its own and the run continues; the other chunks are not asked again",async()=>{
+  const archive=manyArticles(40),reviews=[];let dropped=false;
+  await selectTopic({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,load:()=>archive,request:async args=>{
+    if(!args.input.candidate)return JSON.stringify(topic);
+    const rows=args.input.existingArticles;reviews.push(rows[0].slug);
+    if(rows[0].slug==="archive-016"&&!dropped){dropped=true;return review(rows.slice(0,-1));}
+    return review(rows);
+  }});
+  assert.deepEqual(reviews,["archive-000","archive-016","archive-016","archive-032"]);
+});
+test("A persistently incomplete review fails closed after a bounded number of requests, with a counts-only diagnostic",async()=>{
+  const {TopicError}=require("../scripts/topic-selector");
+  const archive=manyArticles(40);let calls=0;
+  const error=await selectTopic({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,load:()=>archive,request:async args=>{
+    calls++;
+    return args.input.candidate?review(args.input.existingArticles.slice(0,-1)):JSON.stringify(topic);
+  }}).then(()=>null,e=>e);
+  assert.ok(error instanceof TopicError);assert.equal(error.code,"INCOMPLETE_DUPLICATE_REVIEW");
+  assert.equal(calls,1+5,"one selection, then the first chunk once plus a retry budget of four");
+  assert.match(error.diagnostic.message,/returned 15 of 16 comparisons/);
+  const report=failureReport(error);
+  assert.equal(report.error,"INCOMPLETE_DUPLICATE_REVIEW");assert.match(report.message,/15 of 16/);
+  assert.ok(!JSON.stringify(report).includes("既存の記事"),"no article text in the failure report");
+});
+test("A duplicate verdict is final even inside an incomplete answer, so a retry can never overturn it; other review errors are still not retried",async()=>{
+  const two=manyArticles(2);
+  assert.throws(()=>validateReview(JSON.stringify({comparisons:[{slug:two[0].slug,duplicate:true,reason:"同じ課題と解決策"}]}),two),{code:"DUPLICATE_TOPIC"});
+  assert.throws(()=>validateReview(review([two[0],two[0]]),two),{code:"INCOMPLETE_DUPLICATE_REVIEW"});
+  let calls=0;
+  await assert.rejects(selectTopic({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,load:()=>manyArticles(40),request:async args=>{
+    // Complete rows, but one has an empty reason: malformed content, not an incomplete answer.
+    calls++;return args.input.candidate?JSON.stringify({comparisons:args.input.existingArticles.map(a=>({slug:a.slug,duplicate:false,reason:""}))}):JSON.stringify(topic);
+  }}),{code:"INVALID_AI_FIELDS"});
+  assert.equal(calls,2);
+});
+test("The selection request names the latest ten articles by id only; their details are already in existingArticles",async()=>{
+  const archive=manyArticles(20);let seen;
+  await selectTopic({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,load:()=>archive,request:async args=>{
+    if(args.input.candidate)return review(args.input.existingArticles);
+    seen=args.input;return JSON.stringify(topic);
+  }});
+  assert.equal(seen.recentArticles.length,10);
+  for(const item of seen.recentArticles)assert.deepEqual(Object.keys(item).sort(),["category","date","slug","title"]);
+  assert.equal(seen.existingArticles.length,20);
+});
+function dailyArticleFiles(directory,date,count){
+  for(let i=0;i<count;i++)fs.writeFileSync(path.join(directory,`campaign-${i}.md`),
+    `---\ntype: column\ntitle: 記事${i}\ndate: "${date}"\nimage: assets/images/logo.png\npublished: true\nslug: campaign-${i}\n---\n\n本文${i}\n`);
+}
+test("Twelve articles dated 2026-10-22 block only the JST day 2026-10-22: the 06:17 JST run on 10-23 proceeds, a 09:17 JST backup on 10-22 is a no-op",async t=>{
+  // Every scenario gets its own articles directory: a draft saved by one run is, correctly, "today's article" for the next.
+  const run=async now=>{
+    const directory=temporaryArticles(t);dailyArticleFiles(directory,"2026-10-22",12);let count=0;
+    return prepareDailyBlog({env:{...env,DAILY_BLOG_EVENT_NAME:"schedule"},now:new Date(now),load:()=>articles,articlesDir:directory,
+      collect:async()=>({candidates:[],attemptedSources:0,successfulSources:0}),
+      request:async args=>isEditorial(args)?editorialReview:args.input.candidate?review(args.input.existingArticles):++count===1?JSON.stringify(topic):JSON.stringify(generatedArticle)});
+  };
+  const primary=await run("2026-10-22T21:17:00Z");              // 2026-10-23 06:17 JST
+  assert.equal(primary.localDate,"2026-10-23");assert.equal(primary.status,"draft_saved");
+  const delayedPrimary=await run("2026-10-22T23:50:00Z");       // GitHub delayed it: 2026-10-23 08:50 JST
+  assert.equal(delayedPrimary.localDate,"2026-10-23");assert.equal(delayedPrimary.status,"draft_saved");
+  const sameDay=await run("2026-10-22T00:17:00Z");              // 2026-10-22 09:17 JST: the date of the campaign articles
+  assert.equal(sameDay.localDate,"2026-10-22");assert.equal(sameDay.status,"already_published_today");
+  const lastSecond=await run("2026-10-22T14:59:59Z");           // 2026-10-22 23:59:59 JST
+  assert.equal(lastSecond.status,"already_published_today");
+  const midnight=await run("2026-10-22T15:00:00Z");             // 2026-10-23 00:00:00 JST
+  assert.equal(midnight.localDate,"2026-10-23");assert.equal(midnight.status,"draft_saved");
+});
+test("After the 06:17 run saved today's draft, a later scheduled run the same JST day is a safe no-op (the backup behaviour)",async t=>{
+  const directory=temporaryArticles(t);dailyArticleFiles(directory,"2026-10-22",12);let count=0;
+  const options=now=>({env:{...env,DAILY_BLOG_EVENT_NAME:"schedule"},now:new Date(now),load:()=>articles,articlesDir:directory,
+    collect:async()=>({candidates:[],attemptedSources:0,successfulSources:0}),
+    request:async args=>isEditorial(args)?editorialReview:args.input.candidate?review(args.input.existingArticles):++count===1?JSON.stringify(topic):JSON.stringify(generatedArticle)});
+  assert.equal((await prepareDailyBlog(options("2026-10-22T21:17:00Z"))).status,"draft_saved");
+  assert.equal((await prepareDailyBlog(options("2026-10-23T00:17:00Z"))).status,"already_published_today");
+});
 test("Gemini request uses generateContent, API-key header and structured JSON",async()=>{
   const text=await requestGemini({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,instructions:"instructions",input:{articles},schema:topicSchema},async(url,options)=>{
     assert.equal(url,"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent");
@@ -440,7 +535,7 @@ test("Existing articles and public files are unchanged when a draft is tested in
   const hashes=()=>files.map(f=>crypto.createHash("sha256").update(fs.readFileSync(path.join(ROOT,f))).digest("hex"));
   const status=()=>cp.execFileSync("git",["status","--porcelain","--untracked-files=all"],{cwd:ROOT,encoding:"utf8"});
   const before=hashes(),beforeStatus=status();let count=0;
-  const result=await prepareDailyBlog({env,articlesDir:directory,collect:async()=>({candidates:[]}),request:async args=>isEditorial(args)?editorialReview:++count===1?JSON.stringify(topic):count===2?review(args.input.existingArticles):JSON.stringify(generatedArticle)});
+  const result=await prepareDailyBlog({env,articlesDir:directory,collect:async()=>({candidates:[]}),request:async args=>isEditorial(args)?editorialReview:args.input.candidate?review(args.input.existingArticles):++count===1?JSON.stringify(topic):JSON.stringify(generatedArticle)});
   assert.equal(result.articlesCreated,1);assert.equal(result.shouldPublish,false);
   assert.deepEqual(hashes(),before);assert.equal(status(),beforeStatus);
 });
