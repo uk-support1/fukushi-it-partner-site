@@ -85,8 +85,7 @@ test("記事・比較ページ・LPの内部リンクが、すべて実在する
       const targetFile = targetPath === "" ? path.join(ROOT, file) : path.resolve(dir, targetPath);
       const resolved = fs.existsSync(targetFile) && fs.statSync(targetFile).isDirectory() ? path.join(targetFile, "index.html") : targetFile;
       assert.ok(fs.existsSync(resolved) && fs.statSync(resolved).isFile(), file + " -> " + href + " does not exist");
-      // #google-form-embed は、サイト全体の「無料相談」ボタンが以前から使っているリンクで、問い合わせページに同名のidはない（ページへの遷移は正常）。
-      if (hash && hash !== "google-form-embed") assert.ok(fs.readFileSync(resolved, "utf8").includes('id="' + hash + '"'), file + " -> " + href + " anchor is missing");
+      if (hash) assert.ok(fs.readFileSync(resolved, "utf8").includes('id="' + hash + '"'), file + " -> " + href + " anchor is missing");
     }
   }
 });
@@ -211,4 +210,35 @@ test("構造化データのJSONは、'<'を\\u003cに置き換えて</script>で
   const block = html.match(/<script type="application\/ld\+json">\n([\s\S]*?)\n<\/script>/)[1];
   assert.ok(!block.includes("<"), "no raw angle bracket inside the JSON");
   assert.equal(JSON.parse(block)["@graph"][0].headline, "</script><b>t");
+});
+
+test("「無料相談」ボタン（#google-form-embed）の移動先が、問い合わせページのフォームに存在する", () => {
+  const contact = read("contact.html");
+  assert.equal((contact.match(/id="google-form-embed"/g) || []).length, 1, "exactly one target");
+  const section = contact.match(/<section class="contact-form-section" id="google-form-embed">([\s\S]*?)<\/section>/);
+  assert.ok(section && section[1].includes('id="contact-form"'), "the target section contains the contact form");
+  assert.match(read("assets/css/style.css"), /\.contact-form-section\s*\{[^}]*scroll-margin-top:/, "the heading is not stuck to the sticky header");
+  // どのページの無料相談ボタンも、同じ移動先を指している（相対パスはページごとに異なるが、ファイルとidは同じ）
+  for (const file of ["index.html", "homepage-cost-reduction.html", COMPARE, "blog.html", "blog/" + HUB + ".html", "server-domain-guide.html", "contact.html"]) {
+    const links = [...read(file).matchAll(/href="((?:\.\.\/)?(?:contact\.html)?#google-form-embed)"/g)];
+    assert.ok(links.length >= 2, file + " has consultation buttons");
+  }
+});
+
+test("PHP記事の追加後も、ほかの既存記事の「関連記事」に内容の合わない記事が出ない（関連記事を手動で指定した7本）", () => {
+  const manual = {
+    "article-2026-09-12-f0e5810ed646": ["article-2026-10-03-8fc1e175357e", "article-2026-10-04-4556b703d269"],
+    "article-2026-09-14-6ca79ae15b4f": ["article-2026-10-05-af89cd319b17", "article-2026-10-04-4556b703d269"],
+    "article-2026-09-19-8c2cd49ae608": ["article-2026-09-23-59ef7fca0e92", "article-2026-10-17-871ba9e14398"],
+    "article-2026-09-23-59ef7fca0e92": ["article-2026-09-19-8c2cd49ae608", "article-2026-10-05-af89cd319b17"],
+    "article-2026-10-16-bb9ecce5ed2d": ["post-03-ai-first-step", "article-2026-09-16-6cb0c0eff193"],
+    "article-2026-10-18-efb45ffc58ca": ["group-home-vacancy-information", "group-home-website-content"],
+    "welfare-website-essential-information": ["why-homepage-5-reasons", "website-pricing-two-plans"]
+  };
+  for (const [slug, related] of Object.entries(manual)) {
+    const html = read("blog/" + slug + ".html");
+    const cards = [...html.matchAll(/<a class="blog-list-item reveal" href="([^"]+)\.html">/g)].map(m => m[1]);
+    assert.deepEqual(cards, related, slug + " shows its hand-picked related articles");
+    for (const campaign of SLUGS) assert.ok(!cards.includes(campaign), slug + " does not show " + campaign);
+  }
 });

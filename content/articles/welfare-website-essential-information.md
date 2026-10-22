@@ -69,6 +69,9 @@ inline_image_selection:
     - recruit
     - seo
   allowTechnology: true
+related:
+  - why-homepage-5-reasons
+  - website-pricing-two-plans
 ---
 
 福祉事業所のホームページを作るとき、「何を掲載すればよいのか分からない」というご相談をいただくことがあります。
