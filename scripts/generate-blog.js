@@ -160,7 +160,7 @@ function resolveRelatedSlugs(article, published) {
 }
 
 // 記事ページの構造化データ（BlogPosting＋パンくず）。値はすべて原稿のfront matterから
-// 決まるため、再生成しても同じ結果になる。"<"は"<"に置き換え、</script>で
+// 決まるため、再生成しても同じ結果になる。"<"は文字列 \u003c に置き換え、</script>で
 // ブロックを閉じられないようにする。
 function articleStructuredData(article, imageUrl) {
   const data = article.data;
