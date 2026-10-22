@@ -1,0 +1,223 @@
+{
+  "_comment": "「レンタルサーバー・ドメイン比較＆契約サポート」ページ（server-domain-guide.html）の料金・リンクのデータ。値を直したら `npm run build:server-guide` を実行してHTMLを更新する。紹介リンクに変えるときは、links の各社 referral を設定し、status を approved にするだけでよい。",
+  "checkedAt": "2026-10-22",
+  "checkedAtLabel": "2026年10月22日",
+  "links": {
+    "sakura-rs": {
+      "name": "さくらのレンタルサーバー",
+      "official": "https://rs.sakura.ad.jp/",
+      "referral": "https://secure.sakura.ad.jp/order/rs-domain/agency/rs/plans?aid=29aa6a6d92e19bd50eaff2cdc2e06320",
+      "status": "approved",
+      "program": "さくらのレンタルサーバ 取次店制度"
+    },
+    "lolipop": {
+      "name": "ロリポップ！",
+      "official": "https://lolipop.jp/",
+      "referral": null,
+      "status": "none",
+      "program": null
+    },
+    "xserver": {
+      "name": "エックスサーバー",
+      "official": "https://www.xserver.ne.jp/",
+      "referral": null,
+      "status": "none",
+      "program": null
+    },
+    "xserver-domain": {
+      "name": "XServerドメイン",
+      "official": "https://www.xdomain.ne.jp/",
+      "referral": "https://px.a8.net/svt/ejp?a8mat=4BEMLT+77L0J6+CO4+15ORS2",
+      "pixel": "https://www12.a8.net/0.gif?a8mat=4BEMLT+77L0J6+CO4+15ORS2",
+      "status": "approved",
+      "program": "A8.net"
+    },
+    "onamae": {
+      "name": "お名前.com",
+      "official": "https://www.onamae.com/",
+      "referral": null,
+      "status": "pending",
+      "program": null
+    },
+    "sakura-domain": {
+      "name": "さくらのドメイン",
+      "official": "https://domain.sakura.ad.jp/",
+      "referral": null,
+      "status": "none",
+      "program": null
+    }
+  },
+  "sources": {
+    "sakura-rs": ["https://rs.sakura.ad.jp/plan/", "https://rs.sakura.ad.jp/plan/standard/", "https://rs.sakura.ad.jp/function/backup-staging/"],
+    "lolipop": ["https://lolipop.jp/pricing/"],
+    "xserver": ["https://www.xserver.ne.jp/price/", "https://www.xserver.ne.jp/functions/"],
+    "xserver-domain": ["https://www.xdomain.ne.jp/domain/price.php", "https://www.xdomain.ne.jp/news_detail.php?view_id=19639"],
+    "onamae": ["https://www.onamae.com/service/d-price/", "https://www.onamae.com/"],
+    "sakura-domain": ["https://domain.sakura.ad.jp/specification/"]
+  },
+  "servers": [
+    {
+      "id": "sakura-standard",
+      "link": "sakura-rs",
+      "company": "さくらのレンタルサーバー",
+      "plan": "スタンダード",
+      "badge": "第一候補",
+      "monthly12": 550,
+      "total12": 6600,
+      "monthlyNote": "12か月一括払い（月額換算）",
+      "initial": "無料",
+      "disk": "SSD 300GB（転送量 無制限）",
+      "wordpress": "対応（コントロールパネルから簡単インストール）",
+      "backup": "「バックアップ＆ステージング」が標準機能（最大8個のスナップショット。お試し期間中は利用不可）",
+      "support": "24時間365日受付。チャット・メール・電話（コールバック予約）",
+      "trial": "14日間無料（クレジットカード登録なし）",
+      "features": [
+        "はじめてでも迷いにくい、バランス型の基本プラン",
+        "操作画面から WordPress などをかんたんに設置でき、動画のスタートアップガイドもある",
+        "無料 SSL・RAID10・24時間365日の有人監視が標準"
+      ],
+      "cautions": [
+        "毎月払いは660円／月で、12か月以上の一括払いのほうが割安",
+        "バックアップ機能は、14日間のお試し期間中は使えない",
+        "更新時の料金は、契約前に公式ページ・コントロールパネルで確認する"
+      ]
+    },
+    {
+      "id": "lolipop-light",
+      "link": "lolipop",
+      "company": "ロリポップ！",
+      "plan": "ライト",
+      "badge": "いちばん安い",
+      "monthly12": 539,
+      "total12": 6468,
+      "monthlyNote": "12か月契約の月額",
+      "initial": "0円",
+      "disk": "SSD 350GB（転送量 無制限）",
+      "wordpress": "対応（簡単インストール）",
+      "backup": "自動バックアップは付かない（有料オプション「7世代バックアップ」440円／月）",
+      "support": "メール（48時間以内に返信）・チャット。電話サポートはハイスピード以上",
+      "trial": "10日間無料",
+      "features": [
+        "12か月契約でも月539円と、3社の中でもっとも安い（36か月なら月330円）",
+        "手軽に WordPress を始められる入門プラン",
+        "独自ドメインは200個まで"
+      ],
+      "cautions": [
+        "自動バックアップが標準では付かない（必要なら有料オプション）",
+        "電話サポートは使えない（チャット・メールのみ）",
+        "容量や機能を重視するなら、ハイスピード以上も比較する"
+      ]
+    },
+    {
+      "id": "lolipop-highspeed",
+      "link": "lolipop",
+      "company": "ロリポップ！",
+      "plan": "ハイスピード",
+      "badge": "アクセスが多い方向け",
+      "monthly12": 1045,
+      "total12": 12540,
+      "monthlyNote": "12か月契約の月額",
+      "initial": "0円",
+      "disk": "SSD 700GB（転送量 無制限）",
+      "wordpress": "対応（簡単インストール）",
+      "backup": "自動バックアップが無料（復元データの提供も無料）",
+      "support": "電話・チャット・メール（メールは24時間以内に返信）",
+      "trial": "10日間無料",
+      "features": [
+        "LiteSpeed による高速表示。大量アクセスのサイト向け",
+        "自動バックアップと電話サポートが付く",
+        "12か月以上の契約＋自動更新で「ドメインずっと無料」2個の対象"
+      ],
+      "cautions": [
+        "ライトより、月額・12か月分の合計ともに高くなる",
+        "ドメイン無料の特典には、契約期間（12か月以上）と自動更新の設定が条件"
+      ]
+    },
+    {
+      "id": "xserver-standard",
+      "link": "xserver",
+      "company": "エックスサーバー",
+      "plan": "スタンダード",
+      "badge": "機能と安心感",
+      "monthly12": 1100,
+      "total12": 13200,
+      "monthlyNote": "12か月契約・通常料金（月額）",
+      "campaign": {
+        "monthly12": 990,
+        "total12": 11880,
+        "until": "2026年11月4日 17:00",
+        "label": "キャンペーン価格"
+      },
+      "initial": "0円",
+      "disk": "NVMe 500GB",
+      "wordpress": "対応（簡単インストール・簡単移行・WordPressリカバリー）",
+      "backup": "毎日の自動バックアップ（Web・メール・MySQL を過去14日分保持）",
+      "support": "メール・電話",
+      "trial": "10日間無料",
+      "features": [
+        "自動バックアップ・電話サポート・RAID10 が標準で付く",
+        "サーバー契約中ずっと無料の「独自ドメイン」特典（スタンダードは12か月契約で1つ、24か月以上で2つ）",
+        "容量が大きく、サイトが育っても余裕がある"
+      ],
+      "cautions": [
+        "ほかの2社より、12か月契約の月額が高め（キャンペーン価格は期間限定）",
+        "お支払いは、契約期間分の一括前払い",
+        "設定おまかせサポートは有料。有料テーマ・セキュリティ診断の無料特典は、スタンダードでは対象外"
+      ]
+    }
+  ],
+  "domains": [
+    {
+      "id": "xserver-domain",
+      "link": "xserver-domain",
+      "company": "XServerドメイン",
+      "badge": "はじめてなら最安",
+      "first": "0円",
+      "firstNote": "はじめてのご利用の方限定・対象ドメインのうち1つ（キャンペーン価格：2026年10月30日 17:00まで）。通常の取得料金は1,721円",
+      "renew": "1,721円",
+      "renewNote": "2026年11月9日から1,750円に改定予定（公式のお知らせ）",
+      "features": [
+        "「表示価格＝お支払い総額」で、維持調整費やオプション料金がない",
+        "DNS 設定・Whois 代行が標準。エックスサーバーとの連携がかんたん"
+      ],
+      "cautions": [
+        "0円になるのは、はじめての方向けの特別価格。2年目以降は更新料金がかかる"
+      ]
+    },
+    {
+      "id": "onamae",
+      "link": "onamae",
+      "company": "お名前.com",
+      "badge": "取り扱いドメインが多い",
+      "first": "1円〜",
+      "firstNote": "お1人様、.com・.netそれぞれ1個まで（条件あり）。2個目以降は750円にサービス維持調整費が加算される",
+      "renew": "1,287円〜",
+      "renewNote": "公式の料金一覧の表示（サービス維持調整費を含む）。更新料金は、保有件数などで変動する旨の注記がある",
+      "features": [
+        "取り扱いドメインの種類が多く、同社のレンタルサーバーなど他サービスとの連携もできる",
+        "Whois 代行に対応"
+      ],
+      "cautions": [
+        "「サービス維持調整費」が加算されるため、申込み画面の最終金額を必ず確認する",
+        "初年度の1円は条件付きで、2年目以降の更新料金は別に確認が必要"
+      ]
+    },
+    {
+      "id": "sakura-domain",
+      "link": "sakura-domain",
+      "company": "さくらのドメイン",
+      "badge": "サーバーと一緒に管理",
+      "first": "3,220円",
+      "firstNote": "新規取得（税込）",
+      "renew": "3,437円",
+      "renewNote": "更新（税込）",
+      "features": [
+        "さくらインターネットの窓口で、サーバーとドメインを同じ会社にまとめられる",
+        "新規取得・更新の料金が価格一覧にまとまっていて、2年目以降の金額も確認しやすい"
+      ],
+      "cautions": [
+        "初年度・更新ともに、ほかの2社より高め"
+      ]
+    }
+  ]
+}

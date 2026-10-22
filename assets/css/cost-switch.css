@@ -1601,3 +1601,10 @@
     font-size: 0.74rem;
   }
 }
+
+/* 本文中のリンク（サーバー・ドメイン比較ページへの案内など） */
+.cs-inline-link {
+  font-weight: 700;
+  color: var(--green-700);
+  text-decoration: underline;
+}
