@@ -42,6 +42,7 @@ const STATIC_PAGES = [
   "https://fukushi-it-partner.com/homepage-plan.html",
   "https://fukushi-it-partner.com/homepage-cost-reduction.html",
   "https://fukushi-it-partner.com/server-domain-guide.html",
+  "https://fukushi-it-partner.com/php-homepage-comparison.html",
   "https://fukushi-it-partner.com/blog.html",
 ];
 const STATIC_PAGES_AFTER_ARTICLES = [
@@ -158,6 +159,43 @@ function resolveRelatedSlugs(article, published) {
     });
 }
 
+// 記事ページの構造化データ（BlogPosting＋パンくず）。値はすべて原稿のfront matterから
+// 決まるため、再生成しても同じ結果になる。"<"は"<"に置き換え、</script>で
+// ブロックを閉じられないようにする。
+function articleStructuredData(article, imageUrl) {
+  const data = article.data;
+  const pageUrl = "https://fukushi-it-partner.com/blog/" + article.slug + ".html";
+  const organization = { "@type": "Organization", name: "福祉ITパートナー", url: "https://fukushi-it-partner.com/" };
+  const graph = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        headline: data.title,
+        description: lib.descriptionOf(data, article.body),
+        image: [imageUrl],
+        datePublished: data.date,
+        dateModified: data.date,
+        inLanguage: "ja",
+        mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+        author: organization,
+        publisher: Object.assign({}, organization, {
+          logo: { "@type": "ImageObject", url: "https://fukushi-it-partner.com/assets/images/logo.png" }
+        })
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "ホーム", item: "https://fukushi-it-partner.com/" },
+          { "@type": "ListItem", position: 2, name: "お知らせ・コラム", item: "https://fukushi-it-partner.com/blog.html" },
+          { "@type": "ListItem", position: 3, name: data.title, item: pageUrl }
+        ]
+      }
+    ]
+  };
+  return '<script type="application/ld+json">\n' + JSON.stringify(graph, null, 2).replace(/</g, "\\u003c") + "\n</script>\n";
+}
+
 function renderArticlePage(article, articlesBySlug, published, imagePositions = new Map()) {
   const data = article.data;
   const slug = article.slug;
@@ -220,6 +258,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">\n' +
     '<link rel="stylesheet" href="../assets/css/style.css">\n' +
     '<script src="../assets/js/ga4.js"></script>\n' +
+    articleStructuredData(article, new URL(imageSrc, "https://fukushi-it-partner.com/blog/").href) +
     "</head>\n" +
     "<body>\n" +
     "\n" +
@@ -332,6 +371,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '          <li><a href="../homepage-plan.html">料金プラン</a></li>\n' +
     '          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="../server-domain-guide.html">サーバー・ドメイン比較</a></li>\n' +
+    '          <li><a href="../php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>\n' +
     '          <li><a href="../works.html">制作実績</a></li>\n' +
     '          <li><a href="../flow.html">制作までの流れ</a></li>\n' +
     '        </ul>\n' +
@@ -578,6 +618,7 @@ function buildBlogHtml(blogIndex) {
     '          <li><a href="homepage-plan.html">料金プラン</a></li>\n' +
     '          <li><a href="homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="server-domain-guide.html">サーバー・ドメイン比較</a></li>\n' +
+    '          <li><a href="php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>\n' +
     '          <li><a href="works.html">制作実績</a></li>\n' +
     '          <li><a href="flow.html">制作までの流れ</a></li>\n' +
     '        </ul>\n' +
