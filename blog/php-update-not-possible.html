@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PHPを更新できないときの対処方法｜古いサーバー・テーマ・プラグインの場合｜福祉ITパートナー</title>
+<meta name="description" content="PHPを更新できない原因を、サーバー・テーマやプラグイン・独自プログラム・連絡が取れない場合などに分けて、対処方法を解説。どうしても更新できないときの公式の応急策と、公開を止める判断、乗り換えの考え方もまとめました。">
+<link rel="canonical" href="https://fukushi-it-partner.com/blog/php-update-not-possible.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHPを更新できないときの対処方法｜古いサーバー・テーマ・プラグインの場合">
+<meta property="og:description" content="PHPを更新できない原因を、サーバー・テーマやプラグイン・独自プログラム・連絡が取れない場合などに分けて、対処方法を解説。どうしても更新できないときの公式の応急策と、公開を止める判断、乗り換えの考え方もまとめました。">
+<meta property="og:url" content="https://fukushi-it-partner.com/blog/php-update-not-possible.html">
+<meta property="og:site_name" content="福祉ITパートナー">
+<meta property="og:image" content="https://fukushi-it-partner.com/assets/images/blog-library/hero/hero-dx-001.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/ga4.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "PHPを更新できないときの対処方法｜古いサーバー・テーマ・プラグインの場合",
+      "description": "PHPを更新できない原因を、サーバー・テーマやプラグイン・独自プログラム・連絡が取れない場合などに分けて、対処方法を解説。どうしても更新できないときの公式の応急策と、公開を止める判断、乗り換えの考え方もまとめました。",
+      "image": [
+        "https://fukushi-it-partner.com/assets/images/blog-library/hero/hero-dx-001.png"
+      ],
+      "datePublished": "2026-10-22",
+      "dateModified": "2026-10-22",
+      "inLanguage": "ja",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fukushi-it-partner.com/blog/php-update-not-possible.html"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://fukushi-it-partner.com/assets/images/logo.png"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://fukushi-it-partner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "お知らせ・コラム",
+          "item": "https://fukushi-it-partner.com/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "PHPを更新できないときの対処方法｜古いサーバー・テーマ・プラグインの場合",
+          "item": "https://fukushi-it-partner.com/blog/php-update-not-possible.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-bar">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">HOME</a></li>
+        <li><a href="../homepage-plan.html">料金プラン</a></li>
+        <li><a href="../works.html">制作実績</a></li>
+        <li><a href="../flow.html">制作までの流れ</a></li>
+        <li><a href="../blog.html" class="active">ブログ</a></li>
+        <li><a href="../profile.html">プロフィール</a></li>
+        <li><a href="../contact.html">お問い合わせ</a></li>
+        <li class="nav-cta-mobile">
+          <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+    </div>
+    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="container blog-article">
+      <a href="../blog.html" class="back-link">← ブログ一覧へ戻る</a>
+      <h1>PHPを更新できないときの対処方法｜古いサーバー・テーマ・プラグインの場合</h1>
+      <div class="meta-row">
+        <span class="category-badge">PHP・セキュリティ</span>
+        <span class="blog-date"><time datetime="2026-10-22">2026.10.22</time></span>
+      </div>
+
+      <div class="article-eyecatch">
+        <img src="../assets/images/blog-library/hero/hero-dx-001.png" alt="ノートパソコンの上に雲のマークと各種のアイコンが浮かぶ、クラウドのイメージ">
+      </div>
+
+<aside class="buhio-note" aria-label="ぶひおのひとこと"><img src="../assets/images/buhio/buhio-05-surprised.png" alt="PHPを更新できないときの対処方法｜古いサーバー・テーマ・プラグインの場合 について、驚きながら注意を促すぶひお" width="128" height="128" loading="lazy" decoding="async"><div><strong>ぶひおのひとこと</strong><p>更新できない理由を、まず一つに絞って書き出そう。</p></div></aside>
+
+<p>PHPを新しい版に更新したいのに、できない。そんなときは、慌てずに、まず「なぜ更新できないのか」を整理しましょう。<strong>更新できない理由によって、取るべき対処が変わります</strong>。</p>
+<p>この記事では、よくある5つの理由と、それぞれの対処方法、そしてどうしても今すぐ更新できないときの応急策を説明します。ニュースの全体像は<a href="critical-php-vulnerability-2026-10.html">【2026年10月】PHPの重大な脆弱性とは？</a>をご覧ください。</p>
+<h2>理由1：サーバーに、新しいPHPの選択肢がない</h2>
+<p>管理画面でPHPのバージョンを選ぼうとしても、修正版のある系列（8.2〜8.5系）が見当たらない場合です。</p>
+<ul>
+<li>まず、契約中のプランで使える最新のPHPを確認します。プランによって、選べる版が違うことがあります。</li>
+<li>上位のプランに変更すると、新しい版が使えることもあります。</li>
+<li>どうしても新しい版が提供されないサーバーなら、新しいPHPに対応したサーバーへの引っ越しを検討します。サーバーの比較は<a href="../server-domain-guide.html">レンタルサーバー・ドメイン比較＆契約サポート</a>をご覧ください。</li>
+</ul>
+<h2>理由2：WordPress・テーマ・プラグインが、新しいPHPに対応していない</h2>
+<p>PHPを上げると、画面が真っ白になる、エラーが出る、管理画面に入れない、といったことが起きる場合です。</p>
+<ul>
+<li>まず、WordPress本体・テーマ・プラグインを、すべて最新の版にします。</li>
+<li>開発が止まっているプラグインがあれば、代わりのプラグインに入れ替えるか、機能が不要なら使うのをやめます。</li>
+<li>古いテーマが原因なら、新しいテーマへの変更や、ホームページの作り直しを検討します。</li>
+</ul>
+<p>更新の前に、必ずバックアップを取ってください。可能なら、本番とは別の場所（テスト環境）で、先に新しいPHPで動くかを確かめると安心です。サーバーによっては、テスト用の環境を用意する機能があります。</p>
+<h2>理由3：制作会社が作った独自のプログラムが、新しいPHPで動かない</h2>
+<p>問い合わせフォームや予約・会員機能など、制作会社が独自に作ったPHPのプログラムが、新しい版では動かない場合です。</p>
+<ul>
+<li>制作会社や、プログラムを作った人に、新しいPHPに合わせた改修をお願いします。</li>
+<li>改修に費用や期間がかかる場合は、その機能が本当に必要かも一緒に考えます。たとえば、問い合わせフォームは、外部のフォームサービスに置き換えられることがあります（<a href="php-contact-form-alternatives.html">PHPのお問い合わせフォームはどうする？</a>）。</li>
+<li>作り直したほうが、結果的に安く済む場合もあります。</li>
+</ul>
+<h2>理由4：制作会社と連絡がとれない・契約が分からない</h2>
+<p>担当者が替わった、制作会社がなくなった、契約書が見つからない、というケースです。</p>
+<ul>
+<li>まず、サーバー会社の契約者（誰の名義か）と、ドメインの契約者を確認します。請求書やメールが手がかりになります。</li>
+<li>サーバー会社の管理画面にログインできれば、PHPの版を切り替えられることが多いです。ログインのIDとパスワードが分からない場合は、サーバー会社に、契約者本人であることを示して再発行の手続きをします。</li>
+<li>事業所の中で、ホームページの管理者を決めておくと、次から迷いません。</li>
+</ul>
+<h2>理由5：更新して壊れるのが怖い</h2>
+<p>これは、とてもよくある不安です。次の準備をしておけば、怖さを減らせます。</p>
+<ol>
+<li>バックアップを取る（ホームページのファイルと、データベースの両方）</li>
+<li>作業は、アクセスの少ない時間帯に行う</li>
+<li>切り替えたあと、トップページ・主要なページ・問い合わせフォーム・管理画面を確認する</li>
+<li>問題が出たら、元のPHPの版に戻せる状態にしておく（戻す方法も、事前に確認しておく）</li>
+</ol>
+<p>自分で行うのが不安な場合は、制作会社や保守会社に依頼しましょう。費用の考え方は、<a href="php-update-cost.html">PHPのアップデート費用はいくら？</a>で説明しています。</p>
+<h2>どうしても今すぐ更新できないときの応急策</h2>
+<p>ここで紹介するのは、PHPの開発元が示している応急策です。<span class="article-marker">公式の応急策は、完全な対策ではありません</span>。更新できるまでの間、攻撃の経路を減らすためのもので、PHPの開発元も、更新が唯一の完全な対策だとしています。</p>
+<p>意味が分からない設定は、ご自身で触らず、サーバー会社や制作会社、技術に詳しい方に相談してください。</p>
+<h3>技術担当の方へ：公式が示している設定の例</h3>
+<ul>
+<li>CVE-2026-109618への対策として、<code>memory_limit</code> を無制限（-1）にする。アプリケーション側で上書きできない形で設定します。あわせて <code>post_max_size</code> を小さくし、Webサーバー側でリクエストの大きさなどを制限します。</li>
+<li>CVE-2026-109619への対策として、<code>session.upload_progress.enabled</code> を0にし、すべてのPHPのプロセスを再起動します。PHP 8.5の場合は、<code>fatal_error_backtraces</code> を0にします。</li>
+<li>設定は、リクエストの処理が始まる前に適用されるphp.iniやサーバーの設定で行います。ホームページのプログラムの中から設定を変える方法には、頼らないでください。</li>
+</ul>
+<p>詳しい内容と注意事項は、<a href="https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w">PHP公式のGitHub Security Advisory（GHSA-w8hw-w9fx-j79w）</a>と<a href="https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp">GHSA-6wmf-4rv5-p3rp</a>をご確認ください。</p>
+<h3>そのほかにできること</h3>
+<ul>
+<li>契約しているサーバー会社が、不正なアクセスを防ぐ機能を提供していないか確認する</li>
+<li>ホームページへのアクセスを制限する、または一時的に公開を止める（IPAも、有効な暫定対策が難しい場合に判断するよう呼びかけています）</li>
+<li>公開を止める間の連絡手段（電話・SNS・紙の案内など）を用意する</li>
+</ul>
+<h2>更新が難しい理由が解決できないときは</h2>
+<p><span class="article-marker">更新できないまま放置しないことが、いちばん大切です</span>。更新を続けるための人・予算・体制の見通しが立たないときは、IPAも、移行、機能の縮小、公開の終了、廃止を含めて検討するよう案内しています。</p>
+<p>選択肢の1つが、ホームページの作りそのものを見直すことです。たとえば、事業所の紹介が中心なら、PHPを使わない静的なホームページに乗り換えると、更新の手間をなくせる場合があります（<a href="wordpress-to-static-pros-cons.html">WordPressから静的HTMLへ移行するメリット・デメリット</a>）。ただし、乗り換えが向かない場合もあります。更新を続ける方法も含めた比較は、<a href="../php-homepage-comparison.html">PHPホームページの更新・乗り換え方法を比較</a>で説明しています。</p>
+<div class="article-cta-box">
+  <h3>更新できずに困っているときは、ご相談ください</h3>
+  <p>「HP維持費削減診断」（0円）では、今の契約とサイトの仕組みを確認して、更新して続ける場合と乗り換える場合を比べます。乗り換えプランは49,500円〜です（PHPで動くフォームや会員機能、予約システムなどがある場合は個別のお見積りです）。診断だけでも大丈夫です。</p>
+  <p><a href="../homepage-cost-reduction.html" class="btn btn-accent">乗り換えプランと0円診断を見る</a></p>
+</div>
+
+    </div>
+  </section>
+
+  <!-- 関連記事：content/articles/php-update-not-possible.md のrelatedフィールドから自動生成 -->
+  <section style="background: var(--cream-100);">
+    <div class="container">
+      <h2 class="section-title" style="margin-bottom: 24px;">関連記事</h2>
+      <div class="blog-list">
+
+        <a class="blog-list-item reveal" href="php-old-version-risk.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero/hero-security-006.png" alt="書類のファイルとノートパソコンの横に、木製の南京錠が置かれている様子" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">PHP・セキュリティ</span>
+              <span class="blog-date">2026.10.22</span>
+            </div>
+            <h3>古いPHPを使い続けるリスクとは？PHP 8.1以前・8.2の注意点</h3>
+            <p class="excerpt">サポートが終わった古いPHPを使い続けると、何が困るのでしょうか。PHP 8.1以前の公式修正がない問題、2026年12…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+        <a class="blog-list-item reveal" href="php-update-cost.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero/hero-subsidy-003.png" alt="電卓とグラフの書類、ノートが置かれた机" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">PHP・セキュリティ</span>
+              <span class="blog-date">2026.10.22</span>
+            </div>
+            <h3>PHPのアップデート費用はいくら？自分で・業者に頼む・作り直すの違い</h3>
+            <p class="excerpt">PHPのアップデートにかかる費用は、無料で済む場合から作り直しが必要な場合まで幅があります。費用がかかる場面とかからない…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container reveal">
+      <h2>更新できずに困っているときは、0円の診断でご相談ください。</h2>
+      <div class="btn-group">
+        <a href="../contact.html#google-form-embed" class="btn btn-accent js-consult-link">0円の診断を相談する</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h2 class="footer-title">サイトメニュー</h2>
+        <ul>
+          <li><a href="../index.html">HOME</a></li>
+          <li><a href="../index.html#services">サービス</a></li>
+          <li><a href="../homepage-plan.html">料金プラン</a></li>
+          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>
+          <li><a href="../server-domain-guide.html">サーバー・ドメイン比較</a></li>
+          <li><a href="../php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>
+          <li><a href="../works.html">制作実績</a></li>
+          <li><a href="../flow.html">制作までの流れ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">情報発信・学び</h2>
+        <ul>
+          <li><a href="../blog.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="#4a8c6f"></rect><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"></path></svg>ブログ</a></li>
+          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>
+          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>
+          <li><a href="../course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>お役立ち講座</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">ご相談・運営者情報</h2>
+        <ul>
+          <li><a href="../contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>
+          <li><a href="../contact.html">お問い合わせ</a></li>
+          <li><a href="../profile.html">プロフィール</a></li>
+          <li><a href="../privacy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 福祉ITパートナー
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/article-emphasis.js" defer></script>
+</body>
+</html>

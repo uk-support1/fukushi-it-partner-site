@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/cost-switch.css?v=8">
+<link rel="stylesheet" href="assets/css/cost-switch.css?v=9">
 <script src="assets/js/ga4.js"></script>
 <script type="application/ld+json">
 {
@@ -79,6 +79,30 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "事業所の紹介や料金、アクセスなどを載せる一般的なサイトであれば、多くの場合ご相談いただけます。会員機能、ネットショップ、複雑な予約システム、データベースを使ったサイトなどは、基本プランでは単純に移行できない場合があります。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "PHPの脆弱性のニュースを見て不安です。必ず乗り換えないといけませんか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "必ず乗り換える必要はありません。2026年10月21日に公開されたPHPの修正版へ、サーバーのPHPを更新すれば、今回の脆弱性には対応できる場合が多くあります。更新できない場合や、更新・保守の手間と費用が負担になっている場合に、乗り換えも選択肢になります。更新して続ける方法も含めた比較は、「PHPホームページの更新・乗り換え方法を比較」のページで説明しています。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "PHPで動く問い合わせフォームや、会員機能・予約システムがあります。49,500円で乗り換えられますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "一律には乗り換えられません。49,500円〜は、事業所紹介を中心とした小規模なホームページの基本プランの料金です。PHPで動くフォーム、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合は、診断で内容を確認し、個別のお見積りをご案内するか、PHPを更新して使い続けることをおすすめします。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "PHPの脆弱性診断や、攻撃を受けたかどうかの調査もお願いできますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "行っていません。福祉ITパートナーの診断（0円）は、契約内容とホームページの仕組み（PHPやWordPressを使っているかなど）をご一緒に確認するものです。攻撃を受けた可能性がある場合は、サーバー会社や専門の業者にご相談ください。"
       }
     },
     {
@@ -169,6 +193,7 @@
           <a href="#cs-compare" class="btn btn-outline">費用の比較例を見る</a>
         </div>
         <p class="cs-hero-note">診断の結果、今の契約の方がお得な場合は、そのままをおすすめします。</p>
+        <p class="cs-hero-php"><a href="#cs-php" class="cs-inline-link">PHP・WordPressをお使いの方へ：2026年10月のPHP脆弱性について</a></p>
       </div>
 
       <div class="cs-hero-panel" role="group" aria-label="料金のポイント">
@@ -244,6 +269,47 @@
         <li class="cs-worry-item reveal">サーバーやドメインの契約が、<strong>誰の名義・どこで契約</strong>か把握できていない</li>
         <li class="cs-worry-item reveal">担当者が替わって、<strong>契約内容や費用の理由</strong>がわからなくなった</li>
       </ul>
+    </div>
+  </section>
+
+  <!-- ===== PHP・WordPressをお使いの方へ（2026年10月のPHP脆弱性） ===== -->
+  <section class="cs-php" id="cs-php" aria-labelledby="cs-php-title" style="scroll-margin-top: 80px;">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">PHP・WordPressをお使いの方へ</span>
+        <h2 class="section-title" id="cs-php-title">PHPの脆弱性のニュースで、<span class="no-break">不安になっていませんか？</span></h2>
+        <p class="section-lead">2026年10月21日に、PHPの重大な脆弱性の修正版が公開されました。多くの場合、サーバーのPHPを更新すれば対応できます。<br>乗り換えが必須というわけではありません。</p>
+      </div>
+
+      <div class="cs-why-grid">
+        <article class="cs-why-card reveal">
+          <p class="cs-why-num" aria-hidden="true">1</p>
+          <h3>まず、確認から</h3>
+          <p>PHPを使っているか、バージョンはいくつかを確かめます。多くは、管理画面から数分で分かります。</p>
+          <p class="cs-php-links"><a href="blog/php-check-my-homepage.html">PHPを使っているかの確認方法</a><br><a href="blog/php-version-check.html">PHPのバージョンの確認方法</a></p>
+        </article>
+        <article class="cs-why-card reveal">
+          <p class="cs-why-num" aria-hidden="true">2</p>
+          <h3>更新して続けるのも、選択肢です</h3>
+          <p>PHPを更新して続ける方法も含めて、費用・安全面・手間・更新のしやすさを、公平に比べています。</p>
+          <p class="cs-php-links"><a href="php-homepage-comparison.html">PHPホームページの更新・乗り換え方法を比較</a><br><a href="blog/critical-php-vulnerability-2026-10.html">ニュースの要点と、今日からやること</a></p>
+        </article>
+        <article class="cs-why-card reveal">
+          <p class="cs-why-num" aria-hidden="true">3</p>
+          <h3>乗り換えが合うのは、こんなとき</h3>
+          <p>事業所紹介が中心で更新が少なく、更新の手間や管理費を減らしたい場合は、PHPを使わない形への乗り換え（49,500円〜）が合うことがあります。</p>
+          <p class="cs-php-links"><a href="blog/wordpress-to-static-pros-cons.html">移行のメリット・デメリット</a><br><a href="blog/homepage-without-php.html">PHPを使わないホームページとは？</a></p>
+        </article>
+      </div>
+
+      <div class="cs-php-notice reveal" role="note">
+        <p><strong>PHPで動く問い合わせフォーム、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合は、49,500円で一律に移行できるわけではありません。</strong>診断で内容を確認し、個別のお見積りをご案内するか、PHPを更新して使い続けることをおすすめします。<br>また、福祉ITパートナーは、脆弱性診断や、攻撃を受けたかどうかの調査は行っていません。必要な場合は、サーバー会社や専門の業者にご相談ください。</p>
+      </div>
+
+      <div class="btn-group cs-php-actions reveal">
+        <a href="php-homepage-comparison.html" class="btn btn-accent">更新・乗り換え方法を比較する</a>
+        <a href="contact.html#google-form-embed" class="btn btn-outline js-consult-link">0円の診断を相談する</a>
+      </div>
     </div>
   </section>
 
@@ -527,6 +593,7 @@
             <li>複雑な予約システムを組み込んでいるサイト</li>
             <li>データベースを使った検索・自動表示などが多いサイト</li>
             <li>記事数が非常に多く、毎日のように更新するサイト</li>
+            <li>PHPで動く問い合わせフォームの機能（確認画面・自動返信・添付など）を、そのまま残したいサイト</li>
           </ul>
           <p class="cs-fit-note">これらは、49,500円の基本プランでは単純に移行できない場合があります。その場合は、別途お見積りをご案内するか、現在のままの利用をおすすめします。</p>
         </div>
@@ -626,6 +693,18 @@
           <p>事業所の紹介や料金、アクセスなどを載せる一般的なサイトであれば、多くの場合ご相談いただけます。会員機能、ネットショップ、複雑な予約システム、データベースを使ったサイトなどは、基本プランでは単純に移行できない場合があります。</p>
         </details>
         <details class="cs-faq-item">
+          <summary>PHPの脆弱性のニュースを見て不安です。必ず乗り換えないといけませんか？</summary>
+          <p>必ず乗り換える必要はありません。2026年10月21日に公開されたPHPの修正版へ、サーバーのPHPを更新すれば、今回の脆弱性には対応できる場合が多くあります。更新できない場合や、更新・保守の手間と費用が負担になっている場合に、乗り換えも選択肢になります。更新して続ける方法も含めた比較は、<a href="php-homepage-comparison.html">「PHPホームページの更新・乗り換え方法を比較」</a>のページで説明しています。</p>
+        </details>
+        <details class="cs-faq-item">
+          <summary>PHPで動く問い合わせフォームや、会員機能・予約システムがあります。49,500円で乗り換えられますか？</summary>
+          <p>一律には乗り換えられません。49,500円〜は、事業所紹介を中心とした小規模なホームページの基本プランの料金です。PHPで動くフォーム、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合は、診断で内容を確認し、個別のお見積りをご案内するか、PHPを更新して使い続けることをおすすめします。</p>
+        </details>
+        <details class="cs-faq-item">
+          <summary>PHPの脆弱性診断や、攻撃を受けたかどうかの調査もお願いできますか？</summary>
+          <p>行っていません。福祉ITパートナーの診断（0円）は、契約内容とホームページの仕組み（PHPやWordPressを使っているかなど）をご一緒に確認するものです。攻撃を受けた可能性がある場合は、サーバー会社や専門の業者にご相談ください。</p>
+        </details>
+        <details class="cs-faq-item">
           <summary>ドメイン（URL）やメールアドレスはそのまま使えますか？</summary>
           <p>多くの場合、現在のドメインはそのまま使えるように進めます。メールアドレスは契約先によって扱いが異なるため、診断の中で影響が出ないかを必ず確認します。</p>
         </details>
@@ -670,6 +749,7 @@
           <li><a href="homepage-plan.html">料金プラン</a></li>
           <li><a href="homepage-cost-reduction.html">HP維持費の見直し</a></li>
           <li><a href="server-domain-guide.html">サーバー・ドメイン比較</a></li>
+          <li><a href="php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>
           <li><a href="works.html">制作実績</a></li>
           <li><a href="flow.html">制作までの流れ</a></li>
         </ul>

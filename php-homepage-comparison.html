@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="nfXiE9TQ6FSj5KBW42sQfUnjAfDYocSnfIRQKvavYdE" />
+<title>PHPホームページの更新・乗り換え方法を比較｜福祉ITパートナー</title>
+<meta name="description" content="PHPやWordPressのホームページを「更新して続ける」「保守を続ける」「制作会社に任せる」「PHPを使わない形へ移行する」の4つで、費用・安全面・管理の手間・更新のしやすさを公平に比較。乗り換えが向かないケースも正直に解説します。">
+<link rel="canonical" href="https://fukushi-it-partner.com/php-homepage-comparison.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="PHPホームページの更新・乗り換え方法を比較｜福祉ITパートナー">
+<meta property="og:description" content="PHPを更新して続ける方法も、公平に説明。2026年10月のPHP脆弱性を受けて、更新・保守・外注・静的HTMLへの移行の4つを比べます。">
+<meta property="og:url" content="https://fukushi-it-partner.com/php-homepage-comparison.html">
+<meta property="og:site_name" content="福祉ITパートナー">
+<meta property="og:image" content="https://fukushi-it-partner.com/assets/images/logo.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/images/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/php-compare.css?v=1">
+<script src="assets/js/ga4.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://fukushi-it-partner.com/php-homepage-comparison.html",
+      "url": "https://fukushi-it-partner.com/php-homepage-comparison.html",
+      "name": "PHPホームページの更新・乗り換え方法を比較｜福祉ITパートナー",
+      "description": "PHPやWordPressのホームページを「更新して続ける」「保守を続ける」「制作会社に任せる」「PHPを使わない形へ移行する」の4つで、費用・安全面・管理の手間・更新のしやすさを公平に比較。乗り換えが向かないケースも正直に解説します。",
+      "inLanguage": "ja",
+      "datePublished": "2026-10-22",
+      "dateModified": "2026-10-22",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://fukushi-it-partner.com/assets/images/logo.png"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://fukushi-it-partner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "PHPホームページの更新・乗り換え方法を比較",
+          "item": "https://fukushi-it-partner.com/php-homepage-comparison.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "PHPやWordPressは、危険なのですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "いいえ、PHPやWordPressそのものが危険というわけではありません。今回の脆弱性は修正版が公開されており、サーバーのPHPを修正版に更新すれば対応できるケースが多くあります。大切なのは、更新を続けられる体制があるかどうかです。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "今回のことで、乗り換えは必須ですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "必須ではありません。サーバーのPHPを修正版に更新すれば、今回の脆弱性には対応できます。ただし、PHP 8.1以前のように公式の修正版が出ない場合や、更新の手間・費用が負担になっている場合は、乗り換えも選択肢になります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "静的HTMLにすれば、絶対に安全ですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "絶対に安全とは言えません。PHPを使わないため、今回のようなPHPの脆弱性の対象にはなりませんが、パスワードの管理、外部サービスの設定、同じサーバーに残った古いサイトなど、別の注意点は残ります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "49,500円で、どんなホームページでも乗り換えられますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "いいえ。49,500円〜は、事業所紹介を中心とした小規模なホームページの基本プランの料金です。PHPで動くフォーム、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合は、一律には移行できず、個別のお見積りになります。診断で、乗り換えが向くかどうか、今のままがよいかを正直にお伝えします。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "PHPで動く問い合わせフォームは、どうなりますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "静的なホームページではPHPのフォームは動かないため、Googleフォームなどの外部サービスに置き換える方法があります。確認画面・自動返信・ファイルの添付などは、同じ形にできないことがあります。診断で今のフォームの機能を確認し、代わりの方法と費用をご案内します。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "福祉ITパートナーは、脆弱性診断や、攻撃を受けたかどうかの調査をしてくれますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "いいえ、行っていません。診断では、契約内容とホームページの仕組み（PHPやWordPressを使っているかなど）をご一緒に確認します。攻撃を受けた可能性がある場合は、サーバー会社や専門の業者にご相談ください。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "乗り換えたあと、月額の管理費は必要ですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "福祉ITパートナーへの月額管理費は必須ではありません。かかる費用は、乗り換え費用（49,500円〜）と、サーバー・ドメインなど公開環境の実費が基本です。トラブルのときだけ頼めるスポットサポート（5,500円〜、内容に応じて事前お見積り）や、任意の安心サポート（月額4,400円）もあります。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "診断だけでも相談できますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "はい。HP維持費削減診断は0円で、診断だけでも大丈夫です。診断の結果、今の契約のままや、PHPを更新して続ける方法のほうが合う場合は、そのままをおすすめします。"
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-bar">
+    <a href="index.html" class="brand">
+      <img src="assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="homepage-plan.html">料金プラン</a></li>
+        <li><a href="works.html">制作実績</a></li>
+        <li><a href="flow.html">制作までの流れ</a></li>
+        <li><a href="blog.html">ブログ</a></li>
+        <li><a href="profile.html">プロフィール</a></li>
+        <li><a href="contact.html">お問い合わせ</a></li>
+        <li class="nav-cta-mobile">
+          <a href="contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+    </div>
+    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main class="pc-page">
+
+  <!-- ===== ファーストビュー ===== -->
+  <section class="pc-hero" aria-labelledby="pc-hero-title">
+    <div class="container pc-hero-inner">
+      <nav class="pc-breadcrumb" aria-label="パンくずリスト">
+        <ol>
+          <li><a href="index.html">ホーム</a></li>
+          <li aria-current="page">PHPホームページの更新・乗り換え方法を比較</li>
+        </ol>
+      </nav>
+      <span class="section-tag">PHP・WordPressをお使いの方へ</span>
+      <h1 class="pc-hero-title" id="pc-hero-title">PHPホームページの<br class="pc-sp-br">更新・乗り換え方法を比較</h1>
+      <p class="pc-hero-lead">2026年10月21日に公開されたPHPの修正版のニュースを受けて、「このまま更新して続けるか、別の形にするか」と迷っている事業所の方へ。<br>4つの選び方を、費用・安全面・管理の手間・更新のしやすさで、公平に比べます。</p>
+      <ul class="pc-hero-points">
+        <li><strong>PHPやWordPress</strong>を「危険」と決めつけません</li>
+        <li><strong>更新して続ける</strong>方法も、公平に説明</li>
+        <li>乗り換えが<strong>向かないケース</strong>も、正直に</li>
+      </ul>
+      <div class="btn-group pc-hero-actions">
+        <a href="#pc-table" class="btn btn-accent">4つの選び方を比べる</a>
+        <a href="blog/php-check-my-homepage.html" class="btn btn-outline">まず自分のサイトを確認する</a>
+      </div>
+      <p class="pc-hero-note">2026年10月22日時点の公式情報にもとづいています。</p>
+    </div>
+  </section>
+
+  <!-- ===== 今回のニュースの要点 ===== -->
+  <section class="pc-section" id="pc-news" aria-labelledby="pc-news-title">
+    <div class="container">
+      <div class="pc-news reveal">
+        <h2 class="pc-news-title" id="pc-news-title">今回のニュースを、3つのポイントで</h2>
+        <ul>
+          <li>2026年10月21日、PHPの開発元が、認証なしで遠隔からプログラムを実行されるおそれのある重大な脆弱性2件（CVE-2026-109618・CVE-2026-109619）の修正版（8.2.35・8.3.36・8.4.27・8.5.12）を公開しました。</li>
+          <li>対策は、サーバーのPHPを修正版に更新することです。WordPressやプラグインの更新だけでは直りません。PHP 8.1以前は公式の修正版が出ないため、サポート中の版への移行が必要です。</li>
+          <li>PHPを更新すれば解決するケースも多く、乗り換えは必須ではありません。このページは、更新して続ける方法も含めて、状況に合う選び方を見つけるためのものです。</li>
+        </ul>
+        <p>くわしくは、<a href="blog/critical-php-vulnerability-2026-10.html">【2026年10月】PHPの重大な脆弱性とは？ホームページ運営者が今すぐ確認すること</a>をご覧ください。確認した公式情報は、<a href="#pc-sources">このページの下部</a>に載せています。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 状況から探す ===== -->
+  <section class="pc-section pc-section--soft" id="pc-guide" aria-labelledby="pc-guide-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">まずは目安から</span>
+        <h2 class="section-title" id="pc-guide-title">あなたの状況に近いものを、探してみましょう</h2>
+        <p class="section-lead">下の①〜④は、次の「4つの選び方の比較表」の番号です。あくまで目安なので、迷ったら診断でご相談ください。</p>
+      </div>
+      <ul class="pc-guide-grid">
+        <li class="pc-guide-card reveal">
+          <p class="pc-guide-card-situation">ブログやお知らせを、管理画面から頻繁に更新している</p>
+          <p class="pc-guide-card-arrow">向いている目安</p>
+          <p class="pc-guide-card-answer">② WordPressを継続して保守管理、または ① PHPを更新して継続。管理画面で更新できる良さを、活かせます。</p>
+        </li>
+        <li class="pc-guide-card reveal">
+          <p class="pc-guide-card-situation">会員ページ・予約システム・ネットショップなど、独自の機能がある</p>
+          <p class="pc-guide-card-arrow">向いている目安</p>
+          <p class="pc-guide-card-answer">① PHPを更新して継続、または ③ 制作会社へ依頼。静的HTMLへの移行は、機能の置き換えが難しく、個別のお見積りか、見送りになることがあります。</p>
+        </li>
+        <li class="pc-guide-card reveal">
+          <p class="pc-guide-card-situation">更新を頼める人も、保守にかけられる費用も、あまりない</p>
+          <p class="pc-guide-card-arrow">向いている目安</p>
+          <p class="pc-guide-card-answer">③ 制作会社へ依頼、または ④ 静的HTMLなどへの移行。保守の手間をどこまで減らしたいかで選びます。</p>
+        </li>
+        <li class="pc-guide-card reveal">
+          <p class="pc-guide-card-situation">事業所の紹介が中心で、更新は年に数回ほど</p>
+          <p class="pc-guide-card-arrow">向いている目安</p>
+          <p class="pc-guide-card-answer">④ 静的HTMLなどへの移行が、向く場合が多いです。診断で、今のサイトで使っている機能を確認します。</p>
+        </li>
+        <li class="pc-guide-card reveal">
+          <p class="pc-guide-card-situation">新しいPHPに切り替えると、表示が崩れる・動かなくなる</p>
+          <p class="pc-guide-card-arrow">向いている目安</p>
+          <p class="pc-guide-card-answer">③ 制作会社へ依頼して直す、または ④ 作り直し・乗り換え。対処は<a class="pc-text-link" href="blog/php-update-not-possible.html">PHPを更新できないときの対処方法</a>で説明しています。</p>
+        </li>
+        <li class="pc-guide-card reveal">
+          <p class="pc-guide-card-situation">契約や担当者が分からず、どれに当てはまるか判断できない</p>
+          <p class="pc-guide-card-arrow">まずやること</p>
+          <p class="pc-guide-card-answer">契約とサイトの仕組みを確認します。0円の診断で、ご一緒に整理できます。そのうえで、①〜④から選びます。</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 比較表 ===== -->
+  <section class="pc-section" id="pc-table" aria-labelledby="pc-table-title" style="scroll-margin-top: 80px;">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">4つの選び方の比較</span>
+        <h2 class="section-title" id="pc-table-title">費用・安全面・手間・更新のしやすさを比べる</h2>
+        <p class="section-lead">「どれがいちばん良い」ではなく、事業所の状況に合うかどうかで選びます。</p>
+      </div>
+      <div class="pc-table-wrap reveal" tabindex="0" role="region" aria-label="更新・乗り換え方法の比較表（横にスクロールできます）">
+        <table class="pc-table">
+          <thead>
+            <tr>
+              <th scope="col" class="pc-table-corner"><span class="visually-hidden">比べる項目</span></th>
+              <th scope="col">① PHPを更新して継続<small>今のサイトはそのまま</small></th>
+              <th scope="col">② WordPressを継続して保守管理<small>自分たちで運用</small></th>
+              <th scope="col">③ 制作会社へ更新・保守を依頼<small>任せて運用</small></th>
+              <th scope="col" class="pc-table-ours">④ 静的HTMLなどへ移行<small>PHPに依存しない形</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">どんな方法か</th>
+              <td>サーバーのPHPを修正版（できれば8.3以上）に切り替え、今のホームページをそのまま使い続けます。最小限の対応です。</td>
+              <td>①に加えて、WordPress本体・テーマ・プラグインの更新、バックアップ、ログインの管理まで、継続して自分たちで行います。</td>
+              <td>PHPやWordPressの更新・バックアップ・不具合の対応を、制作会社や保守会社に依頼します。</td>
+              <td class="pc-table-ours">PHPを使わない形（静的HTMLなど）に作り替えて、公開します。</td>
+            </tr>
+            <tr>
+              <th scope="row">費用の考え方</th>
+              <td>管理画面で切り替えるだけなら、追加の料金がかからないことも多くあります（契約によります）。新しいPHPで動くか確認・修正する作業に、費用がかかる場合があります。</td>
+              <td>自分たちで行えば、作業の費用はかかりません（時間と手間はかかります）。有料のテーマ・プラグインは、更新の費用が必要なことがあります。</td>
+              <td>作業内容によって見積りが変わります。月額の保守費は、一般的には数千円から数万円台まで幅があります。含まれる作業は契約で確認します。</td>
+              <td class="pc-table-ours">乗り換えの費用（1回）と、サーバー・ドメインの実費がかかります。福祉ITパートナーの場合は49,500円〜で、月額の管理費は必須ではありません（機能によっては個別のお見積りです）。</td>
+            </tr>
+            <tr>
+              <th scope="row">セキュリティ</th>
+              <td>今回のPHPの脆弱性には対応できます。ただし、WordPressやプラグインの更新が止まれば、別のリスクは残ります。8.2系は2026年末でサポートが終わります。</td>
+              <td>更新を続けられれば、高い水準を保てます。担当者が替わるなどして更新が止まると、リスクが積み重なります。</td>
+              <td>更新を確実に行ってもらえれば安心です。緊急時の対応の早さや責任の範囲は、契約で確認が必要です。</td>
+              <td class="pc-table-ours">PHPを使わないため、今回のようなPHPの脆弱性の対象外です。ただし、パスワードの管理、外部サービス、旧サイトの片付けなど、別の注意点は残ります。</td>
+            </tr>
+            <tr>
+              <th scope="row">管理の負担</th>
+              <td>小〜中。PHPの版のサポート終了日を、定期的に確認する必要があります。</td>
+              <td>大。本体・テーマ・プラグイン・PHP・バックアップ・ログインの管理など、継続的な作業が必要です。</td>
+              <td>小。依頼と費用の管理が中心です。契約内容と連絡先は、事業所でも把握しておく必要があります。</td>
+              <td class="pc-table-ours">小。更新するものが少なくなります。サーバー・ドメインの契約の管理は必要です。</td>
+            </tr>
+            <tr>
+              <th scope="row">更新のしやすさ</th>
+              <td>今のまま、管理画面から更新できます。</td>
+              <td>管理画面から、文章や写真をかんたんに更新できます。</td>
+              <td>管理画面で自分で行うことも、依頼することもできます（契約によります）。</td>
+              <td class="pc-table-ours">管理画面はなく、ファイルの更新になります。依頼するか、更新のしかたを教わります。</td>
+            </tr>
+            <tr>
+              <th scope="row">向いている事業者</th>
+              <td>今のホームページに満足していて、PHPを新しい版に切り替えるだけで正しく動く場合。</td>
+              <td>ブログやお知らせを頻繁に更新し、社内にWordPressに慣れた担当者がいる場合。</td>
+              <td>更新作業を任せたい場合。会員や予約など、独自の機能がある場合。</td>
+              <td class="pc-table-ours">事業所の紹介が中心で、更新が少ない場合。保守の手間や費用を減らしたい場合。</td>
+            </tr>
+            <tr>
+              <th scope="row">注意したい点</th>
+              <td>古いテーマやプラグインが新しいPHPに対応していないと、表示が崩れたり、動かなくなったりします。</td>
+              <td>担当者が替わると、更新が止まりやすくなります。</td>
+              <td>契約範囲外の作業は別料金になることがあります。連絡がとれなくなる場合に備え、契約者・ログイン情報を事業所で把握しておきます。</td>
+              <td class="pc-table-ours">会員・予約・ネットショップなどには向きません。URLの引き継ぎや、旧サイトの片付けが必要です。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="pc-table-note">※費用は、サイトの大きさ・使っているテーマやプラグイン・独自の機能によって大きく変わります。一律の相場はお示しできないため、①〜③は考え方のみを載せています。④の金額は、福祉ITパートナーの公開料金です。</p>
+    </div>
+  </section>
+
+  <!-- ===== 4つの選び方のくわしい説明 ===== -->
+  <section class="pc-section pc-section--soft" id="pc-options" aria-labelledby="pc-options-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">くわしい説明</span>
+        <h2 class="section-title" id="pc-options-title">4つの選び方を、もう少しくわしく</h2>
+        <p class="section-lead">それぞれ、どんな方に向いていて、何から始めればよいかをまとめました。</p>
+      </div>
+      <div class="pc-option-grid">
+        <article class="pc-option reveal" aria-labelledby="pc-opt1">
+          <span class="pc-option-badge">選び方 ①</span>
+          <h3 class="pc-option-title" id="pc-opt1">PHPを更新して継続する</h3>
+          <p class="pc-option-lead">いまのホームページをそのまま使い、サーバーのPHPだけを修正版に切り替える方法です。多くの場合、これで今回の脆弱性には対応できます。</p>
+          <p class="pc-option-sub">メリット</p>
+          <ul>
+            <li>費用と手間が、いちばん少なくて済みます</li>
+            <li>ホームページの見た目や使い方を変えずに済みます</li>
+          </ul>
+          <p class="pc-option-sub">気をつけたいこと</p>
+          <ul>
+            <li>8.2系は2026年12月31日でサポートが終わります。8.3以上への移行も計画します</li>
+            <li>古いテーマ・プラグインが対応していないと、更新後に不具合が出ます</li>
+          </ul>
+          <p class="pc-option-sub">まずやること</p>
+          <ul>
+            <li>PHPのバージョンを確認する → バックアップを取る → 修正版へ切り替える → 表示・フォーム・管理画面を確認する</li>
+          </ul>
+          <p class="pc-option-links"><a href="blog/php-version-check.html">PHPのバージョンを確認する方法</a><br><a href="blog/php-update-cost.html">PHPのアップデート費用はいくら？</a></p>
+        </article>
+
+        <article class="pc-option reveal" aria-labelledby="pc-opt2">
+          <span class="pc-option-badge">選び方 ②</span>
+          <h3 class="pc-option-title" id="pc-opt2">WordPressを継続して保守管理する</h3>
+          <p class="pc-option-lead">PHPの更新に加えて、WordPress本体・テーマ・プラグインの更新、バックアップ、ログインの管理まで、継続して自分たちで行う方法です。</p>
+          <p class="pc-option-sub">メリット</p>
+          <ul>
+            <li>管理画面から、文章や写真をかんたんに更新できます</li>
+            <li>ブログやお知らせを、頻繁に更新するサイトに向いています</li>
+          </ul>
+          <p class="pc-option-sub">気をつけたいこと</p>
+          <ul>
+            <li>「だれが、いつ更新するか」を決めておかないと、更新が止まります</li>
+            <li>使っていないプラグイン・テーマは、残さず整理します</li>
+          </ul>
+          <p class="pc-option-sub">まずやること</p>
+          <ul>
+            <li>更新の担当者を決める → 更新の順番を確認する（バックアップ、WordPress・プラグイン、PHP、動作確認）</li>
+          </ul>
+          <p class="pc-option-links"><a href="blog/wordpress-php-relationship.html">WordPressとPHPの関係をやさしく解説</a><br><a href="blog/homepage-security-maintenance-cost.html">セキュリティ対策と管理費用の見直し方</a></p>
+        </article>
+
+        <article class="pc-option reveal" aria-labelledby="pc-opt3">
+          <span class="pc-option-badge">選び方 ③</span>
+          <h3 class="pc-option-title" id="pc-opt3">制作会社へ更新・保守を依頼する</h3>
+          <p class="pc-option-lead">PHPやWordPressの更新、バックアップ、不具合の対応を、制作会社や保守会社に任せる方法です。独自の機能があるサイトにも向いています。</p>
+          <p class="pc-option-sub">メリット</p>
+          <ul>
+            <li>更新の専門知識がなくても、安心して続けられます</li>
+            <li>新しいPHPで動かないプログラムの改修も、頼めます</li>
+          </ul>
+          <p class="pc-option-sub">気をつけたいこと</p>
+          <ul>
+            <li>保守費に何が含まれるか、緊急時にいつ対応してもらえるかを確認します</li>
+            <li>契約者・ログイン情報は、事業所でも把握しておきます</li>
+          </ul>
+          <p class="pc-option-sub">まずやること</p>
+          <ul>
+            <li>下の「確認したい8つの質問」を使って、現状と対応を聞く</li>
+          </ul>
+          <p class="pc-option-links"><a href="#pc-questions">確認したい8つの質問を見る</a><br><a href="blog/php-update-not-possible.html">PHPを更新できないときの対処方法</a></p>
+        </article>
+
+        <article class="pc-option reveal" aria-labelledby="pc-opt4">
+          <span class="pc-option-badge">選び方 ④</span>
+          <h3 class="pc-option-title" id="pc-opt4">静的HTMLなど、PHPに依存しない形へ移行する</h3>
+          <p class="pc-option-lead">HTML・CSS・JavaScriptだけの形に作り替える方法です。PHPやWordPressの更新そのものが、必要なくなります。</p>
+          <p class="pc-option-sub">メリット</p>
+          <ul>
+            <li>今回のようなPHPの脆弱性の対象外になります</li>
+            <li>更新・保守の手間と、毎月の保守費を減らしやすくなります</li>
+          </ul>
+          <p class="pc-option-sub">気をつけたいこと</p>
+          <ul>
+            <li>管理画面での更新はできなくなります</li>
+            <li>PHPのフォーム・会員・予約などは、置き換えか見送りの判断が必要です</li>
+            <li>URLの引き継ぎと、旧サイトの片付けが必要です</li>
+          </ul>
+          <p class="pc-option-sub">まずやること</p>
+          <ul>
+            <li>今のサイトで使っている機能を洗い出す → 0円の診断で、向くかどうかを確認する</li>
+          </ul>
+          <p class="pc-option-links"><a href="blog/homepage-without-php.html">PHPを使わないホームページとは？</a><br><a href="blog/wordpress-to-static-pros-cons.html">WordPressから静的HTMLへ移行するメリット・デメリット</a><br><a href="blog/php-contact-form-alternatives.html">PHPのお問い合わせフォームはどうする？</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 静的への移行が向くケース／福祉ITパートナーの案内 ===== -->
+  <section class="pc-section" id="pc-static" aria-labelledby="pc-static-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">④を考えるときに</span>
+        <h2 class="section-title" id="pc-static-title">静的HTMLへの移行が向くケース、向かないケース</h2>
+        <p class="section-lead">すべてのサイトにおすすめできるわけではありません。正直にお伝えします。</p>
+      </div>
+      <div class="pc-fit-cols">
+        <div class="pc-fit-col pc-fit-col--ok reveal">
+          <h3 class="pc-fit-title"><span class="pc-fit-mark" aria-hidden="true">○</span>向いているサイト</h3>
+          <ul class="pc-fit-list">
+            <li>事業所・サービスの紹介、料金、アクセスなどが中心</li>
+            <li>お知らせやブログの更新が、月に数回以下</li>
+            <li>WordPressの機能（管理画面・プラグインなど）を、ほとんど使っていない</li>
+            <li>問い合わせは、Googleフォームなど外部のフォームや、メール・電話で足りる</li>
+            <li>PHPやWordPressの更新を続ける人・予算の見通しが立たない</li>
+          </ul>
+        </div>
+        <div class="pc-fit-col pc-fit-col--ng reveal">
+          <h3 class="pc-fit-title"><span class="pc-fit-mark" aria-hidden="true">△</span>向かない・対応が難しいケース</h3>
+          <ul class="pc-fit-list">
+            <li>会員専用ページ（ログイン機能）がある</li>
+            <li>ネットショップ（EC）・決済機能がある</li>
+            <li>複雑な予約システムを組み込んでいる</li>
+            <li>データベースを使った検索・自動表示などが多い</li>
+            <li>記事数が非常に多く、毎日のように更新する</li>
+            <li>PHPで動くフォームの機能（確認画面・自動返信・添付など）を、そのまま残したい</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pc-ours reveal">
+        <h3 class="pc-ours-title">静的HTMLへの乗り換えが合うときは、福祉ITパートナーの乗り換えプランをご案内します</h3>
+        <p class="pc-ours-price">ホームページ維持費削減・乗り換えプラン　<span class="pc-num">49,500</span>円〜</p>
+        <p>事業所紹介を中心とした、小規模なホームページの乗り換えを想定した基本プランです。サーバー・ドメインなど公開環境の実費は、別にかかります。福祉ITパートナーへの月額管理費は必須ではありません。含まれる内容と費用の比較例は、乗り換えプランのページでご確認いただけます。</p>
+        <div class="pc-warn" role="note">
+          <p>PHPで動くフォーム、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合は、49,500円で一律に移行できるわけではありません。診断で内容を確認し、個別のお見積りをご案内するか、PHPを更新して使い続けることをおすすめします。</p>
+        </div>
+        <p>診断（0円）では、契約内容とホームページの仕組み（PHPやWordPressを使っているかなど）をご一緒に確認し、乗り換えたほうがよいか、PHPを更新して続けたほうがよいかを、正直にお伝えします。なお、福祉ITパートナーは、脆弱性診断や、攻撃を受けたかどうかの調査は行っていません。</p>
+        <div class="btn-group pc-ours-actions">
+          <a href="homepage-cost-reduction.html" class="btn btn-accent">乗り換えプランと費用の比較例を見る</a>
+          <a href="contact.html#google-form-embed" class="btn btn-outline js-consult-link">0円の診断を相談する</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 制作会社へ確認したい質問 ===== -->
+  <section class="pc-section pc-section--soft" id="pc-questions" aria-labelledby="pc-questions-title" style="scroll-margin-top: 80px;">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">③・②を選ぶときに</span>
+        <h2 class="section-title" id="pc-questions-title">制作会社・保守会社に確認したい8つの質問</h2>
+        <p class="section-lead">そのまま質問として使えます。答えを書き留めておくと、比べやすくなります。</p>
+      </div>
+      <ol class="pc-questions reveal">
+        <li>今のPHPのバージョンはいくつですか。修正版（8.2.35・8.3.36・8.4.27・8.5.12のいずれか以上）になっていますか。</li>
+        <li>修正版への更新は、いつ、どのように行ってもらえますか。費用はかかりますか。</li>
+        <li>更新の前のバックアップと、不具合が出たときに元に戻す方法はありますか。</li>
+        <li>新しいPHPで、今のテーマ・プラグイン・独自のプログラムは動きますか。動かないものは、どうなりますか。</li>
+        <li>今回のような緊急の更新は、保守契約に含まれていますか。別料金ですか。</li>
+        <li>攻撃を受けた可能性があるとき、調査や復旧は、だれが、どこまで行いますか。</li>
+        <li>サーバーとドメインの契約者は、だれですか。ログインの情報は、事業所でも把握できますか。</li>
+        <li>契約をやめるとき、ホームページのデータや管理は、どうなりますか。</li>
+      </ol>
+      <p class="pc-questions-foot">費用の見積りを頼むときに伝えると早い情報は、<a class="pc-text-link" href="blog/php-update-cost.html">PHPのアップデート費用はいくら？</a>で説明しています。</p>
+    </div>
+  </section>
+
+  <!-- ===== 流れ ===== -->
+  <section class="pc-section" id="pc-flow" aria-labelledby="pc-flow-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">④を選ぶ場合の流れ</span>
+        <h2 class="section-title" id="pc-flow-title">無料診断から乗り換えまで</h2>
+        <p class="section-lead">診断で終わっても大丈夫です。乗り換えるかどうかは、結果を見てからお決めください。</p>
+      </div>
+      <ol class="pc-steps">
+        <li class="pc-step reveal">
+          <p class="pc-step-num"><span>STEP</span>1</p>
+          <h3>0円診断のご相談</h3>
+          <p>フォームからご連絡ください。お急ぎでなければ、お気軽にどうぞ。</p>
+        </li>
+        <li class="pc-step reveal">
+          <p class="pc-step-num"><span>STEP</span>2</p>
+          <h3>契約・サイトの確認</h3>
+          <p>サイトのURL、管理費の請求内容、契約書などを教えていただき、一緒に確認します。</p>
+        </li>
+        <li class="pc-step reveal">
+          <p class="pc-step-num"><span>STEP</span>3</p>
+          <h3>診断結果のご報告</h3>
+          <p>乗り換えの可否・費用の比較・お見積りをお伝えします。見送りのご判断も大丈夫です。</p>
+        </li>
+        <li class="pc-step reveal">
+          <p class="pc-step-num"><span>STEP</span>4</p>
+          <h3>乗り換えサイトの制作・移行</h3>
+          <p>現在のサイトを動かしたまま、新しいサイトを準備します。公開前にご確認いただきます。</p>
+        </li>
+        <li class="pc-step reveal">
+          <p class="pc-step-num"><span>STEP</span>5</p>
+          <h3>公開・旧サイトの整理</h3>
+          <p>公開後の表示を確認してから、旧契約の解約や、古いサイトの片付けの時期をご案内します。</p>
+        </li>
+      </ol>
+      <p class="pc-steps-note reveal">※古いWordPressをサーバーに残したままにすると、PHPが動き続けるため、今回の脆弱性の対象のままです。新しいサイトの公開を確認してから、旧サイトを片付けます。</p>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="pc-section pc-section--soft" id="pc-faq" aria-labelledby="pc-faq-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">よくあるご質問</span>
+        <h2 class="section-title" id="pc-faq-title">よくあるご質問</h2>
+      </div>
+      <div class="pc-faq reveal">
+        <details class="pc-faq-item">
+          <summary>PHPやWordPressは、危険なのですか？</summary>
+          <p>いいえ、PHPやWordPressそのものが危険というわけではありません。今回の脆弱性は修正版が公開されており、サーバーのPHPを修正版に更新すれば対応できるケースが多くあります。大切なのは、更新を続けられる体制があるかどうかです。</p>
+        </details>
+        <details class="pc-faq-item">
+          <summary>今回のことで、乗り換えは必須ですか？</summary>
+          <p>必須ではありません。サーバーのPHPを修正版に更新すれば、今回の脆弱性には対応できます。ただし、PHP 8.1以前のように公式の修正版が出ない場合や、更新の手間・費用が負担になっている場合は、乗り換えも選択肢になります。</p>
+        </details>
+        <details class="pc-faq-item">
+          <summary>静的HTMLにすれば、絶対に安全ですか？</summary>
+          <p>絶対に安全とは言えません。PHPを使わないため、今回のようなPHPの脆弱性の対象にはなりませんが、パスワードの管理、外部サービスの設定、同じサーバーに残った古いサイトなど、別の注意点は残ります。</p>
+        </details>
+        <details class="pc-faq-item">
+          <summary>49,500円で、どんなホームページでも乗り換えられますか？</summary>
+          <p>いいえ。49,500円〜は、事業所紹介を中心とした小規模なホームページの基本プランの料金です。PHPで動くフォーム、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合は、一律には移行できず、個別のお見積りになります。診断で、乗り換えが向くかどうか、今のままがよいかを正直にお伝えします。</p>
+        </details>
+        <details class="pc-faq-item">
+          <summary>PHPで動く問い合わせフォームは、どうなりますか？</summary>
+          <p>静的なホームページではPHPのフォームは動かないため、Googleフォームなどの外部サービスに置き換える方法があります。確認画面・自動返信・ファイルの添付などは、同じ形にできないことがあります。診断で今のフォームの機能を確認し、代わりの方法と費用をご案内します。</p>
+        </details>
+        <details class="pc-faq-item">
+          <summary>福祉ITパートナーは、脆弱性診断や、攻撃を受けたかどうかの調査をしてくれますか？</summary>
+          <p>いいえ、行っていません。診断では、契約内容とホームページの仕組み（PHPやWordPressを使っているかなど）をご一緒に確認します。攻撃を受けた可能性がある場合は、サーバー会社や専門の業者にご相談ください。</p>
+        </details>
+        <details class="pc-faq-item">
+          <summary>乗り換えたあと、月額の管理費は必要ですか？</summary>
+          <p>福祉ITパートナーへの月額管理費は必須ではありません。かかる費用は、乗り換え費用（49,500円〜）と、サーバー・ドメインなど公開環境の実費が基本です。トラブルのときだけ頼めるスポットサポート（5,500円〜、内容に応じて事前お見積り）や、任意の安心サポート（月額4,400円）もあります。</p>
+        </details>
+        <details class="pc-faq-item">
+          <summary>診断だけでも相談できますか？</summary>
+          <p>はい。HP維持費削減診断は0円で、診断だけでも大丈夫です。診断の結果、今の契約のままや、PHPを更新して続ける方法のほうが合う場合は、そのままをおすすめします。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 関連記事 ===== -->
+  <section class="pc-section" id="pc-links" aria-labelledby="pc-links-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="section-tag">関連する記事</span>
+        <h2 class="section-title" id="pc-links-title">もっとくわしく知りたい方へ</h2>
+      </div>
+      <div class="pc-links-grid">
+        <div class="pc-links-group reveal">
+          <h3>確認する</h3>
+          <ul>
+            <li><a href="blog/critical-php-vulnerability-2026-10.html">【2026年10月】PHPの重大な脆弱性とは？</a></li>
+            <li><a href="blog/php-check-my-homepage.html">自分のホームページはPHPを使っている？</a></li>
+            <li><a href="blog/php-version-check.html">PHPのバージョンを確認する方法</a></li>
+            <li><a href="blog/wordpress-php-relationship.html">WordPressとPHPの関係をやさしく解説</a></li>
+          </ul>
+        </div>
+        <div class="pc-links-group reveal">
+          <h3>困ったとき</h3>
+          <ul>
+            <li><a href="blog/php-update-not-possible.html">PHPを更新できないときの対処方法</a></li>
+            <li><a href="blog/php-old-version-risk.html">古いPHPを使い続けるリスクとは？</a></li>
+            <li><a href="blog/php-possible-attack-checklist.html">ホームページが攻撃されたかも？確認したいこと</a></li>
+            <li><a href="blog/php-update-cost.html">PHPのアップデート費用はいくら？</a></li>
+          </ul>
+        </div>
+        <div class="pc-links-group reveal">
+          <h3>続け方を選ぶ</h3>
+          <ul>
+            <li><a href="blog/homepage-without-php.html">PHPを使わないホームページとは？</a></li>
+            <li><a href="blog/wordpress-to-static-pros-cons.html">WordPressから静的HTMLへ移行するメリット・デメリット</a></li>
+            <li><a href="blog/php-contact-form-alternatives.html">PHPのお問い合わせフォームはどうする？</a></li>
+            <li><a href="blog/homepage-security-maintenance-cost.html">セキュリティ対策と管理費用の見直し方</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 確認した情報源 ===== -->
+  <section class="pc-section pc-sources-section" id="pc-sources" aria-labelledby="pc-sources-title">
+    <div class="container">
+      <div class="pc-sources reveal">
+        <h2 class="pc-sources-title" id="pc-sources-title">確認した公式情報（2026年10月22日）</h2>
+        <ul>
+          <li><a href="https://www.php.net/archive/2026.php" target="_blank" rel="noopener">PHP公式：セキュリティ告知（2026年10月21日）</a></li>
+          <li><a href="https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w" target="_blank" rel="noopener">GitHub Security Advisory：CVE-2026-109618</a></li>
+          <li><a href="https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp" target="_blank" rel="noopener">GitHub Security Advisory：CVE-2026-109619</a></li>
+          <li><a href="https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/" target="_blank" rel="noopener">The PHP Foundation：Today's PHP Security Release</a></li>
+          <li><a href="https://www.ipa.go.jp/security/security-alert/2026/alert20261022.html" target="_blank" rel="noopener">IPA：PHPの脆弱性対策について（2026年10月22日）</a></li>
+          <li><a href="https://www.jpcert.or.jp/at/2026/at260033.html" target="_blank" rel="noopener">JPCERT/CC：注意喚起 JPCERT-AT-2026-0033（2026年10月22日）</a></li>
+          <li><a href="https://jvn.jp/vu/JVNVU99905564/index.html" target="_blank" rel="noopener">JVN：JVNVU#99905564</a></li>
+          <li><a href="https://www.php.net/supported-versions.php" target="_blank" rel="noopener">PHP公式：サポート対象バージョン</a></li>
+          <li><a href="https://www.php.net/eol.php" target="_blank" rel="noopener">PHP公式：サポート終了バージョン</a></li>
+          <li><a href="https://wordpress.org/about/requirements/" target="_blank" rel="noopener">WordPress公式：動作要件（2026年5月7日更新）</a></li>
+          <li><a href="https://patchstack.com/articles/php-major-vulnerability-alert-10-2026/" target="_blank" rel="noopener">Patchstack：PHPの重大な脆弱性とWordPressへの影響</a></li>
+        </ul>
+      </div>
+      <p class="pc-disclaimer reveal">このページは、公開時点で確認できた情報にもとづく一般的な説明です。お使いの環境ごとの判断は、サーバー会社・制作会社・専門の業者にご確認ください。状況は変わる可能性があるため、最新の情報は上の公式ページでもご確認ください。</p>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="cta-section">
+    <div class="container reveal">
+      <h2>まずは、今のホームページの<span class="no-break">状況を教えてください。</span></h2>
+      <p class="pc-cta-lead">診断のみのご相談も歓迎です。無理におすすめすることはありません。</p>
+      <div class="btn-group">
+        <a href="contact.html#google-form-embed" class="btn btn-accent js-consult-link">0円の診断を相談する</a>
+        <a href="homepage-cost-reduction.html" class="btn btn-outline">乗り換えプランを見る</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h2 class="footer-title">サイトメニュー</h2>
+        <ul>
+          <li><a href="index.html">HOME</a></li>
+          <li><a href="index.html#services">サービス</a></li>
+          <li><a href="homepage-plan.html">料金プラン</a></li>
+          <li><a href="homepage-cost-reduction.html">HP維持費の見直し</a></li>
+          <li><a href="server-domain-guide.html">サーバー・ドメイン比較</a></li>
+          <li><a href="php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>
+          <li><a href="works.html">制作実績</a></li>
+          <li><a href="flow.html">制作までの流れ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">情報発信・学び</h2>
+        <ul>
+          <li><a href="blog.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="#4a8c6f"></rect><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"></path></svg>ブログ</a></li>
+          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>
+          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>
+          <li><a href="course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>お役立ち講座</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">ご相談・運営者情報</h2>
+        <ul>
+          <li><a href="contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>
+          <li><a href="contact.html">お問い合わせ</a></li>
+          <li><a href="profile.html">プロフィール</a></li>
+          <li><a href="privacy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 福祉ITパートナー
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

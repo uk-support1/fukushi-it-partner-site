@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WordPressから静的HTMLへ移行するメリット・デメリット｜福祉事業所の場合｜福祉ITパートナー</title>
+<meta name="description" content="WordPressから静的HTML（PHPを使わないホームページ）へ移行するメリットとデメリットを、福祉事業所の視点で正直に解説します。URLの引き継ぎ、フォームの置き換え、旧サイトの片付けなど、移行前に知っておきたい注意点と流れもご紹介します。">
+<link rel="canonical" href="https://fukushi-it-partner.com/blog/wordpress-to-static-pros-cons.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="WordPressから静的HTMLへ移行するメリット・デメリット｜福祉事業所の場合">
+<meta property="og:description" content="WordPressから静的HTML（PHPを使わないホームページ）へ移行するメリットとデメリットを、福祉事業所の視点で正直に解説します。URLの引き継ぎ、フォームの置き換え、旧サイトの片付けなど、移行前に知っておきたい注意点と流れもご紹介します。">
+<meta property="og:url" content="https://fukushi-it-partner.com/blog/wordpress-to-static-pros-cons.html">
+<meta property="og:site_name" content="福祉ITパートナー">
+<meta property="og:image" content="https://fukushi-it-partner.com/assets/images/blog-library/hero/hero-dx-002.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/ga4.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "WordPressから静的HTMLへ移行するメリット・デメリット｜福祉事業所の場合",
+      "description": "WordPressから静的HTML（PHPを使わないホームページ）へ移行するメリットとデメリットを、福祉事業所の視点で正直に解説します。URLの引き継ぎ、フォームの置き換え、旧サイトの片付けなど、移行前に知っておきたい注意点と流れもご紹介します。",
+      "image": [
+        "https://fukushi-it-partner.com/assets/images/blog-library/hero/hero-dx-002.png"
+      ],
+      "datePublished": "2026-10-22",
+      "dateModified": "2026-10-22",
+      "inLanguage": "ja",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fukushi-it-partner.com/blog/wordpress-to-static-pros-cons.html"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://fukushi-it-partner.com/assets/images/logo.png"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://fukushi-it-partner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "お知らせ・コラム",
+          "item": "https://fukushi-it-partner.com/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "WordPressから静的HTMLへ移行するメリット・デメリット｜福祉事業所の場合",
+          "item": "https://fukushi-it-partner.com/blog/wordpress-to-static-pros-cons.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-bar">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">HOME</a></li>
+        <li><a href="../homepage-plan.html">料金プラン</a></li>
+        <li><a href="../works.html">制作実績</a></li>
+        <li><a href="../flow.html">制作までの流れ</a></li>
+        <li><a href="../blog.html" class="active">ブログ</a></li>
+        <li><a href="../profile.html">プロフィール</a></li>
+        <li><a href="../contact.html">お問い合わせ</a></li>
+        <li class="nav-cta-mobile">
+          <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+    </div>
+    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="container blog-article">
+      <a href="../blog.html" class="back-link">← ブログ一覧へ戻る</a>
+      <h1>WordPressから静的HTMLへ移行するメリット・デメリット｜福祉事業所の場合</h1>
+      <div class="meta-row">
+        <span class="category-badge">PHP・セキュリティ</span>
+        <span class="blog-date"><time datetime="2026-10-22">2026.10.22</time></span>
+      </div>
+
+      <div class="article-eyecatch">
+        <img src="../assets/images/blog-library/hero/hero-dx-002.png" alt="積み上げた書類から、タブレットへデータが移っていくイメージ">
+      </div>
+
+<aside class="buhio-note" aria-label="ぶひおのひとこと"><img src="../assets/images/buhio/buhio-03-pointing.png" alt="WordPressから静的HTMLへ移行するメリット・デメリット｜福祉事業所の場合 について、ポイントを指し示すぶひお" width="128" height="128" loading="lazy" decoding="async"><div><strong>ぶひおのひとこと</strong><p>今のサイトで使っている機能を、一覧にしてみよう。</p></div></aside>
+
+<p>WordPressで作ったホームページを、PHPを使わない静的なホームページ（静的HTML）に移行する。この選択肢を、PHPの脆弱性のニュースをきっかけに検討する方もいます。ただ、<strong>メリットだけでなく、デメリットも知っておくことが大切です</strong>。</p>
+<p>この記事では、移行のメリットとデメリットを、福祉事業所の視点で正直に整理します。静的サイトのしくみそのものは、<a href="homepage-without-php.html">PHPを使わないホームページとは？</a>で説明しています。</p>
+<h2>移行すると、何が変わりますか？</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>移行前（WordPress）</th>
+<th>移行後（静的HTML）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>更新するもの</td>
+<td>WordPress・テーマ・プラグイン・PHP・データベース</td>
+<td>ファイルと、サーバー・ドメインの契約</td>
+</tr>
+<tr>
+<td>文章・写真の更新</td>
+<td>管理画面から</td>
+<td>ファイルの書き換え、または依頼</td>
+</tr>
+<tr>
+<td>PHPの脆弱性</td>
+<td>更新が必要</td>
+<td>対象外</td>
+</tr>
+<tr>
+<td>問い合わせフォーム</td>
+<td>WordPressのプラグインなど</td>
+<td>外部のフォームサービスなど</td>
+</tr>
+</tbody></table>
+<h2>移行のメリット</h2>
+<h3>1. 保守の手間と費用を減らしやすい</h3>
+<p>WordPress本体・テーマ・プラグイン・PHP・データベースの更新が、必要なくなります。更新の担当者が決まっていない、保守を頼む費用が負担になっている、といった場合は、大きな違いになります。</p>
+<h3>2. PHPの脆弱性の心配がなくなる</h3>
+<p>PHPを使わないため、今回のようなPHPの脆弱性の対象にはなりません。更新が遅れて困る、という状況が減ります。</p>
+<h3>3. 表示が速くなる傾向がある</h3>
+<p>できあがったファイルをそのまま返すため、アクセスのたびにサーバーでページを作る必要がありません。</p>
+<h3>4. 更新できないまま古くなる悪循環から抜けられる</h3>
+<p>古いプラグインやテーマが原因で、PHPを更新できない、という状況からは、解放されます。</p>
+<h3>5. ランニングコストを抑えやすい</h3>
+<p>公開に必要なサーバー・ドメインの実費はかかりますが、保守のための月額費用は、必須ではなくなります。</p>
+<h2>移行のデメリットと、注意したい点</h2>
+<p>メリットだけでなく、デメリットも知っておくことが大切です。次の点は、移行の前に必ず確認してください。</p>
+<h3>1. 管理画面での簡単な更新ができなくなる</h3>
+<p>WordPressのように、管理画面から文章や写真を書き換えることは、基本的にできません。更新は、ファイルの書き換えや、制作会社への依頼になります。更新の頻度が高い事業所には、不向きな場合があります。更新のやり方は、移行の前に必ず相談してください。</p>
+<h3>2. 機能を置き換える必要がある</h3>
+<p>問い合わせフォーム、検索機能、コメント機能、予約機能などは、そのままでは動きません。外部のサービスに置き換えるか、機能そのものをやめる判断が必要です。置き換えがむずかしい機能が多いサイトは、移行に向きません。フォームについては<a href="php-contact-form-alternatives.html">PHPのお問い合わせフォームはどうする？</a>で説明しています。</p>
+<h3>3. ホームページのアドレス（URL）が変わると、検索に影響が出ることがあります</h3>
+<p>WordPressのときのアドレスと、移行後のアドレスが違うと、検索結果から来ていた方が見つからなくなる、検索順位が下がる、といった影響が出る可能性があります。今のアドレスをそのまま引き継ぐ、または、古いアドレスから新しいアドレスへ自動的に転送する設定をする、といった対応が必要です。転送の設定ができるかどうかは、公開先のサーバーによって違います。</p>
+<h3>4. 古いサイトの後片付けが必要</h3>
+<p>移行したあと、古いWordPressがサーバーに残っていると、PHPが動き続けるため、今回の脆弱性の対象のままです。<span class="article-marker">新しいサイトの公開を確認してから、古いサイトを片付けます</span>。ファイルやデータベースを削除する前には、念のため、バックアップを保管しておきましょう。</p>
+<h3>5. 初期の費用がかかる</h3>
+<p>移行のための制作・作業費用がかかります。長く使うほど、保守の費用との差で取り戻せる場合がありますが、すぐに安くなるとは限りません。</p>
+<h2>福祉事業所の場合に、とくに確認したいこと</h2>
+<ul>
+<li>問い合わせフォームに、利用者さんやご家族の個人情報が入力される場合、どこにデータが保存されるかを確認する（外部サービスを使う場合は、そのサービスの規約・保管場所）</li>
+<li>行政や関係機関への掲載・届出の内容と、ホームページのアドレスが一致しているか確認する（アドレスを変える場合は、関係先への連絡が必要になることがあります）</li>
+<li>ホームページを更新する人（担当者）を、移行後も決めておく</li>
+</ul>
+<h2>移行の基本の流れ</h2>
+<ol>
+<li>今のホームページを確認します（ページの数、使っている機能、アドレス、サーバー・ドメインの契約）</li>
+<li>残す機能と、やめる機能、置き換える機能を整理します</li>
+<li>新しいサイトを作ります（今のサイトは動かしたままです）</li>
+<li>公開前に、内容と表示を確認します</li>
+<li>公開して、表示とフォームなどの動作を確認します</li>
+<li>新しいサイトの公開を確認してから、古いサイトを片付けます</li>
+<li>更新のしかたや、困ったときの連絡先を決めます</li>
+</ol>
+<h2>移行しないほうがよいケース</h2>
+<p><span class="article-marker">向かないサイトは、無理に移行しないほうがよいです</span>。次のような場合は、PHPとWordPressを更新して使い続けるか、別の方法を検討します。</p>
+<ul>
+<li>会員専用ページ（ログイン機能）がある</li>
+<li>ネットショップ・決済機能がある</li>
+<li>複雑な予約システムを組み込んでいる</li>
+<li>データベースを使った検索や自動表示が多い</li>
+<li>記事数が非常に多く、毎日のように更新する</li>
+</ul>
+<h2>福祉ITパートナーの乗り換えプランの場合</h2>
+<p>福祉ITパートナーの「ホームページ維持費削減・乗り換えプラン」は、事業所紹介を中心とした小規模なホームページを想定した基本プランで、49,500円〜です（サーバー・ドメインなど公開環境の実費は別です）。福祉ITパートナーへの月額の管理費は、必須ではありません。</p>
+<p>ただし、上のような向かないサイトや、PHPで動くフォームなどがある場合は、基本プランでは移行できないことがあります。その場合は、個別にお見積りをご案内するか、現在のまま使うことをおすすめします。プランの詳しい内容は、<a href="../homepage-cost-reduction.html">ホームページ維持費削減・乗り換えプラン</a>をご覧ください。</p>
+<p>更新を続ける方法も含めた比較は、<a href="../php-homepage-comparison.html">PHPホームページの更新・乗り換え方法を比較</a>で説明しています。毎月の管理費の見直しについては、<a href="homepage-security-maintenance-cost.html">ホームページのセキュリティ対策と管理費用の見直し方</a>もご覧ください。</p>
+<div class="article-cta-box">
+  <h3>移行が向くか、迷ったときは</h3>
+  <p>「HP維持費削減診断」（0円）では、今のサイトの機能・更新の頻度・URLなどを確認して、移行に向くか、今のままがよいかをお伝えします。診断だけでも大丈夫です。</p>
+  <p><a href="../homepage-cost-reduction.html" class="btn btn-accent">乗り換えプランと0円診断を見る</a></p>
+</div>
+
+    </div>
+  </section>
+
+  <!-- 関連記事：content/articles/wordpress-to-static-pros-cons.md のrelatedフィールドから自動生成 -->
+  <section style="background: var(--cream-100);">
+    <div class="container">
+      <h2 class="section-title" style="margin-bottom: 24px;">関連記事</h2>
+      <div class="blog-list">
+
+        <a class="blog-list-item reveal" href="homepage-without-php.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero/hero-web-001.png" alt="机の上のパソコンとスマートフォンに、福祉の現場を紹介するホームページが映っている様子" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">PHP・セキュリティ</span>
+              <span class="blog-date">2026.10.22</span>
+            </div>
+            <h3>PHPを使わないホームページとは？静的サイトのしくみと向き不向き</h3>
+            <p class="excerpt">PHPを使わないホームページ（静的サイト）とは何か、WordPressなどの動的なサイトとの違い、メリットと向かないケー…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+        <a class="blog-list-item reveal" href="wordpress-php-relationship.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero/hero-general-013.png" alt="ノートに関係図を書き出したメモと、ノートパソコンが置かれた机" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">PHP・セキュリティ</span>
+              <span class="blog-date">2026.10.22</span>
+            </div>
+            <h3>WordPressとPHPの関係をやさしく解説｜WordPressの更新だけでは足りない理由</h3>
+            <p class="excerpt">WordPressとPHPはどんな関係なのでしょうか。WordPressを最新にしていても、PHPの脆弱性は別に対応が必…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container reveal">
+      <h2>移行が向くかどうか知りたいときは、0円の診断でご相談ください。</h2>
+      <div class="btn-group">
+        <a href="../contact.html#google-form-embed" class="btn btn-accent js-consult-link">0円の診断を相談する</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h2 class="footer-title">サイトメニュー</h2>
+        <ul>
+          <li><a href="../index.html">HOME</a></li>
+          <li><a href="../index.html#services">サービス</a></li>
+          <li><a href="../homepage-plan.html">料金プラン</a></li>
+          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>
+          <li><a href="../server-domain-guide.html">サーバー・ドメイン比較</a></li>
+          <li><a href="../php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>
+          <li><a href="../works.html">制作実績</a></li>
+          <li><a href="../flow.html">制作までの流れ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">情報発信・学び</h2>
+        <ul>
+          <li><a href="../blog.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="#4a8c6f"></rect><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"></path></svg>ブログ</a></li>
+          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>
+          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>
+          <li><a href="../course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>お役立ち講座</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">ご相談・運営者情報</h2>
+        <ul>
+          <li><a href="../contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>
+          <li><a href="../contact.html">お問い合わせ</a></li>
+          <li><a href="../profile.html">プロフィール</a></li>
+          <li><a href="../privacy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 福祉ITパートナー
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/article-emphasis.js" defer></script>
+</body>
+</html>
