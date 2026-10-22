@@ -71,6 +71,9 @@ emphasis:
     style: marker
   - text: 居住支援法人によるサポートの内容や保証人確保の仕組みは自治体や法人ごとに異なるため、最新の情報を確認しながら丁寧に案内することが求められます。
     style: notice
+related:
+  - group-home-vacancy-information
+  - group-home-website-content
 ---
 
 ## グループホームからの卒業と一人暮らしを考えるときに向き合う現実

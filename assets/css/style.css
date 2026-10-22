@@ -2666,6 +2666,8 @@ section {
 /* ===== お問い合わせフォーム ===== */
 .contact-form-section {
   padding: 64px 0 48px;
+  /* 「無料相談」ボタン（#google-form-embed）でこの位置へ移動したとき、見出しが固定ヘッダーにくっつかないようにする */
+  scroll-margin-top: 16px;
 }
 
 .contact-form-lead {
