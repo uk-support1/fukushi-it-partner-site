@@ -11,6 +11,16 @@ class TopicError extends Error {
   }
 }
 const fail = code => { throw new TopicError(code); };
+// The independent duplicate review is asked about the archive in small chunks. Asking for one
+// verdict per article for the whole archive (60+ rows, one more every day) made the model
+// intermittently skip or merge rows, which failed the daily run as INCOMPLETE_DUPLICATE_REVIEW
+// (4 of the 9 scheduled runs between 2026-10-17 and 10-22). Short answers are easier to produce
+// completely and are still checked row by row.
+const REVIEW_CHUNK_SIZE = 16;
+// Extra requests allowed across one whole review when a chunk's answer is incomplete.
+const REVIEW_RETRY_BUDGET = 4;
+// Numbers only (never article text or model output), so it is safe to print in the Actions log.
+const incompleteReview = message => new TopicError("INCOMPLETE_DUPLICATE_REVIEW", { message });
 const stringSchema = { type: "string" };
 const fields = ["title", "category", "target", "keyword", "reason", "angle", "service"];
 const topicSchema = { type: "object", additionalProperties: false, required: fields,
@@ -114,13 +124,38 @@ function validateLatestTopic(raw, articles, latestInfo) {
 }
 function validateReview(raw, articles) {
   const value = parseJson(raw); objectKeys(value,["comparisons"]);
-  if (!Array.isArray(value.comparisons) || value.comparisons.length !== articles.length) fail("INCOMPLETE_DUPLICATE_REVIEW");
+  const rows = Array.isArray(value.comparisons) ? value.comparisons : null;
+  // A row flagged as a duplicate is final even when the rest of the answer is incomplete,
+  // so that retrying an incomplete answer can never overturn it.
+  if (rows && rows.some(row => row && typeof row === "object" && row.duplicate === true)) fail("DUPLICATE_TOPIC");
+  if (!rows || rows.length !== articles.length) throw incompleteReview(`Duplicate review returned ${rows ? rows.length : 0} of ${articles.length} comparisons.`);
   const expected=new Set(articles.map(a=>a.slug)), seen=new Set();
-  for(const row of value.comparisons) {
+  for(const row of rows) {
     objectKeys(row,["slug","duplicate","reason"]); validText(row.slug,200); validText(row.reason);
-    if (!expected.has(row.slug) || seen.has(row.slug) || typeof row.duplicate !== "boolean") fail("INCOMPLETE_DUPLICATE_REVIEW");
+    if (!expected.has(row.slug) || seen.has(row.slug) || typeof row.duplicate !== "boolean") throw incompleteReview("Duplicate review had an unexpected, repeated or non-boolean entry.");
     seen.add(row.slug);
-    if(row.duplicate) fail("DUPLICATE_TOPIC");
+  }
+}
+// Reviews every existing article exactly once, chunk by chunk. Only an incomplete answer is
+// retried (and only for the chunk it belongs to); a duplicate verdict, malformed JSON, API and
+// authentication errors still stop the run immediately. Never returns unless every article
+// received a complete, non-duplicate verdict.
+async function reviewAgainstExisting({apiKey, model, common, topic, articles, request}) {
+  const chunks = [];
+  for (let start = 0; start < articles.length; start += REVIEW_CHUNK_SIZE) chunks.push(articles.slice(start, start + REVIEW_CHUNK_SIZE));
+  if (!chunks.length) chunks.push([]);
+  let retriesLeft = REVIEW_RETRY_BUDGET;
+  for (const chunk of chunks) {
+    for (;;) {
+      const review = await request({apiKey,model,schema:reviewSchema,
+        instructions: common + "あなたの役割は独立した重複チェックです。候補のreasonを信用せず、タイトル・angle・keywordの実質的な問いと解決策を各既存記事と比較します。同じ読者の課題にほぼ同じ答えとなるものは、表現が違ってもduplicate:trueとします。判断が曖昧な場合もtrueにします。" +
+          `入力のexistingArticlesは${chunk.length}件です。既存記事を1件も省略せず、同じ${chunk.length}件ぶんを入力と同じ順序で、各slugについてduplicateと判断根拠をJSONで返してください。reasonは40文字以内の短い文にします。`,
+        input: {candidate:topic,existingArticles:chunk,expectedComparisons:chunk.length} });
+      try { validateReview(review,chunk); break; }
+      catch (error) {
+        if (!(error instanceof TopicError) || error.code !== "INCOMPLETE_DUPLICATE_REVIEW" || retriesLeft-- <= 0) throw error;
+      }
+    }
   }
 }
 
@@ -206,7 +241,9 @@ async function selectTopic({apiKey, model, localDate, latestInfo = [], request =
   const usedSourceUrls = new Set(articles.flatMap(article => Array.isArray(article.sourceUrls) ? article.sourceUrls : []));
   const availableLatestInfo = Array.isArray(latestInfo) ? latestInfo.filter(item => item && !usedSourceUrls.has(item.url)) : [];
   const rejectedTopics = [];
-  const recentArticles = [...articles].sort((a,b) => String(b.date).localeCompare(String(a.date))).slice(0, 10);
+  // Only identifies the latest ten; their full details are already in existingArticles.
+  const recentArticles = [...articles].sort((a,b) => String(b.date).localeCompare(String(a.date))).slice(0, 10)
+    .map(({slug, title, category, date}) => ({slug, title, category, date}));
   for (let attempt = 1; attempt <= 3; attempt++) {
     const timely = availableLatestInfo.length >= 3 && attempt < 3;
     const raw = await request({apiKey, model, schema:timely ? latestTopicSchema : topicSchema,
@@ -220,10 +257,7 @@ async function selectTopic({apiKey, model, localDate, latestInfo = [], request =
         ...(timely ? {latestInformationCandidates:availableLatestInfo} : {})} });
     try {
       const topic=timely ? validateLatestTopic(raw,articles,availableLatestInfo) : validateTopic(raw,articles);
-      const review=await request({apiKey,model,schema:reviewSchema,
-        instructions: common + "あなたの役割は独立した重複チェックです。候補のreasonを信用せず、タイトル・angle・keywordの実質的な問いと解決策を各既存記事と比較します。同じ読者の課題にほぼ同じ答えとなるものは、表現が違ってもduplicate:trueとします。判断が曖昧な場合もtrueにします。既存記事を1件も省略せず、各slugについてduplicateと判断根拠をJSONで返してください。",
-        input: {candidate:topic,existingArticles:articles} });
-      validateReview(review,articles);
+      await reviewAgainstExisting({apiKey,model,common,topic,articles,request});
       const sources = timely ? topic.sourceUrls.map(url => availableLatestInfo.find(item => normalizeSourceUrl(item.url) === normalizeSourceUrl(url))) : [];
       return {topic,existingArticlesCount:articles.length,contentMode:timely ? "latest_info" : "evergreen",sources,
         recentArticleStyles:require("./lib/editorial").recentStyles(articles)};
