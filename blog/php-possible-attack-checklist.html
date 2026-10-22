@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ホームページが攻撃されたかも？PHP脆弱性のあとに確認したいこと｜福祉ITパートナー</title>
+<meta name="description" content="PHPの脆弱性のあと、「ホームページが攻撃されたかもしれない」と不安なときに確認したいことを、IT初心者の方にも分かる言葉でまとめました。JPCERT/CCが示す確認の観点、サーバー会社への聞き方、疑わしいときの手順と個人情報の扱いを解説します。">
+<link rel="canonical" href="https://fukushi-it-partner.com/blog/php-possible-attack-checklist.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="ホームページが攻撃されたかも？PHP脆弱性のあとに確認したいこと">
+<meta property="og:description" content="PHPの脆弱性のあと、「ホームページが攻撃されたかもしれない」と不安なときに確認したいことを、IT初心者の方にも分かる言葉でまとめました。JPCERT/CCが示す確認の観点、サーバー会社への聞き方、疑わしいときの手順と個人情報の扱いを解説します。">
+<meta property="og:url" content="https://fukushi-it-partner.com/blog/php-possible-attack-checklist.html">
+<meta property="og:site_name" content="福祉ITパートナー">
+<meta property="og:image" content="https://fukushi-it-partner.com/assets/images/blog-library/hero/hero-general-001.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/ga4.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "ホームページが攻撃されたかも？PHP脆弱性のあとに確認したいこと",
+      "description": "PHPの脆弱性のあと、「ホームページが攻撃されたかもしれない」と不安なときに確認したいことを、IT初心者の方にも分かる言葉でまとめました。JPCERT/CCが示す確認の観点、サーバー会社への聞き方、疑わしいときの手順と個人情報の扱いを解説します。",
+      "image": [
+        "https://fukushi-it-partner.com/assets/images/blog-library/hero/hero-general-001.png"
+      ],
+      "datePublished": "2026-10-22",
+      "dateModified": "2026-10-22",
+      "inLanguage": "ja",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fukushi-it-partner.com/blog/php-possible-attack-checklist.html"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://fukushi-it-partner.com/assets/images/logo.png"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://fukushi-it-partner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "お知らせ・コラム",
+          "item": "https://fukushi-it-partner.com/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ホームページが攻撃されたかも？PHP脆弱性のあとに確認したいこと",
+          "item": "https://fukushi-it-partner.com/blog/php-possible-attack-checklist.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-bar">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">HOME</a></li>
+        <li><a href="../homepage-plan.html">料金プラン</a></li>
+        <li><a href="../works.html">制作実績</a></li>
+        <li><a href="../flow.html">制作までの流れ</a></li>
+        <li><a href="../blog.html" class="active">ブログ</a></li>
+        <li><a href="../profile.html">プロフィール</a></li>
+        <li><a href="../contact.html">お問い合わせ</a></li>
+        <li class="nav-cta-mobile">
+          <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+    </div>
+    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="container blog-article">
+      <a href="../blog.html" class="back-link">← ブログ一覧へ戻る</a>
+      <h1>ホームページが攻撃されたかも？PHP脆弱性のあとに確認したいこと</h1>
+      <div class="meta-row">
+        <span class="category-badge">PHP・セキュリティ</span>
+        <span class="blog-date"><time datetime="2026-10-22">2026.10.22</time></span>
+      </div>
+
+      <div class="article-eyecatch">
+        <img src="../assets/images/blog-library/hero/hero-general-001.png" alt="ペンが置かれたクリップボードの上の、確認用の用紙">
+      </div>
+
+<aside class="buhio-note" aria-label="ぶひおのひとこと"><img src="../assets/images/buhio/buhio-05-surprised.png" alt="ホームページが攻撃されたかも？PHP脆弱性のあとに確認したいこと について、驚きながら注意を促すぶひお" width="128" height="128" loading="lazy" decoding="async"><div><strong>ぶひおのひとこと</strong><p>ログは消さずに残して、サーバー会社に相談しよう。</p></div></aside>
+
+<p>PHPの重大な脆弱性のニュースのあと、「もう、うちのホームページが攻撃されているかもしれない」と不安になっている方もいると思います。この記事では、運営者の方が確認できることと、サーバー会社や専門の業者に確認してもらうべきこと、疑わしいときの手順をまとめます。内容は2026年10月22日時点の情報です。</p>
+<p>最初にお伝えしておくと、<span class="article-marker">福祉ITパートナーは、攻撃を受けたかどうかを調べる事業者ではありません</span>。ここで紹介するのは、IPAやJPCERT/CCなどの公開情報をもとにした、一般的な確認の観点です。実際の調査は、サーバー会社や専門の業者にご相談ください。</p>
+<h2>まず知っておきたいこと</h2>
+<ul>
+<li><strong>最優先は、PHPの更新です</strong>。まだ修正版に更新していない場合は、先にそれを進めます（<a href="php-version-check.html">PHPのバージョンの確認方法</a>）。</li>
+<li>JPCERT/CCは、侵害の痕跡が見つからなくても、攻撃を受けていないと断定はできないとしています。</li>
+<li>今回の脆弱性は、公開後に悪用を試みる動きがあったと、セキュリティ会社から報告されています。ニュースの全体像は<a href="critical-php-vulnerability-2026-10.html">【2026年10月】PHPの重大な脆弱性とは？</a>をご覧ください。</li>
+</ul>
+<p>不安をあおるつもりはありません。落ち着いて、順番に確認していきましょう。</p>
+<h2>運営者が見て分かる、ホームページの異変</h2>
+<p>次のような様子があれば、サーバー会社や制作会社にすぐに連絡しましょう。</p>
+<ul>
+<li>ホームページの内容が、身に覚えのないものに書き換えられている</li>
+<li>見覚えのないページや記事が増えている</li>
+<li>ホームページを開くと、別のサイトに飛ばされる</li>
+<li>WordPressの管理画面に、見覚えのないユーザーが追加されている</li>
+<li>身に覚えのない、ファイルの追加や変更の通知が届く</li>
+<li>迷惑メールが、ホームページのアドレスから大量に送られているという連絡を受けた</li>
+<li>サーバー会社から、不正な利用の警告や、サービス停止の連絡が来た</li>
+<li>突然、表示が遅くなった、またはエラーが増えた</li>
+</ul>
+<p>当てはまらなくても、安心はできません。次の「ログ（アクセスの記録）」の確認が必要です。</p>
+<h2>サーバー会社・制作会社に確認してもらうこと</h2>
+<p>JPCERT/CCは、侵害の有無を調べるときの観点として、次のようなものを挙げています。専門的な内容なので、運営者の方が自分で確かめるものではありません。サーバー会社や制作会社、専門の業者に、確認をお願いしてください。</p>
+<ul>
+<li>サーバーが返した通信の記録に、異常に長い、または不自然な形のPHPSESSID（ブラウザに一時的に保存される、小さな識別情報）が含まれていないか</li>
+<li>ファイルの送信などに使われる形式（multipart/form-data）の、不審なリクエストがなかったか。また、その前後に、PHPのメモリ上限に関するエラーや、サーバーのエラー（HTTP 500）が出ていないか</li>
+<li>PHPを動かしているプロセスが、予期せず止まったり、頻繁に再起動したりしていないか</li>
+<li>不審なプロセスの実行、外部への不審な通信、不審なファイルの作成がないか</li>
+</ul>
+<p>JPCERT/CCは、こうした痕跡が見つからなくても、攻撃を受けていないと断定はできないとしています。ログの確認は、継続的に行うことが大切です。</p>
+<h3>依頼のときの文例</h3>
+<blockquote>
+<p>2026年10月に公開されたPHPの脆弱性（CVE-2026-109618、CVE-2026-109619）について、当事業所のホームページが影響を受けた可能性がないか、確認をお願いしたいです。JPCERT/CCが注意喚起で示している確認の観点（異常なPHPSESSID、不審なmultipart/form-dataのリクエストと前後のエラー、PHPのプロセスの異常終了）をもとに、アクセスログとエラーログを確認していただけますか。ログの保存期間も教えてください。</p>
+</blockquote>
+<h2>疑わしいときに、やること（順番）</h2>
+<ol>
+<li>PHPを、修正版に更新します。まだの場合は、これが最優先です。</li>
+<li>ログとバックアップを、消さずに保管します。古いログは、一定期間で自動的に消えることがあります。ログの保存期間を、サーバー会社に確認してください。</li>
+<li>パスワードを変更します。ホームページの管理画面、サーバーの管理画面、FTP、データベース、ドメインの管理画面など、サーバーに保存されている情報が悪用されたおそれがある場合は、変更を検討します。作業は、安全が確認できているパソコンから行ってください。</li>
+<li>必要に応じて、公開を一時的に止めます。被害の広がりを抑えるための判断です。IPAも、状況によっては、外部からのアクセスの遮断やサービスの一時停止の判断を求めています。</li>
+<li>サーバー会社や、専門の業者に、調査を依頼します。</li>
+<li>個人情報が含まれていた可能性があるときは、次の項目を確認します。</li>
+</ol>
+<h2>個人情報が含まれていた可能性があるとき</h2>
+<p>ホームページのサーバーに、問い合わせフォームで受け取った内容や、会員情報、予約の情報などを保存している場合は、それらが外部に見られた可能性を考える必要があります。</p>
+<p>個人情報が漏れた、またはそのおそれがある場合は、法律にもとづき、個人情報保護委員会への報告や、ご本人への通知が必要になることがあります。福祉事業所は、病歴や障害の状況などの「要配慮個人情報」を扱うことが多いため、とくに慎重な対応が必要です。</p>
+<p>どのような報告や連絡が必要かは、状況によって違います。法人内の責任者、顧問の専門家、関係する窓口（個人情報保護委員会の相談窓口など）にご確認ください。詳しくは<a href="https://www.ppc.go.jp/">個人情報保護委員会のホームページ</a>をご覧ください。</p>
+<h2>痕跡が見つからなかった場合も</h2>
+<p><span class="article-marker">痕跡が見つからなくても、攻撃を受けていないと断定はできません</span>。そのうえで、次のことを続けましょう。</p>
+<ul>
+<li>PHPとWordPressを、常に最新に保つ</li>
+<li>ログの確認や、バックアップを続ける</li>
+<li>使っていないサイトやプラグインを、サーバーに残さない</li>
+<li>パスワードを、使い回さない</li>
+</ul>
+<p>ホームページの管理や費用の見直しについては、<a href="homepage-security-maintenance-cost.html">ホームページのセキュリティ対策と管理費用の見直し方</a>で説明しています。</p>
+<h2>福祉ITパートナーにできること・できないこと</h2>
+<p>福祉ITパートナーは、攻撃を受けたかどうかを調べる事業者ではありません。脆弱性診断や、侵害の調査（フォレンジック）は行っていません。そうした調査が必要な場合は、サーバー会社や、専門の業者にご相談ください。</p>
+<p>福祉ITパートナーにできるのは、契約内容やホームページの仕組みを一緒に整理すること、そして、PHPを更新して続ける方法も含めて、今後の続け方を比べることです。比較は、<a href="../php-homepage-comparison.html">PHPホームページの更新・乗り換え方法を比較</a>で説明しています。</p>
+<div class="article-cta-box">
+  <h3>契約やサイトの仕組みを、整理したいときは</h3>
+  <p>「HP維持費削減診断」（0円）では、契約内容とサイトの仕組みを、ご一緒に確認します。ただし、攻撃の有無の調査や、脆弱性診断は行っていません。必要な場合は、専門の業者へのご相談をおすすめします。</p>
+  <p><a href="../homepage-cost-reduction.html" class="btn btn-accent">0円の診断について見る</a></p>
+</div>
+
+    </div>
+  </section>
+
+  <!-- 関連記事：content/articles/php-possible-attack-checklist.md のrelatedフィールドから自動生成 -->
+  <section style="background: var(--cream-100);">
+    <div class="container">
+      <h2 class="section-title" style="margin-bottom: 24px;">関連記事</h2>
+      <div class="blog-list">
+
+        <a class="blog-list-item reveal" href="critical-php-vulnerability-2026-10.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero/hero-security-004.png" alt="鍵のマークとパスワード入力欄が表示されたスマートフォンが、キーボードやノートと一緒に机に置かれている様子" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">PHP・セキュリティ</span>
+              <span class="blog-date">2026.10.22</span>
+            </div>
+            <h3>【2026年10月】PHPの重大な脆弱性とは？ホームページ運営者が今すぐ確認すること</h3>
+            <p class="excerpt">2026年10月21日に修正版が公開されたPHPの重大な脆弱性（CVE-2026-109618・109619）を、IT初…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+        <a class="blog-list-item reveal" href="php-version-check.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero/hero-web-002.png" alt="パソコンの画面でホームページを確認する女性と、デザイン案の紙が置かれた机" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">PHP・セキュリティ</span>
+              <span class="blog-date">2026.10.22</span>
+            </div>
+            <h3>PHPのバージョンを確認する方法｜WordPress・レンタルサーバー別に解説</h3>
+            <p class="excerpt">PHPのバージョンの確認方法を、WordPressの管理画面とレンタルサーバーの管理画面に分けて解説します。表示された番…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container reveal">
+      <h2>契約や仕組みの整理が必要なときは、0円の診断でご相談ください。</h2>
+      <div class="btn-group">
+        <a href="../contact.html#google-form-embed" class="btn btn-accent js-consult-link">0円の診断を相談する</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h2 class="footer-title">サイトメニュー</h2>
+        <ul>
+          <li><a href="../index.html">HOME</a></li>
+          <li><a href="../index.html#services">サービス</a></li>
+          <li><a href="../homepage-plan.html">料金プラン</a></li>
+          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>
+          <li><a href="../server-domain-guide.html">サーバー・ドメイン比較</a></li>
+          <li><a href="../php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>
+          <li><a href="../works.html">制作実績</a></li>
+          <li><a href="../flow.html">制作までの流れ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">情報発信・学び</h2>
+        <ul>
+          <li><a href="../blog.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="#4a8c6f"></rect><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"></path></svg>ブログ</a></li>
+          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>
+          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>
+          <li><a href="../course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>お役立ち講座</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">ご相談・運営者情報</h2>
+        <ul>
+          <li><a href="../contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>
+          <li><a href="../contact.html">お問い合わせ</a></li>
+          <li><a href="../profile.html">プロフィール</a></li>
+          <li><a href="../privacy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 福祉ITパートナー
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/article-emphasis.js" defer></script>
+</body>
+</html>

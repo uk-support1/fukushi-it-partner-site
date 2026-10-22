@@ -2258,6 +2258,86 @@ section {
   color: var(--green-700);
 }
 
+/* 番号つきリスト：手順や優先順位の説明に使う（ul と同じ余白・色で、番号を丸囲みにする） */
+.blog-article ol {
+  list-style: none;
+  counter-reset: article-ol;
+  margin: 0 0 16px 0;
+}
+
+.blog-article ol > li {
+  position: relative;
+  counter-increment: article-ol;
+  padding-left: 38px;
+  margin-bottom: 10px;
+  color: var(--text-600);
+}
+
+.blog-article ol > li::before {
+  content: counter(article-ol);
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--green-700);
+  color: var(--white);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 26px;
+  text-align: center;
+}
+
+/* 表：見出し行をやわらかい緑にし、横に長いときは表だけがスクロールする */
+.blog-article table {
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.blog-article th {
+  background: #f0f6f2;
+  color: var(--green-900);
+  font-weight: 700;
+  text-align: left;
+  vertical-align: top;
+}
+
+.blog-article td {
+  color: var(--text-600);
+  vertical-align: top;
+}
+
+/* 記事の途中・末尾に置く「次の一歩」ボックス（本文のHTMLブロックで使う） */
+.blog-article .article-cta-box {
+  margin: 32px 0 8px;
+  padding: 24px 24px 20px;
+  background: var(--green-100);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+}
+
+.blog-article .article-cta-box h3 {
+  margin: 0 0 10px;
+  padding: 0;
+  border-bottom: 0;
+  font-size: 1.1rem;
+}
+
+.blog-article .article-cta-box p {
+  margin-bottom: 12px;
+}
+
+.blog-article .article-cta-box p:last-child {
+  margin-bottom: 0;
+}
+
+.blog-article .article-cta-box .btn {
+  white-space: normal;
+  text-align: center;
+  padding: 14px 24px;
+}
+
 /* 本文中のリンクは、まわりの文章と見分けがつくよう色と下線をつける */
 .blog-article p a:not(.btn),
 .blog-article li a:not(.btn),
