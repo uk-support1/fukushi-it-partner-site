@@ -1608,3 +1608,54 @@
   color: var(--green-700);
   text-decoration: underline;
 }
+
+/* ---------------- PHP・WordPressをお使いの方へ（2026年10月のPHP脆弱性） ---------------- */
+.cs-hero-php {
+  margin-top: 10px;
+  font-size: 0.88rem;
+}
+
+.cs-php {
+  background: var(--white);
+}
+
+.cs-php-links {
+  margin-top: 12px;
+  font-size: 0.88rem;
+  line-height: 1.9;
+}
+
+.cs-php-links a {
+  font-weight: 700;
+  color: var(--green-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cs-php-notice {
+  max-width: 900px;
+  margin: 36px auto 0;
+  padding: 18px 22px;
+  font-size: 0.92rem;
+  line-height: 1.9;
+  color: var(--text-900);
+  background: var(--orange-100);
+  border-left: 4px solid var(--orange-500);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.cs-php-notice strong {
+  color: var(--green-900);
+}
+
+.cs-php-actions {
+  justify-content: center;
+  margin-top: 28px;
+}
+
+/* 小さい画面で「向いているサイト・向かないサイト」の見出しが画面の右にはみ出さないよう、この見出しだけ折り返しを許可する */
+@media (max-width: 480px) {
+  .cs-fit .no-break {
+    white-space: normal;
+  }
+}
