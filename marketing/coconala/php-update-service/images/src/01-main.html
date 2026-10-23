@@ -29,12 +29,16 @@
   .cap { margin-top: 10px; font-size: 22px; color: var(--text-600); font-weight: 500; }
   .price {
     position: absolute; left: 102px; bottom: 118px; display: flex; align-items: baseline; gap: 10px;
-    background: var(--orange-600); color: var(--white); border-radius: 26px; padding: 14px 40px 16px;
+    background: var(--orange-600); color: var(--white); border-radius: 26px; padding: 28px 40px 16px;
     box-shadow: 0 8px 22px rgba(225, 121, 46, .32);
   }
   .price .pr { font-size: 84px; font-weight: 900; letter-spacing: -.01em; line-height: 1; }
   .price .un { font-size: 38px; font-weight: 800; }
   .price .tax { font-size: 26px; font-weight: 700; margin-left: 8px; }
+  .trial {
+    position: absolute; left: 26px; top: -20px; background: var(--white); color: var(--orange-600);
+    border: 3px solid var(--orange-600); border-radius: 999px; padding: 2px 20px 4px; font-size: 26px; font-weight: 800; white-space: nowrap;
+  }
 </style>
 </head>
 <body>
@@ -61,7 +65,7 @@
     </div>
   </div>
 
-  <div class="price"><span class="pr" data-basic>7,000</span><span class="un">円〜</span><span class="tax">税込</span></div>
+  <div class="price"><span class="trial" data-trial>初回3件・試験価格</span><span class="pr" data-basic>7,000</span><span class="un">円〜</span><span class="tax">税込</span></div>
 
   <div class="brand"><img src="../../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">WordPressのPHP更新</span></div>
 </div>
@@ -69,6 +73,8 @@
   const q = new URLSearchParams(location.search);
   const basic = q.get('basic') || '7,000';
   document.querySelectorAll('[data-basic]').forEach(e => e.textContent = basic);
+  const trial = q.get('trial') !== '0' && basic === '7,000';
+  document.querySelectorAll('[data-trial]').forEach(e => { if (!trial) e.style.display = 'none'; });
 </script>
 </body>
 </html>

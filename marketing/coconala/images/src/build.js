@@ -9,6 +9,9 @@
 //         → 指定したフォルダの 1 つ上（…/images/）に書き出す
 //     node marketing/coconala/images/src/build.js --dir <フォルダ> --price 8,000
 //         → 基本価格を 8,000 円に差し替えた版（data-basic を含むページだけ）を …/images/price-8000/ に書き出す
+//     node marketing/coconala/images/src/build.js --dir <フォルダ> --no-trial
+//         → 「試験価格」のラベルを外した版（試験期間のあとに使う。価格の入ったページだけ）を …/images/no-trial/ に書き出す
+//         ※基本価格を 7,000 円以外に差し替える（--price）ときは、ラベルは自動で外れる
 //   必要なもの：playwright と Chromium（環境変数 PLAYWRIGHT_CHROMIUM_PATH でパスを指定できます）。
 //   フォントは Google Fonts の Noto Sans JP を読み込みます（ネットワークが必要です）。
 //   書き出し後、はみ出し・見切れを自動で検査し、問題があれば警告を出します。
@@ -30,6 +33,7 @@ const valueOf = flag => { const i = args.indexOf(flag); return i >= 0 ? args[i +
 const planB = args.includes("--plan-b");
 const dirArg = valueOf("--dir");
 const priceArg = valueOf("--price") || (planB ? "3,000" : undefined);   // 基本価格を差し替えて書き出すとき
+const noTrial = args.includes("--no-trial");                               // 「試験価格」のラベルを外すとき
 const SRC = dirArg ? path.resolve(dirArg) : __dirname;
 const OUT = path.resolve(SRC, "..");
 // 番号の指定（--dir や --price の値は除く）
@@ -43,21 +47,21 @@ const pages = fs.readdirSync(SRC)
   .filter(f => /^\d\d-.+\.html$/.test(f))
   .map(f => f.replace(/\.html$/, ""))
   .filter(n => (wanted.length ? wanted.some(w => n.startsWith(w)) : true))
-  .filter(n => (priceArg ? hasPrice(n) : true))
+  .filter(n => ((priceArg || noTrial) ? hasPrice(n) : true))
   .sort();
 
 (async () => {
   const { chromium } = loadPlaywright();
   const exe = process.env.PLAYWRIGHT_CHROMIUM_PATH || (fs.existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
   const browser = await chromium.launch(exe ? { executablePath: exe } : {});
-  const outDir = planB ? path.join(OUT, "plan-b") : (priceArg ? path.join(OUT, "price-" + priceArg.replace(/\D/g, "")) : OUT);
+  const outDir = planB ? path.join(OUT, "plan-b") : (priceArg ? path.join(OUT, "price-" + priceArg.replace(/\D/g, "")) : (noTrial ? path.join(OUT, "no-trial") : OUT));
   fs.mkdirSync(outDir, { recursive: true });
   let warnings = 0;
 
   for (const name of pages) {
     const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
-    const query = priceArg ? "?basic=" + priceArg : "";
-    await page.goto("file://" + path.join(SRC, name + ".html") + query, { waitUntil: "networkidle" });
+    const query = [priceArg ? "basic=" + priceArg : "", noTrial ? "trial=0" : ""].filter(Boolean).join("&");
+    await page.goto("file://" + path.join(SRC, name + ".html") + (query ? "?" + query : ""), { waitUntil: "networkidle" });
     await page.evaluate(() => document.fonts.ready);
     const fontOk = await page.evaluate(() => document.fonts.check("800 40px 'Noto Sans JP'"));
     if (!fontOk) { console.warn(`[警告] ${name}: Noto Sans JP を読み込めていません（代わりのフォントで書き出されます）`); warnings++; }

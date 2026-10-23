@@ -25,6 +25,7 @@
   .opts .nm { flex: 1; font-size: 31px; font-weight: 800; color: var(--green-900); line-height: 1.3; }
   .opts .pr { font-size: 36px; font-weight: 800; color: var(--green-900); white-space: nowrap; }
   .opts .pr small { font-size: 24px; }
+  .base .trial { display: inline-block; margin-left: 12px; vertical-align: middle; background: var(--orange-100); color: var(--orange-600); font-size: 22px; font-weight: 800; border-radius: 999px; padding: 2px 16px; }
   .foot { margin-top: 14px; font-size: 28px; font-weight: 700; color: var(--green-700); }
 </style>
 </head>
@@ -36,7 +37,7 @@
 
   <div class="card base">
     <span class="ico gd"><svg class="ic"><use href="#i-update"/></svg></span>
-    <div class="body"><p class="nm">基本プラン（1サイト）</p><p class="ds">バックアップ・更新・動作確認・報告書つき</p></div>
+    <div class="body"><p class="nm">基本プラン（1サイト）<span class="trial" data-trial>初回3件・試験価格</span></p><p class="ds">バックアップ・更新・動作確認・報告書つき</p></div>
     <p class="pr"><span data-basic>7,000</span><small>円</small></p>
   </div>
 
@@ -55,6 +56,8 @@
   const q = new URLSearchParams(location.search);
   const basic = q.get('basic') || '7,000';
   document.querySelectorAll('[data-basic]').forEach(e => e.textContent = basic);
+  const trial = q.get('trial') !== '0' && basic === '7,000';
+  document.querySelectorAll('[data-trial]').forEach(e => { if (!trial) e.style.display = 'none'; });
 </script>
 </body>
 </html>
