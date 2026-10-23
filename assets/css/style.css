@@ -329,6 +329,23 @@ section {
   width: 100%;
 }
 
+/* 「PHP対応」の小さなバッジ。目立たせつつ、不安をあおらないよう
+   やわらかいオレンジ系の淡い色にとどめる（点滅・警告色は使わない） */
+.nav-links .nav-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  vertical-align: 0.12em;
+  color: #944a10;
+  background: var(--orange-100);
+  border: 1px solid #f1cba8;
+  border-radius: 999px;
+}
+
 /* ハンバーガーメニューに切り替わる直前の幅では、メニュー9項目が
    ロゴ・相談ボタンと重ならないよう間隔と文字を少しだけ詰める */
 @media (min-width: 1201px) and (max-width: 1360px) {
@@ -389,6 +406,9 @@ section {
     opacity: 0;
     transition: transform var(--transition), opacity var(--transition);
     box-shadow: var(--shadow-soft);
+    /* 項目が増えても、画面の低い端末（横向きなど）で相談ボタンまで届くように */
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
   }
   .nav-links.open {
     transform: translateY(0);
@@ -408,6 +428,11 @@ section {
     gap: 10px;
     border-bottom: none;
     padding-top: 16px;
+  }
+  /* メニュー内の「無料相談」ボタンの文字が、リンク共通の濃い文字色になって
+     緑の背景に溶けないよう、白に戻す */
+  .nav-links .nav-cta-mobile .btn-primary {
+    color: var(--white);
   }
   .nav-toggle {
     display: flex;

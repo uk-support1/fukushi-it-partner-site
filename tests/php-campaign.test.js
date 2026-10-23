@@ -108,7 +108,7 @@ test("比較ページ：SEO設定（title・説明・canonical・OG・GA4・構�
   for (const link of ["assets/css/php-compare.css", "favicon.ico", "site.webmanifest"]) assert.ok(fs.existsSync(path.join(ROOT, link.split("?")[0])), link);
 });
 
-test("比較ページ：4つの選び方を、費用・安全面・管理負担・更新のしやすさ・向く事業者で比べ、PHPを更新して続ける方法も公平に説明している", () => {
+test("比較ページ（下部のくわしい比較表）：A-①・A-②・B・Cを、費用・安全面・管理負担・更新のしやすさ・向く事業者で比べ、PHPを更新して続ける方法も公平に説明している", () => {
   const page = read(COMPARE);
   for (const option of ["PHPを更新して継続", "WordPressを継続して保守管理", "制作会社へ更新・保守を依頼", "静的HTMLなどへ移行"]) assert.ok(page.includes(option), option);
   for (const row of ["費用の考え方", "セキュリティ", "管理の負担", "更新のしやすさ", "向いている事業者"]) assert.match(page, new RegExp("<th scope=\"row\">" + row + "</th>"), row);
@@ -241,4 +241,131 @@ test("PHP記事の追加後も、ほかの既存記事の「関連記事」に�
     assert.deepEqual(cards, related, slug + " shows its hand-picked related articles");
     for (const campaign of SLUGS) assert.ok(!cards.includes(campaign), slug + " does not show " + campaign);
   }
+});
+
+// ---- 比較ページの全面改善（専門知識のない経営者向け）：ナビの入口、上部の見せ方、下部への整理 ----
+const textOf = html => html.replace(/<(script|style|svg)\b[\s\S]*?<\/\1>/g, "").replace(/<br[^>]*>/g, "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+const sectionOf = (html, id) => {
+  const found = html.match(new RegExp('<section[^>]*id="' + id + '"[\\s\\S]*?</section>'));
+  assert.ok(found, "section #" + id);
+  return found[0];
+};
+const htmlFiles = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
+  if (entry.name === "node_modules" || entry.name.startsWith(".")) return [];
+  const full = path.join(dir, entry.name);
+  return entry.isDirectory() ? htmlFiles(full) : entry.name.endsWith(".html") ? [full] : [];
+});
+
+test("全ページ共通ナビに「PHP対応」（小さなNEWバッジ付き）があり、比較ページへ移動する", () => {
+  let checked = 0;
+  for (const full of htmlFiles(ROOT)) {
+    const html = fs.readFileSync(full, "utf8");
+    const nav = html.match(/<ul class="nav-links">([\s\S]*?)<\/ul>/);
+    if (!nav) continue; // 共通ナビを持たないページ（移転の転送ページ・補助金LPの独自ヘッダー）
+    const rel = path.relative(ROOT, full).split(path.sep).join("/");
+    const prefix = "../".repeat(rel.split("/").length - 1);
+    const items = [...nav[1].matchAll(/<li><a href="([^"]+)"([^>]*)>([\s\S]*?)<\/a><\/li>/g)];
+    const php = items.filter(item => item[1] === prefix + COMPARE);
+    assert.equal(php.length, 1, rel + " has exactly one PHP item in the nav");
+    assert.match(php[0][2], rel === COMPARE ? /class="nav-php active"/ : /class="nav-php"/, rel);
+    assert.equal(php[0][3], 'PHP対応<span class="nav-badge">NEW</span>', rel + " badge");
+    // 料金プランのすぐ後ろに並び、ほかのメニューの順番は変わっていない
+    assert.deepEqual(items.map(item => textOf(item[3])).slice(0, 4), ["HOME", "料金プラン", "PHP対応NEW", "制作実績"], rel + " order");
+    checked++;
+  }
+  assert.ok(checked >= 70, "the shared nav is on most pages: " + checked);
+  // 記事・講座のテンプレートからも同じ入口が出る（再生成しても消えない）
+  assert.equal((read("scripts/generate-blog.js").match(/class="nav-php">PHP対応<span class="nav-badge">NEW<\/span>/g) || []).length, 2);
+  assert.equal((read("scripts/generate-course.js").match(/class="nav-php">PHP対応<span class="nav-badge">NEW<\/span>/g) || []).length, 1);
+  const css = read("assets/css/style.css");
+  assert.match(css, /\.nav-links \.nav-badge\s*\{/);
+  assert.ok(!/@keyframes|animation:/.test(css.match(/\.nav-links \.nav-badge\s*\{[^}]*\}/)[0]), "the badge never blinks");
+});
+
+test("比較ページの上部：やさしい問いかけの見出しと短い説明、ボタン1つで「3つの方法」へ進める", () => {
+  const page = read(COMPARE);
+  const hero = page.match(/<section class="pc-hero"[\s\S]*?<\/section>/)[0];
+  assert.equal(textOf(hero.match(/<h1[\s\S]*?<\/h1>/)[0]), "あなたのホームページ、PHPの更新は大丈夫ですか？");
+  assert.ok(textOf(hero).includes("古い仕組みを使っている場合、確認や更新が必要なことがあります。専門知識がなくても、対応方法をわかりやすくご案内します。"));
+  assert.match(hero, /<a href="#pc-choices" class="btn btn-accent pc-btn-lg">対応方法を確認する<\/a>/);
+  assert.ok(page.includes('id="pc-choices"'), "the hero button has a target");
+  // 上部は文字を絞る（見出し・説明・ボタン・案内の一文）
+  assert.ok(textOf(hero).length < 260, "the first view stays short: " + textOf(hero).length);
+  // 専門用語（CVE・バージョン番号）は、最初の画面や3つの方法・比較のカードには出てこない
+  const above = page.slice(page.indexOf('<section class="pc-hero"'), page.indexOf('id="pc-details"'));
+  for (const term of ["CVE-", "8.2.35", "8.3.36", "脆弱性", "静的HTML", "プラグイン"]) assert.ok(!textOf(above.replace(/<section class="pc-section" id="pc-proposal"[\s\S]*?<\/section>/, "")).includes(term), "no jargon above the fold: " + term);
+  // 並び順：最初の画面 → 3つの方法 → 比較 → ご提案 → くわしい情報 → FAQ → 関連記事
+  const order = ['class="pc-hero"', 'id="pc-choices"', 'id="pc-compare"', 'id="pc-proposal"', 'id="pc-details"', 'id="pc-faq"', 'id="pc-links"', 'id="pc-sources"'].map(marker => page.indexOf(marker));
+  assert.ok(order.every((position, index) => position > 0 && (index === 0 || position > order[index - 1])), "section order: " + order);
+});
+
+test("3つの選択肢（A・B・C）が、アイコン付きのカードで、メリットと注意点を短く示している", () => {
+  const page = read(COMPARE);
+  const expected = {
+    a: ["今のホームページを使い続ける", "PHPを更新して、安全に使い続ける方法。"],
+    b: ["管理会社に対応してもらう", "現在の制作会社・サーバー会社に、確認や更新を依頼する方法。"],
+    c: ["ホームページを乗り換える", "PHPに依存しない、管理しやすいホームページへ移行する方法。"]
+  };
+  assert.equal((page.match(/<article class="pc-choice pc-choice--/g) || []).length, 3);
+  for (const [key, [title, lead]] of Object.entries(expected)) {
+    const card = page.match(new RegExp('<article class="pc-choice pc-choice--' + key + '[^"]*"[\\s\\S]*?</article>'))[0];
+    assert.equal(textOf(card.match(/<h3[\s\S]*?<\/h3>/)[0]), title);
+    assert.ok(textOf(card).includes(lead), key + " lead");
+    assert.ok(card.includes('class="pc-choice-letter"') && card.includes('<span class="pc-choice-icon"><svg'), key + " has a letter and an icon");
+    assert.ok(textOf(card).includes("メリット") && textOf(card).includes("注意点"), key + " has pros and cons");
+    assert.equal((card.match(/<li>/g) || []).length, 4, key + " keeps the points short (2 pros, 2 cons)");
+  }
+  // 色で見分ける（A＝緑、B＝青、C＝オレンジ）。点滅・警告色のアニメーションは使わない
+  const css = read("assets/css/php-compare.css");
+  for (const key of ["a", "b", "c"]) assert.match(css, new RegExp("\\.pc-choice--" + key + "\\s*\\{[^}]*--c:"), key + " color");
+  assert.ok(!/@keyframes|animation\s*:/.test(css), "no blinking or animation in the comparison page styles");
+  assert.match(textOf(page), /PHPやWordPressを「危険」と決めつけません。乗り換えは必須ではありません。/);
+});
+
+test("視覚的な比較：費用・管理の手間・対応の難しさ・向いている会社を、A・B・Cのカードで示している", () => {
+  const page = read(COMPARE);
+  const cards = [...page.matchAll(/<article class="pc-cmp reveal">[\s\S]*?<\/article>/g)].map(match => match[0]);
+  assert.deepEqual(cards.map(card => textOf(card.match(/<h3[\s\S]*?<\/h3>/)[0])), ["費用", "管理の手間", "対応の難しさ", "どんな会社に向いているか"]);
+  cards.forEach((card, index) => {
+    for (const key of ["a", "b", "c"]) assert.equal((card.match(new RegExp("pc-cmp-row--" + key + '"', "g")) || []).length, 1, index + " has a row for " + key);
+    // 最初の3つは、3段階のメーター（●の数）で直感的に比べられる
+    assert.equal((card.match(/class="pc-meter"/g) || []).length, index < 3 ? 3 : 0, "meters in card " + index);
+    for (const meter of card.matchAll(/<span class="pc-meter" role="img" aria-label="目安：3段階のうち(\d)">((?:<i class="on"><\/i>|<i><\/i>){3})<\/span>/g)) {
+      assert.equal((meter[2].match(/class="on"/g) || []).length, Number(meter[1]), "the screen-reader label matches the dots");
+    }
+  });
+  assert.match(textOf(page), /あくまで目安です。費用や手間は、ホームページの大きさや、今ついている機能（会員ページ・予約など）によって大きく変わります。一律の相場はお示しできません。/);
+});
+
+test("福祉ITパートナーの提案：49,500円と、フォーム・予約・会員などは個別見積りであること、無料相談ボタンが同じ場所にある", () => {
+  const proposal = sectionOf(read(COMPARE), "pc-proposal");
+  const text = textOf(proposal);
+  assert.ok(text.includes("ホームページの管理をもっと簡単にしませんか？"));
+  assert.ok(text.includes("49,500円〜") || /49,500\s*円〜/.test(text));
+  assert.match(text, /動的なフォーム・予約機能・会員機能・ネットショップ・データベースを使った機能などがある場合は、49,500円で一律に移行できるわけではありません。個別のお見積りになります。/);
+  assert.match(text, /脆弱性診断や、攻撃を受けたかどうかの調査は行っていません/);
+  assert.match(proposal, /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
+  assert.match(proposal, /<a href="homepage-cost-reduction\.html" class="btn btn-outline">乗り換えプランと費用の比較例を見る<\/a>/);
+  // 料金の注意書きは、金額と同じカードの中にある（金額だけが目に入らない）
+  const card = proposal.match(/<div class="pc-proposal-card">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/) || proposal.match(/<div class="pc-proposal-card">[\s\S]*$/);
+  assert.ok(card[0].includes("49,500") && card[0].includes("個別のお見積り"));
+});
+
+test("専門的な内容は、下部の閉じたアコーディオンにまとまり、記事12本へのリンクも残っている", () => {
+  const page = read(COMPARE);
+  const details = sectionOf(page, "pc-details");
+  const ids = [...details.matchAll(/<details class="pc-acc" id="([^"]+)">/g)].map(match => match[1]);
+  assert.deepEqual(ids, ["pc-news", "pc-guide", "pc-table", "pc-options", "pc-static", "pc-questions", "pc-flow"]);
+  assert.ok(!/<details class="pc-acc"[^>]*\sopen/.test(details), "closed by default");
+  const text = textOf(details);
+  for (const term of ["CVE-2026-109618", "CVE-2026-109619", "8.2.35", "8.5.12", "2026年末でサポートが終わります"]) assert.ok(text.includes(term), "details keep " + term);
+  for (const slug of SLUGS) assert.ok(page.includes('href="blog/' + slug + '.html"'), "still links to " + slug);
+  assert.equal((page.match(/<details class="pc-faq-item">/g) || []).length, 8, "FAQ stays visible below");
+  // アコーディオンの中の見出しへのリンク（#pc-questions など）でも、自動で開く
+  assert.match(page, /el\.tagName === "DETAILS"\) \{ el\.open = true;/);
+  assert.match(page, /addEventListener\("hashchange", fromHash\)/);
+  // SEO：title・canonical・構造化データは維持。説明文は3つの方法に合わせて更新済み
+  assert.match(page, /<title>PHPホームページの更新・乗り換え方法を比較｜福祉ITパートナー<\/title>/);
+  assert.match(page, /「今のまま更新して使い続ける」「管理会社に対応してもらう」「乗り換える」の3つの方法/);
+  assert.ok(!page.includes("4つの方法") && !/の4つで、費用/.test(page), "no stale '4 options' wording in the SEO text");
 });
