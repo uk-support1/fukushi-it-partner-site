@@ -1,7 +1,7 @@
 "use strict";
 const test=require("node:test"),assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path");
 const {markdownBodyToHtml,assertNoMarkdownLeak}=require("../scripts/lib/markdown");
-const {recentStyles,styleDiagnostics,styleProblems,similar,validateEmphasis,editorialReviewSchema}=require("../scripts/lib/editorial");
+const {recentStyles,styleDiagnostics,styleProblems,similar,validateEmphasis,editorialReviewSchema,FIXED_HEADINGS}=require("../scripts/lib/editorial");
 const {generateArticle,validateArticle}=require("../scripts/article-generator");
 const lib=require("../scripts/lib/articles");
 test("Markdown parses adjacent h1–h6, escaped headings, nested emphasis, lists, code and tables",()=>{
@@ -130,6 +130,42 @@ test("Local style retries log rule IDs and exhaust with the local-style error",a
     {event:'daily_blog_article_retry',attempt:3,stage:'local_style',rules:['duplicate_recent_buhio_comment'],retry:false}
   ]);
   assert.ok(similar('安全な使い方を職員で確認する','安全な使い方を職員で確認しましょう'));
+});
+const withClosing=heading=>({...article,bodyMarkdown:body.replace('## 朝の確認項目を決める','## '+heading)});
+test("Heading feedback names the offending headings, so a retry knows what to rewrite",()=>{
+  const [fixed]=styleDiagnostics(withClosing('まとめ'),history);
+  assert.equal(fixed.rule,'forbidden_fixed_heading');
+  assert.ok(fixed.feedback.includes('「まとめ」'),fixed.feedback);
+  assert.ok(!fixed.feedback.includes('夜勤前に申し送り欄を読む'),'headings that are fine are not listed');
+  // Only a whole-heading match is forbidden; a heading that adds article-specific words stays allowed.
+  assert.deepEqual(styleDiagnostics(withClosing('まとめ｜朝の確認項目を決める'),history),[]);
+  const repeated=styleDiagnostics(withClosing('家族への電話時間を決める'),history);
+  assert.deepEqual(repeated.map(item=>item.rule),['duplicate_recent_heading']);
+  assert.ok(repeated[0].feedback.includes('「家族への電話時間を決める」'));
+  const internal=styleDiagnostics(withClosing('連絡済みかを記録に残す'),history);
+  assert.deepEqual(internal.map(item=>item.rule),['duplicate_internal_heading']);
+  assert.ok(internal[0].feedback.includes('「連絡済みかを記録に残す」'));
+});
+test("The first request already lists the forbidden headings and no longer asks for a 'まとめ' section",async()=>{
+  let seen;
+  await generateArticle({apiKey:'dummy',topic,diagnosticLog:()=>{},request:async args=>{seen=seen||args;return JSON.stringify(article);}});
+  for(const heading of FIXED_HEADINGS) assert.ok(seen.instructions.includes('「'+heading+'」'),heading);
+  assert.ok(!seen.instructions.includes('今できること、まとめを'),'the structure hint must not ask for a bare まとめ section');
+  assert.ok(seen.instructions.includes('締めくくり'));
+});
+test("A bare 'まとめ' heading is retried with the heading named, then the rewritten article is accepted",async()=>{
+  let calls=0;const diagnostics=captureDiagnostics();
+  const result=await generateArticle({apiKey:'dummy',topic,diagnosticLog:diagnostics.diagnosticLog,request:async args=>{
+    calls++;
+    if(calls===1){assert.equal(args.input.revisionFeedback,undefined);return JSON.stringify(withClosing('まとめ'));}
+    assert.equal(args.input.revisionFeedback.length,1);
+    assert.ok(args.input.revisionFeedback[0].includes('「まとめ」'));
+    assert.ok(args.input.previousArticle.bodyMarkdown.includes('## まとめ'));
+    return JSON.stringify(withClosing('朝の確認項目を決める'));
+  }});
+  assert.equal(calls,2);
+  assert.ok(result.bodyMarkdown.includes('## 朝の確認項目を決める'));
+  assert.deepEqual(diagnostics.lines,[{event:'daily_blog_article_retry',attempt:1,stage:'local_style',rules:['forbidden_fixed_heading'],retry:true}]);
 });
 test("Editorial review retries log semantic rule IDs and exhaust with the review error",async()=>{
   let generated=0,reviews=0;const diagnostics=captureDiagnostics();

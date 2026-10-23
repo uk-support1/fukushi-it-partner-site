@@ -24,6 +24,10 @@ function recentStyles(articles, order=creationOrder()) {
   return articles.filter(a=>a.published!==false).slice().sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")) || rank(a.slug)-rank(b.slug))
     .slice(0,10).map(a=>({slug:a.slug,title:a.title,headings:a.headings||[],comment:a.buhioComment||"",summary:String(a.summary||"").slice(0,600)}));
 }
+// Headings that are only ever rejected when they are the whole heading ("まとめ" is fine, "まとめ｜小さな一歩" is not touched).
+const FIXED_HEADINGS=["今回の最新情報","何が発表・変更されたのか","何が変わるのか","福祉事業者にどう関係するのか","福祉事業者への影響","現場で考えるべきポイント","福祉ITパートナーとしての見解","福祉事業所としての見解","まとめ"];
+// The model cannot fix a heading it is not told about, so retry feedback names the offending headings.
+const quoted=list=>[...new Set(list)].slice(0,5).map(h=>"「"+h+"」").join("");
 function styleDiagnostics(article, history) {
   const diagnostics=[];
   const add=(rule,feedback)=>diagnostics.push({rule,feedback});
@@ -33,10 +37,12 @@ function styleDiagnostics(article, history) {
   } catch {add("markdown_leak","Markdown記号が本文に露出しない正しい見出し・リスト構文に修正する");}
   if(/\*\*|==[^=]+==/.test(article.bodyMarkdown)) add("direct_markdown_emphasis","本文中の太字・マーカー記号はemphasisの指定に移す");
   const headings=headingsOf(article.bodyMarkdown);
-  const fixed=/^(今回の最新情報|何が発表・変更されたのか|何が変わるのか|福祉事業者にどう関係するのか|福祉事業者への影響|現場で考えるべきポイント|福祉ITパートナーとしての見解|福祉事業所としての見解|まとめ)$/;
-  if(headings.some(h=>fixed.test(h))) add("forbidden_fixed_heading","固定見出しを使わず、節の内容に固有の問いを付ける");
-  if(headings.some((h,i)=>headings.slice(0,i).some(old=>normalize(h)===normalize(old)))) add("duplicate_internal_heading","記事内で同じ見出しを繰り返さない");
-  if(headings.some(h=>history.some(a=>a.headings.some(old=>normalize(h)===normalize(old))))) add("duplicate_recent_heading","直近10記事と同じ見出しを避ける（似ているだけなら問題ない）");
+  const fixedHits=headings.filter(h=>FIXED_HEADINGS.includes(h));
+  if(fixedHits.length) add("forbidden_fixed_heading","固定見出しを使わず、節の内容に固有の問いを付ける。最後の節も例外ではない。書き換える見出し："+quoted(fixedHits));
+  const internalHits=headings.filter((h,i)=>headings.slice(0,i).some(old=>normalize(h)===normalize(old)));
+  if(internalHits.length) add("duplicate_internal_heading","記事内で同じ見出しを繰り返さない。重複している見出し："+quoted(internalHits));
+  const recentHits=headings.filter(h=>history.some(a=>a.headings.some(old=>normalize(h)===normalize(old))));
+  if(recentHits.length) add("duplicate_recent_heading","直近10記事と同じ見出しを避ける（似ているだけなら問題ない）。同じになっている見出し："+quoted(recentHits));
   const comment=article.buhio?.comment||"";
   if(comment.length<20 || comment.length>60) add("invalid_buhio_comment_length","ぶひおコメントを20〜60文字にする");
   if(history.some(a=>a.comment && similar(comment,a.comment))) add("duplicate_recent_buhio_comment","ぶひおコメントを直近10記事と異なる具体的な行動・要点にする");
@@ -78,4 +84,4 @@ function validateEmphasis(value, body) {
 const editorialReviewSchema={type:"object",additionalProperties:false,required:["commentDuplicate","headingDuplicates","commentGrounded"],properties:{
   commentDuplicate:{type:"boolean"},commentGrounded:{type:"boolean"},headingDuplicates:{type:"array",items:{type:"string"}}
 }};
-module.exports={similar,headingsOf,creationOrder,recentStyles,styleDiagnostics,styleProblems,validateEmphasis,editorialReviewSchema};
+module.exports={similar,headingsOf,creationOrder,recentStyles,styleDiagnostics,styleProblems,validateEmphasis,editorialReviewSchema,FIXED_HEADINGS};
