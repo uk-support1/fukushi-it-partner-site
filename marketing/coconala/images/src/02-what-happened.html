@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>02 いま何が起きているか</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+  .head { display: flex; flex-direction: column; gap: 18px; }
+  .mascot { right: 72px; top: 22px; width: 196px; }
+  .cards { margin-top: 26px; display: flex; flex-direction: column; gap: 16px; }
+  .step { display: flex; align-items: center; gap: 26px; padding: 22px 32px 22px 28px; }
+  .num {
+    flex: none; width: 76px; height: 76px; border-radius: 50%; background: var(--green-700); color: var(--white);
+    font-size: 44px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+  }
+  .step .t { font-size: 40px; font-weight: 800; color: var(--green-900); line-height: 1.35; }
+  .step .s { margin-top: 6px; font-size: 30px; font-weight: 500; color: var(--text-600); line-height: 1.45; }
+  .foot {
+    margin-top: 22px; background: var(--green-100); border-radius: 999px; padding: 14px 34px;
+    font-size: 33px; font-weight: 800; color: var(--green-900); text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="head">
+    <p class="kicker orange">2026年10月21日の発表</p>
+    <p class="h1">いま、何が起きているの？</p>
+  </div>
+  <img class="mascot" src="../../../../assets/images/buhio/buhio-01-standing.png" alt="">
+  <div class="cards">
+    <div class="card step">
+      <span class="num">1</span>
+      <div><p class="t">10月21日、PHPの重大な脆弱性の<br>修正版が公開されました</p>
+      <p class="s">公式は、すべての利用者に速やかな更新を呼びかけています</p></div>
+    </div>
+    <div class="card step">
+      <span class="num">2</span>
+      <div><p class="t">対象は「PHPで動くサイト」です</p>
+      <p class="s">WordPressなどが当てはまります。<br>HTMLだけのサイトや、ホームページ作成サービスは対象外</p></div>
+    </div>
+    <div class="card step">
+      <span class="num">3</span>
+      <div><p class="t">WordPressの更新だけでは直りません</p>
+      <p class="s">PHPはサーバー側のしくみ。サーバーの確認が必要です</p></div>
+    </div>
+  </div>
+  <p class="foot">すべてのサイトが危険、ではありません。まずは確認から。</p>
+  <div class="brand"><img src="../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">出典：PHP公式（2026年10月21日）</span></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+/* ココナラ商品画像の共通スタイル（1220×1016px・6:5）
+   色は、サイト（assets/css/style.css）の CSS 変数と同じ値です。
+   大事な文字は、中央の 1016px 幅の中（左右 102px の余白の内側）に収めています。
+   一覧で正方形に切り取られても読めるようにするためです。 */
+:root {
+  --green-900: #1f4d3c;
+  --green-700: #2c6b54;
+  --green-500: #4a8c6f;
+  --green-100: #e8f4ee;
+  --cream-100: #fbf6ec;
+  --orange-500: #e8965a;
+  --orange-600: #d97f3f;
+  --orange-100: #fdf1e7;
+  --text-900: #34383a;
+  --text-600: #5b6562;
+  --white: #ffffff;
+  /* 4段階の判定の色。色だけに頼らず、記号と文字も必ず添える */
+  --st-ok: #2c6b54;
+  --st-update: #d97f3f;
+  --st-eol: #b4533f;
+  --st-check: #5b7083;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1220px; height: 1016px; }
+body {
+  font-family: "Noto Sans JP", "IPAexGothic", "IPAGothic", sans-serif;
+  color: var(--text-900);
+  font-weight: 500;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+.canvas {
+  position: relative;
+  width: 1220px;
+  height: 1016px;
+  padding: 60px 102px 56px;
+  background: var(--cream-100);
+  display: flex;
+  flex-direction: column;
+}
+.canvas.green { background: var(--green-900); color: var(--white); }
+
+/* 見出し */
+.kicker {
+  align-self: flex-start;
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 30px;
+  font-weight: 700;
+  padding: 8px 26px;
+  border-radius: 999px;
+  letter-spacing: .04em;
+}
+.kicker.orange { background: var(--orange-600); }
+.h1 { font-size: 62px; font-weight: 800; color: var(--green-900); line-height: 1.25; letter-spacing: .01em; }
+.h1 em { font-style: normal; color: var(--orange-600); }
+.lead { font-size: 34px; color: var(--text-600); font-weight: 500; }
+
+/* 下の帯（ロゴ） */
+.brand {
+  position: absolute;
+  left: 102px;
+  right: 102px;
+  bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--green-900);
+}
+/* ロゴ画像は白い背景つき。クリーム色の背景では multiply で白を消し、濃い背景では白い台にする */
+.brand img { width: 52px; height: 52px; mix-blend-mode: multiply; }
+.green .brand img { mix-blend-mode: normal; background: var(--white); border-radius: 12px; padding: 3px; }
+.brand span.sub { margin-left: auto; font-weight: 500; font-size: 24px; color: var(--text-600); }
+.green .brand { color: var(--white); }
+.green .brand span.sub { color: rgba(255,255,255,.8); }
+
+.card {
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(31, 77, 60, 0.10);
+}
+.note { font-size: 26px; color: var(--text-600); font-weight: 500; }
+.src { position: absolute; left: 102px; right: 102px; bottom: 100px; font-size: 22px; color: var(--text-600); }
+.mascot { position: absolute; pointer-events: none; }
+
+/* 行レイアウト（04 料金、06 できること・できないこと で共通） */
+.rows { display: flex; flex-direction: column; gap: 16px; }
+.row { display: flex; border-radius: 24px; overflow: hidden; background: var(--white); box-shadow: 0 8px 24px rgba(31, 77, 60, 0.10); }
+.row .side { flex: none; width: 322px; padding: 18px 24px; color: var(--white); display: flex; flex-direction: column; justify-content: center; }
+.row .side .nm { font-size: 31px; font-weight: 700; line-height: 1.3; }
+.row .side .pr { font-size: 58px; font-weight: 800; line-height: 1.1; letter-spacing: -.01em; }
+.row .side .pr small { font-size: 32px; font-weight: 800; }
+.row .side .fine { font-size: 23px; font-weight: 500; margin-top: 6px; line-height: 1.35; }
+.row .main { flex: 1; padding: 16px 28px; display: flex; flex-direction: column; justify-content: center; }
+.row ul { list-style: none; }
+.row li { font-size: 32px; font-weight: 700; color: var(--text-900); padding-left: 36px; position: relative; line-height: 1.5; }
+.row li::before { content: ""; position: absolute; left: 0; top: .6em; width: 16px; height: 16px; border-radius: 50%; background: var(--green-500); }
+.row.opt li::before { background: var(--orange-500); }
+.row.ng li::before { background: var(--st-eol); border-radius: 3px; transform: rotate(45deg) scale(.85); }
+.side.g7 { background: var(--green-700); }
+.side.o6 { background: var(--orange-600); }
+.side.gr { background: var(--text-600); }
+.side.br { background: var(--st-eol); }

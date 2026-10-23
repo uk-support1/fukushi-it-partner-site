@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>04 料金とプラン</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+  .head { display: flex; align-items: center; gap: 22px; }
+  .h1 { font-size: 56px; }
+  .head .tax { font-size: 28px; font-weight: 700; color: var(--text-600); margin-top: 8px; }
+  .rows { margin-top: 24px; }
+  .row { min-height: 196px; }
+  .row.third { background: var(--cream-100); border: 4px dashed var(--orange-500); box-shadow: none; }
+  .tag {
+    display: inline-block; align-self: flex-start; margin-bottom: 4px;
+    background: var(--white); color: var(--orange-600); font-size: 22px; font-weight: 800; border-radius: 999px; padding: 2px 14px;
+  }
+  .foot { margin-top: 16px; font-size: 31px; font-weight: 800; color: var(--green-900); text-align: center; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="head"><p class="h1">料金とプラン</p><p class="tax">すべて税込です</p></div>
+  <div class="rows">
+    <div class="row">
+      <div class="side g7">
+        <span class="nm">① 基本プラン</span>
+        <span class="pr"><span data-basic>2,000</span><small>円</small></span>
+        <span class="fine">※更新作業は含みません</span>
+      </div>
+      <div class="main"><ul>
+        <li>PHPバージョンの確認</li>
+        <li>今回の脆弱性に該当するかの確認</li>
+        <li>リスクと必要な対策のご報告</li>
+      </ul></div>
+    </div>
+    <div class="row opt">
+      <div class="side o6">
+        <span class="nm">② 更新オプション</span>
+        <span class="pr">＋5,000<small>円</small></span>
+        <span class="fine">※不具合の修正・<br>大規模改修は別途見積り</span>
+      </div>
+      <div class="main"><ul>
+        <li>事前バックアップ</li>
+        <li>PHPバージョンの更新</li>
+        <li>更新後の基本動作確認</li>
+      </ul></div>
+    </div>
+    <div class="row third">
+      <div class="side gr">
+        <span class="tag">必要な方だけ</span>
+        <span class="nm">③ サイト乗り換え</span>
+        <span class="pr">49,500<small>円〜</small></span>
+        <span class="fine">※複雑な機能は<br>個別お見積り</span>
+      </div>
+      <div class="main"><ul>
+        <li>既存サイトの構成・機能を確認</li>
+        <li>PHPを使わない形への移行をご提案</li>
+        <li>月額管理費なしでも運用できます</li>
+      </ul></div>
+    </div>
+  </div>
+  <p class="foot">更新も乗り換えも、ご報告を見てから決めて大丈夫です</p>
+  <div class="brand"><img src="../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">乗り換えは、ご相談のうえで個別にお見積り</span></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const basic = q.get('basic') || '2,000';
+  document.querySelectorAll('[data-basic]').forEach(e => e.textContent = basic);
+</script>
+</body>
+</html>

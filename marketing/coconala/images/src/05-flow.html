@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>05 ご利用の流れ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+<style>
+  .head { display: flex; flex-direction: column; gap: 16px; }
+  .mascot { right: 56px; top: 30px; width: 190px; }
+  .h1 { font-size: 56px; }
+  .steps { margin-top: 30px; position: relative; display: flex; flex-direction: column; gap: 18px; }
+  .steps::before {
+    content: ""; position: absolute; left: 41px; top: 40px; bottom: 40px; width: 8px; background: var(--green-100); border-radius: 4px;
+  }
+  .step { position: relative; display: flex; align-items: center; gap: 28px; }
+  .num {
+    flex: none; position: relative; z-index: 1; width: 90px; height: 90px; border-radius: 50%;
+    background: var(--green-700); color: var(--white); font-size: 48px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px var(--cream-100);
+  }
+  .step.opt .num { background: var(--orange-600); }
+  .bubble { flex: 1; padding: 18px 30px; }
+  .bubble .t { font-size: 40px; font-weight: 800; color: var(--green-900); line-height: 1.3; }
+  .step.opt .bubble .t { color: var(--orange-600); }
+  .bubble .s { margin-top: 4px; font-size: 29px; font-weight: 500; color: var(--text-600); line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="head">
+    <p class="kicker">ご利用の流れ</p>
+    <p class="h1">むずかしい操作は、ありません</p>
+  </div>
+  <img class="mascot" src="../../../../assets/images/buhio/buhio-02-waving.png" alt="">
+  <div class="steps">
+    <div class="step"><span class="num">1</span>
+      <div class="card bubble"><p class="t">ご相談・ご注文</p><p class="s">ご不明な点は、購入前にメッセージでご相談ください</p></div></div>
+    <div class="step"><span class="num">2</span>
+      <div class="card bubble"><p class="t">画面の写真をお送りください</p><p class="s">ログイン情報は不要。見つけ方は、画像つきでご案内します</p></div></div>
+    <div class="step"><span class="num">3</span>
+      <div class="card bubble"><p class="t">ご報告をお届けします</p><p class="s">4段階の結果と、次にやることをお伝えします</p></div></div>
+    <div class="step opt"><span class="num">4</span>
+      <div class="card bubble"><p class="t">更新は、必要な方だけ</p><p class="s">バックアップ → 更新 → 動作確認（オプション＋5,000円）</p></div></div>
+  </div>
+  <div class="brand"><img src="../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">福祉事業所・団体専門</span></div>
+</div>
+</body>
+</html>
