@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>09 確認と更新の使い分け（PHP更新代行・予備）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../images/src/common.css">
+<style>
+  .h1 { font-size: 66px; }
+  .pair { margin-top: 36px; display: grid; grid-template-columns: 1fr 70px 1fr; align-items: stretch; gap: 0; }
+  .opt { padding: 28px 18px 26px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .opt .ico { width: 96px; height: 96px; margin: 0 auto; }
+  .opt .ic { width: 52px; height: 52px; }
+  .opt .tag { margin-top: 18px; display: inline-block; background: var(--green-100); color: var(--green-800); font-size: 26px; font-weight: 800; border-radius: 999px; padding: 2px 18px; }
+  .opt .nm { margin-top: 10px; font-size: 34px; font-weight: 800; color: var(--green-900); line-height: 1.35; }
+  .opt .ds { margin-top: 8px; font-size: 26px; font-weight: 500; color: var(--text-600); line-height: 1.45; }
+  .opt .pr { margin-top: auto; padding-top: 14px; font-size: 56px; font-weight: 900; color: var(--green-900); letter-spacing: -.01em; line-height: 1.1; }
+  .opt .pr small { font-size: 28px; font-weight: 800; }
+  .opt.main { border: 4px solid var(--green-800); }
+  .arrow { display: flex; justify-content: center; align-items: center; }
+  .arrow .ic { width: 48px; height: 48px; color: var(--orange-600); stroke-width: 5; }
+  .foot { margin-top: 30px; font-size: 32px; font-weight: 800; color: var(--green-700); line-height: 1.45; }
+</style>
+</head>
+<body>
+<script src="../../../images/src/icons.js"></script>
+<div class="canvas">
+  <p class="eyebrow">どちらを選べばいい？</p>
+  <p class="h1">まず<em>確認</em>？　それとも<em>更新</em>まで？</p>
+
+  <div class="pair">
+    <div class="card opt">
+      <span class="ico g"><svg class="ic"><use href="#i-search"/></svg></span>
+      <p class="tag">まず知りたい方</p>
+      <p class="nm">【PHP脆弱性】<br>サイトが対象か<br>確認します</p>
+      <p class="ds">報告書でお届け<br>（ログイン情報は不要）</p>
+    </div>
+    <div class="arrow"><svg class="ic"><use href="#i-arrow-right"/></svg></div>
+    <div class="card opt main">
+      <span class="ico gd"><svg class="ic"><use href="#i-update"/></svg></span>
+      <p class="tag">更新まで任せたい方</p>
+      <p class="nm">【PHP脆弱性対策】<br>PHP更新を<br>代行します</p>
+      <p class="pr"><span data-basic>7,000</span><small>円〜</small></p>
+    </div>
+  </div>
+
+  <p class="foot">更新が必要か分からなければ、<br>先に「確認」から始められます。</p>
+
+  <div class="brand"><img src="../../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">福祉事業所・団体専門</span></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const basic = q.get('basic') || '7,000';
+  document.querySelectorAll('[data-basic]').forEach(e => e.textContent = basic);
+</script>
+</body>
+</html>

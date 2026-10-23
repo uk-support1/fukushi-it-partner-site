@@ -17,6 +17,7 @@
 | [09-automation-investigation.md](09-automation-investigation.md) | **Claude in Chrome／Coworkでの出品の自動化の調査**（利用に必要な設定、ココナラの規約・制限、安全な試験の進め方） |
 | [templates/](templates/README.md) | **PHP確認結果のご報告書テンプレート**（A4・4ページ。JSON→PDF＋Markdown、判定の提案、サンプル3種、テスト） |
 | [10-report-sample-verification.md](10-report-sample-verification.md) | **ChatGPT版「診断レポートのサンプル」の検証結果**（20項目の誤り・懸念と、その対応。掲載しない理由） |
+| [php-update-service/](php-update-service/README.md) | **【新商品・独立】【PHP脆弱性対策】PHP更新を代行します（7,000円〜）**：競合調査・料金と範囲・作業手順（バックアップ／互換性の確認／動作確認）・サーバー別の対応可否と認証情報の扱い・不具合時の方針・出品文・商品画像（9枚）・作業用テンプレート。**ご確認用。出品操作は未実施**（2026年10月23日） |
 | `images/` | **商品画像（1220×1016px）。番号＝出品する順番。** `01`・`02`：ChatGPT版／`03`・`04`：報告書の見本／`05`〜`08`：当方／`09`：予備。`plan-b/`：プランB（3,000円）用の2枚。`chatgpt-originals/`：ChatGPT版の原本。`src/`：元のHTML・アイコン・書き出しスクリプト |
 
 ## 決定事項（2026年10月23日）

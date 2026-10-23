@@ -4,6 +4,11 @@
 //     node marketing/coconala/images/src/build.js            # プランA（基本2,000円）の全画像 → images/
 //     node marketing/coconala/images/src/build.js --plan-b   # プランB（基本3,000円）→ images/plan-b/（価格の入った 06-plans だけ）
 //     node marketing/coconala/images/src/build.js 01 04      # 番号を指定して書き出す
+//   別の商品のフォルダ（例：PHP更新代行）を書き出すとき：
+//     node marketing/coconala/images/src/build.js --dir marketing/coconala/php-update-service/images/src
+//         → 指定したフォルダの 1 つ上（…/images/）に書き出す
+//     node marketing/coconala/images/src/build.js --dir <フォルダ> --price 8,000
+//         → 基本価格を 8,000 円に差し替えた版（data-basic を含むページだけ）を …/images/price-8000/ に書き出す
 //   必要なもの：playwright と Chromium（環境変数 PLAYWRIGHT_CHROMIUM_PATH でパスを指定できます）。
 //   フォントは Google Fonts の Noto Sans JP を読み込みます（ネットワークが必要です）。
 //   書き出し後、はみ出し・見切れを自動で検査し、問題があれば警告を出します。
@@ -18,34 +23,40 @@ function loadPlaywright() {
   throw new Error("playwright が見つかりません。npm i -D playwright などで用意してください。");
 }
 
-const SRC = __dirname;
-const OUT = path.resolve(SRC, "..");
 const W = 1220, H = 1016;
 const SAFE_X = 102;          // 左右の余白（一覧で正方形に切られても読める範囲）
 const args = process.argv.slice(2);
+const valueOf = flag => { const i = args.indexOf(flag); return i >= 0 ? args[i + 1] : undefined; };
 const planB = args.includes("--plan-b");
-const wanted = args.filter(a => /^\d+$/.test(a));
-// 価格の入った画像（プランBで作り直すもの）
-const PRICE_PAGES = ["06-plans"];   // 1枚目（ChatGPT版）のプランBは、加工版を手作業で用意（05-image-plan.md §0）
+const dirArg = valueOf("--dir");
+const priceArg = valueOf("--price") || (planB ? "3,000" : undefined);   // 基本価格を差し替えて書き出すとき
+const SRC = dirArg ? path.resolve(dirArg) : __dirname;
+const OUT = path.resolve(SRC, "..");
+// 番号の指定（--dir や --price の値は除く）
+const flagValues = new Set([dirArg, valueOf("--price")].filter(Boolean));
+const wanted = args.filter(a => /^\d+$/.test(a) && !flagValues.has(a));
+// 価格の入った画像（価格を差し替えて作り直すもの）＝ data-basic を含むページ。
+// ※A商品の1枚目（ChatGPT版）の価格違いは、加工版を手作業で用意（05-image-plan.md §0）
+const hasPrice = n => fs.readFileSync(path.join(SRC, n + ".html"), "utf8").includes("data-basic");
 
 const pages = fs.readdirSync(SRC)
   .filter(f => /^\d\d-.+\.html$/.test(f))
   .map(f => f.replace(/\.html$/, ""))
   .filter(n => (wanted.length ? wanted.some(w => n.startsWith(w)) : true))
-  .filter(n => (planB ? PRICE_PAGES.includes(n) : true))
+  .filter(n => (priceArg ? hasPrice(n) : true))
   .sort();
 
 (async () => {
   const { chromium } = loadPlaywright();
   const exe = process.env.PLAYWRIGHT_CHROMIUM_PATH || (fs.existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
   const browser = await chromium.launch(exe ? { executablePath: exe } : {});
-  const outDir = planB ? path.join(OUT, "plan-b") : OUT;
+  const outDir = planB ? path.join(OUT, "plan-b") : (priceArg ? path.join(OUT, "price-" + priceArg.replace(/\D/g, "")) : OUT);
   fs.mkdirSync(outDir, { recursive: true });
   let warnings = 0;
 
   for (const name of pages) {
     const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
-    const query = planB ? "?basic=3,000" : "";
+    const query = priceArg ? "?basic=" + priceArg : "";
     await page.goto("file://" + path.join(SRC, name + ".html") + query, { waitUntil: "networkidle" });
     await page.evaluate(() => document.fonts.ready);
     const fontOk = await page.evaluate(() => document.fonts.check("800 40px 'Noto Sans JP'"));

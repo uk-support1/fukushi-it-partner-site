@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>06 料金とオプション（PHP更新代行）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../images/src/common.css">
+<style>
+  .h1 { font-size: 66px; margin-top: 20px; }
+  .base { margin-top: 22px; display: flex; align-items: center; gap: 26px; padding: 18px 34px 18px 26px; border: 4px solid var(--green-800); }
+  .base .ico { width: 96px; height: 96px; }
+  .base .ic { width: 52px; height: 52px; }
+  .base .body { flex: 1; min-width: 0; }
+  .base .nm { font-size: 38px; font-weight: 800; color: var(--green-900); line-height: 1.3; }
+  .base .ds { margin-top: 2px; font-size: 25px; font-weight: 500; color: var(--text-600); line-height: 1.45; }
+  .base .pr { flex: none; font-size: 76px; font-weight: 900; color: var(--green-900); letter-spacing: -.01em; white-space: nowrap; line-height: 1; }
+  .base .pr small { font-size: 34px; font-weight: 800; }
+  .opt-hd { margin-top: 20px; display: flex; align-items: center; gap: 14px; font-size: 30px; font-weight: 800; color: var(--orange-600); }
+  .opt-hd i { flex: 1; height: 0; border-top: 3px dashed var(--orange-500); display: block; }
+  .opts { margin-top: 10px; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .opts li { display: flex; align-items: center; gap: 18px; background: var(--white); border: 3px dashed var(--orange-500); border-radius: 22px; padding: 7px 26px; }
+  .opts .ico { width: 54px; height: 54px; }
+  .opts .ic { width: 30px; height: 30px; }
+  .opts .nm { flex: 1; font-size: 31px; font-weight: 800; color: var(--green-900); line-height: 1.3; }
+  .opts .pr { font-size: 36px; font-weight: 800; color: var(--green-900); white-space: nowrap; }
+  .opts .pr small { font-size: 24px; }
+  .foot { margin-top: 14px; font-size: 28px; font-weight: 700; color: var(--green-700); }
+</style>
+</head>
+<body>
+<script src="../../../images/src/icons.js"></script>
+<div class="canvas">
+  <p class="eyebrow">すべて税込</p>
+  <p class="h1"><em>料金</em>とオプション</p>
+
+  <div class="card base">
+    <span class="ico gd"><svg class="ic"><use href="#i-update"/></svg></span>
+    <div class="body"><p class="nm">基本プラン（1サイト）</p><p class="ds">バックアップ・更新・動作確認・報告書つき</p></div>
+    <p class="pr"><span data-basic>7,000</span><small>円</small></p>
+  </div>
+
+  <p class="opt-hd">オプション（必要な方だけ）<i></i></p>
+  <ul class="opts">
+    <li><span class="ico o"><svg class="ic"><use href="#i-site"/></svg></span><span class="nm">追加サイト（1サイトにつき）</span><span class="pr">＋4,000<small>円</small></span></li>
+    <li><span class="ico o"><svg class="ic"><use href="#i-layers"/></svg></span><span class="nm">テスト環境での事前検証</span><span class="pr">＋3,000<small>円</small></span></li>
+    <li><span class="ico o"><svg class="ic"><use href="#i-clock"/></svg></span><span class="nm">PHP 7.4以前からの更新</span><span class="pr">＋3,000<small>円</small></span></li>
+    <li><span class="ico o"><svg class="ic"><use href="#i-update"/></svg></span><span class="nm">WordPress・プラグインの更新</span><span class="pr">＋3,000<small>円</small></span></li>
+    <li><span class="ico o"><svg class="ic"><use href="#i-clock"/></svg></span><span class="nm">お急ぎ・作業日時の指定</span><span class="pr">＋3,000<small>円</small></span></li>
+  </ul>
+
+  <div class="brand"><img src="../../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">福祉事業所・団体専門</span></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const basic = q.get('basic') || '7,000';
+  document.querySelectorAll('[data-basic]').forEach(e => e.textContent = basic);
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>01 メイン（PHP更新代行）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../images/src/common.css">
+<style>
+  .h1 { font-size: 80px; margin-top: 22px; line-height: 1.2; }
+  .lead { margin-top: 18px; font-size: 38px; font-weight: 800; color: var(--green-700); line-height: 1.4; }
+  .body { margin-top: 30px; display: grid; grid-template-columns: 1fr 360px; gap: 28px; align-items: start; }
+  .checks { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  .checks li { display: flex; align-items: center; gap: 18px; padding: 16px 24px 16px 18px; font-size: 36px; font-weight: 800; color: var(--green-900); line-height: 1.3; }
+  .checks .ico { width: 58px; height: 58px; }
+  .checks .ic { width: 32px; height: 32px; stroke-width: 5; }
+  /* 右：版の切り替えのイメージ */
+  .visual { position: relative; padding: 24px 22px 22px; text-align: center; }
+  .visual .win { background: var(--green-100); border-radius: 18px; padding: 16px 16px 20px; }
+  .visual .win .bar { display: flex; gap: 8px; margin-bottom: 14px; }
+  .visual .win .bar i { width: 14px; height: 14px; border-radius: 50%; background: #c9dccd; display: block; }
+  .visual .win .ph { height: 14px; border-radius: 7px; background: #d3e3d6; margin-bottom: 10px; }
+  .visual .win .ph.s { width: 62%; }
+  .ver { margin-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .ver .pill { font-size: 34px; font-weight: 800; border-radius: 999px; padding: 6px 26px; }
+  .ver .old { background: #eceeea; color: var(--text-600); }
+  .ver .new { background: var(--green-800); color: var(--white); }
+  .ver .ic { width: 40px; height: 40px; color: var(--orange-600); transform: rotate(90deg); stroke-width: 5; }
+  .cap { margin-top: 10px; font-size: 22px; color: var(--text-600); font-weight: 500; }
+  .price {
+    position: absolute; left: 102px; bottom: 118px; display: flex; align-items: baseline; gap: 10px;
+    background: var(--orange-600); color: var(--white); border-radius: 26px; padding: 14px 40px 16px;
+    box-shadow: 0 8px 22px rgba(225, 121, 46, .32);
+  }
+  .price .pr { font-size: 84px; font-weight: 900; letter-spacing: -.01em; line-height: 1; }
+  .price .un { font-size: 38px; font-weight: 800; }
+  .price .tax { font-size: 26px; font-weight: 700; margin-left: 8px; }
+</style>
+</head>
+<body>
+<script src="../../../images/src/icons.js"></script>
+<div class="canvas">
+  <p class="eyebrow">福祉事業所・小規模事業者向け</p>
+  <p class="h1">PHPの更新、<br><em>おまかせ</em>ください</p>
+  <p class="lead">バックアップから動作確認まで、まとめて代行</p>
+
+  <div class="body">
+    <ul class="checks">
+      <li class="card"><span class="ico gd"><svg class="ic"><use href="#i-download"/></svg></span>更新前にバックアップ</li>
+      <li class="card"><span class="ico gd"><svg class="ic"><use href="#i-check"/></svg></span>動作確認と報告書つき</li>
+      <li class="card"><span class="ico gd"><svg class="ic"><use href="#i-rollback"/></svg></span>不具合は、元の版へ戻す</li>
+    </ul>
+    <div class="card visual">
+      <div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="ph"></div><div class="ph s"></div><div class="ph"></div></div>
+      <div class="ver">
+        <span class="pill old">PHP 8.1</span>
+        <svg class="ic"><use href="#i-arrow-right"/></svg>
+        <span class="pill new">PHP 8.3</span>
+      </div>
+      <p class="cap">※イメージ</p>
+    </div>
+  </div>
+
+  <div class="price"><span class="pr" data-basic>7,000</span><span class="un">円〜</span><span class="tax">税込</span></div>
+
+  <div class="brand"><img src="../../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">WordPressのPHP更新</span></div>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const basic = q.get('basic') || '7,000';
+  document.querySelectorAll('[data-basic]').forEach(e => e.textContent = basic);
+</script>
+</body>
+</html>
