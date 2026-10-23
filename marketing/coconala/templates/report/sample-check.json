@@ -1,0 +1,15 @@
+{
+  "sample": true,
+  "report_date": "2026年10月24日",
+  "site_url": "https://example.org/",
+  "host": "△△ホスティング（プラン名は不明）",
+  "uses_php": true,
+  "php_version": "",
+  "evidence": "お客様から、サーバー会社の案内メールの写真をいただきましたが、PHPの番号は書かれていませんでした",
+  "php_managed_by": "host",
+  "provider_patch_possible": false,
+  "status": "auto",
+  "unknown_reason": "サーバー会社がPHPを管理していて、お客様の画面にはPHPの番号が表示されないため",
+  "rereport_offer": false,
+  "notes": ["WordPressの管理画面には、お客様が入れない状態とのことでした。制作会社が管理している場合は、制作会社にも、下の文例でご確認ください。"]
+}

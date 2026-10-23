@@ -1,6 +1,6 @@
 # 03 商品企画：PHP脆弱性・WordPress 確認サービス
 
-2026年10月23日作成。出品は未実施。**同日の方針決定を反映済み（決定事項は§10）。** 事実関係は `01-fact-check-php-vulnerability.md`、競合・ルールは `02-market-research.md`、確認範囲と「PHPの版が確認できないとき」の対応は `06-scope-and-fallback.md` を参照。
+2026年10月23日作成。出品は未実施。**同日の方針決定を反映済み（決定事項は§10）。** 事実関係は `01-fact-check-php-vulnerability.md`、競合・ルールは `02-market-research.md`、確認範囲と「PHPの版が確認できないとき」の対応は `06-scope-and-fallback.md`、料金体系の整理は `07-pricing.md`、登録手順と公開前チェックは `08-registration-guide.md`、自動化の調査は `09-automation-investigation.md`、報告書は `templates/` を参照。
 
 ## 1. 一言でいうと
 
