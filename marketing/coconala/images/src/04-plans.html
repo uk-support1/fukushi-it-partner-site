@@ -7,67 +7,49 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="common.css">
 <style>
-  .head { display: flex; align-items: center; gap: 22px; }
-  .h1 { font-size: 56px; }
-  .head .tax { font-size: 28px; font-weight: 700; color: var(--text-600); margin-top: 8px; }
-  .rows { margin-top: 24px; }
-  .row { min-height: 196px; }
-  .row.third { background: var(--cream-100); border: 4px dashed var(--orange-500); box-shadow: none; }
+  .plans { margin-top: 34px; list-style: none; display: flex; flex-direction: column; gap: 18px; }
+  .plan { display: flex; align-items: center; gap: 26px; padding: 20px 34px 20px 26px; }
+  .plan .ico { width: 92px; height: 92px; }
+  .plan .ic { width: 50px; height: 50px; }
+  .plan .body { flex: 1; min-width: 0; }
+  .plan .nm { font-size: 38px; font-weight: 800; color: var(--green-900); line-height: 1.3; }
+  .plan .ds { margin-top: 2px; font-size: 27px; font-weight: 500; color: var(--text-600); line-height: 1.45; }
+  .plan .pr { flex: none; font-size: 68px; font-weight: 800; color: var(--green-900); letter-spacing: -.01em; white-space: nowrap; }
+  .plan .pr small { font-size: 32px; font-weight: 800; }
+  .plan.third { background: var(--bg); border: 4px dashed var(--orange-500); box-shadow: none; }
   .tag {
-    display: inline-block; align-self: flex-start; margin-bottom: 4px;
-    background: var(--white); color: var(--orange-600); font-size: 22px; font-weight: 800; border-radius: 999px; padding: 2px 14px;
+    display: inline-block; margin-bottom: 4px; background: var(--orange-100); color: var(--orange-600);
+    font-size: 22px; font-weight: 800; border-radius: 999px; padding: 2px 16px;
   }
-  .row .side .fine.strong { font-size: 28px; font-weight: 800; margin-top: 8px; }
-  .row li.nt { font-size: 25px; font-weight: 500; color: var(--text-600); line-height: 1.4; margin-top: 2px; }
-  .row li.nt::before { display: none; }
-  .foot { margin-top: 16px; font-size: 31px; font-weight: 800; color: var(--green-900); text-align: center; }
+  .foot { margin-top: 28px; font-size: 32px; font-weight: 700; color: var(--green-700); }
 </style>
 </head>
 <body>
+<script src="icons.js"></script>
 <div class="canvas">
-  <div class="head"><p class="h1">料金とプラン</p><p class="tax">すべて税込です</p></div>
-  <div class="rows">
-    <div class="row">
-      <div class="side g7">
-        <span class="nm">① 基本プラン</span>
-        <span class="pr"><span data-basic>2,000</span><small>円</small></span>
-        <span class="fine">※更新作業は含みません</span>
-      </div>
-      <div class="main"><ul>
-        <li>PHPバージョンの確認</li>
-        <li>今回の脆弱性に該当するかの確認</li>
-        <li>リスクと必要な対策のご報告</li>
-      </ul></div>
-    </div>
-    <div class="row opt">
-      <div class="side o6">
-        <span class="nm">② 更新オプション</span>
-        <span class="pr">＋5,000<small>円</small></span>
-        <span class="fine">※不具合の修正・<br>大規模改修は別途見積り</span>
-      </div>
-      <div class="main"><ul>
-        <li>事前バックアップ</li>
-        <li>PHPバージョンの更新</li>
-        <li>更新後の基本動作確認</li>
-      </ul></div>
-    </div>
-    <div class="row third">
-      <div class="side gr">
-        <span class="tag">必要な方だけ</span>
-        <span class="nm">③ サイト乗り換え</span>
-        <span class="pr">49,500<small>円〜</small></span>
-        <span class="fine strong">「見積り相談」から</span>
-      </div>
-      <div class="main"><ul>
-        <li>既存サイトの構成・機能を確認</li>
-        <li>PHPを使わない形への移行をご提案</li>
-        <li>月額管理費なしでも運用できます</li>
-        <li class="nt">※複雑な機能は個別お見積りです</li>
-      </ul></div>
-    </div>
-  </div>
-  <p class="foot">更新も乗り換えも、ご報告を見てから決めて大丈夫です</p>
-  <div class="brand"><img src="../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">乗り換えは、ご相談のうえで個別にお見積り</span></div>
+  <p class="eyebrow">すべて税込</p>
+  <p class="h1">料金とプラン</p>
+
+  <ul class="plans">
+    <li class="card plan">
+      <span class="ico gd"><svg class="ic"><use href="#i-search"/></svg></span>
+      <div class="body"><p class="nm">① 基本プラン</p><p class="ds">確認して、報告書でお届け</p><p class="ds">※更新作業は含みません</p></div>
+      <p class="pr"><span data-basic>2,000</span><small>円</small></p>
+    </li>
+    <li class="card plan">
+      <span class="ico od"><svg class="ic"><use href="#i-update"/></svg></span>
+      <div class="body"><p class="nm">② 更新オプション</p><p class="ds">バックアップ・更新・動作確認</p><p class="ds">※不具合の修正は別途お見積り</p></div>
+      <p class="pr">＋5,000<small>円</small></p>
+    </li>
+    <li class="card plan third">
+      <span class="ico g"><svg class="ic"><use href="#i-site"/></svg></span>
+      <div class="body"><span class="tag">必要な方だけ</span><p class="nm">③ サイト乗り換え</p><p class="ds">「見積り相談」からご案内します</p></div>
+      <p class="pr">49,500<small>円〜</small></p>
+    </li>
+  </ul>
+  <p class="foot">更新も乗り換えも、必要な方だけでOK。</p>
+
+  <div class="brand"><img src="../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span></div>
 </div>
 <script>
   const q = new URLSearchParams(location.search);

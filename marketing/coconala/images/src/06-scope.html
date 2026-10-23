@@ -2,54 +2,58 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<title>06 できること・お受けしていないこと</title>
+<title>06 確認範囲</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="common.css">
 <style>
-  .head { display: flex; flex-direction: column; gap: 14px; }
-  .h1 { font-size: 54px; }
-  .rows { margin-top: 24px; }
-  .row .side .nm { font-size: 33px; }
-  .row .side .fine { font-size: 25px; }
-  .foot { margin-top: 14px; font-size: 27px; color: var(--text-600); font-weight: 500; }
+  .cols { margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .col { padding: 30px 28px 26px; border-top: 12px solid var(--c); }
+  .col .hd { display: flex; align-items: center; gap: 16px; }
+  .col .ico { width: 70px; height: 70px; }
+  .col .ic { width: 38px; height: 38px; }
+  .col .ttl { font-size: 40px; font-weight: 800; color: var(--c); line-height: 1.2; }
+  .col ul { margin-top: 24px; list-style: none; }
+  .col li { display: flex; align-items: flex-start; gap: 14px; font-size: 34px; font-weight: 700; color: var(--text-900); line-height: 1.4; margin-bottom: 16px; }
+  .col li .ic { width: 34px; height: 34px; margin-top: 4px; flex: none; color: var(--c); stroke-width: 5; }
+  .col li small { display: block; font-size: 25px; font-weight: 500; color: var(--text-600); }
+  .yes { --c: var(--st-ok); } .no { --c: var(--st-eol); }
+  .help {
+    margin-top: 26px; display: flex; align-items: center; gap: 20px;
+    background: #e6ecf1; border-radius: 24px; padding: 22px 30px;
+  }
+  .help .ic { width: 50px; height: 50px; color: var(--st-check); flex: none; }
+  .help .t { font-size: 32px; font-weight: 800; color: #3f5163; line-height: 1.4; }
 </style>
 </head>
 <body>
+<script src="icons.js"></script>
 <div class="canvas">
-  <div class="head">
-    <p class="kicker">確認範囲</p>
-    <p class="h1">確認する範囲・お受けしていないこと</p>
-  </div>
-  <div class="rows">
-    <div class="row">
-      <div class="side g7"><span class="nm">基本プランで<br>確認すること</span><span class="fine">ログイン情報は不要</span></div>
-      <div class="main"><ul>
-        <li>PHPを使っているか</li>
-        <li>PHPの番号と、今回の修正版との比較</li>
-        <li>番号が不明なら「？要確認」でご報告</li>
-      </ul></div>
+  <p class="eyebrow">確認範囲</p>
+  <p class="h1">確認すること・しないこと</p>
+
+  <div class="cols">
+    <div class="card col yes">
+      <div class="hd"><span class="ico g"><svg class="ic"><use href="#i-search"/></svg></span><p class="ttl">確認します</p></div>
+      <ul>
+        <li><svg class="ic"><use href="#i-check"/></svg>PHPを使っているか</li>
+        <li><svg class="ic"><use href="#i-check"/></svg>PHPの番号</li>
+        <li><svg class="ic"><use href="#i-check"/></svg>今回の修正版との比較</li>
+      </ul>
     </div>
-    <div class="row opt">
-      <div class="side o6"><span class="nm">更新オプションで<br>必要なもの</span><span class="fine">管理権限が必要です</span></div>
-      <div class="main"><ul>
-        <li>WordPressの管理者権限</li>
-        <li>サーバーの管理画面の権限</li>
-        <li>PHPを元に戻せるサーバー</li>
-      </ul></div>
-    </div>
-    <div class="row ng">
-      <div class="side br"><span class="nm">お受けして<br>いないこと</span></div>
-      <div class="main"><ul>
-        <li>脆弱性診断（攻撃を試すテスト）</li>
-        <li>攻撃を受けたかの調査・ウイルス除去</li>
-        <li>サーバーの設定の確認・変更</li>
-        <li>専用サーバー・VPS全体の設定</li>
-        <li>「安全です」というお約束</li>
-      </ul></div>
+    <div class="card col no">
+      <div class="hd"><span class="ico r"><svg class="ic"><use href="#i-ban"/></svg></span><p class="ttl">お受けしません</p></div>
+      <ul>
+        <li><svg class="ic"><use href="#i-ban"/></svg><span>脆弱性診断<small>攻撃を試すテスト</small></span></li>
+        <li><svg class="ic"><use href="#i-ban"/></svg>攻撃を受けたかの調査</li>
+        <li><svg class="ic"><use href="#i-ban"/></svg>「安全です」のお約束</li>
+      </ul>
     </div>
   </div>
-  <div class="brand"><img src="../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">できないことも、先にお伝えします</span></div>
+
+  <div class="help"><svg class="ic"><use href="#i-question"/></svg><p class="t">番号が分からなくても大丈夫。<br>「要確認」と、確認先をご案内します。</p></div>
+
+  <div class="brand"><img src="../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span></div>
 </div>
 </body>
 </html>

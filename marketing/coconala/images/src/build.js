@@ -57,7 +57,7 @@ const pages = fs.readdirSync(SRC)
       const out = [];
       const canvas = document.querySelector(".canvas");
       canvas.querySelectorAll("*").forEach(el => {
-        if (el.closest(".mascot, .blob, .band, .decor")) return;
+        if (el.closest(".decor, .hero, svg")) return;
         const cs = getComputedStyle(el);
         if (cs.display === "inline") return;
         const r = el.getBoundingClientRect();
@@ -73,8 +73,8 @@ const pages = fs.readdirSync(SRC)
         }
       });
       // 文字同士の重なり（ブランド帯と本文など）
-      const boxes = [...canvas.querySelectorAll("p, li, h1, h2, h3, span.t, .t, .label")]
-        .filter(el => !el.closest(".mascot, .blob") && [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()))
+      const boxes = [...canvas.querySelectorAll("*")]
+        .filter(el => !el.closest("svg") && [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()))
         .map(el => ({ el, r: el.getBoundingClientRect() }));
       const brand = canvas.querySelector(".brand");
       if (brand) {

@@ -7,38 +7,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="common.css">
 <style>
-  .canvas { background: var(--green-900); }
-  .h1 { color: var(--white); font-size: 80px; line-height: 1.2; margin-top: 28px; }
-  .h1 em { color: #ffd9b8; }
-  .promises { margin-top: 34px; list-style: none; }
-  .promises li {
-    display: flex; align-items: center; gap: 18px; font-size: 38px; font-weight: 700; color: var(--white);
-    margin-bottom: 18px; line-height: 1.35;
-  }
-  .promises .tick {
-    flex: none; width: 50px; height: 50px; border-radius: 50%; background: var(--orange-500);
-    color: var(--white); font-size: 32px; font-weight: 800; display: flex; align-items: center; justify-content: center;
-  }
-  .mascot { left: 60px; bottom: 104px; width: 330px; }
-  .bubble { position: absolute; left: 430px; right: 102px; top: 640px; background: var(--white); border-radius: 28px; padding: 24px 30px; }
-  .bubble::before {
-    content: ""; position: absolute; left: -22px; top: 46px; width: 0; height: 0;
-    border-top: 18px solid transparent; border-bottom: 18px solid transparent; border-right: 26px solid var(--white);
-  }
-  .bubble .t { font-size: 34px; font-weight: 800; color: var(--green-900); line-height: 1.5; }
+  .h1 { font-size: 96px; line-height: 1.2; margin-top: 44px; }
+  .h1 em { font-style: normal; color: #ffc89a; }
+  .shield { position: absolute; right: 102px; top: 170px; width: 270px; height: 270px; color: var(--white); }
+  .shield .ic { width: 270px; height: 270px; stroke-width: 3.2; }
+  .promises { margin-top: 104px; list-style: none; position: relative; z-index: 2; }
+  .promises li { display: flex; align-items: center; gap: 22px; font-size: 44px; font-weight: 700; margin-bottom: 34px; line-height: 1.35; }
+  .promises .ico { width: 66px; height: 66px; background: var(--orange-500); color: var(--white); }
+  .promises .ic { width: 36px; height: 36px; stroke-width: 5; }
 </style>
 </head>
 <body>
-<div class="canvas green">
-  <p class="kicker orange">福祉ITパートナーのお約束</p>
-  <p class="h1">売り込みは、<em>しません。</em></p>
+<script src="icons.js"></script>
+<div class="canvas dark">
+  <p class="eyebrow">福祉ITパートナーのお約束</p>
+  <p class="h1">売り込みは、<br><em>しません。</em></p>
+  <div class="shield decor"><svg class="ic"><use href="#i-shield-check"/></svg></div>
+
   <ul class="promises">
-    <li><span class="tick">✓</span>更新が不要なら、不要とお伝えします</li>
-    <li><span class="tick">✓</span>乗り換えは、必要な方にだけ</li>
-    <li><span class="tick">✓</span>わからない言葉は、使いません</li>
+    <li><span class="ico"><svg class="ic"><use href="#i-check"/></svg></span>更新が不要なら、不要とお伝えします</li>
+    <li><span class="ico"><svg class="ic"><use href="#i-check"/></svg></span>乗り換えは、必要な方にだけ</li>
+    <li><span class="ico"><svg class="ic"><use href="#i-check"/></svg></span>むずかしい言葉は、使いません</li>
   </ul>
-  <img class="mascot" src="../../../../assets/images/buhio/buhio-01-standing.png" alt="">
-  <div class="bubble"><p class="t">PHPを更新して、そのまま使い続ける<br>ほうが合う場合も、多いです。</p></div>
+
   <div class="brand"><img src="../../../../assets/images/logo-mark.png" alt=""><span>福祉ITパートナー</span><span class="sub">福祉事業所・団体専門</span></div>
 </div>
 </body>
