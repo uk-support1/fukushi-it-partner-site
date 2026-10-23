@@ -1,23 +1,23 @@
-/* ココナラ商品画像の共通スタイル（1220×1016px・6:5）  ── v2：文字とアイコン中心・落ち着いた配色
-   色は、サイト（assets/css/style.css）の深緑・オレンジをもとにしています。
+/* ココナラ商品画像の共通スタイル（1220×1016px・6:5）  ── v3：ChatGPT版の1・2枚目にそろえた配色
+   クリーム色の背景・濃い緑のラベル（ピル）・太い見出し・オレンジの強調・白いカード。
    大事な文字は、左右 102px の余白の内側（中央の幅1016px）に収めています。
    一覧で正方形に切り取られても読めるようにするためです。 */
 :root {
-  --green-900: #1f4d3c;
-  --green-800: #1a4132;
+  --green-900: #134630;     /* 見出し（ChatGPT版の見出しの緑） */
+  --green-800: #1f5a3f;     /* ラベル（ピル）の緑 */
   --green-700: #2c6b54;
   --green-500: #4a8c6f;
-  --green-100: #e8f4ee;
-  --bg: #f4f7f4;            /* 明るい背景（やや青みのある白） */
-  --orange-500: #e8965a;
-  --orange-600: #d97f3f;
+  --green-100: #ebf4e6;     /* 明るい緑の帯 */
+  --bg: #fdfcf5;            /* 背景（ChatGPT版と同じクリーム色） */
+  --orange-500: #ee8a3a;
+  --orange-600: #e1792e;    /* 強調のオレンジ（ChatGPT版と同じ） */
   --orange-100: #fdf1e7;
   --text-900: #34383a;
   --text-600: #5b6562;
   --white: #ffffff;
   /* 4段階の判定の色。色だけに頼らず、アイコンと文字も必ず添える */
   --st-ok: #2c6b54;
-  --st-update: #d97f3f;
+  --st-update: #e1792e;
   --st-eol: #b4533f;
   --st-check: #5b7083;
 }
@@ -39,44 +39,46 @@ body {
   background: var(--bg);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
-.canvas.dark {
-  background: radial-gradient(820px 640px at 76% 40%, #2f6b55 0%, #1f4d3c 58%, #1a4133 100%);
-  color: var(--white);
+/* 右上の、うすい緑の丸（ChatGPT版と同じ飾り。文字は載せない） */
+.canvas::before {
+  content: ""; position: absolute; right: -170px; top: -130px; width: 620px; height: 620px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(120, 175, 140, .16), rgba(120, 175, 140, .07) 70%);
+  z-index: 0;
 }
+.canvas > * { position: relative; z-index: 1; }
+.canvas > .brand { position: absolute; }
 
 /* アイコン */
 .ic { display: block; fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 .ico { flex: none; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
 .ico.g  { background: var(--green-100); color: var(--green-700); }
-.ico.gd { background: var(--green-700); color: var(--white); }
+.ico.gd { background: var(--green-800); color: var(--white); }
 .ico.o  { background: var(--orange-100); color: var(--orange-600); }
 .ico.od { background: var(--orange-600); color: var(--white); }
 .ico.r  { background: #f7e7e2; color: var(--st-eol); }
 .ico.s  { background: #e6ecf1; color: var(--st-check); }
 
-/* 見出し */
+/* 見出し：濃い緑のラベル（ピル）＋太い見出し（強調はオレンジ） */
 .eyebrow {
-  display: flex; align-items: center; gap: 16px;
-  font-size: 30px; font-weight: 700; color: var(--green-700); letter-spacing: .04em;
+  align-self: flex-start;
+  background: var(--green-800); color: var(--white);
+  font-size: 32px; font-weight: 800; letter-spacing: .03em;
+  padding: 8px 32px; border-radius: 999px;
 }
-.eyebrow::before { content: ""; width: 38px; height: 7px; border-radius: 4px; background: var(--orange-500); }
-.dark .eyebrow { color: #d6eadf; }
-.h1 { margin-top: 22px; font-size: 68px; font-weight: 800; color: var(--green-900); line-height: 1.25; letter-spacing: .01em; }
-.dark .h1 { color: var(--white); }
+.h1 { margin-top: 24px; font-size: 74px; font-weight: 900; color: var(--green-900); line-height: 1.22; letter-spacing: .005em; }
+.h1 em { font-style: normal; color: var(--orange-600); }
 
 /* カード */
-.card { background: var(--white); border-radius: 24px; box-shadow: 0 6px 20px rgba(31, 77, 60, 0.08); }
+.card { background: var(--white); border-radius: 28px; box-shadow: 0 8px 26px rgba(31, 77, 60, 0.09); }
 
 /* 下のロゴ帯 */
 .brand {
   position: absolute; left: 102px; right: 102px; bottom: 40px;
   display: flex; align-items: center; gap: 14px;
-  font-size: 26px; font-weight: 700; color: var(--green-900);
+  font-size: 28px; font-weight: 800; color: var(--green-900);
 }
-/* ロゴ画像は白い背景つき。明るい背景では multiply で白を消し、濃い背景では白い台にする */
-.brand img { width: 48px; height: 48px; mix-blend-mode: multiply; }
-.dark .brand { color: var(--white); }
-.dark .brand img { mix-blend-mode: normal; background: var(--white); border-radius: 12px; padding: 3px; }
+/* ロゴ画像は白い背景つき。クリーム色の背景では multiply で白を消す */
+.brand img { width: 52px; height: 52px; mix-blend-mode: multiply; }
 .brand .sub { margin-left: auto; font-weight: 500; font-size: 24px; color: var(--text-600); }
-.dark .brand .sub { color: rgba(255, 255, 255, .78); }

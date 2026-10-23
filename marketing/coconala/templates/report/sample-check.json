@@ -11,5 +11,9 @@
   "status": "auto",
   "unknown_reason": "サーバー会社がPHPを管理していて、お客様の画面にはPHPの番号が表示されないため",
   "rereport_offer": false,
-  "notes": ["WordPressの管理画面には、お客様が入れない状態とのことでした。制作会社が管理している場合は、制作会社にも、下の文例でご確認ください。"]
+  "notes": [
+    "WordPressの管理画面には、お客様が入れない状態とのことでした。制作会社が管理している場合は、制作会社にも、下の文例でご確認ください。"
+  ],
+  "site_name": "△△福祉サービス",
+  "evidence_kind": "screen"
 }

@@ -106,6 +106,6 @@
 
 | 変更 | 直す場所 |
 | --- | --- |
-| 基本価格（プランA↔B） | `04-listing-copy.md`（説明文の「2,000円」、オプション表）、画像`01-main`・`04-plans`（`images/plan-b/`）、**ChatGPT版の1枚目**（価格が入っている場合） |
-| 更新・追加オプションの価格 | `04-listing-copy.md` §4・§6、画像`04-plans`（`images/src/04-plans.html`） |
-| 乗り換えの価格 | `04-listing-copy.md` §4、画像`04-plans`、**サイトの既存LPと同額か確認** |
+| 基本価格（プランA↔B） | `04-listing-copy.md`（説明文の「2,000円」、オプション表）、画像`01-main`・`06-plans`（`images/plan-b/`）、**ChatGPT版の1枚目**（価格が入っている場合） |
+| 更新・追加オプションの価格 | `04-listing-copy.md` §4・§6、画像`06-plans`（`images/src/06-plans.html`） |
+| 乗り換えの価格 | `04-listing-copy.md` §4、画像`06-plans`、**サイトの既存LPと同額か確認** |

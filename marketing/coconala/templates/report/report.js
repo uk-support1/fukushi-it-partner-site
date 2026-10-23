@@ -1,7 +1,8 @@
 "use strict";
-// PHPの脆弱性（2026年10月）確認結果の報告書を、入力のJSONから作る。
+// PHPの脆弱性（2026年10月）確認結果のご報告書（A4・4ページ）を、入力のJSONから作る。
 //   node marketing/coconala/templates/report/report.js <input.json> [--out <dir>] [--no-pdf]
-//   → <out>/<入力ファイル名>.md（チャットで送る用）と .pdf（納品用・A4）を書き出す。
+//   → <out>/<入力ファイル名>.md（チャットで送る用）と .pdf（納品用）を書き出す。
+// 構成：1 表紙・判定結果／2 確認の詳細／3 必要な対策／4 まとめ・判定の目安・範囲
 // 判定（◎△！？・対象外）は、番号から提案する。最終判断は人が行い、入力の status で上書きできる。
 // 修正版の番号を変えるときは、01-fact-check-php-vulnerability.md と下の FIXED を合わせて直す。
 const fs = require("fs");
@@ -18,13 +19,18 @@ const SOURCES = [
 ];
 
 const STATUS = {
-  ok:     { mark: "◎", label: "対応済み",       color: "#2c6b54", bg: "#e8f4ee" },
-  update: { mark: "△", label: "更新が必要",     color: "#d97f3f", bg: "#fdf1e7" },
-  eol:    { mark: "！", label: "サポート終了の版", color: "#b4533f", bg: "#f7e7e2" },
-  check:  { mark: "？", label: "要確認",         color: "#5b7083", bg: "#e6ecf1" },
-  none:   { mark: "－", label: "対象外",         color: "#5b6562", bg: "#eef1ef" },
+  ok:     { mark: "◎", label: "対応済み",         color: "#2c6b54", bg: "#e8f4ee", legend: "今回の修正版以上の番号です。WordPress本体・テーマ・プラグインの更新は、別に必要です" },
+  update: { mark: "△", label: "更新が必要",       color: "#d97f3f", bg: "#fdf1e7", legend: "修正版より前の番号です。更新をおすすめします" },
+  eol:    { mark: "！", label: "サポート終了の版", color: "#b4533f", bg: "#f7e7e2", legend: "8.1以前など、公式の更新が出ない版です。サポート中の版への切り替えをおすすめします" },
+  check:  { mark: "？", label: "要確認",           color: "#5b7083", bg: "#e6ecf1", legend: "番号だけでは判断できません。確認先をお伝えします" },
+  none:   { mark: "－", label: "対象外",           color: "#5b6562", bg: "#eef1ef", legend: "PHPを使っていないサイトです" },
 };
 const MANAGED = { customer: "お客様が管理画面で選べる", host: "サーバー会社が管理している", unknown: "確認できていない" };
+const EVIDENCE = {
+  screen:     { lead: "いただいた画面では", name: "お客様からいただいた画面" },
+  public:     { lead: "公開されている情報では", name: "公開されている情報（参考）" },
+  host_reply: { lead: "サーバー会社の回答では", name: "サーバー会社の回答" },
+};
 
 // ---- 判定の提案（04-listing-copy.md「判定のきまり」と同じ） ---------------------------------------
 function parseVersion(v) {
@@ -60,25 +66,48 @@ function buildModel(input) {
   const status = input.status && input.status !== "auto" ? input.status : j.status;
   const st = STATUS[status];
   if (!st) throw new Error("status は auto / ok / update / eol / check / none のどれかです: " + input.status);
+  const kind = EVIDENCE[input.evidence_kind] ? input.evidence_kind : "screen";
+  const ev = EVIDENCE[kind];
   const v = parseVersion(input.php_version);
   const ver = v ? String(input.php_version).trim() : "確認できませんでした";
   const fixedForSeries = v && FIXED[v.series];
   const series = v ? v.series : "";
   const note82 = v && v.series === "8.2" ? `なお、8.2系は${EOL_8_2}でセキュリティ更新が終わります。早めに8.3系以上への切り替えを計画することをおすすめします。` : "";
+  const publicCaveat = kind === "public" && (status === "ok" || status === "update" || status === "eol")
+    ? "公開されている情報は、設定によって隠されたり、実際と異なって表示されたりすることがあります。この判定は、参考のものです。" : "";
+  const reason = input.unknown_reason || j.reasons.join("。");
 
   const conclusion = {
-    ok: `いただいた画面では、PHPの番号は ${ver} でした。今回の修正版（${fixedForSeries || "各系列の修正版"}）以上の番号です。今回の件について、新しい対応は必要ないとみられます。${note82}`,
-    update: `いただいた画面では、PHPの番号は ${ver} でした。今回の修正版（${fixedForSeries || "各系列の修正版"}）より前の番号です。更新をおすすめします。`,
-    eol: `いただいた画面では、PHPの番号は ${ver} でした。8.1以前の版は、PHPプロジェクトからの更新が出ません（今回の修正版も出ていません）。サポート中の版への切り替えをおすすめします。`,
-    check: `いただいた情報では、今回の脆弱性に該当するかを判断できませんでした。${(input.unknown_reason || j.reasons.join("。")) ? "（理由：" + (input.unknown_reason || j.reasons.join("。")) + "）" : ""}無理に判定せず、確認先をご案内します。`,
+    ok: `${ev.lead}、PHPの番号は ${ver} でした。今回の修正版（${fixedForSeries || "各系列の修正版"}）以上の番号です。今回の件について、新しい対応は必要ないとみられます。${note82}`,
+    update: `${ev.lead}、PHPの番号は ${ver} でした。今回の修正版（${fixedForSeries || "各系列の修正版"}）より前の番号です。更新をおすすめします。`,
+    eol: `${ev.lead}、PHPの番号は ${ver} でした。8.1以前の版は、PHPプロジェクトからの更新が出ません（今回の修正版も出ていません）。サポート中の版への切り替えをおすすめします。`,
+    check: `いただいた情報では、今回の脆弱性に該当するかを判断できませんでした。${reason ? "（理由：" + reason + "）" : ""}無理に判定せず、確認先をご案内します。`,
     none: `PHPを使っていないサイトとお見受けしました。今回のPHPの脆弱性の対象にはならないとみられます。同じサーバーに、PHPで動く別のサイト（古いWordPressなど）が残っていないかも、念のためご確認ください。`,
+  }[status] + (publicCaveat ? publicCaveat : "");
+
+  const compare = {
+    ok: `修正版（${fixedForSeries || "各系列の修正版"}）以上`,
+    update: `修正版（${fixedForSeries || "各系列の修正版"}）より前`,
+    eol: "修正版なし（8.1以前）",
+    check: "判断できませんでした",
+    none: "－（PHPを使っていないため）",
   }[status];
+  const shortAction = {
+    ok: "新しい対応は必要ないとみられます",
+    update: "修正版以上の番号への更新をおすすめします",
+    eol: "サポート中の版（8.3系以上）への切り替えをおすすめします",
+    check: "確認先へ問い合わせてください（文例つき）",
+    none: "特にありません",
+  }[status];
+
+  const keyRows = [["PHPの番号", ver], ["今回の修正版との比較", compare], ["判定", `${st.mark} ${st.label}`], ["推奨される対応", shortAction]];
 
   const confirmRows = [
     ["サイトのURL", input.site_url || "（未記入）"],
+    ...(input.site_name ? [["サイト名", input.site_name]] : []),
     ["サーバー会社", input.host || "確認できていません"],
     ["PHPの番号", ver],
-    ["確認に使った情報", input.evidence || "（未記入）"],
+    ["確認に使った情報", `${ev.name}${input.evidence ? "：" + input.evidence : ""}`],
     ["PHPの管理", MANAGED[input.php_managed_by] || MANAGED.unknown],
     ["確認日", input.report_date || "（未記入）"],
   ];
@@ -90,7 +119,14 @@ function buildModel(input) {
   const versionTable = [
     ["8.5系", FIXED["8.5"], ""], ["8.4系", FIXED["8.4"], ""], ["8.3系", FIXED["8.3"], ""],
     ["8.2系", FIXED["8.2"], `${EOL_8_2}でセキュリティ更新が終了`], ["8.1以前", "（修正版なし）", "PHPプロジェクトの更新は出ません"],
-  ].map(([s, f, n]) => ({ series: s, fixed: f, note: n, mine: v && (s.startsWith(series) || (s === "8.1以前" && v.major * 100 + v.minor < 802)) }));
+  ].map(([s, f, n]) => ({ series: s, fixed: f, note: n, mine: !!v && (s.startsWith(series) || (s === "8.1以前" && v.major * 100 + v.minor < 802)) }));
+  const callout = ({
+    ok: `お客様のサイトのPHPは ${ver} です。今回の修正版以上の番号です。`,
+    update: `お客様のサイトのPHPは ${ver} です。今回の修正版（${fixedForSeries || "各系列の修正版"}）より前の番号です。`,
+    eol: `お客様のサイトのPHPは ${ver} です。8.1以前は、PHPプロジェクトの更新が出ません。`,
+    check: "今回の脆弱性に該当するかを、いただいた情報では判断できませんでした。",
+    none: "PHPを使っていないとみられ、今回の対象にはならないとみられます。",
+  }[status]) + (publicCaveat ? "（" + publicCaveat + "）" : "");
 
   const updateSteps = [
     "更新の前に、サーバー会社のお知らせで、すでに今回の修正が適用されていないかを確認します（番号が変わらないまま修正されている場合があります）。",
@@ -102,17 +138,25 @@ function buildModel(input) {
   const actions = {
     ok: ["今回の件について、新しい対応は必要ないとみられます。",
       "WordPress本体・テーマ・プラグインの更新は、別の作業です。更新の通知が出ていないか、ときどきご確認ください。",
-      ...(note82 ? [note82] : [])],
+      ...(note82 ? [note82] : ["公式の最新情報を、ときどきご確認ください。"])],
     update: updateSteps,
     eol: ["サーバー会社に、サポート中の版（8.3系以上）へ切り替えられるかを確認してください。",
-      "切り替えられる場合は、バックアップを取り、切り替えて、表示を確認します（上の「△更新が必要」と同じ手順）。",
-      "切り替えられない場合（古いサーバー・古いテーマやプラグインなど）は、下の「続け方の選択肢」をご検討ください。",
-      "サーバー会社やOSの提供元が、独自に修正を提供している場合があります。下の文例で確認してください。"],
+      "切り替えられる場合は、バックアップを取り、切り替えて、表示を確認します（「△更新が必要」と同じ手順）。",
+      "切り替えられない場合（古いサーバー・古いテーマやプラグインなど）は、「続け方の選択肢」をご検討ください。",
+      "サーバー会社やOSの提供元が、独自に修正を提供している場合があります。文例を使って確認してください。"],
     check: ["下の文例を使って、サーバー会社（または制作会社）に、お問い合わせください。",
       input.rereport_offer ? "回答（修正の適用の有無・日付・動作中の番号）が届きましたら、トークルームでお知らせください。内容に応じて、ご報告をし直します（1回、追加料金はかかりません）。" : "回答が届きましたら、トークルームでお知らせください。",
       "お客様側で変えられる設定があるかは、サーバー会社にご確認ください。設定の変更だけでは完全な対策にならないため、この報告書では、具体的な設定値はご案内していません。"],
     none: ["特にありません。", "念のため、同じサーバーにPHPで動く別のサイト（古いWordPressなど）が残っていないかを、ご確認ください。"],
   }[status];
+  const nextSteps = {
+    ok: ["新しい対応は必要ないとみられます", "WordPress本体・テーマ・プラグインの更新は別作業です", note82 ? "8.3系以上への切り替えを計画" : "公式の最新情報をときどき確認"],
+    update: ["サーバー会社のお知らせで、修正の適用を確認", "バックアップを取る", "修正版以上の番号へ切り替え、表示を確認"],
+    eol: ["サポート中の版（8.3系以上）へ切り替えられるか確認", "切り替えられるなら、バックアップ→切り替え→確認", "難しければ、続け方の選択肢を検討"],
+    check: ["文例で、サーバー会社・制作会社に問い合わせ", "回答（修正の適用・日付・番号）を確認", "回答をもとに、必要な対応を検討"],
+    none: ["特にありません", "同じサーバーのPHPで動く別サイトがないか確認"],
+  }[status];
+  const summaryRows = [["判定", `${st.mark} ${st.label}`], ["PHPの番号", ver], ["今回の修正版との比較", compare], ["次の一手", nextSteps.map((s, i) => `${i + 1}. ${s}`).join("\n")]];
 
   const hostQuestions = (status === "check" || status === "eol" || (status === "update" && input.php_managed_by === "host")) ? [
     `お世話になっております。契約中のホームページ（${input.site_url || "サイトのURL"}）について、次の点を教えてください。`,
@@ -128,6 +172,12 @@ function buildModel(input) {
     "WordPress本体・テーマ・プラグインの更新は、PHPの更新とは別の作業で、どちらも必要です。",
   ] : null;
 
+  const faq = [
+    ["自分で対応できますか？", "サーバーの管理画面から、PHPの番号を切り替えられる場合があります。サーバーによって手順や可否が異なるため、不安な場合は、サーバー会社や制作会社にご相談ください。"],
+    ["WordPressやプラグインを更新すれば足りますか？", "いいえ。今回の脆弱性はPHP本体にあり、WordPressの更新では直りません（WordPress公式も、この件のためにWordPressを更新する必要はないとしています）。WordPress本体・テーマ・プラグインの更新は、別に必要な作業です。"],
+    ["番号が同じでも、対応済みのことはありますか？", "あります。サーバー会社やOSの提供元が、番号を変えずに修正を済ませている場合があります。番号だけで判断できないときは、「要確認」とお伝えし、確認先をご案内しています。"],
+  ];
+
   const options = (status === "update" || status === "eol") ? [
     "PHPを更新して、そのまま使い続ける。多くの場合は、これで足ります。ご希望の方には、ココナラの有料オプション「PHP更新作業」でお受けします（WordPressで、PHPの番号を元に戻せるサーバーの場合）。",
     "更新が難しい場合（古いサーバー・古いテーマやプラグインなど）は、サーバーの変更や、保守の依頼をご検討ください。",
@@ -135,14 +185,15 @@ function buildModel(input) {
   ] : null;
 
   const scope = [
-    "このご報告は、いただいた情報（画面の写真・ご説明）にもとづく、PHPの番号の確認と、今回の修正版との比較です。**脆弱性診断（攻撃を試すテスト）や、攻撃を受けたかどうかの調査ではありません。**",
+    "このご報告は、いただいた情報（画面の写真・ご説明など）にもとづく、PHPの番号の確認と、今回の修正版との比較です。**脆弱性診断（攻撃を試すテスト）や、攻撃を受けたかどうかの調査ではありません。** 攻撃を受けた可能性が心配な場合は、サーバー会社や、専門の業者にご相談ください。",
     `判定は、${input.report_date || "ご報告の日"}時点の公式発表と、いただいた情報にもとづきます。状況が変わった場合は、公式の最新情報をご確認ください。`,
-    "「安全です」というお約束ではありません。サーバーの設定や、サーバー会社の対応状況は、確認していません。",
-    "WordPress本体・テーマ・プラグインの状態は、確認の対象外です（画面に写っていた範囲で気づいた点は、参考としてお伝えする場合があります）。",
-    "攻撃を受けた可能性が心配な場合は、サーバー会社や、専門の業者にご相談ください。",
+    "「安全です」というお約束ではありません。サーバーの設定、サーバー会社の対応状況、WordPress本体・テーマ・プラグインの状態は、確認の対象外です（画面に写っていた範囲で気づいた点は、参考としてお伝えする場合があります）。確認できなかった事項は、「要確認」としています。",
+    ...(publicCaveat ? [publicCaveat] : []),
   ];
+  const legend = Object.entries(STATUS).map(([key, s]) => ({ key, mark: s.mark, label: s.label, text: s.legend, color: s.color, bg: s.bg, mine: key === status }));
+  const infoNote = "このご報告は、いただいた情報にもとづく確認の結果です。脆弱性診断（攻撃を試すテスト）や、攻撃を受けたかどうかの調査ではありません。確認できなかった事項は、「要確認」としています。";
 
-  return { input, status, st, judge: j, conclusion, confirmRows, relation, versionTable, actions, hostQuestions, cautions, options, scope, notes: input.notes || [] };
+  return { input, status, st, judge: j, conclusion, keyRows, confirmRows, relation, versionTable, callout, actions, hostQuestions, cautions, faq, options, scope, legend, summaryRows, infoNote, notes: input.notes || [] };
 }
 
 // ---- 出力：Markdown --------------------------------------------------------------------------------
@@ -150,69 +201,119 @@ const plain = s => String(s).replace(/\*\*/g, "");
 function renderMarkdown(m) {
   const L = [];
   L.push(`# PHPの脆弱性（2026年10月）確認結果のご報告${m.input.sample ? "　【サンプル・架空の例】" : ""}`, "");
+  L.push(`確認日：${m.input.report_date || ""}　／　福祉ITパートナー`, "");
   L.push(`## 結論：${m.st.mark} ${m.st.label}`, "", m.conclusion, "");
+  L.push("| 項目 | 内容 |", "| --- | --- |", ...m.keyRows.map(r => `| ${r[0]} | ${r[1]} |`), "", `> ${m.infoNote}`, "");
   L.push("## 確認した内容", "", "| 項目 | 内容 |", "| --- | --- |", ...m.confirmRows.map(r => `| ${r[0]} | ${r[1]} |`), "");
-  L.push("## 今回の脆弱性との関係", "", ...m.relation.flatMap(p => [p, ""]));
-  L.push("| 系列 | 修正版 | 備考 |", "| --- | --- | --- |", ...m.versionTable.map(r => `| ${r.series}${r.mine ? "（お客様）" : ""} | ${r.fixed} | ${r.note} |`), "");
+  L.push("## 今回の脆弱性について", "", ...m.relation.flatMap(p => [p, ""]));
+  L.push("| 系列 | 修正版 | 備考 |", "| --- | --- | --- |", ...m.versionTable.map(r => `| ${r.series}${r.mine ? "（お客様）" : ""} | ${r.fixed} | ${r.note} |`), "", `**${m.callout}**`, "");
   L.push("## 必要な対策", "", ...m.actions.map((a, i) => `${i + 1}. ${plain(a)}`), "");
   if (m.hostQuestions) L.push("## サーバー会社・制作会社に確認すること（文例）", "", ...m.hostQuestions.map(q => `> ${q}`), "");
   if (m.cautions) L.push("## 更新するときの注意", "", ...m.cautions.map(c => `- ${c}`), "");
+  L.push("## よくあるご質問", "", ...m.faq.flatMap(([q, a]) => [`**Q. ${q}**`, a, ""]));
   if (m.options) L.push("## 続け方の選択肢（必要な方のみ）", "", ...m.options.map(o => `- ${o}`), "");
   if (m.notes.length) L.push("## 補足", "", ...m.notes.map(n => `- ${n}`), "");
+  L.push("## まとめ", "", "| 項目 | 内容 |", "| --- | --- |", ...m.summaryRows.map(r => `| ${r[0]} | ${r[1].replace(/\n/g, "<br>")} |`), "");
+  L.push("## 判定の目安", "", ...m.legend.map(l => `- ${l.mark} **${l.label}**：${l.text}${l.mine ? "　←今回の判定" : ""}`), "");
   L.push("## このご報告の範囲", "", ...m.scope.map(s => `- ${plain(s)}`), "");
   L.push("## 参考（公式の情報）", "", ...SOURCES.map(([t, u]) => `- ${t}：${u}`), "");
   return L.join("\n");
 }
 
-// ---- 出力：HTML（PDF用） ---------------------------------------------------------------------------
+// ---- 出力：HTML（PDF用・A4×4ページ） ----------------------------------------------------------------
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const bold = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+function logoDataUri() {
+  try { return "data:image/png;base64," + fs.readFileSync(path.resolve(__dirname, "../../../../assets/images/logo-mark.png")).toString("base64"); } catch (_) { return ""; }
+}
 function renderHtml(m) {
-  const sample = m.input.sample ? '<div class="wm" aria-hidden="true">サンプル（架空の例）</div>' : "";
-  const section = (title, body) => `<section><h2>${esc(title)}</h2>${body}</section>`;
+  const logo = logoDataUri();
+  const wm = m.input.sample ? '<div class="wm" aria-hidden="true">サンプル（架空の例）</div>' : "";
+  const h2 = (n, t) => `<h2><span class="no">${n}</span>${esc(t)}</h2>`;
   const ul = a => `<ul>${a.map(x => `<li>${bold(x)}</li>`).join("")}</ul>`;
   const ol = a => `<ol>${a.map(x => `<li>${bold(x)}</li>`).join("")}</ol>`;
+  const tbl = rows => `<table class="kv">${rows.map(r => `<tr><th>${esc(r[0])}</th><td>${esc(r[1]).replace(/\n/g, "<br>")}</td></tr>`).join("")}</table>`;
+  const page = (n, body) => `<section class="page">${wm}${body}<div class="foot"><span>福祉ITパートナー</span><span>${n} / 4</span></div></section>`;
+  const sec = (title, num, body) => `<div class="blk">${h2(num, title)}${body}</div>`;
+
+  const p1 = `
+<div class="top"><div class="brand">${logo ? `<img src="${logo}" alt="">` : ""}<span>福祉ITパートナー</span></div><div class="date">確認日：${esc(m.input.report_date || "")}</div></div>
+<h1>PHPの脆弱性（2026年10月）<br>確認結果のご報告</h1>
+<p class="site">${m.input.site_name ? esc(m.input.site_name) + "　／　" : ""}${esc(m.input.site_url || "")}</p>
+<div class="concl"><div class="mk">${m.st.mark}</div><div><p class="cap">判定結果</p><p class="lb">${esc(m.st.label)}</p><p class="tx">${bold(m.conclusion)}</p></div></div>
+${tbl(m.keyRows)}
+<p class="info">${esc(m.infoNote)}</p>
+<div class="blk" style="margin-top:7mm"><h3>判定の目安</h3><table class="lg">${m.legend.map(l => `<tr class="${l.mine ? "mine" : ""}"><td class="m" style="background:${l.bg};color:${l.color}">${l.mark} ${esc(l.label)}</td><td>${esc(l.text)}${l.mine ? "　<b>←今回の判定</b>" : ""}</td></tr>`).join("")}</table></div>`;
+
+  const p2 = `
+${sec("確認した内容", 1, tbl(m.confirmRows))}
+${sec("今回の脆弱性について", 2, m.relation.map(p => `<p>${esc(p)}</p>`).join("") +
+    `<table class="vt"><tr><th>系列</th><th>修正版</th><th>備考</th></tr>${m.versionTable.map(r => `<tr class="${r.mine ? "mine" : ""}"><td>${esc(r.series)}${r.mine ? "（お客様）" : ""}</td><td>${esc(r.fixed)}</td><td>${esc(r.note)}</td></tr>`).join("")}</table>` +
+    `<p class="callout">${esc(m.callout)}</p>`)}`;
+
+  const faqHtml = `<div class="blk"><h3>よくあるご質問</h3>${m.faq.map(([q, a]) => `<div class="faq"><p class="fq">Q. ${esc(q)}</p><p class="fa">${esc(a)}</p></div>`).join("")}</div>`;
+  const faqOnP3 = !(m.hostQuestions && m.options);
+  const p3 = `
+${sec("必要な対策", 3, ol(m.actions))}
+${m.hostQuestions ? `<div class="blk"><h3>サーバー会社・制作会社に確認すること（文例）</h3><div class="q">${m.hostQuestions.map(q => `<p>${esc(q)}</p>`).join("")}</div></div>` : ""}
+${m.cautions ? `<div class="blk"><h3>更新するときの注意</h3>${ul(m.cautions)}</div>` : ""}
+${m.options ? `<div class="blk"><h3>続け方の選択肢（必要な方のみ）</h3>${ul(m.options)}</div>` : ""}
+${faqOnP3 ? faqHtml : ""}
+${m.notes.length ? `<div class="blk"><h3>補足</h3>${ul(m.notes)}</div>` : ""}`;
+
+  const p4 = `
+${sec("まとめ", 4, tbl(m.summaryRows))}
+${faqOnP3 ? "" : faqHtml}
+<div class="blk"><h3>このご報告の範囲</h3>${ul(m.scope)}</div>
+<div class="blk"><h3>参考（公式の情報）</h3><ul class="src">${SOURCES.map(([t, u]) => `<li>${esc(t)}：${esc(u)}</li>`).join("")}</ul></div>`;
+
   return `<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>PHPの脆弱性 確認結果のご報告</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-@page { size: A4; margin: 14mm 15mm 16mm; }
+@page { size: A4; margin: 0; }
 * { box-sizing: border-box; }
-body { margin: 0; font-family: "Noto Sans JP", "IPAexGothic", "IPAGothic", sans-serif; font-size: 9.6pt; line-height: 1.62; color: #34383a; }
-h1 { margin: 0 0 3mm; font-size: 15.5pt; font-weight: 800; color: #1f4d3c; }
-.meta { margin: 0 0 4mm; font-size: 8.6pt; color: #5b6562; }
-h2 { margin: 0 0 1.8mm; padding-left: 2.6mm; border-left: 1.4mm solid #4a8c6f; font-size: 10.8pt; font-weight: 800; color: #1f4d3c; }
-section { margin: 0 0 4.2mm; break-inside: avoid; }
-.concl { display: flex; align-items: center; gap: 4mm; margin: 0 0 4.2mm; padding: 3.4mm 4.2mm; border-radius: 3mm; background: ${m.st.bg}; border: .5mm solid ${m.st.color}; break-inside: avoid; }
-.concl .mk { flex: none; width: 13mm; height: 13mm; border-radius: 50%; background: ${m.st.color}; color: #fff; font-size: 17pt; font-weight: 800; text-align: center; line-height: 13mm; }
-.concl .lb { margin: 0 0 .8mm; font-size: 13pt; font-weight: 800; color: ${m.st.color}; }
+body { margin: 0; font-family: "Noto Sans JP", "IPAexGothic", "IPAGothic", sans-serif; font-size: 9.6pt; line-height: 1.62; color: #34383a; background: #fff; }
+.page { position: relative; width: 210mm; height: 297mm; padding: 13mm 15mm 17mm; overflow: hidden; break-after: page; background: #fff; }
+.page:last-child { break-after: auto; }
+.foot { position: absolute; left: 15mm; right: 15mm; bottom: 8mm; display: flex; justify-content: space-between; font-size: 8pt; color: #5b6562; border-top: .25mm solid #dfe6e2; padding-top: 1.6mm; }
+.top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8mm; }
+.brand { display: flex; align-items: center; gap: 2mm; font-weight: 700; color: #1f4d3c; font-size: 10pt; }
+.brand img { width: 8mm; height: 8mm; }
+.date { font-size: 8.8pt; color: #5b6562; }
+h1 { margin: 0 0 3mm; font-size: 20pt; line-height: 1.35; font-weight: 800; color: #134630; }
+.site { margin: 0 0 7mm; padding-bottom: 4mm; border-bottom: .5mm solid #4a8c6f; font-size: 10pt; color: #34383a; }
+.concl { display: flex; align-items: center; gap: 6mm; margin: 0 0 6mm; padding: 6mm 6mm; border-radius: 4mm; background: ${m.st.bg}; border: .6mm solid ${m.st.color}; }
+.concl .mk { flex: none; width: 24mm; height: 24mm; border-radius: 50%; background: ${m.st.color}; color: #fff; font-size: 30pt; font-weight: 800; text-align: center; line-height: 24mm; }
+.concl .cap { margin: 0; font-size: 9pt; font-weight: 700; color: #5b6562; }
+.concl .lb { margin: 0 0 1.4mm; font-size: 22pt; font-weight: 800; line-height: 1.3; color: ${m.st.color}; }
 .concl .tx { margin: 0; font-size: 9.8pt; }
-table { width: 100%; border-collapse: collapse; font-size: 9pt; }
-th, td { padding: 1.4mm 2.4mm; border: .25mm solid #cfd8d3; text-align: left; vertical-align: top; }
-th { width: 31mm; background: #f1f6f3; font-weight: 700; }
-.vt th { width: auto; }
+.info { margin: 6mm 0 0; padding: 3.4mm 4.4mm; background: #eaf3fb; border-radius: 2.4mm; font-size: 9pt; color: #2f5575; }
+h2 { display: flex; align-items: center; gap: 3mm; margin: 0 0 3mm; padding: 2mm 3mm; background: #eef5f1; border-radius: 2mm; font-size: 12pt; font-weight: 800; color: #1f4d3c; }
+h2 .no { flex: none; width: 7mm; height: 7mm; border-radius: 50%; background: #2c6b54; color: #fff; text-align: center; line-height: 7mm; font-size: 10pt; }
+h3 { margin: 0 0 2mm; padding-left: 2.6mm; border-left: 1.4mm solid #4a8c6f; font-size: 10.6pt; font-weight: 800; color: #1f4d3c; }
+.blk { margin: 0 0 5.6mm; }
+table { width: 100%; border-collapse: collapse; font-size: 9.2pt; }
+th, td { padding: 1.9mm 3mm; border: .25mm solid #cfd8d3; text-align: left; vertical-align: top; }
+.kv th { width: 44mm; background: #f1f6f3; font-weight: 700; }
+.vt th { background: #f1f6f3; }
 .vt tr.mine td { background: #fff4e5; font-weight: 700; }
-p { margin: 0 0 1.6mm; }
-ul, ol { margin: 0; padding-left: 5.2mm; }
-li { margin: 0 0 1mm; }
-.q { margin: 0; padding: 2.4mm 3.4mm; background: #f4f7f4; border-left: 1mm solid #8aa99a; font-size: 9.1pt; }
-.q p { margin: 0 0 1mm; }
+.callout { margin: 3.4mm 0 0; padding: 3.2mm 4mm; background: ${m.st.bg}; border-left: 1.4mm solid ${m.st.color}; font-weight: 700; color: ${m.st.color}; }
+p { margin: 0 0 2mm; }
+ul, ol { margin: 0; padding-left: 5.4mm; }
+li { margin: 0 0 1.4mm; }
+.q { margin: 0; padding: 3mm 4mm; background: #f4f7f4; border-left: 1mm solid #8aa99a; font-size: 9.2pt; }
+.q p { margin: 0 0 1.2mm; }
+.faq { margin: 0 0 2.6mm; padding: 2.4mm 3.6mm; background: #f7f9f7; border-radius: 2mm; }
+.fq { margin: 0 0 .8mm; font-weight: 800; color: #1f4d3c; }
+.fa { margin: 0; font-size: 9.2pt; }
+.lg td { padding: 2.2mm 3mm; }
+.lg td.m { width: 42mm; font-weight: 800; white-space: nowrap; }
+.lg tr.mine td { border: .5mm solid #34383a; }
 .src { font-size: 8.4pt; color: #5b6562; word-break: break-all; }
-.foot { margin-top: 3mm; font-size: 8.3pt; color: #5b6562; }
-.wm { position: fixed; top: 46%; left: 6%; width: 88%; text-align: center; transform: rotate(-24deg); font-size: 40pt; font-weight: 800; color: rgba(180,83,63,.13); z-index: 5; pointer-events: none; }
-</style></head><body>${sample}
-<h1>PHPの脆弱性（2026年10月）確認結果のご報告</h1>
-<p class="meta">福祉ITパートナー　／　確認日：${esc(m.input.report_date || "")}</p>
-<div class="concl"><div class="mk">${m.st.mark}</div><div><p class="lb">結論：${esc(m.st.label)}</p><p class="tx">${bold(m.conclusion)}</p></div></div>
-${section("確認した内容", `<table>${m.confirmRows.map(r => `<tr><th>${esc(r[0])}</th><td>${esc(r[1])}</td></tr>`).join("")}</table>`)}
-${section("今回の脆弱性との関係", m.relation.map(p => `<p>${esc(p)}</p>`).join("") + `<table class="vt"><tr><th>系列</th><th>修正版</th><th>備考</th></tr>${m.versionTable.map(r => `<tr class="${r.mine ? "mine" : ""}"><td>${esc(r.series)}${r.mine ? "（お客様）" : ""}</td><td>${esc(r.fixed)}</td><td>${esc(r.note)}</td></tr>`).join("")}</table>`)}
-${section("必要な対策", ol(m.actions))}
-${m.hostQuestions ? section("サーバー会社・制作会社に確認すること（文例）", `<div class="q">${m.hostQuestions.map(q => `<p>${esc(q)}</p>`).join("")}</div>`) : ""}
-${m.cautions ? section("更新するときの注意", ul(m.cautions)) : ""}
-${m.options ? section("続け方の選択肢（必要な方のみ）", ul(m.options)) : ""}
-${m.notes.length ? section("補足", ul(m.notes)) : ""}
-${section("このご報告の範囲", ul(m.scope))}
-${section("参考（公式の情報）", `<ul class="src">${SOURCES.map(([t, u]) => `<li>${esc(t)}：${esc(u)}</li>`).join("")}</ul>`)}
+.wm { position: absolute; top: 43%; left: 4%; width: 92%; text-align: center; transform: rotate(-24deg); font-size: 42pt; font-weight: 800; color: rgba(180,83,63,.10); z-index: 5; pointer-events: none; }
+</style></head><body>
+${page(1, p1)}${page(2, p2)}${page(3, p3)}${page(4, p4)}
 </body></html>`;
 }
 
@@ -242,9 +343,11 @@ async function main() {
   const page = await browser.newPage();
   await page.setContent(renderHtml(model), { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
+  const over = await page.evaluate(() => [...document.querySelectorAll(".page")].map((el, i) => el.scrollHeight > el.clientHeight + 1 ? i + 1 : 0).filter(Boolean));
+  over.forEach(n => console.warn(`[警告] ${n}ページ目の内容が、ページに収まっていません（下が切れます）。文章を短くしてください`));
   await page.pdf({ path: base + ".pdf", format: "A4", printBackground: true, preferCSSPageSize: true });
   await browser.close();
   console.log("書き出し:", path.relative(process.cwd(), base + ".pdf"));
 }
-module.exports = { judge, buildModel, parseVersion, FIXED };
+module.exports = { judge, buildModel, parseVersion, renderHtml, renderMarkdown, FIXED };
 if (require.main === module) main().catch(e => { console.error(e.message); process.exit(1); });

@@ -2,7 +2,7 @@
 // ココナラ商品画像の書き出し
 //   使い方（リポジトリのルートで）：
 //     node marketing/coconala/images/src/build.js            # プランA（基本2,000円）の全画像 → images/
-//     node marketing/coconala/images/src/build.js --plan-b   # プランB（基本3,000円）→ images/plan-b/（価格の入った画像だけ）
+//     node marketing/coconala/images/src/build.js --plan-b   # プランB（基本3,000円）→ images/plan-b/（価格の入った 06-plans だけ）
 //     node marketing/coconala/images/src/build.js 01 04      # 番号を指定して書き出す
 //   必要なもの：playwright と Chromium（環境変数 PLAYWRIGHT_CHROMIUM_PATH でパスを指定できます）。
 //   フォントは Google Fonts の Noto Sans JP を読み込みます（ネットワークが必要です）。
@@ -26,7 +26,7 @@ const args = process.argv.slice(2);
 const planB = args.includes("--plan-b");
 const wanted = args.filter(a => /^\d+$/.test(a));
 // 価格の入った画像（プランBで作り直すもの）
-const PRICE_PAGES = ["01-main", "04-plans"];
+const PRICE_PAGES = ["06-plans"];   // 1枚目（ChatGPT版）のプランBは、加工版を手作業で用意（05-image-plan.md §0）
 
 const pages = fs.readdirSync(SRC)
   .filter(f => /^\d\d-.+\.html$/.test(f))
