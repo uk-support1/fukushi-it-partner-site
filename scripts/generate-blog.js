@@ -271,6 +271,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '      <ul class="nav-links">\n' +
     '        <li><a href="../index.html">HOME</a></li>\n' +
     '        <li><a href="../homepage-plan.html">料金プラン</a></li>\n' +
+    '        <li><a href="../php-homepage-comparison.html" class="nav-php">PHP対応<span class="nav-badge">NEW</span></a></li>\n' +
     '        <li><a href="../works.html">制作実績</a></li>\n' +
     '        <li><a href="../flow.html">制作までの流れ</a></li>\n' +
     '        <li><a href="../blog.html" class="active">ブログ</a></li>\n' +
@@ -549,6 +550,7 @@ function buildBlogHtml(blogIndex) {
     '      <ul class="nav-links">\n' +
     '        <li><a href="index.html">HOME</a></li>\n' +
     '        <li><a href="homepage-plan.html">料金プラン</a></li>\n' +
+    '        <li><a href="php-homepage-comparison.html" class="nav-php">PHP対応<span class="nav-badge">NEW</span></a></li>\n' +
     '        <li><a href="works.html">制作実績</a></li>\n' +
     '        <li><a href="flow.html">制作までの流れ</a></li>\n' +
     '        <li><a href="blog.html" class="active">ブログ</a></li>\n' +
