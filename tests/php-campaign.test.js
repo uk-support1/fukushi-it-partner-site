@@ -322,19 +322,37 @@ test("3つの選択肢（A・B・C）が、アイコン付きのカードで、�
   assert.match(textOf(page), /PHPやWordPressを「危険」と決めつけません。乗り換えは必須ではありません。/);
 });
 
-test("視覚的な比較：費用・管理の手間・対応の難しさ・向いている会社を、A・B・Cのカードで示している", () => {
+test("視覚的な比較：A・B・Cを横に固定し、費用・管理の手間・対応の難しさ・向いている会社を縦に並べた、◎○△の表になっている", () => {
   const page = read(COMPARE);
-  const cards = [...page.matchAll(/<article class="pc-cmp reveal">[\s\S]*?<\/article>/g)].map(match => match[0]);
-  assert.deepEqual(cards.map(card => textOf(card.match(/<h3[\s\S]*?<\/h3>/)[0])), ["費用", "管理の手間", "対応の難しさ", "どんな会社に向いているか"]);
-  cards.forEach((card, index) => {
-    for (const key of ["a", "b", "c"]) assert.equal((card.match(new RegExp("pc-cmp-row--" + key + '"', "g")) || []).length, 1, index + " has a row for " + key);
-    // 最初の3つは、3段階のメーター（●の数）で直感的に比べられる
-    assert.equal((card.match(/class="pc-meter"/g) || []).length, index < 3 ? 3 : 0, "meters in card " + index);
-    for (const meter of card.matchAll(/<span class="pc-meter" role="img" aria-label="目安：3段階のうち(\d)">((?:<i class="on"><\/i>|<i><\/i>){3})<\/span>/g)) {
-      assert.equal((meter[2].match(/class="on"/g) || []).length, Number(meter[1]), "the screen-reader label matches the dots");
-    }
+  const compare = sectionOf(page, "pc-compare");
+  const table = compare.match(/<table class="pc-mx" role="table">[\s\S]*?<\/table>/)[0];
+  assert.ok(!page.includes("pc-meter") && !page.includes("pc-cmp-grid"), "the old meter cards are gone");
+  assert.match(table, /<caption class="visually-hidden">/, "the table has a caption for screen readers");
+  // 横：A・B・C（列ごとに色が決まっている）
+  const heads = [...table.matchAll(/<th scope="col" role="columnheader" class="pc-mx-h pc-mx-h--([abc])">[\s\S]*?<\/th>/g)];
+  assert.deepEqual(heads.map(match => match[1]), ["a", "b", "c"]);
+  assert.deepEqual(heads.map(match => textOf(match[0])), ["A使い続ける", "B管理会社に対応してもらう", "C乗り換える"]);
+  // 縦：項目。◎・○・△は「よいほど◎」にそろえている
+  const rows = [...table.matchAll(/<tr role="row">\s*<th scope="row"[\s\S]*?<\/tr>/g)].map(match => match[0]);
+  assert.deepEqual(rows.map(row => textOf(row.match(/<span class="pc-mx-rowtitle">[\s\S]*?<\/span>/)[0])), ["費用", "管理の手間", "対応の難しさ", "向いている会社"]);
+  const names = { s: "とても良い", g: "良い", c: "注意が必要" };
+  const expected = [["s", "c", "g"], ["c", "g", "s"], ["c", "s", "g"], []]; // 行ごとの A・B・C の評価（◎＝s、○＝g、△＝c）
+  rows.forEach((row, index) => {
+    assert.deepEqual([...row.matchAll(/<td class="pc-mx-cell pc-mx-cell--([abc])[^"]*" role="cell">/g)].map(match => match[1]), ["a", "b", "c"], "cells keep A, B, C order in row " + index);
+    const marks = [...row.matchAll(/class="pc-mx-mark pc-mx-mark--([sgc])" role="img" aria-label="([^"]+)"/g)];
+    assert.deepEqual(marks.map(match => match[1]), expected[index], "ratings in row " + index);
+    for (const [, kind, label] of marks) assert.equal(label, names[kind], "the symbol has a spoken label");
+    // コメントは短く（スマホの3列でも読める長さ）
+    for (const note of row.matchAll(/<span class="pc-mx-note">([\s\S]*?)<\/span>/g)) assert.ok(textOf(note[1]).length <= 40, "short comment: " + textOf(note[1]));
   });
-  assert.match(textOf(page), /あくまで目安です。費用や手間は、ホームページの大きさや、今ついている機能（会員ページ・予約など）によって大きく変わります。一律の相場はお示しできません。/);
+  // 凡例と、くわしい比較表への案内
+  assert.deepEqual([...compare.matchAll(/<ul class="pc-mx-legend"[^>]*>([\s\S]*?)<\/ul>/g)].flatMap(match => [...match[1].matchAll(/<li>[\s\S]*?<\/li>/g)].map(item => textOf(item[0]))), ["とても良い", "良い", "注意が必要"]);
+  assert.match(compare, /<a class="pc-text-link" href="#pc-table">くわしい比較表<\/a>/);
+  assert.match(textOf(compare), /あくまで目安です。費用や手間は、ホームページの大きさや、今ついている機能（会員ページ・予約など）によって大きく変わります。一律の相場はお示しできません。/);
+  // スマホでも、A・B・Cの3列を保つ（項目名は各行の見出し帯になる）
+  const css = read("assets/css/php-compare.css");
+  assert.match(css, /\.pc-mx tr\s*\{[^}]*grid-template-columns:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/);
+  assert.match(css, /\.pc-mx tbody th\s*\{[^}]*grid-column:\s*1 \/ -1/);
 });
 
 test("福祉ITパートナーの提案：49,500円と、フォーム・予約・会員などは個別見積りであること、無料相談ボタンが同じ場所にある", () => {
