@@ -16,6 +16,8 @@ const page = read("server-domain-guide.html");
 const SAKURA_REFERRAL = "https://secure.sakura.ad.jp/order/rs-domain/agency/rs/plans?aid=29aa6a6d92e19bd50eaff2cdc2e06320";
 const A8_HREF = "https://px.a8.net/svt/ejp?a8mat=4BEMLT+77L0J6+CO4+15ORS2";
 const A8_PIXEL = "https://www12.a8.net/0.gif?a8mat=4BEMLT+77L0J6+CO4+15ORS2";
+const ONAMAE_HREF = "https://px.a8.net/svt/ejp?a8mat=4BEMLT+6Z8Y2A+50+2HE8HE";
+const ONAMAE_PIXEL = "https://www19.a8.net/0.gif?a8mat=4BEMLT+6Z8Y2A+50+2HE8HE";
 
 function anchors(html) {
   return [...html.matchAll(/<a href="([^"]+)"[^>]*data-link="([^"]+)"[^>]*data-link-type="([a-z]+)"[^>]*>/g)]
@@ -24,6 +26,18 @@ function anchors(html) {
 
 test("ページの本文は、データ（data/server-guide.json）から作った内容と一致している（直したら npm run build:server-guide）", () => {
   assert.equal(page, guide.build({ write: false }), "server-domain-guide.html is out of date");
+});
+
+test("紹介リンク：お名前.com（A8）は、正式な広告コードのURL・計測画像のまま、sponsored・nofollowが付く", () => {
+  const onamae = anchors(page).filter(item => item.key === "onamae");
+  assert.equal(onamae.length, 1);
+  assert.equal(onamae[0].href, ONAMAE_HREF);
+  assert.equal(onamae[0].type, "referral");
+  assert.match(onamae[0].rel, /\bnofollow\b/);
+  assert.match(onamae[0].rel, /\bsponsored\b/);
+  assert.ok(page.includes(`<img border="0" width="1" height="1" src="${ONAMAE_PIXEL}" alt="">`), "the Onamae tracking pixel is included as provided");
+  assert.equal((page.match(/www19\.a8\.net\/0\.gif/g) || []).length, 1, "pixel once");
+  assert.ok(!page.includes("www19.a8.net/0.gif?a8mat=4BEMLT+77L0J6"), "no mix-up between the two A8 campaigns");
 });
 
 test("紹介リンク：さくら（取次店URL）と XServerドメイン（A8）は、指定どおりのURLで、sponsored・nofollowが付く", () => {
@@ -50,8 +64,8 @@ test("紹介リンク：埼家連専用の uid 付きURLを使っていない", 
   assert.ok(!/saikaren|埼家連/.test(page));
 });
 
-test("紹介リンクがない会社（ロリポップ・エックスサーバー・お名前.com・さくらのドメイン）は、公式サイトへの通常リンク", () => {
-  const expected = { lolipop: "https://lolipop.jp/", xserver: "https://www.xserver.ne.jp/", onamae: "https://www.onamae.com/", "sakura-domain": "https://domain.sakura.ad.jp/" };
+test("紹介リンクがない会社（ロリポップ・エックスサーバー・さくらのドメイン）は、公式サイトへの通常リンク", () => {
+  const expected = { lolipop: "https://lolipop.jp/", xserver: "https://www.xserver.ne.jp/", "sakura-domain": "https://domain.sakura.ad.jp/" };
   const list = anchors(page);
   for (const [key, url] of Object.entries(expected)) {
     const items = list.filter(item => item.key === key);
@@ -66,16 +80,22 @@ test("紹介リンクがない会社（ロリポップ・エックスサーバ�
 
 test("後日、紹介リンクに変えられる：データで approved＋referral にするだけで、PR表記・sponsored・nofollow が付く（逆も同様）", () => {
   const changed = JSON.parse(JSON.stringify(data));
-  changed.links.onamae.referral = "https://example.com/referral?x=1";
-  changed.links.onamae.status = "approved";
+  changed.links.lolipop.referral = "https://example.com/referral?x=1";
+  changed.links.lolipop.status = "approved";
   const html = guide.buildMain(changed);
-  const onamae = anchors(html).filter(item => item.key === "onamae");
-  assert.equal(onamae[0].href, "https://example.com/referral?x=1");
-  assert.match(onamae[0].rel, /sponsored nofollow/);
-  assert.match(html, /お名前\.com<\/strong>/, "the PR disclosure lists the newly approved company");
+  const lolipop = anchors(html).filter(item => item.key === "lolipop");
+  assert.equal(lolipop[0].href, "https://example.com/referral?x=1");
+  assert.match(lolipop[0].rel, /sponsored nofollow/);
+  assert.match(html, /ロリポップ！<\/strong>/, "the PR disclosure lists the newly approved company");
   // 審査中・未登録のままなら、referral の値があっても使わない
-  changed.links.onamae.status = "pending";
-  assert.equal(anchors(guide.buildMain(changed)).find(item => item.key === "onamae").href, "https://www.onamae.com/");
+  changed.links.lolipop.status = "pending";
+  assert.equal(anchors(guide.buildMain(changed)).find(item => item.key === "lolipop").href, "https://lolipop.jp/");
+  // 提携が終わった／外した場合も、公式リンクに戻せる
+  const reverted = JSON.parse(JSON.stringify(data));
+  reverted.links.onamae.status = "none";
+  const back = guide.buildMain(reverted);
+  assert.equal(anchors(back).find(item => item.key === "onamae").href, "https://www.onamae.com/");
+  assert.ok(!back.includes("www19.a8.net"), "no tracking pixel for a plain official link");
 });
 
 test("PR表記：ページ上部に広告（PR）の表示があり、最初の紹介リンクより前にある。紹介報酬の説明もある", () => {

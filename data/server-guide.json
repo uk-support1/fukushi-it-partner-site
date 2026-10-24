@@ -35,9 +35,10 @@
     "onamae": {
       "name": "お名前.com",
       "official": "https://www.onamae.com/",
-      "referral": null,
-      "status": "pending",
-      "program": null
+      "referral": "https://px.a8.net/svt/ejp?a8mat=4BEMLT+6Z8Y2A+50+2HE8HE",
+      "pixel": "https://www19.a8.net/0.gif?a8mat=4BEMLT+6Z8Y2A+50+2HE8HE",
+      "status": "approved",
+      "program": "A8.net"
     },
     "sakura-domain": {
       "name": "さくらのドメイン",
