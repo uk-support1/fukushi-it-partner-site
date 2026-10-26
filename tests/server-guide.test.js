@@ -39,14 +39,51 @@ test("構成：冒頭の2つの導線 → 目的別おすすめ → サーバー
 
 test("冒頭の導線：「レンタルサーバーを比較する」「ドメインを比較する」が、それぞれの比較セクションへのページ内リンクになっている", () => {
   const nav = page.match(/<nav class="sg-jump"[\s\S]*?<\/nav>/)[0];
-  assert.match(nav, /<a class="sg-jump-btn" href="#sg-server-compare">[\s\S]*?レンタルサーバーを比較する/);
-  assert.match(nav, /<a class="sg-jump-btn" href="#sg-domain-compare">[\s\S]*?ドメインを比較する/);
+  assert.match(nav, /<a class="sg-jump-card sg-jump-card--server" href="#sg-server-compare">[\s\S]*?レンタルサーバーを比較する/);
+  assert.match(nav, /<a class="sg-jump-card sg-jump-card--domain" href="#sg-domain-compare">[\s\S]*?ドメインを比較する/);
   assert.match(page, /<section[^>]*id="sg-server-compare"/);
   assert.match(page, /<section[^>]*id="sg-domain-compare"/);
   const css = read("assets/css/server-guide.css");
   assert.match(css, /html\s*\{\s*scroll-behavior:\s*smooth;/, "smooth scrolling");
   assert.match(css, /prefers-reduced-motion: reduce\)\s*\{\s*html\s*\{\s*scroll-behavior:\s*auto/, "respects reduced motion");
   assert.match(css, /#sg-server-compare[\s\S]*?scroll-margin-top/, "targets are not hidden behind the fixed header");
+});
+
+test("冒頭の2つのカード：イラスト付きの軽やかなデザインで、カード全体が1つのリンク。色が違い、ホバーで自然に変化し、PRは付かない", () => {
+  const nav = page.match(/<nav class="sg-jump"[\s\S]*?<\/nav>/)[0];
+  const cards = [...nav.matchAll(/<a class="sg-jump-card[^"]*" href="(#[^"]+)">([\s\S]*?)<\/a>/g)];
+  assert.equal(cards.length, 2, "two cards");
+  for (const [, , inner] of cards) {
+    assert.match(inner, /<span class="sg-jump-art"><svg[^>]*aria-hidden="true"/, "an illustration, hidden from screen readers");
+    assert.ok(!/<a /.test(inner), "no nested links: the whole card is one link");
+    assert.ok(!/sg-pr-mark|PR/.test(inner), "no PR label on the in-page navigation");
+    assert.match(inner, /sg-jump-eyebrow/);
+  }
+  assert.notEqual(cards[0][2].match(/<svg[\s\S]*?<\/svg>/)[0], cards[1][2].match(/<svg[\s\S]*?<\/svg>/)[0], "different illustrations");
+  const css = read("assets/css/server-guide.css");
+  assert.match(css, /\.sg-jump-card--domain\s*\{[^}]*--tint:[^}]*--edge:/, "the domain card has its own colour");
+  assert.match(css, /\.sg-jump-card\s*\{[^}]*linear-gradient\(150deg, #ffffff/, "a white-based, light background (not a solid dark fill)");
+  assert.ok(!/sg-jump-card\s*\{[^}]*background:\s*linear-gradient\(135deg, var\(--green-900\)/.test(css), "no heavy dark-green fill");
+  assert.match(css, /\.sg-jump-card:hover,\s*\.sg-jump-card:focus-visible\s*\{[^}]*translateY\(-4px\)/, "hover/focus lift");
+  assert.match(css, /prefers-reduced-motion: reduce\)\s*\{[\s\S]*?\.sg-jump-card/, "motion is switched off for users who prefer less motion");
+  assert.match(css, /@media \(max-width: 640px\)\s*\{[\s\S]*?\.sg-jump \{\s*grid-template-columns: 1fr;/, "cards stack on phones");
+  assert.match(css, /min-height: 96px/, "large tap target on phones");
+});
+
+test("PR表示の整理：右上のPRは維持。広告の紹介リンクにだけ「PR」の印が付き、公式の通常リンクには付かない。公式サイトと誤解されにくい文言", () => {
+  const all = [...page.matchAll(/<a href="[^"]+"[^>]*data-link="[^"]+"[^>]*data-link-type="([a-z]+)"[^>]*>([\s\S]*?)<\/a>/g)];
+  assert.ok(all.length >= 11);
+  for (const [, type, inner] of all) {
+    if (type === "referral") {
+      assert.match(inner, /sg-pr-mark">PR</, "an ad link carries PR");
+      assert.ok(!/公式/.test(inner), "an ad link is not labelled as the official site");
+    } else {
+      assert.ok(!/sg-pr-mark|PR/.test(inner), "a normal official link has no PR mark");
+    }
+  }
+  assert.equal(page.match(/<a class="sg-pr-corner"[^>]*>PR<\/a>/).length, 1);
+  assert.match(page, /<th scope="col">リンク<\/th>/);
+  assert.match(page, /sg-notice-text/, "the short bottom notice stays");
 });
 
 test("目的別おすすめ：4つをコンパクトに並べ、載せる情報は「目的・サービス名とプラン名・月額換算」だけ（リンクや説明文を入れない）", () => {

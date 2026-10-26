@@ -25,6 +25,11 @@ html {
   display: none;
 }
 
+/* 会社名の途中で改行されないようにする部分 */
+.sg-nb {
+  white-space: nowrap;
+}
+
 .sg-num {
   font-weight: 800;
   font-variant-numeric: tabular-nums;
@@ -138,72 +143,167 @@ html {
   color: var(--text-600);
 }
 
-/* 冒頭の2つの導線（押すと、その比較までスムーズにスクロールする） */
+/* 冒頭の2つの導線カード：白〜淡い色の面とイラストで、軽やかに。カード全体が押せる */
 .sg-jump {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  max-width: 760px;
+  gap: 18px;
+  max-width: 800px;
   margin: 0 auto 14px;
 }
 
-.sg-jump-btn {
-  display: flex;
+.sg-jump-card {
+  --accent: var(--green-700);
+  --tint: #e4f2ea;
+  --edge: #cde5d8;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "art body"
+    "art go";
+  gap: 6px 18px;
   align-items: center;
-  gap: 14px;
-  padding: 18px 20px;
+  padding: 20px 22px;
   text-align: left;
-  color: var(--white);
-  background: linear-gradient(135deg, var(--green-900), var(--green-700));
+  color: var(--text-900);
+  background: linear-gradient(150deg, #ffffff 35%, var(--tint) 100%);
+  border: 2px solid var(--edge);
   border-radius: var(--radius-lg);
-  box-shadow: 0 12px 28px rgba(31, 77, 60, 0.25);
-  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 8px 22px rgba(31, 77, 60, 0.08);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
 }
 
-.sg-jump-btn:hover,
-.sg-jump-btn:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(31, 77, 60, 0.32);
+.sg-jump-card--domain {
+  --accent: var(--orange-600);
+  --tint: #fdeedd;
+  --edge: #f4d9bf;
+  box-shadow: 0 8px 22px rgba(217, 127, 63, 0.1);
 }
 
-.sg-jump-btn:focus-visible {
+.sg-jump-card:hover,
+.sg-jump-card:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 16px 34px rgba(31, 77, 60, 0.16);
+}
+
+.sg-jump-card--domain:hover,
+.sg-jump-card--domain:focus-visible {
+  box-shadow: 0 16px 34px rgba(217, 127, 63, 0.22);
+}
+
+.sg-jump-card:focus-visible {
   outline: 3px solid var(--orange-500);
   outline-offset: 3px;
 }
 
-.sg-jump-icon {
+.sg-jump-card:active {
+  transform: translateY(-1px);
+}
+
+.sg-jump-art {
+  grid-area: art;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  width: 52px;
-  height: 52px;
-  color: #ffd9b8;
-  background: rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
+  width: 84px;
+  height: 84px;
+  background: var(--tint);
+  border-radius: 24px 24px 24px 8px;
 }
 
-.sg-jump-text {
-  flex: 1;
+.sg-jump-art svg {
+  display: block;
+  transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.sg-jump-card:hover .sg-jump-art svg,
+.sg-jump-card:focus-visible .sg-jump-art svg {
+  transform: translateY(-2px) rotate(-4deg) scale(1.07);
+}
+
+.sg-jump-body {
+  grid-area: body;
   min-width: 0;
 }
 
-.sg-jump-text strong {
+.sg-jump-eyebrow {
   display: block;
-  font-size: 1.08rem;
+  margin-bottom: 2px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.sg-jump-title {
+  display: block;
+  font-size: 1.1rem;
   line-height: 1.5;
+  color: var(--green-900);
+  text-wrap: balance;
+  word-break: auto-phrase;
 }
 
-.sg-jump-text small {
+.sg-jump-sub {
   display: block;
+  margin-top: 2px;
   font-size: 0.8rem;
-  opacity: 0.85;
+  color: var(--text-600);
 }
 
-.sg-jump-arrow {
-  font-size: 1.4rem;
+.sg-jump-go {
+  grid-area: go;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--accent);
+  background: #fff;
+  border: 1.5px solid var(--edge);
+  border-radius: 999px;
+  transition: background 0.28s ease, color 0.28s ease, border-color 0.28s ease;
+}
+
+.sg-jump-go i {
+  font-style: normal;
   font-weight: 800;
-  color: #ffd9b8;
+  transition: transform 0.28s ease;
+}
+
+.sg-jump-card:hover .sg-jump-go,
+.sg-jump-card:focus-visible .sg-jump-go {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.sg-jump-card:hover .sg-jump-go i,
+.sg-jump-card:focus-visible .sg-jump-go i {
+  transform: translateY(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sg-jump-card,
+  .sg-jump-art svg,
+  .sg-jump-go,
+  .sg-jump-go i {
+    transition: none;
+  }
+
+  .sg-jump-card:hover,
+  .sg-jump-card:focus-visible,
+  .sg-jump-card:hover .sg-jump-art svg,
+  .sg-jump-card:focus-visible .sg-jump-art svg,
+  .sg-jump-card:hover .sg-jump-go i,
+  .sg-jump-card:focus-visible .sg-jump-go i {
+    transform: none;
+  }
 }
 
 .sg-hero-note {
@@ -838,22 +938,45 @@ html {
     gap: 12px;
   }
 
-  .sg-jump-btn {
-    gap: 10px;
+  .sg-jump-card {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "art body go";
+    gap: 12px;
     padding: 14px 14px;
+    min-height: 96px;
   }
 
-  .sg-jump-icon {
-    width: 44px;
-    height: 44px;
+  .sg-jump-art {
+    width: 68px;
+    height: 68px;
+    border-radius: 20px 20px 20px 7px;
   }
 
-  .sg-jump-text strong {
-    font-size: 0.96rem;
+  .sg-jump-art svg {
+    width: 56px;
+    height: 56px;
   }
 
-  .sg-jump-text small {
+  .sg-jump-title {
+    font-size: 0.97rem;
+  }
+
+  .sg-jump-sub {
     font-size: 0.76rem;
+  }
+
+  /* スマホでは「比較表へ」の文字を省き、矢印の丸だけにして、タップしやすく */
+  .sg-jump-go {
+    justify-self: auto;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  .sg-jump-go span {
+    display: none;
   }
 
   /* スマホでは、名前の列を細くして、料金が一緒に見えるようにする */

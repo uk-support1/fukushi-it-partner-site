@@ -27,7 +27,7 @@ function esc(value) {
 }
 const num = n => n.toLocaleString("ja-JP");
 // 長い会社名が「…サーバ／ー」のように中途半端に改行されないよう、「の」の後ろに改行可能な位置を入れる
-const nameHtml = name => esc(name).replace("さくらのレンタルサーバー", "さくらの<wbr>レンタルサーバー");
+const nameHtml = name => esc(name).replace("さくらのレンタルサーバー", 'さくらの<span class="sg-nb">レンタルサーバー</span>');
 const untilShort = until => String(until).replace(/^\d{4}年/, "");
 const yen = n => num(n) + "円";
 
@@ -43,8 +43,9 @@ function linkInfo(data, key) {
 }
 
 function makeAnchor(data, state) {
-  return function anchor(key, text, className) {
+  return function anchor(key, text, className, referralText) {
     const info = linkInfo(data, key);
+    if (info.referral && referralText) text = referralText;
     const rel = info.referral ? "sponsored nofollow noopener" : "noopener";
     let html = `<a href="${esc(info.url)}" class="${className}" target="_blank" rel="${rel}" data-link="${esc(key)}" data-link-type="${info.referral ? "referral" : "official"}">${text}${info.referral ? '<span class="sg-pr-mark">PR</span>' : ""}</a>`;
     if (info.pixel && !state.pixels.has(key)) {
@@ -58,8 +59,9 @@ function makeAnchor(data, state) {
 // ---------------------------------------------------------------------------
 // 各部分
 // ---------------------------------------------------------------------------
-const ICON_SERVER = '<svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><rect x="4" y="5" width="24" height="8" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="4" y="19" width="24" height="8" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="9" cy="9" r="1.4" fill="currentColor"/><circle cx="9" cy="23" r="1.4" fill="currentColor"/><path d="M15 9h9M15 23h9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
-const ICON_DOMAIN = '<svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M5.5 16h21M16 5c3.2 3 4.8 6.6 4.8 11S19.2 24 16 27M16 5c-3.2 3-4.8 6.6-4.8 11S12.8 24 16 27" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+// 冒頭の2つのカードのイラスト（ブランドカラーのやさしい線画。装飾なので読み上げ対象にしない）
+const ART_SERVER = '<svg viewBox="0 0 72 72" width="72" height="72" aria-hidden="true" focusable="false"><ellipse cx="36" cy="63" rx="19" ry="3.2" fill="#1f4d3c" opacity=".14"/><rect x="13" y="38" width="46" height="19" rx="5.5" fill="#4a8c6f"/><rect x="13" y="16" width="46" height="19" rx="5.5" fill="#2c6b54"/><circle cx="22" cy="25.5" r="2.4" fill="#ffd9b8"/><circle cx="30" cy="25.5" r="2.4" fill="#9fd0b6"/><rect x="38" y="23.5" width="14" height="4" rx="2" fill="#fff" opacity=".55"/><circle cx="22" cy="47.5" r="2.4" fill="#ffd9b8"/><circle cx="30" cy="47.5" r="2.4" fill="#d8efe3"/><rect x="38" y="45.5" width="14" height="4" rx="2" fill="#fff" opacity=".55"/><path d="M54 16V9" stroke="#2c6b54" stroke-width="2.4" stroke-linecap="round"/><path d="M54 10.5c-.8-5.4-6-7-9.4-5.6 1 5.2 5.4 6.6 9.4 5.6z" fill="#79b196"/><path d="M54 10.5c.8-5.4 6-7 9.4-5.6-1 5.2-5.4 6.6-9.4 5.6z" fill="#e8965a"/></svg>';
+const ART_DOMAIN = '<svg viewBox="0 0 72 72" width="72" height="72" aria-hidden="true" focusable="false"><rect x="8" y="14" width="56" height="42" rx="7" fill="#fff" stroke="#e8965a" stroke-width="2.6"/><path d="M8 21a7 7 0 0 1 7-7h42a7 7 0 0 1 7 7v4H8z" fill="#e8965a"/><circle cx="16" cy="19.5" r="1.7" fill="#fff"/><circle cx="22" cy="19.5" r="1.7" fill="#fff" opacity=".8"/><circle cx="28" cy="19.5" r="1.7" fill="#fff" opacity=".6"/><rect x="14" y="31" width="36" height="10" rx="5" fill="#fdf1e7" stroke="#f0c9a5" stroke-width="1.6"/><text x="32" y="38.9" text-anchor="middle" font-family="Noto Sans JP, sans-serif" font-size="8.8" font-weight="800" fill="#d97f3f">.com</text><circle cx="52" cy="49" r="12" fill="#fff" stroke="#2c6b54" stroke-width="2.4"/><path d="M40.4 49h23.2M52 37c3.4 3.2 5 7 5 12s-1.6 8.8-5 12M52 37c-3.4 3.2-5 7-5 12s1.6 8.8 5 12" fill="none" stroke="#2c6b54" stroke-width="2" stroke-linecap="round"/></svg>';
 
 function heroSection(data) {
   return `
@@ -70,15 +72,23 @@ function heroSection(data) {
       <h1 class="sg-hero-title" id="sg-hero-title">レンタルサーバー・ドメインの<br class="sg-sp-br">比較＆契約サポート</h1>
       <p class="sg-hero-lead">料金・機能・管理のしやすさで、公平に比べられます。<br class="sg-pc-br">契約はお客様の名義で、設定は福祉ITパートナーが支援します。</p>
       <nav class="sg-jump" aria-label="比較メニュー">
-        <a class="sg-jump-btn" href="#sg-server-compare">
-          <span class="sg-jump-icon">${ICON_SERVER}</span>
-          <span class="sg-jump-text"><strong>レンタルサーバーを比較する</strong><small>4プランを12か月契約で比較</small></span>
-          <span class="sg-jump-arrow" aria-hidden="true">↓</span>
+        <a class="sg-jump-card sg-jump-card--server" href="#sg-server-compare">
+          <span class="sg-jump-art">${ART_SERVER}</span>
+          <span class="sg-jump-body">
+            <span class="sg-jump-eyebrow">ホームページの「置き場所」</span>
+            <strong class="sg-jump-title">レンタルサーバーを比較する</strong>
+            <span class="sg-jump-sub">4プランを12か月契約で比較</span>
+          </span>
+          <span class="sg-jump-go" aria-hidden="true"><span>比較表へ</span><i>↓</i></span>
         </a>
-        <a class="sg-jump-btn" href="#sg-domain-compare">
-          <span class="sg-jump-icon">${ICON_DOMAIN}</span>
-          <span class="sg-jump-text"><strong>ドメインを比較する</strong><small>.com の取得・更新料金を比較</small></span>
-          <span class="sg-jump-arrow" aria-hidden="true">↓</span>
+        <a class="sg-jump-card sg-jump-card--domain" href="#sg-domain-compare">
+          <span class="sg-jump-art">${ART_DOMAIN}</span>
+          <span class="sg-jump-body">
+            <span class="sg-jump-eyebrow">ホームページの「住所」</span>
+            <strong class="sg-jump-title">ドメインを比較する</strong>
+            <span class="sg-jump-sub">.com の取得・更新料金を比較</span>
+          </span>
+          <span class="sg-jump-go" aria-hidden="true"><span>比較表へ</span><i>↓</i></span>
         </a>
       </nav>
       <p class="sg-hero-note">料金は税込・${esc(data.checkedAtLabel)}確認</p>
@@ -119,7 +129,7 @@ function serverTable(data, anchor) {
               <td>${esc(plan.wordpress)}</td>
               <td>${esc(plan.backup)}</td>
               <td>${esc(plan.support)}</td>
-              <td class="sg-cell-link">${anchor(plan.link, "公式サイト", "sg-btn-sm")}</td>
+              <td class="sg-cell-link">${anchor(plan.link, "公式サイト", "sg-btn-sm", "詳細・お申込み")}</td>
             </tr>`;
   }).join("");
   return `
@@ -136,7 +146,7 @@ function serverTable(data, anchor) {
               <th scope="col">WordPress</th>
               <th scope="col">バックアップ</th>
               <th scope="col">サポート体制</th>
-              <th scope="col">公式サイト</th>
+              <th scope="col">リンク</th>
             </tr>
           </thead>
           <tbody>${rows}
@@ -155,7 +165,7 @@ function domainSection(data, anchor) {
               <td class="sg-cell-price"><strong><span class="sg-num">${esc(domain.first.replace("円", "").replace("〜", ""))}</span>円${domain.first.includes("〜") ? "〜" : ""}</strong><small>${esc(domain.firstShort)}</small></td>
               <td class="sg-cell-price sg-cell-price--renew"><strong><span class="sg-num">${esc(domain.renew.replace("円", "").replace("〜", ""))}</span>円${domain.renew.includes("〜") ? "〜" : ""}</strong><small>${esc(domain.renewShort)}</small></td>
               <td>${esc(domain.feature)}</td>
-              <td class="sg-cell-link">${anchor(domain.link, "公式サイト", "sg-btn-sm")}</td>
+              <td class="sg-cell-link">${anchor(domain.link, "公式サイト", "sg-btn-sm", "詳細・お申込み")}</td>
             </tr>`).join("");
   return `
   <section class="sg-section sg-compare-section sg-domain-section" id="sg-domain-compare" aria-labelledby="sg-domain-title">
@@ -170,7 +180,7 @@ function domainSection(data, anchor) {
               <th scope="col">初年度<small>（.com の取得）</small></th>
               <th scope="col">2年目以降<small>（.com の更新・1年）</small></th>
               <th scope="col">特徴</th>
-              <th scope="col">公式サイト</th>
+              <th scope="col">リンク</th>
             </tr>
           </thead>
           <tbody>${rows}
@@ -212,7 +222,7 @@ function detailSection(data, anchor) {
           <p class="sg-card-spec">容量 ${esc(plan.disk)}／お試し ${esc(plan.trial)}／初期費用 ${esc(plan.initial)}</p>
           <ul class="sg-check">${plan.features.map(text => `<li>${esc(text)}</li>`).join("")}</ul>
           <ul class="sg-warn">${plan.cautions.map(text => `<li>${esc(text)}</li>`).join("")}</ul>
-          <div class="sg-card-cta">${anchor(plan.link, esc(plan.company) + "の公式サイトへ", "btn btn-outline")}</div>
+          <div class="sg-card-cta">${anchor(plan.link, esc(plan.company) + "の公式サイトへ", "btn btn-outline", esc(plan.company) + "の詳細・お申込みへ")}</div>
         </article>`).join("");
   return `
   <section class="sg-section sg-detail-section" id="sg-detail" aria-labelledby="sg-detail-title">
