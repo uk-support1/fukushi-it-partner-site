@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/server-guide.css?v=1">
+<link rel="stylesheet" href="assets/css/server-guide.css?v=4">
 <script src="assets/js/ga4.js"></script>
 <!-- server-guide:jsonld:start -->
 <script type="application/ld+json">
@@ -52,18 +52,10 @@
     },
     {
       "@type": "Question",
-      "name": "契約は、福祉ITパートナーの名義ですか？",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "いいえ。サーバーもドメインも、お客様ご自身（事業所・団体）の名義でご契約いただきます。福祉ITパートナーは、選び方や設定をお手伝いします。"
-      }
-    },
-    {
-      "@type": "Question",
       "name": "このページから申し込むと、料金は高くなりますか？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "いいえ。紹介リンクから申し込んでも、お客様のお支払い額は変わりません。紹介リンクの経由で、福祉ITパートナーが紹介報酬を受け取る場合があります。"
+        "text": "いいえ。紹介リンクから申し込んでも、お客様のお支払い額は変わりません。"
       }
     },
     {
@@ -123,286 +115,171 @@
 
   <section class="sg-hero" aria-labelledby="sg-hero-title">
     <div class="container sg-hero-inner">
-      <p class="sg-pr-banner"><span class="sg-pr-mark sg-pr-mark--lg">PR</span>このページには広告（PR）を含みます。さくらのレンタルサーバー・XServerドメイン・お名前.comなどの紹介リンクを掲載しています。<a href="#sg-pr">詳しくはこちら</a></p>
+      <a class="sg-pr-corner" href="#sg-pr" aria-label="広告（PR）を含むページです。注意書きへ移動">PR</a>
       <span class="section-tag">ホームページの公開準備</span>
       <h1 class="sg-hero-title" id="sg-hero-title">レンタルサーバー・ドメインの<br class="sg-sp-br">比較＆契約サポート</h1>
-      <p class="sg-hero-lead">ホームページを公開するには、「サーバー」と「ドメイン」が必要です。<br>福祉事業所・非営利団体・小規模事業者の方が、料金・機能・管理のしやすさを公平に比べて、自分に合うサービスを選べるようにまとめました。</p>
-      <ul class="sg-hero-points">
-        <li><strong>サーバー3社</strong>・<strong>ドメイン3社</strong>を比較</li>
-        <li>初年度料金と<strong>更新料金</strong>を分けて掲載</li>
-        <li>契約は<strong>お客様の名義</strong>。設定は福祉ITパートナーが支援</li>
-      </ul>
-      <div class="btn-group sg-hero-actions">
-        <a href="#sg-pick" class="btn btn-accent">目的別のおすすめを見る</a>
-        <a href="contact.html#google-form-embed" class="btn btn-outline js-consult-link">契約サポートを相談する</a>
-      </div>
-      <p class="sg-hero-note">料金は税込。2026年10月22日に、各社の公式ページで確認しました。</p>
+      <p class="sg-hero-lead">料金・機能・管理のしやすさで、公平に比べられます。<br class="sg-pc-br">契約はお客様の名義で、設定は福祉ITパートナーが支援します。</p>
+      <nav class="sg-jump" aria-label="比較メニュー">
+        <a class="sg-jump-btn" href="#sg-server-compare">
+          <span class="sg-jump-icon"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><rect x="4" y="5" width="24" height="8" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="4" y="19" width="24" height="8" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="9" cy="9" r="1.4" fill="currentColor"/><circle cx="9" cy="23" r="1.4" fill="currentColor"/><path d="M15 9h9M15 23h9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+          <span class="sg-jump-text"><strong>レンタルサーバーを比較する</strong><small>4プランを12か月契約で比較</small></span>
+          <span class="sg-jump-arrow" aria-hidden="true">↓</span>
+        </a>
+        <a class="sg-jump-btn" href="#sg-domain-compare">
+          <span class="sg-jump-icon"><svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M5.5 16h21M16 5c3.2 3 4.8 6.6 4.8 11S19.2 24 16 27M16 5c-3.2 3-4.8 6.6-4.8 11S12.8 24 16 27" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+          <span class="sg-jump-text"><strong>ドメインを比較する</strong><small>.com の取得・更新料金を比較</small></span>
+          <span class="sg-jump-arrow" aria-hidden="true">↓</span>
+        </a>
+      </nav>
+      <p class="sg-hero-note">料金は税込・2026年10月22日確認</p>
     </div>
   </section>
 
   <section class="sg-section sg-pick-section" id="sg-pick" aria-labelledby="sg-pick-title">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">目的別のおすすめ</span>
-        <h2 class="section-title" id="sg-pick-title">目的に合わせて、選び方の目安を</h2>
-        <p class="section-lead">「どれがいちばん良いか」は、事業所の状況によって変わります。<br>現時点の第一候補は<strong>さくらのレンタルサーバー（スタンダード）</strong>ですが、他社にも優れた点があります。</p>
-      </div>
-      <div class="sg-pick-grid">
-        <article class="sg-pick sg-pick--first reveal">
-          <p class="sg-pick-flag">現時点の第一候補</p>
-          <p class="sg-pick-who">はじめてで、迷ったら</p>
-          <h3 class="sg-pick-name">さくらのレンタルサーバー<span>スタンダード</span></h3>
-          <p class="sg-pick-price">12か月契約で<strong>月550円</strong></p>
-          <ul class="sg-check"><li>24時間365日受付のサポート（チャット・メール・電話コールバック）と、動画のスタートアップガイドがあり、サーバー選びに慣れていなくても進めやすい</li><li>バックアップ＆ステージングが標準で、WordPress の更新前に試せる</li><li>12か月で6,600円（月額換算550円）、初期費用は無料。14日間はカード登録なしで試せる</li></ul>
+      <h2 class="sg-h2" id="sg-pick-title">目的別・サーバーのおすすめ</h2>
+      <ul class="sg-tiles">
+        <li class="sg-tile sg-tile--first">
+          <span class="sg-tile-flag">第一候補</span>
+          <p class="sg-tile-purpose">はじめて・迷ったら</p>
+          <p class="sg-tile-name">さくらの<wbr>レンタルサーバー<small>スタンダード</small></p>
+          <p class="sg-tile-price"><span class="sg-tile-price-label">月額換算</span><strong><span class="sg-num">550</span>円</strong></p>
+        </li>
+        <li class="sg-tile">
           
-          <div class="sg-pick-cta"><a href="https://secure.sakura.ad.jp/order/rs-domain/agency/rs/plans?aid=29aa6a6d92e19bd50eaff2cdc2e06320" class="btn btn-accent" target="_blank" rel="sponsored nofollow noopener" data-link="sakura-rs" data-link-type="referral">公式ページで確認する<span class="sg-pr-mark">PR</span></a></div>
-        </article>
-        <article class="sg-pick reveal">
+          <p class="sg-tile-purpose">費用を抑えたい</p>
+          <p class="sg-tile-name">ロリポップ！<small>ライト</small></p>
+          <p class="sg-tile-price"><span class="sg-tile-price-label">月額換算</span><strong><span class="sg-num">539</span>円</strong></p>
+        </li>
+        <li class="sg-tile">
           
-          <p class="sg-pick-who">まず費用をおさえたい</p>
-          <h3 class="sg-pick-name">ロリポップ！<span>ライト</span></h3>
-          <p class="sg-pick-price">12か月契約で<strong>月539円</strong></p>
-          <ul class="sg-check"><li>12か月契約でも月539円と、比較した4プランでもっとも安い</li><li>WordPress が使え、小さな事業所の紹介サイトには十分な容量（SSD 350GB）</li></ul>
-          <p class="sg-pick-note">自動バックアップ（有料オプション）と電話サポートは付かないため、必要なら上位プランも比較します。</p>
-          <div class="sg-pick-cta"><a href="https://lolipop.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="lolipop" data-link-type="official">公式ページで確認する</a></div>
-        </article>
-        <article class="sg-pick reveal">
+          <p class="sg-tile-purpose">バックアップ・電話も欲しい</p>
+          <p class="sg-tile-name">エックスサーバー<small>スタンダード</small></p>
+          <p class="sg-tile-price"><span class="sg-tile-price-label">月額換算</span><strong><span class="sg-num">1,100</span>円</strong></p>
+        </li>
+        <li class="sg-tile">
           
-          <p class="sg-pick-who">バックアップ・電話サポートも欲しい</p>
-          <h3 class="sg-pick-name">エックスサーバー<span>スタンダード</span></h3>
-          <p class="sg-pick-price">12か月契約で<strong>月990円</strong><small>（キャンペーン価格。通常は月1,100円）</small></p>
-          <ul class="sg-check"><li>毎日の自動バックアップ（過去14日分）、電話・メールサポート、RAID10が標準</li><li>サーバー契約中ずっと無料になる独自ドメイン特典（12か月契約で1つ）がある</li></ul>
-          <p class="sg-pick-note">12か月契約の月額は高めです。キャンペーン価格は期間限定です。</p>
-          <div class="sg-pick-cta"><a href="https://www.xserver.ne.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="xserver" data-link-type="official">公式ページで確認する</a></div>
-        </article>
-        <article class="sg-pick reveal">
-          
-          <p class="sg-pick-who">アクセスが多い・機能も欲しい</p>
-          <h3 class="sg-pick-name">ロリポップ！<span>ハイスピード</span></h3>
-          <p class="sg-pick-price">12か月契約で<strong>月1,045円</strong></p>
-          <ul class="sg-check"><li>LiteSpeed による高速表示。自動バックアップが無料で、電話サポートも使える</li><li>12か月以上＋自動更新で、ドメインずっと無料2個の対象</li></ul>
-          <p class="sg-pick-note">12か月分の合計は、ライトの約2倍になります。</p>
-          <div class="sg-pick-cta"><a href="https://lolipop.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="lolipop" data-link-type="official">公式ページで確認する</a></div>
-        </article>
-      </div>
-      <p class="sg-note reveal">※ 料金はすべて税込、2026年10月22日に各社の公式ページで確認した金額です。最新の金額や条件は、申込み前に必ず公式ページでご確認ください。</p>
+          <p class="sg-tile-purpose">アクセスが多い・機能も欲しい</p>
+          <p class="sg-tile-name">ロリポップ！<small>ハイスピード</small></p>
+          <p class="sg-tile-price"><span class="sg-tile-price-label">月額換算</span><strong><span class="sg-num">1,045</span>円</strong></p>
+        </li>
+      </ul>
+      <p class="sg-note">月額換算は、12か月契約・税込・通常料金です。現時点の第一候補は、さくらのレンタルサーバー（スタンダード）です。</p>
     </div>
   </section>
 
-  <section class="sg-section" id="sg-server" aria-labelledby="sg-server-title">
+  <section class="sg-section sg-compare-section" id="sg-server-compare" aria-labelledby="sg-server-title">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">レンタルサーバー 3社</span>
-        <h2 class="section-title" id="sg-server-title">レンタルサーバーの比較カード</h2>
-        <p class="section-lead">福祉事業所・小規模団体の「事業所紹介サイト」を想定し、12か月契約で比べています。</p>
-      </div>
-      <div class="sg-card-grid">
-        <article class="sg-card reveal" id="sg-sakura-standard">
-          <header class="sg-card-head">
-            <p class="sg-badge sg-badge--first">第一候補</p>
-            <h3 class="sg-card-title">さくらのレンタルサーバー<span>スタンダード</span></h3>
-            <p class="sg-price"><span class="sg-price-label">12か月一括払い（月額換算）</span>
-            <span class="sg-price-num"><span class="sg-num">550</span>円<small>／月</small></span>
-            <span class="sg-price-sub">12か月で 6,600円</span></p>
-          </header>
-          <dl class="sg-spec">
-            <div><dt>初期費用</dt><dd>無料</dd></div>
-            <div><dt>容量</dt><dd>SSD 300GB（転送量 無制限）</dd></div>
-            <div><dt>WordPress</dt><dd>対応（コントロールパネルから簡単インストール）</dd></div>
-            <div><dt>バックアップ</dt><dd>「バックアップ＆ステージング」が標準機能（最大8個のスナップショット。お試し期間中は利用不可）</dd></div>
-            <div><dt>サポート</dt><dd>24時間365日受付。チャット・メール・電話（コールバック予約）</dd></div>
-            <div><dt>お試し</dt><dd>14日間無料（クレジットカード登録なし）</dd></div>
-          </dl>
-          <h4 class="sg-card-sub">特徴</h4>
-          <ul class="sg-check"><li>はじめてでも迷いにくい、バランス型の基本プラン</li><li>操作画面から WordPress などをかんたんに設置でき、動画のスタートアップガイドもある</li><li>無料 SSL・RAID10・24時間365日の有人監視が標準</li></ul>
-          <h4 class="sg-card-sub sg-card-sub--warn">注意点</h4>
-          <ul class="sg-warn"><li>毎月払いは660円／月で、12か月以上の一括払いのほうが割安</li><li>バックアップ機能は、14日間のお試し期間中は使えない</li><li>更新時の料金は、契約前に公式ページ・コントロールパネルで確認する</li></ul>
-          <div class="sg-card-cta"><a href="https://secure.sakura.ad.jp/order/rs-domain/agency/rs/plans?aid=29aa6a6d92e19bd50eaff2cdc2e06320" class="btn btn-outline" target="_blank" rel="sponsored nofollow noopener" data-link="sakura-rs" data-link-type="referral">さくらのレンタルサーバーの公式ページへ<span class="sg-pr-mark">PR</span></a></div>
-        </article>
-        <article class="sg-card reveal" id="sg-lolipop-light">
-          <header class="sg-card-head">
-            <p class="sg-badge">いちばん安い</p>
-            <h3 class="sg-card-title">ロリポップ！<span>ライト</span></h3>
-            <p class="sg-price"><span class="sg-price-label">12か月契約の月額</span>
-            <span class="sg-price-num"><span class="sg-num">539</span>円<small>／月</small></span>
-            <span class="sg-price-sub">12か月で 6,468円</span></p>
-          </header>
-          <dl class="sg-spec">
-            <div><dt>初期費用</dt><dd>0円</dd></div>
-            <div><dt>容量</dt><dd>SSD 350GB（転送量 無制限）</dd></div>
-            <div><dt>WordPress</dt><dd>対応（簡単インストール）</dd></div>
-            <div><dt>バックアップ</dt><dd>自動バックアップは付かない（有料オプション「7世代バックアップ」440円／月）</dd></div>
-            <div><dt>サポート</dt><dd>メール（48時間以内に返信）・チャット。電話サポートはハイスピード以上</dd></div>
-            <div><dt>お試し</dt><dd>10日間無料</dd></div>
-          </dl>
-          <h4 class="sg-card-sub">特徴</h4>
-          <ul class="sg-check"><li>12か月契約でも月539円と、3社の中でもっとも安い（36か月なら月330円）</li><li>手軽に WordPress を始められる入門プラン</li><li>独自ドメインは200個まで</li></ul>
-          <h4 class="sg-card-sub sg-card-sub--warn">注意点</h4>
-          <ul class="sg-warn"><li>自動バックアップが標準では付かない（必要なら有料オプション）</li><li>電話サポートは使えない（チャット・メールのみ）</li><li>容量や機能を重視するなら、ハイスピード以上も比較する</li></ul>
-          <div class="sg-card-cta"><a href="https://lolipop.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="lolipop" data-link-type="official">ロリポップ！の公式ページへ</a></div>
-        </article>
-        <article class="sg-card reveal" id="sg-lolipop-highspeed">
-          <header class="sg-card-head">
-            <p class="sg-badge">アクセスが多い方向け</p>
-            <h3 class="sg-card-title">ロリポップ！<span>ハイスピード</span></h3>
-            <p class="sg-price"><span class="sg-price-label">12か月契約の月額</span>
-            <span class="sg-price-num"><span class="sg-num">1,045</span>円<small>／月</small></span>
-            <span class="sg-price-sub">12か月で 12,540円</span></p>
-          </header>
-          <dl class="sg-spec">
-            <div><dt>初期費用</dt><dd>0円</dd></div>
-            <div><dt>容量</dt><dd>SSD 700GB（転送量 無制限）</dd></div>
-            <div><dt>WordPress</dt><dd>対応（簡単インストール）</dd></div>
-            <div><dt>バックアップ</dt><dd>自動バックアップが無料（復元データの提供も無料）</dd></div>
-            <div><dt>サポート</dt><dd>電話・チャット・メール（メールは24時間以内に返信）</dd></div>
-            <div><dt>お試し</dt><dd>10日間無料</dd></div>
-          </dl>
-          <h4 class="sg-card-sub">特徴</h4>
-          <ul class="sg-check"><li>LiteSpeed による高速表示。大量アクセスのサイト向け</li><li>自動バックアップと電話サポートが付く</li><li>12か月以上の契約＋自動更新で「ドメインずっと無料」2個の対象</li></ul>
-          <h4 class="sg-card-sub sg-card-sub--warn">注意点</h4>
-          <ul class="sg-warn"><li>ライトより、月額・12か月分の合計ともに高くなる</li><li>ドメイン無料の特典には、契約期間（12か月以上）と自動更新の設定が条件</li></ul>
-          <div class="sg-card-cta"><a href="https://lolipop.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="lolipop" data-link-type="official">ロリポップ！の公式ページへ</a></div>
-        </article>
-        <article class="sg-card reveal" id="sg-xserver-standard">
-          <header class="sg-card-head">
-            <p class="sg-badge">機能と安心感</p>
-            <h3 class="sg-card-title">エックスサーバー<span>スタンダード</span></h3>
-            <p class="sg-price"><span class="sg-price-label">キャンペーン価格</span>
-            <span class="sg-price-num"><span class="sg-num">990</span>円<small>／月</small></span>
-            <span class="sg-price-sub">12か月で 11,880円（2026年11月4日 17:00まで）</span>
-            <span class="sg-price-normal">通常料金：月1,100円（12か月で 13,200円）</span></p>
-          </header>
-          <dl class="sg-spec">
-            <div><dt>初期費用</dt><dd>0円</dd></div>
-            <div><dt>容量</dt><dd>NVMe 500GB</dd></div>
-            <div><dt>WordPress</dt><dd>対応（簡単インストール・簡単移行・WordPressリカバリー）</dd></div>
-            <div><dt>バックアップ</dt><dd>毎日の自動バックアップ（Web・メール・MySQL を過去14日分保持）</dd></div>
-            <div><dt>サポート</dt><dd>メール・電話</dd></div>
-            <div><dt>お試し</dt><dd>10日間無料</dd></div>
-          </dl>
-          <h4 class="sg-card-sub">特徴</h4>
-          <ul class="sg-check"><li>自動バックアップ・電話サポート・RAID10 が標準で付く</li><li>サーバー契約中ずっと無料の「独自ドメイン」特典（スタンダードは12か月契約で1つ、24か月以上で2つ）</li><li>容量が大きく、サイトが育っても余裕がある</li></ul>
-          <h4 class="sg-card-sub sg-card-sub--warn">注意点</h4>
-          <ul class="sg-warn"><li>ほかの2社より、12か月契約の月額が高め（キャンペーン価格は期間限定）</li><li>お支払いは、契約期間分の一括前払い</li><li>設定おまかせサポートは有料。有料テーマ・セキュリティ診断の無料特典は、スタンダードでは対象外</li></ul>
-          <div class="sg-card-cta"><a href="https://www.xserver.ne.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="xserver" data-link-type="official">エックスサーバーの公式ページへ</a></div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="sg-section sg-table-section" id="sg-table" aria-labelledby="sg-table-title">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">比較表</span>
-        <h2 class="section-title" id="sg-table-title">レンタルサーバー比較表（12か月契約）</h2>
-        <p class="section-lead">スマートフォンでは、表を横にスライドして見られます。</p>
-      </div>
-      <div class="sg-table-wrap reveal" tabindex="0" role="region" aria-label="レンタルサーバー比較表（横にスクロールできます）">
+      <h2 class="sg-h2" id="sg-server-title">レンタルサーバー比較表<small>12か月契約・税込</small></h2>
+      <div class="sg-table-wrap" tabindex="0" role="region" aria-label="レンタルサーバー比較表（横にスクロールできます）">
         <table class="sg-table">
-          <thead><tr><th scope="col" class="sg-table-corner"><span class="visually-hidden">項目</span></th><th scope="col">さくらのレンタルサーバー<small>スタンダード</small></th><th scope="col">ロリポップ！<small>ライト</small></th><th scope="col">ロリポップ！<small>ハイスピード</small></th><th scope="col">エックスサーバー<small>スタンダード</small></th></tr></thead>
+          <thead>
+            <tr>
+              <th scope="col" class="sg-table-corner">サービス・プラン</th>
+              <th scope="col">月額換算</th>
+              <th scope="col">年間料金<small>（12か月分）</small></th>
+              <th scope="col">WordPress</th>
+              <th scope="col">バックアップ</th>
+              <th scope="col">サポート体制</th>
+              <th scope="col">公式サイト</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr><th scope="row">月額（12か月契約）</th><td><strong>550円</strong><small>12か月一括払い（月額換算）</small></td><td><strong>539円</strong><small>12か月契約の月額</small></td><td><strong>1,045円</strong><small>12か月契約の月額</small></td><td><strong>990円</strong><small>キャンペーン価格（2026年11月4日 17:00まで）<br>通常 1,100円</small></td></tr>
-            <tr><th scope="row">12か月分の合計</th><td><strong>6,600円</strong></td><td><strong>6,468円</strong></td><td><strong>12,540円</strong></td><td><strong>11,880円</strong><small>通常 13,200円</small></td></tr>
-            <tr><th scope="row">初期費用</th><td>無料</td><td>0円</td><td>0円</td><td>0円</td></tr>
-            <tr><th scope="row">容量</th><td>SSD 300GB（転送量 無制限）</td><td>SSD 350GB（転送量 無制限）</td><td>SSD 700GB（転送量 無制限）</td><td>NVMe 500GB</td></tr>
-            <tr><th scope="row">WordPress</th><td>対応（コントロールパネルから簡単インストール）</td><td>対応（簡単インストール）</td><td>対応（簡単インストール）</td><td>対応（簡単インストール・簡単移行・WordPressリカバリー）</td></tr>
-            <tr><th scope="row">バックアップ</th><td>「バックアップ＆ステージング」が標準機能（最大8個のスナップショット。お試し期間中は利用不可）</td><td>自動バックアップは付かない（有料オプション「7世代バックアップ」440円／月）</td><td>自動バックアップが無料（復元データの提供も無料）</td><td>毎日の自動バックアップ（Web・メール・MySQL を過去14日分保持）</td></tr>
-            <tr><th scope="row">サポート</th><td>24時間365日受付。チャット・メール・電話（コールバック予約）</td><td>メール（48時間以内に返信）・チャット。電話サポートはハイスピード以上</td><td>電話・チャット・メール（メールは24時間以内に返信）</td><td>メール・電話</td></tr>
-            <tr><th scope="row">お試し期間</th><td>14日間無料（クレジットカード登録なし）</td><td>10日間無料</td><td>10日間無料</td><td>10日間無料</td></tr>
+            <tr class="sg-row--first">
+              <th scope="row"><span class="sg-plan-company">さくらの<wbr>レンタルサーバー</span><span class="sg-plan-name">スタンダード</span><span class="sg-tile-flag sg-tile-flag--inline">第一候補</span></th>
+              <td class="sg-cell-price"><strong><span class="sg-num">550</span>円</strong></td>
+              <td class="sg-cell-price"><strong><span class="sg-num">6,600</span>円</strong></td>
+              <td>○ 対応</td>
+              <td>○ バックアップ＆ステージング（最大8個）</td>
+              <td>24時間365日受付。チャット・メール・電話（折り返し）</td>
+              <td class="sg-cell-link"><a href="https://secure.sakura.ad.jp/order/rs-domain/agency/rs/plans?aid=29aa6a6d92e19bd50eaff2cdc2e06320" class="sg-btn-sm" target="_blank" rel="sponsored nofollow noopener" data-link="sakura-rs" data-link-type="referral">公式サイト<span class="sg-pr-mark">PR</span></a></td>
+            </tr>
+            <tr class="">
+              <th scope="row"><span class="sg-plan-company">ロリポップ！</span><span class="sg-plan-name">ライト</span></th>
+              <td class="sg-cell-price"><strong><span class="sg-num">539</span>円</strong><span class="sg-lowest">最安</span></td>
+              <td class="sg-cell-price"><strong><span class="sg-num">6,468</span>円</strong></td>
+              <td>○ 対応</td>
+              <td>× 自動バックアップなし（有料オプション 440円／月）</td>
+              <td>チャット・メール（電話サポートなし）</td>
+              <td class="sg-cell-link"><a href="https://lolipop.jp/" class="sg-btn-sm" target="_blank" rel="noopener" data-link="lolipop" data-link-type="official">公式サイト</a></td>
+            </tr>
+            <tr class="">
+              <th scope="row"><span class="sg-plan-company">エックスサーバー</span><span class="sg-plan-name">スタンダード</span></th>
+              <td class="sg-cell-price"><strong><span class="sg-num">1,100</span>円</strong><small>キャンペーン中 990円<br>（11月4日 17:00まで）</small></td>
+              <td class="sg-cell-price"><strong><span class="sg-num">13,200</span>円</strong><small>キャンペーン中 11,880円</small></td>
+              <td>○ 対応</td>
+              <td>○ 毎日の自動バックアップ（過去14日分）</td>
+              <td>電話・メール</td>
+              <td class="sg-cell-link"><a href="https://www.xserver.ne.jp/" class="sg-btn-sm" target="_blank" rel="noopener" data-link="xserver" data-link-type="official">公式サイト</a></td>
+            </tr>
+            <tr class="">
+              <th scope="row"><span class="sg-plan-company">ロリポップ！</span><span class="sg-plan-name">ハイスピード</span></th>
+              <td class="sg-cell-price"><strong><span class="sg-num">1,045</span>円</strong></td>
+              <td class="sg-cell-price"><strong><span class="sg-num">12,540</span>円</strong></td>
+              <td>○ 対応</td>
+              <td>○ 自動バックアップが無料（復元データの提供も無料）</td>
+              <td>電話・チャット・メール</td>
+              <td class="sg-cell-link"><a href="https://lolipop.jp/" class="sg-btn-sm" target="_blank" rel="noopener" data-link="lolipop" data-link-type="official">公式サイト</a></td>
+            </tr>
           </tbody>
         </table>
       </div>
-      <p class="sg-note reveal">※ 税込。2026年10月22日確認。各社の公式ページの表示をもとにしています。更新時の料金や、キャンペーンの条件は、契約前に必ず公式ページでご確認ください。</p>
+      <p class="sg-note">初期費用は、いずれも0円（無料）です。キャンペーン価格は期間限定です。更新時の料金や条件は、契約前に各社の公式サイトでご確認ください。</p>
     </div>
   </section>
 
-  <section class="sg-section sg-domain-section" id="sg-domain" aria-labelledby="sg-domain-title">
+  <section class="sg-section sg-compare-section sg-domain-section" id="sg-domain-compare" aria-labelledby="sg-domain-title">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">ドメイン 3社</span>
-        <h2 class="section-title" id="sg-domain-title">ドメイン（.com）の比較</h2>
-        <p class="section-lead">ドメインは「<strong>初年度の料金</strong>」と「<strong>2年目以降の更新料金</strong>」が大きく違うことがあります。<br>長く使うものなので、更新料金も必ず見比べてください。</p>
-      </div>
-      <div class="sg-card-grid sg-card-grid--three">
-        <article class="sg-card sg-card--domain reveal" id="sg-xserver-domain">
-          <header class="sg-card-head">
-            <p class="sg-badge">はじめてなら最安</p>
-            <h3 class="sg-card-title">XServerドメイン<span>.com</span></h3>
-          </header>
-          <div class="sg-domain-prices">
-            <div class="sg-domain-price"><p class="sg-domain-label">初年度（取得）</p><p class="sg-domain-num"><span class="sg-num">0</span>円</p><p class="sg-domain-note">はじめてのご利用の方限定・対象ドメインのうち1つ（キャンペーン価格：2026年10月30日 17:00まで）。通常の取得料金は1,721円</p></div>
-            <div class="sg-domain-price sg-domain-price--renew"><p class="sg-domain-label">2年目以降（更新・1年あたり）</p><p class="sg-domain-num"><span class="sg-num">1,721</span>円</p><p class="sg-domain-note">2026年11月9日から1,750円に改定予定（公式のお知らせ）</p></div>
-          </div>
-          <h4 class="sg-card-sub">特徴</h4>
-          <ul class="sg-check"><li>「表示価格＝お支払い総額」で、維持調整費やオプション料金がない</li><li>DNS 設定・Whois 代行が標準。エックスサーバーとの連携がかんたん</li></ul>
-          <h4 class="sg-card-sub sg-card-sub--warn">注意点</h4>
-          <ul class="sg-warn"><li>0円になるのは、はじめての方向けの特別価格。2年目以降は更新料金がかかる</li></ul>
-          <div class="sg-card-cta"><a href="https://px.a8.net/svt/ejp?a8mat=4BEMLT+77L0J6+CO4+15ORS2" class="btn btn-outline" target="_blank" rel="sponsored nofollow noopener" data-link="xserver-domain" data-link-type="referral">XServerドメインの公式ページへ<span class="sg-pr-mark">PR</span></a><img border="0" width="1" height="1" src="https://www12.a8.net/0.gif?a8mat=4BEMLT+77L0J6+CO4+15ORS2" alt=""></div>
-        </article>
-        <article class="sg-card sg-card--domain reveal" id="sg-onamae">
-          <header class="sg-card-head">
-            <p class="sg-badge">取り扱いドメインが多い</p>
-            <h3 class="sg-card-title">お名前.com<span>.com</span></h3>
-          </header>
-          <div class="sg-domain-prices">
-            <div class="sg-domain-price"><p class="sg-domain-label">初年度（取得）</p><p class="sg-domain-num"><span class="sg-num">1</span>円〜</p><p class="sg-domain-note">お1人様、.com・.netそれぞれ1個まで（条件あり）。2個目以降は750円にサービス維持調整費が加算される</p></div>
-            <div class="sg-domain-price sg-domain-price--renew"><p class="sg-domain-label">2年目以降（更新・1年あたり）</p><p class="sg-domain-num"><span class="sg-num">1,287</span>円〜</p><p class="sg-domain-note">公式の料金一覧の表示（サービス維持調整費を含む）。更新料金は、保有件数などで変動する旨の注記がある</p></div>
-          </div>
-          <h4 class="sg-card-sub">特徴</h4>
-          <ul class="sg-check"><li>取り扱いドメインの種類が多く、同社のレンタルサーバーなど他サービスとの連携もできる</li><li>Whois 代行に対応</li></ul>
-          <h4 class="sg-card-sub sg-card-sub--warn">注意点</h4>
-          <ul class="sg-warn"><li>「サービス維持調整費」が加算されるため、申込み画面の最終金額を必ず確認する</li><li>初年度の1円は条件付きで、2年目以降の更新料金は別に確認が必要</li></ul>
-          <div class="sg-card-cta"><a href="https://px.a8.net/svt/ejp?a8mat=4BEMLT+6Z8Y2A+50+2HE8HE" class="btn btn-outline" target="_blank" rel="sponsored nofollow noopener" data-link="onamae" data-link-type="referral">お名前.comの公式ページへ<span class="sg-pr-mark">PR</span></a><img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4BEMLT+6Z8Y2A+50+2HE8HE" alt=""></div>
-        </article>
-        <article class="sg-card sg-card--domain reveal" id="sg-sakura-domain">
-          <header class="sg-card-head">
-            <p class="sg-badge">サーバーと一緒に管理</p>
-            <h3 class="sg-card-title">さくらのドメイン<span>.com</span></h3>
-          </header>
-          <div class="sg-domain-prices">
-            <div class="sg-domain-price"><p class="sg-domain-label">初年度（取得）</p><p class="sg-domain-num"><span class="sg-num">3,220</span>円</p><p class="sg-domain-note">新規取得（税込）</p></div>
-            <div class="sg-domain-price sg-domain-price--renew"><p class="sg-domain-label">2年目以降（更新・1年あたり）</p><p class="sg-domain-num"><span class="sg-num">3,437</span>円</p><p class="sg-domain-note">更新（税込）</p></div>
-          </div>
-          <h4 class="sg-card-sub">特徴</h4>
-          <ul class="sg-check"><li>さくらインターネットの窓口で、サーバーとドメインを同じ会社にまとめられる</li><li>新規取得・更新の料金が価格一覧にまとまっていて、2年目以降の金額も確認しやすい</li></ul>
-          <h4 class="sg-card-sub sg-card-sub--warn">注意点</h4>
-          <ul class="sg-warn"><li>初年度・更新ともに、ほかの2社より高め</li></ul>
-          <div class="sg-card-cta"><a href="https://domain.sakura.ad.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="sakura-domain" data-link-type="official">さくらのドメインの公式ページへ</a></div>
-        </article>
-      </div>
-      <div class="sg-table-wrap sg-table-wrap--domain reveal" tabindex="0" role="region" aria-label="ドメイン比較表（横にスクロールできます）">
+      <h2 class="sg-h2" id="sg-domain-title">ドメイン（.com）の比較<small>税込</small></h2>
+      <p class="sg-lead">初年度と、2年目以降の更新料金は、大きく違うことがあります。<strong>更新料金</strong>も見比べてください。</p>
+      <div class="sg-table-wrap" tabindex="0" role="region" aria-label="ドメイン比較表（横にスクロールできます）">
         <table class="sg-table sg-table--domain">
-          <thead><tr><th scope="col" class="sg-table-corner"><span class="visually-hidden">項目</span></th><th scope="col">XServerドメイン</th><th scope="col">お名前.com</th><th scope="col">さくらのドメイン</th></tr></thead>
+          <thead>
+            <tr>
+              <th scope="col" class="sg-table-corner">サービス</th>
+              <th scope="col">初年度<small>（.com の取得）</small></th>
+              <th scope="col">2年目以降<small>（.com の更新・1年）</small></th>
+              <th scope="col">特徴</th>
+              <th scope="col">公式サイト</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr><th scope="row">初年度（.com）</th><td><strong>0円</strong><small>はじめてのご利用の方限定・対象ドメインのうち1つ（キャンペーン価格：2026年10月30日 17:00まで）。通常の取得料金は1,721円</small></td><td><strong>1円〜</strong><small>お1人様、.com・.netそれぞれ1個まで（条件あり）。2個目以降は750円にサービス維持調整費が加算される</small></td><td><strong>3,220円</strong><small>新規取得（税込）</small></td></tr>
-            <tr><th scope="row">2年目以降（更新）</th><td><strong>1,721円</strong><small>2026年11月9日から1,750円に改定予定（公式のお知らせ）</small></td><td><strong>1,287円〜</strong><small>公式の料金一覧の表示（サービス維持調整費を含む）。更新料金は、保有件数などで変動する旨の注記がある</small></td><td><strong>3,437円</strong><small>更新（税込）</small></td></tr>
+            <tr>
+              <th scope="row">XServerドメイン</th>
+              <td class="sg-cell-price"><strong><span class="sg-num">0</span>円</strong><small>はじめての方限定・1つ（※1）</small></td>
+              <td class="sg-cell-price sg-cell-price--renew"><strong><span class="sg-num">1,721</span>円</strong><small>11月9日から1,750円に改定予定（※1）</small></td>
+              <td>維持調整費・オプション料金なし。DNS 設定・Whois 代行が標準</td>
+              <td class="sg-cell-link"><a href="https://px.a8.net/svt/ejp?a8mat=4BEMLT+77L0J6+CO4+15ORS2" class="sg-btn-sm" target="_blank" rel="sponsored nofollow noopener" data-link="xserver-domain" data-link-type="referral">公式サイト<span class="sg-pr-mark">PR</span></a><img border="0" width="1" height="1" src="https://www12.a8.net/0.gif?a8mat=4BEMLT+77L0J6+CO4+15ORS2" alt=""></td>
+            </tr>
+            <tr>
+              <th scope="row">お名前.com</th>
+              <td class="sg-cell-price"><strong><span class="sg-num">1</span>円〜</strong><small>お1人様1個まで・条件あり（※2）</small></td>
+              <td class="sg-cell-price sg-cell-price--renew"><strong><span class="sg-num">1,287</span>円〜</strong><small>サービス維持調整費を含む表示（※2）</small></td>
+              <td>取り扱いドメインの種類が多い。同社のサーバーなどと連携できる</td>
+              <td class="sg-cell-link"><a href="https://px.a8.net/svt/ejp?a8mat=4BEMLT+6Z8Y2A+50+2HE8HE" class="sg-btn-sm" target="_blank" rel="sponsored nofollow noopener" data-link="onamae" data-link-type="referral">公式サイト<span class="sg-pr-mark">PR</span></a><img border="0" width="1" height="1" src="https://www19.a8.net/0.gif?a8mat=4BEMLT+6Z8Y2A+50+2HE8HE" alt=""></td>
+            </tr>
+            <tr>
+              <th scope="row">さくらのドメイン</th>
+              <td class="sg-cell-price"><strong><span class="sg-num">3,220</span>円</strong><small>新規取得</small></td>
+              <td class="sg-cell-price sg-cell-price--renew"><strong><span class="sg-num">3,437</span>円</strong><small>更新</small></td>
+              <td>サーバーと同じ「さくらインターネット」の窓口でまとめて管理できる</td>
+              <td class="sg-cell-link"><a href="https://domain.sakura.ad.jp/" class="sg-btn-sm" target="_blank" rel="noopener" data-link="sakura-domain" data-link-type="official">公式サイト</a></td>
+            </tr>
           </tbody>
         </table>
       </div>
-      <div class="sg-tip reveal">
-        <h3>サーバーの特典で、ドメインが無料になることもあります</h3>
-        <p>エックスサーバーは、サーバー契約中ずっと無料になる独自ドメイン特典（スタンダードは12か月契約で1つ）があります。ロリポップ！ハイスピードも、12か月以上の契約と自動更新の設定で「ドメインずっと無料」2個の対象です。サーバーの特典を使う場合は、ドメインを別に買わなくて済むことがあります。条件は各社の公式ページでご確認ください。</p>
-      </div>
-      <p class="sg-note reveal">※ 税込。2026年10月22日確認。ドメインの料金は、公式のお知らせで改定されることがあります。申込み前に、各社の公式ページで最新の金額をご確認ください。</p>
+      <ul class="sg-footnotes"><li>※1 XServerドメインの0円は、はじめてご利用の方が、対象ドメインのうち1つを取得する場合の特別価格（2026年10月30日 17:00までのキャンペーン価格）。通常の取得料金は1,721円です。更新料金は、2026年11月9日から1,750円に改定予定（公式のお知らせ）。</li><li>※2 お名前.comの1円は、.com・.netそれぞれお1人様1個まで（条件あり）。2個目以降は750円にサービス維持調整費が加算されます。更新料金は公式の料金一覧の表示で、保有件数などで変動する旨の注記があります。</li></ul>
+      <p class="sg-note">サーバーの特典（エックスサーバー、ロリポップ！ハイスピード）で、ドメインが無料になる場合もあります。条件は各社の公式サイトでご確認ください。</p>
     </div>
   </section>
 
   <section class="sg-section sg-support-section" id="sg-support" aria-labelledby="sg-support-title">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">契約サポート</span>
-        <h2 class="section-title" id="sg-support-title">お申込みは、お客様の名義で。<span class="no-break">設定は</span><span class="no-break">福祉ITパートナーが</span><span class="no-break">支援します。</span></h2>
-        <p class="section-lead">サーバーやドメインの契約は、お客様ご自身の名義で行います。お支払いも、各サービスの会社へ直接行います。<br>契約や設定でわからないところを、福祉ITパートナーがお手伝いします。</p>
-      </div>
-      <ol class="sg-steps">
-        <li class="sg-step reveal"><p class="sg-step-num"><span>STEP</span>1</p><h3>ご相談</h3><p>ホームページの目的や、使いたい機能をお聞きします。</p></li>
-        <li class="sg-step reveal"><p class="sg-step-num"><span>STEP</span>2</p><h3>サービスの選定</h3><p>この比較表をもとに、ご予算と運用のしやすさに合う組み合わせをご提案します。</p></li>
-        <li class="sg-step reveal"><p class="sg-step-num"><span>STEP</span>3</p><h3>お客様の名義でお申込み</h3><p>契約者は、お客様ご自身（事業所・団体）です。画面を見ながら、手順をご案内します。</p></li>
-        <li class="sg-step reveal"><p class="sg-step-num"><span>STEP</span>4</p><h3>初期設定のお手伝い</h3><p>ドメインの設定、SSL、メールアドレスなど、公開に必要な設定を支援します。</p></li>
-        <li class="sg-step reveal"><p class="sg-step-num"><span>STEP</span>5</p><h3>ホームページの公開</h3><p>ご契約のサーバーに、ホームページを公開します。</p></li>
-      </ol>
-      <div class="sg-support-box reveal">
-        <p>契約サポートの内容や費用は、ご相談の内容に応じてご案内します。まずは、お気軽にご相談ください。</p>
+      <div class="sg-support-box">
+        <h2 class="sg-support-title" id="sg-support-title">契約はお客様の名義で。設定は福祉ITパートナーが支援します</h2>
+        <p class="sg-support-text">サーバーやドメインの契約者は、お客様ご自身（事業所・団体）です。お支払いも、各社へ直接行います。選び方から、申込みの手順、ドメイン・SSL・メールなどの初期設定まで、お手伝いします。</p>
+        <ol class="sg-flow"><li><span>1</span>ご相談</li><li><span>2</span>サービスの選定</li><li><span>3</span>お客様の名義でお申込み</li><li><span>4</span>初期設定のお手伝い</li><li><span>5</span>ホームページの公開</li></ol>
+        <p class="sg-support-small">サポートの内容や費用は、ご相談の内容に応じてご案内します。</p>
         <div class="btn-group sg-support-cta">
           <a href="contact.html#google-form-embed" class="btn btn-accent js-consult-link">サーバー・ドメインの契約を相談する</a>
           <a href="homepage-plan.html" class="btn btn-outline">ホームページ制作の料金プラン</a>
@@ -411,48 +288,86 @@
     </div>
   </section>
 
+  <section class="sg-section sg-detail-section" id="sg-detail" aria-labelledby="sg-detail-title">
+    <div class="container">
+      <h2 class="sg-h2" id="sg-detail-title">プラン別の補足<small>比較表だけで決めにくい方へ</small></h2>
+      <div class="sg-card-grid">
+        <article class="sg-card" id="sg-sakura-standard">
+          <header class="sg-card-head">
+            <h3 class="sg-card-title">さくらの<wbr>レンタルサーバー<span>スタンダード</span></h3>
+            <p class="sg-badge sg-badge--first">第一候補</p>
+          </header>
+          <p class="sg-card-spec">容量 SSD 300GB／お試し 14日間無料（カード登録なし）／初期費用 無料</p>
+          <ul class="sg-check"><li>操作画面から WordPress などをかんたんに設置でき、動画のスタートアップガイドもある</li><li>無料 SSL・RAID10・24時間365日の有人監視が標準</li></ul>
+          <ul class="sg-warn"><li>毎月払いは660円／月。12か月以上の一括払いのほうが割安</li><li>バックアップ機能は、14日間のお試し期間中は使えない</li></ul>
+          <div class="sg-card-cta"><a href="https://secure.sakura.ad.jp/order/rs-domain/agency/rs/plans?aid=29aa6a6d92e19bd50eaff2cdc2e06320" class="btn btn-outline" target="_blank" rel="sponsored nofollow noopener" data-link="sakura-rs" data-link-type="referral">さくらのレンタルサーバーの公式サイトへ<span class="sg-pr-mark">PR</span></a></div>
+        </article>
+        <article class="sg-card" id="sg-lolipop-light">
+          <header class="sg-card-head">
+            <h3 class="sg-card-title">ロリポップ！<span>ライト</span></h3>
+            <p class="sg-badge">いちばん安い</p>
+          </header>
+          <p class="sg-card-spec">容量 SSD 350GB／お試し 10日間無料／初期費用 0円</p>
+          <ul class="sg-check"><li>36か月契約なら月330円まで下がる</li><li>独自ドメインは200個まで。小さな事業所サイトには十分な容量</li></ul>
+          <ul class="sg-warn"><li>自動バックアップが標準では付かない（必要なら有料オプション）</li><li>電話サポートは、ハイスピード以上のプランで利用できる</li></ul>
+          <div class="sg-card-cta"><a href="https://lolipop.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="lolipop" data-link-type="official">ロリポップ！の公式サイトへ</a></div>
+        </article>
+        <article class="sg-card" id="sg-xserver-standard">
+          <header class="sg-card-head">
+            <h3 class="sg-card-title">エックスサーバー<span>スタンダード</span></h3>
+            <p class="sg-badge">機能と安心感</p>
+          </header>
+          <p class="sg-card-spec">容量 NVMe 500GB／お試し 10日間無料／初期費用 0円</p>
+          <ul class="sg-check"><li>サーバー契約中ずっと無料の独自ドメイン特典（12か月契約で1つ、24か月以上で2つ）</li><li>RAID10・無料 SSL。容量が大きく、サイトが育っても余裕がある</li></ul>
+          <ul class="sg-warn"><li>12か月契約の月額は、ほかより高め（キャンペーン価格は期間限定）</li><li>お支払いは契約期間分の一括前払い。設定おまかせサポートは有料</li></ul>
+          <div class="sg-card-cta"><a href="https://www.xserver.ne.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="xserver" data-link-type="official">エックスサーバーの公式サイトへ</a></div>
+        </article>
+        <article class="sg-card" id="sg-lolipop-highspeed">
+          <header class="sg-card-head">
+            <h3 class="sg-card-title">ロリポップ！<span>ハイスピード</span></h3>
+            <p class="sg-badge">アクセスが多い方向け</p>
+          </header>
+          <p class="sg-card-spec">容量 SSD 700GB／お試し 10日間無料／初期費用 0円</p>
+          <ul class="sg-check"><li>LiteSpeed による高速表示。大量アクセスのサイト向け</li><li>12か月以上の契約＋自動更新で「ドメインずっと無料」2個の対象</li></ul>
+          <ul class="sg-warn"><li>ライトより、12か月分の合計が約2倍</li><li>ドメイン無料の特典には、契約期間（12か月以上）と自動更新の設定が条件</li></ul>
+          <div class="sg-card-cta"><a href="https://lolipop.jp/" class="btn btn-outline" target="_blank" rel="noopener" data-link="lolipop" data-link-type="official">ロリポップ！の公式サイトへ</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <section class="sg-section sg-faq-section" id="sg-faq" aria-labelledby="sg-faq-title">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">よくあるご質問</span>
-        <h2 class="section-title" id="sg-faq-title">よくあるご質問</h2>
-      </div>
-      <div class="sg-faq reveal">
+      <h2 class="sg-h2" id="sg-faq-title">よくあるご質問</h2>
+      <div class="sg-faq">
         <details class="sg-faq-item"><summary>サーバーとドメインは、同じ会社で契約しないといけませんか？</summary><p>いいえ、別々の会社でも使えます。同じ会社にまとめると、契約や請求の管理がかんたんになる場合があります。サーバーの特典でドメインが無料になる会社もあります。</p></details>
         <details class="sg-faq-item"><summary>ドメインの「初年度0円・1円」は、ずっとその金額ですか？</summary><p>いいえ。初年度だけの特別価格のことが多く、2年目以降は更新料金がかかります。このページでは、初年度と更新料金を分けて載せています。</p></details>
-        <details class="sg-faq-item"><summary>契約は、福祉ITパートナーの名義ですか？</summary><p>いいえ。サーバーもドメインも、お客様ご自身（事業所・団体）の名義でご契約いただきます。福祉ITパートナーは、選び方や設定をお手伝いします。</p></details>
-        <details class="sg-faq-item"><summary>このページから申し込むと、料金は高くなりますか？</summary><p>いいえ。紹介リンクから申し込んでも、お客様のお支払い額は変わりません。紹介リンクの経由で、福祉ITパートナーが紹介報酬を受け取る場合があります。</p></details>
+        <details class="sg-faq-item"><summary>このページから申し込むと、料金は高くなりますか？</summary><p>いいえ。紹介リンクから申し込んでも、お客様のお支払い額は変わりません。</p></details>
         <details class="sg-faq-item"><summary>比較の内容は、いつ時点のものですか？</summary><p>各社の公式ページで確認した、2026年10月22日時点の内容です。料金やキャンペーンは変わることがあるため、申込み前に必ず公式ページでご確認ください。</p></details>
         <details class="sg-faq-item"><summary>すでにホームページがあり、管理費を見直したい場合は？</summary><p>「ホームページ維持費削減・乗り換えプラン」で、現在の契約の確認（診断は0円）から対応しています。サーバーやドメインの選び直しもご相談ください。</p></details>
       </div>
     </div>
   </section>
 
-  <section class="sg-section sg-pr-section" id="sg-pr" aria-labelledby="sg-pr-title">
+  <section class="sg-section sg-sources-section" aria-label="確認した公式ページ">
     <div class="container">
-      <div class="sg-pr-box reveal">
-        <h2 class="sg-pr-title" id="sg-pr-title">広告（PR）・紹介報酬について</h2>
-        <p>このページには、広告（PR）を含みます。下の会社へのリンクは<strong>紹介リンク</strong>で、リンク先でお申込みいただくと、福祉ITパートナーが紹介報酬を受け取る場合があります。紹介リンクには「PR」と表示しています。</p>
-        <ul class="sg-pr-list"><li><strong>さくらのレンタルサーバー</strong>（さくらのレンタルサーバ 取次店制度）</li><li><strong>XServerドメイン</strong>（A8.net）</li><li><strong>お名前.com</strong>（A8.net）</li></ul>
-        <p>お客様のお支払い額が、紹介リンクの経由で高くなることはありません。比較の内容や並び順は、紹介報酬の有無ではなく、料金・機能・管理のしやすさをもとに公平に作成しています。</p>
-        <p>上記以外（ロリポップ！、エックスサーバー、さくらのドメイン）へのリンクは、各社の公式サイトへの通常のリンクです。紹介リンクの設定は、今後変わることがあります。</p>
-        <p class="sg-pr-small">料金・機能は、各社の公式ページで確認した内容（2026年10月22日時点）です。誤りや変更がある場合は、公式ページの内容が優先されます。</p>
-      </div>
+      <details class="sg-sources">
+        <summary>確認した公式ページ（2026年10月22日）</summary>
+        <ul><li><strong>さくらのレンタルサーバー</strong>：<a href="https://rs.sakura.ad.jp/plan/" target="_blank" rel="noopener">rs.sakura.ad.jp/plan/</a>、<a href="https://rs.sakura.ad.jp/plan/standard/" target="_blank" rel="noopener">rs.sakura.ad.jp/plan/standard/</a>、<a href="https://rs.sakura.ad.jp/function/backup-staging/" target="_blank" rel="noopener">rs.sakura.ad.jp/function/backup-staging/</a></li><li><strong>ロリポップ！</strong>：<a href="https://lolipop.jp/pricing/" target="_blank" rel="noopener">lolipop.jp/pricing/</a></li><li><strong>エックスサーバー</strong>：<a href="https://www.xserver.ne.jp/price/" target="_blank" rel="noopener">www.xserver.ne.jp/price/</a>、<a href="https://www.xserver.ne.jp/functions/" target="_blank" rel="noopener">www.xserver.ne.jp/functions/</a></li><li><strong>XServerドメイン</strong>：<a href="https://www.xdomain.ne.jp/domain/price.php" target="_blank" rel="noopener">www.xdomain.ne.jp/domain/price.php</a>、<a href="https://www.xdomain.ne.jp/news_detail.php?view_id=19639" target="_blank" rel="noopener">www.xdomain.ne.jp/news_detail.php?view_id=19639</a></li><li><strong>お名前.com</strong>：<a href="https://www.onamae.com/service/d-price/" target="_blank" rel="noopener">www.onamae.com/service/d-price/</a>、<a href="https://www.onamae.com/" target="_blank" rel="noopener">www.onamae.com/</a></li><li><strong>さくらのドメイン</strong>：<a href="https://domain.sakura.ad.jp/specification/" target="_blank" rel="noopener">domain.sakura.ad.jp/specification/</a></li></ul>
+        <p>料金・機能は、各社の公式ページで確認した内容です。誤りや変更がある場合は、公式ページの内容が優先されます。</p>
+      </details>
     </div>
   </section>
 
-  <section class="sg-section sg-sources-section" aria-labelledby="sg-sources-title">
+  <section class="sg-notice" id="sg-pr" aria-label="広告・ご利用にあたって">
     <div class="container">
-      <div class="sg-sources reveal">
-        <h2 class="sg-sources-title" id="sg-sources-title">確認した公式ページ（2026年10月22日）</h2>
-        <ul><li><strong>さくらのレンタルサーバー</strong>：<a href="https://rs.sakura.ad.jp/plan/" target="_blank" rel="noopener">rs.sakura.ad.jp/plan/</a>、<a href="https://rs.sakura.ad.jp/plan/standard/" target="_blank" rel="noopener">rs.sakura.ad.jp/plan/standard/</a>、<a href="https://rs.sakura.ad.jp/function/backup-staging/" target="_blank" rel="noopener">rs.sakura.ad.jp/function/backup-staging/</a></li><li><strong>ロリポップ！</strong>：<a href="https://lolipop.jp/pricing/" target="_blank" rel="noopener">lolipop.jp/pricing/</a></li><li><strong>エックスサーバー</strong>：<a href="https://www.xserver.ne.jp/price/" target="_blank" rel="noopener">www.xserver.ne.jp/price/</a>、<a href="https://www.xserver.ne.jp/functions/" target="_blank" rel="noopener">www.xserver.ne.jp/functions/</a></li><li><strong>XServerドメイン</strong>：<a href="https://www.xdomain.ne.jp/domain/price.php" target="_blank" rel="noopener">www.xdomain.ne.jp/domain/price.php</a>、<a href="https://www.xdomain.ne.jp/news_detail.php?view_id=19639" target="_blank" rel="noopener">www.xdomain.ne.jp/news_detail.php?view_id=19639</a></li><li><strong>お名前.com</strong>：<a href="https://www.onamae.com/service/d-price/" target="_blank" rel="noopener">www.onamae.com/service/d-price/</a>、<a href="https://www.onamae.com/" target="_blank" rel="noopener">www.onamae.com/</a></li><li><strong>さくらのドメイン</strong>：<a href="https://domain.sakura.ad.jp/specification/" target="_blank" rel="noopener">domain.sakura.ad.jp/specification/</a></li></ul>
-      </div>
+      <p class="sg-notice-text">本ページには広告・紹介リンクが含まれており、当サイトが紹介報酬を受け取る場合があります。掲載情報は各社の公式情報をもとに作成していますが、最新の料金・サービス内容は各公式サイトでご確認ください。</p>
     </div>
   </section>
 
   <section class="cta-section">
     <div class="container reveal">
-      <h2>サーバー・ドメイン選びで<span class="no-break">迷ったら、</span><span class="no-break">ご相談ください。</span></h2>
+      <h2>サーバー・ドメイン選びで<span class="no-break">迷ったら、ご相談ください。</span></h2>
       <p class="sg-cta-lead">契約はお客様の名義で。選び方から設定まで、やさしくお手伝いします。</p>
       <div class="btn-group">
         <a href="contact.html#google-form-embed" class="btn btn-accent js-consult-link">無料相談はこちら</a>
