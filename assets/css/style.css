@@ -4049,6 +4049,13 @@ section {
   line-height: 1.4;
 }
 
+/* 本文中のリンク（サーバー・ドメイン比較ページへの案内） */
+.flow-step-body p a {
+  font-weight: 700;
+  color: var(--green-700);
+  text-decoration: underline;
+}
+
 .flow-step-body p {
   margin: 0;
   padding: 20px 28px 24px;

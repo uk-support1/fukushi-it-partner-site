@@ -633,6 +633,18 @@ html {
   border-radius: 50%;
 }
 
+.sg-related {
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  color: var(--text-600);
+}
+
+.sg-related a {
+  font-weight: 700;
+  color: var(--green-700);
+  text-decoration: underline;
+}
+
 .sg-support-small {
   margin-bottom: 16px;
   font-size: 0.82rem;

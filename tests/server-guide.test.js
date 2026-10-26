@@ -279,6 +279,24 @@ test("SEO：タイトル・説明・canonical・OG・FAQ構造化データがあ
   assert.match(read("homepage-cost-reduction.html"), /href="server-domain-guide\.html"/);
 });
 
+test("関連ページとの相互リンク：料金プラン・制作の流れ（公開・納品）・維持費の見直しから比較ページへ。比較ページからも関連ページへ戻れる", () => {
+  const plan = read("homepage-plan.html");
+  assert.match(plan, /サーバー契約、ドメイン取得、公開作業は基本料金に含まれておりません。[^<]*<a href="server-domain-guide\.html">比較ページ<\/a>/);
+  const flow = read("flow.html");
+  const step = flow.match(/<h3>公開・納品<\/h3>[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/)[0];
+  assert.equal((step.match(/href="server-domain-guide\.html"/g) || []).length, 2, "desktop text and short phone text, inside the 公開・納品 step only");
+  assert.equal((flow.match(/href="server-domain-guide\.html"/g) || []).length, 3, "2 in the step + 1 footer link");
+  const cost = read("homepage-cost-reduction.html");
+  assert.match(cost, /公開環境の実費（選び方は<a href="server-domain-guide\.html" class="cs-inline-link">比較ページ<\/a>）/);
+  assert.ok((cost.match(/href="server-domain-guide\.html"/g) || []).length <= 3, "not too many links");
+  assert.match(page, /あわせてご覧ください：<a href="flow\.html">[^<]*<\/a>／<a href="homepage-cost-reduction\.html">[^<]*<\/a>/);
+  // 上部ナビには足さない
+  for (const file of ["index.html", "flow.html", "homepage-plan.html", "homepage-cost-reduction.html"]) {
+    const header = read(file).match(/<header class="site-header">[\s\S]*?<\/header>/)[0];
+    assert.ok(!header.includes("server-domain-guide.html"), file + " header has no new link");
+  }
+});
+
 test("プライバシーポリシーに、アフィリエイト（広告）についての説明がある", () => {
   const privacy = read("privacy.html");
   assert.match(privacy, /アフィリエイト（広告）について/);

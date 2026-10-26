@@ -203,6 +203,7 @@ function supportSection() {
         <p class="sg-support-text">サーバーやドメインの契約者は、お客様ご自身（事業所・団体）です。お支払いも、各社へ直接行います。選び方から、申込みの手順、ドメイン・SSL・メールなどの初期設定まで、お手伝いします。</p>
         <ol class="sg-flow">${steps.map((label, index) => `<li><span>${index + 1}</span>${esc(label)}</li>`).join("")}</ol>
         <p class="sg-support-small">サポートの内容や費用は、ご相談の内容に応じてご案内します。</p>
+        <p class="sg-related">あわせてご覧ください：<a href="flow.html">ホームページ公開までの流れ</a>／<a href="homepage-cost-reduction.html">ホームページ維持費の見直し</a></p>
         <div class="btn-group sg-support-cta">
           <a href="contact.html#google-form-embed" class="btn btn-accent js-consult-link">サーバー・ドメインの契約を相談する</a>
           <a href="homepage-plan.html" class="btn btn-outline">ホームページ制作の料金プラン</a>
