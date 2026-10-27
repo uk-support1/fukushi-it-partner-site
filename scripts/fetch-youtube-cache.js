@@ -31,14 +31,14 @@ const sleepMs = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // A channel's feed only lists its latest ~15 videos, so a month of history can't
 // be fetched directly; instead each run folds the previous cache back in
-// (collect's extraCandidates) and keeps up to 30 days of videos. `previous`
+// (collect's extraCandidates) and keeps up to 90 days of videos. `previous`
 // carries videos not yet used as an article source across days the machine was off.
 async function fetchYoutubeCache({ now = new Date(), collect = collectLatestInfo, previous = loadYoutubeCache({ now }),
   attempts = 3, retryDelayMs = 30000, sleep = sleepMs } = {}) {
   const videoSources = DEFAULT_SOURCES.filter(source => source.kind === "video");
   let result;
   for (let attempt = 1; attempt <= attempts; attempt++) {
-    result = await collect({ now, sources: videoSources, limit: 60, maxAgeDays: 30, extraCandidates: previous });
+    result = await collect({ now, sources: videoSources, limit: 150, maxAgeDays: 90, extraCandidates: previous });
     if (result.successfulSources > 0) break;
     // Often just a network that isn't up yet right after the PC boots.
     if (attempt < attempts) await sleep(retryDelayMs);

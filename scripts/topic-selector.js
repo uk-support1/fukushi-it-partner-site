@@ -133,9 +133,10 @@ function validateLatestTopic(raw, articles, latestInfo) {
     { message: "No returned source matched a candidate: " + unknown.join(" | ").replace(/[\u0000-\u001f\u007f]/g, " ").slice(0, 300) });
   value.sourceUrls = [...urls.values()];
   for(const article of articles) {
-    const exact = normalize(value.title) === normalize(article.title);
-    const near = similarity(value.title,article.title) >= 0.72;
-    if (exact || (near && value.importance !== "high")) fail("DUPLICATE_TOPIC");
+    // A video is its own source and an already-used video is never offered again,
+    // so topical overlap with earlier articles is fine; only an identical title
+    // (which would also collide on the article slug) is refused.
+    if (normalize(value.title) === normalize(article.title)) fail("DUPLICATE_TOPIC");
   }
   return value;
 }
@@ -289,7 +290,8 @@ async function selectTopic({apiKey, model, localDate, latestInfo = [], request =
         ...(timely ? {latestInformationCandidates:candidates} : {})} });
     try {
       const topic=timely ? validateLatestTopic(raw,articles,candidates) : validateTopic(raw,articles);
-      await reviewAgainstExisting({apiKey,model,common,topic,articles,request});
+      // Video-based topics skip the semantic duplicate review (see validateLatestTopic).
+      if (!timely) await reviewAgainstExisting({apiKey,model,common,topic,articles,request});
       const sources = timely ? topic.sourceUrls.map(url => candidates.find(item => normalizeSourceUrl(item.url) === normalizeSourceUrl(url))) : [];
       return {topic,existingArticlesCount:articles.length,contentMode:timely ? "latest_info" : "evergreen",sources,
         recentArticleStyles:require("./lib/editorial").recentStyles(articles)};

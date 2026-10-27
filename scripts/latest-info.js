@@ -187,7 +187,7 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
     successfulSources:settled.filter(result => result.status === "fulfilled").length };
 }
 
-const YOUTUBE_CACHE_MAX_AGE_DAYS = 30;
+const YOUTUBE_CACHE_MAX_AGE_DAYS = 90;
 const YOUTUBE_CACHE_FILE = path.join(__dirname, "..", "data", "youtube-cache.json");
 
 // Populated daily by the youtube-cache workflow (scripts/fetch-youtube-cache.js),

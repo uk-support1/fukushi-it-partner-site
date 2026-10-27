@@ -63,7 +63,7 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
   // docs/daily-blog.md). By default it fetches the feeds live from the cloud
   // runner (works most days; a failed fetch is just swallowed) AND merges in the
   // cache the daily YouTube Cache workflow accumulates (keeps unused videos up
-  // to 30 days, and covers a day a live fetch fails).
+  // to 90 days, and covers a day a live fetch fails).
   // DAILY_BLOG_SOURCES_FILTER=cache / live isolates one path for debugging.
   const filter = env.DAILY_BLOG_SOURCES_FILTER;
   const sources = filter === "cache" ? [] : VIDEO_SOURCES;
@@ -73,7 +73,7 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
   const used = usedSourceKeys(load);
   let latest = {candidates:[],attemptedSources:0,successfulSources:0};
   try {
-    const collected = await collect({now, sources, extraCandidates, maxAgeDays:30,
+    const collected = await collect({now, sources, extraCandidates, maxAgeDays:90,
       exclude:item => used.has(normalizeSourceUrl(item.url))});
     if (collected && Array.isArray(collected.candidates)) latest = collected;
   } catch {

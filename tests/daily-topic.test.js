@@ -171,7 +171,7 @@ test("The run only ever selects from the 4 YouTube channels (never official RSS)
   assert.equal(auto.sources.length,4);
   assert.ok(auto.sources.every(source=>source.kind==="video"));
   assert.deepEqual(auto.extraCandidates,cached);
-  assert.equal(auto.maxAgeDays,30);
+  assert.equal(auto.maxAgeDays,90);
   const live=await collectWith("live");
   assert.equal(live.sources.length,4);
   assert.deepEqual(live.extraCandidates,[]);
@@ -563,33 +563,53 @@ test("Duplicate first choice is reselected and daily blog saves exactly one draf
   assert.equal(require('../scripts/lib/articles').parseFrontmatter(fs.readFileSync(result.draft.filePath,'utf8')).data.published,false);
 });
 
-test("A video judged a duplicate leaves the candidate list for later tries; the first three attempts may use videos and the rest are evergreen",async()=>{
-  const latestInfo=Array.from({length:8},(_,n)=>({url:`https://www.youtube.com/watch?v=video${String(n+1).padStart(6,"0")}`,title:`情報${n+1}`}));
-  const selections=[],reviews=[];
+const videoCandidates=n=>Array.from({length:n},(_,i)=>({url:`https://www.youtube.com/watch?v=video${String(i+1).padStart(6,"0")}`,title:`情報${i+1}`}));
+test("Video-based topics skip the semantic duplicate review: a topic overlapping an existing article is accepted without any review request",async()=>{
+  const latestInfo=videoCandidates(4);
+  let reviews=0;
+  const overlapping={...topic,title:articles[0].title+"（動画で紹介された考え方）",sourceUrls:[latestInfo[0].url],importance:"standard"};
   const result=await selectTopic({apiKey:'dummy',load:()=>articles,latestInfo,diagnosticLog:()=>{},request:async args=>{
-    if(args.input.candidate) {
-      reviews.push(args);
-      return JSON.stringify({comparisons:articles.map(a=>({slug:a.slug,duplicate:reviews.length<5,reason:'実質的な問いと解決策を比較'}))});
-    }
-    selections.push(args);
-    const timely=args.schema!==topicSchema;
-    return JSON.stringify(timely?{...topic,angle:`却下される切り口${selections.length}`,sourceUrls:[args.input.latestInformationCandidates[0].url],importance:'standard'}:{...topic,angle:`通常の切り口${selections.length}`});
+    if(args.input.candidate){reviews++;return review(articles);}
+    return JSON.stringify(overlapping);
   }});
-  assert.equal(selections.length,5);assert.equal(reviews.length,5);
-  // Attempts 1-3 use video candidates, each time without the video rejected before it.
-  assert.deepEqual(selections.slice(0,3).map(a=>a.input.latestInformationCandidates.length),[8,7,6]);
+  assert.equal(reviews,0);
+  assert.equal(result.contentMode,'latest_info');
+  assert.deepEqual(result.sources.map(source=>source.url),[latestInfo[0].url]);
+});
+
+test("Only an identical title is refused for a video topic; the refused video leaves the list, and after three video attempts the rest are evergreen (which still get the full review)",async()=>{
+  const latestInfo=videoCandidates(8);
+  const selections=[];let reviews=0;
+  const result=await selectTopic({apiKey:'dummy',load:()=>articles,latestInfo,diagnosticLog:()=>{},request:async args=>{
+    if(args.input.candidate){reviews++;return review(articles);}
+    selections.push(args);
+    return JSON.stringify(args.schema===topicSchema?topic:{...topic,title:articles[0].title,sourceUrls:[args.input.latestInformationCandidates[0].url],importance:"standard"});
+  }});
+  assert.equal(selections.length,4);
+  assert.deepEqual(selections.slice(0,3).map(args=>args.input.latestInformationCandidates.length),[8,7,6]);
   assert.equal(selections[1].input.latestInformationCandidates.some(c=>c.url===latestInfo[0].url),false);
-  assert.equal(selections[2].input.latestInformationCandidates.some(c=>c.url===latestInfo[1].url),false);
-  // Attempts 4-5 are evergreen even though 5 candidates remain.
-  assert.equal(selections[3].schema,topicSchema);assert.equal(selections[4].schema,topicSchema);
+  assert.equal(selections[3].schema,topicSchema);
   assert.equal(selections[3].input.latestInformationCandidates,undefined);
-  assert.equal(selections[4].input.rejectedTopics.length,4);
+  assert.equal(selections[3].input.rejectedTopics.length,3);
+  assert.equal(reviews,1,"only the evergreen topic is reviewed");
+  assert.equal(result.contentMode,'evergreen');assert.deepEqual(result.sources,[]);
+});
+
+test("Evergreen reselection still applies the semantic duplicate review with its ambiguity rule",async()=>{
+  const reviews=[];
+  await selectTopic({apiKey:'dummy',load:()=>articles,diagnosticLog:()=>{},request:async args=>{
+    if(args.input.candidate){
+      reviews.push(args);
+      return JSON.stringify({comparisons:articles.map(a=>({slug:a.slug,duplicate:reviews.length<2,reason:'実質的な問いと解決策を比較'}))});
+    }
+    return JSON.stringify({...topic,angle:`切り口${reviews.length}`});
+  }});
+  assert.equal(reviews.length,2);
   for(const args of reviews) {
     assert.deepEqual(args.input.existingArticles,articles);
     assert.match(args.instructions,/判断が曖昧な場合もtrue/);
     assert.match(args.instructions,/既存記事を1件も省略せず/);
   }
-  assert.equal(result.contentMode,'evergreen');assert.deepEqual(result.sources,[]);
 });
 
 test("Five duplicate choices fail safely before generation or saving",async()=>{

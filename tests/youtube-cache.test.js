@@ -56,13 +56,13 @@ test("fetchYoutubeCache only ever live-fetches the video sources, never the offi
   assert.deepEqual(result,{fetchedAt:"2026-09-18T03:00:00.000Z",candidates:[video],attemptedSources:4,successfulSources:4});
 });
 
-test("fetchYoutubeCache folds the previous cache back in over a 30-day window, so unused videos survive days the machine was off",async()=>{
+test("fetchYoutubeCache folds the previous cache back in over a 90-day window, so unused videos survive days the machine was off",async()=>{
   let seen;
   await fetchYoutubeCache({now:new Date("2026-09-18T03:00:00Z"),previous:[video],
     collect:async args=>{seen=args;return {candidates:[video],attemptedSources:4,successfulSources:4};}});
   assert.deepEqual(seen.extraCandidates,[video]);
-  assert.equal(seen.maxAgeDays,30);
-  assert.equal(seen.limit,60);
+  assert.equal(seen.maxAgeDays,90);
+  assert.equal(seen.limit,150);
 });
 
 test("A transient total failure is retried, and a persistent one throws instead of caching an empty list as fresh",async()=>{

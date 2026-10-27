@@ -129,8 +129,8 @@ test("loadYoutubeCache returns fresh cached candidates and safely ignores missin
   const candidate={title:"障がい者施設のクッキーについて",url:"https://www.youtube.com/watch?v=k596ZRNsvsU",publishedAt:"2026-09-16T09:00:39.000Z",source:"精神保健福祉士うさぎ",summary:"福祉施設に関する動画です。",kind:"video"};
   fs.writeFileSync(file,JSON.stringify({fetchedAt:"2026-09-16T09:00:00.000Z",candidates:[candidate]}));
   assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-17T00:00:00Z")}),[candidate]);
-  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-25T00:00:00Z")}),[candidate],"9 days old is still within the 30-day default, so unused videos survive a stretch with the machine off");
-  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-10-20T00:00:00Z")}),[],"34 days old exceeds the 30-day default");
+  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-25T00:00:00Z")}),[candidate],"9 days old is still within the 90-day default, so unused videos survive a stretch with the machine off");
+  assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-12-20T00:00:00Z")}),[],"95 days old exceeds the 90-day default");
   fs.writeFileSync(file,JSON.stringify({fetchedAt:"2026-09-16T09:00:00.000Z",candidates:[{...candidate,url:"https://example.com/not-allowed"}]}));
   assert.deepEqual(loadYoutubeCache({file,now:new Date("2026-09-17T00:00:00Z")}),[]);
   fs.writeFileSync(file,"not json");
