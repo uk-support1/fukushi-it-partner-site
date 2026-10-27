@@ -30,6 +30,27 @@ async function generateArticleWithRetry(args, diagnosticLog = message => console
   }
 }
 
+// A live fetch that fails is worth another try (YouTube refuses cloud servers
+// only some of the time), but not endlessly: after two total failures in a row
+// the day is treated as blocked and the cache alone is used. Collection is
+// optional either way; Gemini's evergreen path remains available.
+async function collectWithRetry(collect, args, sleep, {attempts = 3, delayMs = 10000} = {}) {
+  let best = {candidates:[],attemptedSources:0,successfulSources:0}, totalFailures = 0;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    let result = null;
+    try { result = await collect(args); } catch { /* counted as a failure below */ }
+    if (result && Array.isArray(result.candidates) &&
+        (attempt === 1 || (result.successfulSources || 0) >= (best.successfulSources || 0))) best = result;
+    const attempted = result ? result.attemptedSources || 0 : 0;
+    const succeeded = result ? result.successfulSources || 0 : 0;
+    if (!result || attempted === 0 || succeeded === attempted) break;
+    totalFailures = succeeded === 0 ? totalFailures + 1 : 0;
+    if (totalFailures >= 2 || attempt === attempts) break;
+    await sleep(delayMs);
+  }
+  return best;
+}
+
 function usedSourceKeys(load) {
   try {
     return new Set((load || existingArticleInfo)()
@@ -44,7 +65,8 @@ function hasArticleDatedToday(localDate, articlesDir) {
 
 async function prepareDailyBlog({now = new Date(), env = process.env, request, articleRequest, load,
   collect = collectLatestInfo, loadCache = loadYoutubeCache, fetchThumbnail = fetchVideoThumbnail,
-  save = saveArticleDraft, articlesDir, alreadyPublishedToday = hasArticleDatedToday} = {}) {
+  save = saveArticleDraft, articlesDir, alreadyPublishedToday = hasArticleDatedToday,
+  sleep = ms => new Promise(resolve => setTimeout(resolve, ms))} = {}) {
   const localDate = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
   }).format(now);
@@ -71,14 +93,8 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
   // Already-used videos are dropped before the top-10 cut so they can't crowd
   // out unused ones, and unused videos stay eligible for a month.
   const used = usedSourceKeys(load);
-  let latest = {candidates:[],attemptedSources:0,successfulSources:0};
-  try {
-    const collected = await collect({now, sources, extraCandidates, maxAgeDays:90,
-      exclude:item => used.has(normalizeSourceUrl(item.url))});
-    if (collected && Array.isArray(collected.candidates)) latest = collected;
-  } catch {
-    // Collection is optional. Gemini's established evergreen path remains available.
-  }
+  const latest = await collectWithRetry(collect, {now, sources, extraCandidates, maxAgeDays:90, sortBy:"recent",
+    exclude:item => used.has(normalizeSourceUrl(item.url))}, sleep);
   const candidates = latest.candidates.length >= 3 ? latest.candidates.slice(0,10) : [];
   const selection = await selectTopic({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
     latestInfo:candidates,request,load});

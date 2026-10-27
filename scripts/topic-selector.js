@@ -282,7 +282,7 @@ async function selectTopic({apiKey, model, localDate, latestInfo = [], request =
     const raw = await request({apiKey, model, schema:timely ? latestTopicSchema : topicSchema,
       instructions: common + (rejectedTopics.length
         ? "rejectedTopicsは選択済み・却下済みテーマです。これらと実質的に異なるテーマを選び、カテゴリや解決策も可能なら変えてください。直近記事と同一キーワード・カテゴリ・解決策の連続を避けてください。" : "") + (timely
-        ? "公式の最新情報候補から、福祉事業者への影響、実務上の重要性、IT・DXとの関連、経営、集客または業務改善への応用を基準に最も役立つテーマを1件選びJSONで返してください。sourceUrlsは根拠として使う候補URLだけを1〜3件、入力どおり返します。直近記事と同一キーワード・カテゴリ・解決策の連続を避けます。ただし新たな制度改正など実務影響が大きい場合だけimportanceをhighとし、関連テーマの継続を許容します。"
+        ? "候補は公開日の新しい順に並んでいます。内容に大きな差がなければ、できるだけ新しい動画（先頭に近い候補）を選んでください。公式の最新情報候補から、福祉事業者への影響、実務上の重要性、IT・DXとの関連、経営、集客または業務改善への応用を基準に最も役立つテーマを1件選びJSONで返してください。sourceUrlsは根拠として使う候補URLだけを1〜3件、入力どおり返します。直近記事と同一キーワード・カテゴリ・解決策の連続を避けます。ただし新たな制度改正など実務影響が大きい場合だけimportanceをhighとし、関連テーマの継続を許容します。"
         : "障害福祉事業所、グループホーム、B型、就労移行支援、福祉事業を運営する中小企業に有用で、ホームページ制作・改善、Google活用、AI・IT支援の相談につながる通常テーマを1件選びJSONで返してください。最新情報は与えられていないため一般論に留めます。") +
         "営業目的だけの薄い記事を避けます。既存記事すべてのタイトル・概要・見出しを比較し、言い換えや項目数の変更だけの重複、対象読者だけ変えた同じ解決策を避けてください。angleには固有の問い・解決策、reasonには既存記事との具体的な違い、serviceには関連する支援内容を記載します。",
       input: {localDate, categories:CATEGORIES, recentArticles, existingArticles:articles,

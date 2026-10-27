@@ -122,6 +122,17 @@ test("maxAgeDays widens the window and exclude() drops used items before the top
   assert.deepEqual(filtered.candidates.map(item=>item.url).sort(),[old.url,fresh.url].sort());
 });
 
+test("sortBy recent lists the newest videos first (a long backlog never outranks a fresh video), while the default stays relevance-first",async()=>{
+  const mk=(n,day,summary)=>({title:"福祉施設の動画"+n,url:"https://www.youtube.com/watch?v=vid"+String(n).padStart(8,"0"),publishedAt:day+"T09:00:00.000Z",source:"チャンネル"+n,summary,kind:"video"});
+  const now=new Date("2026-10-27T00:00:00Z");
+  const oldHighScore=mk(1,"2026-09-01","福祉施設 就労支援 グループホーム 障害福祉サービス 補助金 DX AI IT"),newLowScore=mk(2,"2026-10-26","福祉施設の動画です。"),mid=mk(3,"2026-10-10","福祉施設 就労支援");
+  const base={now,sources:[],fetchImpl:async()=>{throw new Error("no live sources expected");},extraCandidates:[oldHighScore,newLowScore,mid],maxAgeDays:90,limit:10};
+  const recent=await collectLatestInfo({...base,sortBy:"recent"});
+  assert.deepEqual(recent.candidates.map(item=>item.url),[newLowScore.url,mid.url,oldHighScore.url]);
+  const relevance=await collectLatestInfo(base);
+  assert.equal(relevance.candidates[0].url,oldHighScore.url,"default ordering is unchanged");
+});
+
 test("loadYoutubeCache returns fresh cached candidates and safely ignores missing, stale, or corrupt files",t=>{
   const file=path.join(fs.mkdtempSync(path.join(os.tmpdir(),"youtube-cache-")),"youtube-cache.json");
   t.after(()=>fs.rmSync(path.dirname(file),{recursive:true,force:true}));

@@ -38,7 +38,7 @@ async function fetchYoutubeCache({ now = new Date(), collect = collectLatestInfo
   const videoSources = DEFAULT_SOURCES.filter(source => source.kind === "video");
   let result;
   for (let attempt = 1; attempt <= attempts; attempt++) {
-    result = await collect({ now, sources: videoSources, limit: 150, maxAgeDays: 90, extraCandidates: previous });
+    result = await collect({ now, sources: videoSources, limit: 150, maxAgeDays: 90, sortBy: "recent", extraCandidates: previous });
     if (result.successfulSources > 0) break;
     // Often just a network that isn't up yet right after the PC boots.
     if (attempt < attempts) await sleep(retryDelayMs);

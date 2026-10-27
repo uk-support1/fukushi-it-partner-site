@@ -678,3 +678,39 @@ test("An unusable generated article (e.g. a changed title) is regenerated instea
   await assert.rejects(flow(async args=>{always++;return isEditorial(args)?editorialReview:JSON.stringify({...generatedArticle,title:"別のタイトル"});}),{code:"ARTICLE_TITLE_MISMATCH"});
   assert.equal(always,3,"three attempts in total, then it stops");
 });
+
+test("A failed live fetch is retried up to three times, stops early once every feed succeeds, and gives up after two total failures in a row",async t=>{
+  const directory=temporaryArticles(t);
+  const run=async results=>{
+    const calls=[],sleeps=[];let i=0;
+    await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,articlesDir:directory,loadCache:()=>[],
+      sleep:async ms=>{sleeps.push(ms);},
+      collect:async args=>{calls.push(args);const r=results[Math.min(i++,results.length-1)];if(r instanceof Error)throw r;return {candidates:[],...r};},
+      request:async()=>JSON.stringify(topic)}).catch(()=>{});
+    return {calls:calls.length,sleeps:sleeps.length,sortBy:calls[0].sortBy};
+  };
+  const allOk=await run([{attemptedSources:4,successfulSources:4}]);
+  assert.deepEqual(allOk,{calls:1,sleeps:0,sortBy:"recent"});
+  const partialThenOk=await run([{attemptedSources:4,successfulSources:3},{attemptedSources:4,successfulSources:4}]);
+  assert.equal(partialThenOk.calls,2);
+  const blocked=await run([{attemptedSources:4,successfulSources:0}]);
+  assert.equal(blocked.calls,2,"two straight total failures: blocked today, stop trying");
+  const flaky=await run([{attemptedSources:4,successfulSources:0},{attemptedSources:4,successfulSources:2},{attemptedSources:4,successfulSources:3}]);
+  assert.equal(flaky.calls,3,"a partial success resets the failure streak, but attempts are capped at three");
+  const threw=await run([new Error("network"),new Error("network"),new Error("network")]);
+  assert.equal(threw.calls,1,"collect itself never throws in practice; an exception ends collection and the run falls back as before");
+  const noLive=await run([{attemptedSources:0,successfulSources:0}]);
+  assert.equal(noLive.calls,1,"cache-only (nothing live to fetch) is never retried");
+});
+
+test("The best live result across attempts is the one used",async t=>{
+  const directory=temporaryArticles(t);
+  const mk=n=>({title:"福祉の動画"+n,url:"https://www.youtube.com/watch?v=best"+String(n).padStart(7,"0"),publishedAt:"2026-09-11T00:00:00.000Z",source:"c"+n,summary:"福祉",kind:"video"});
+  const results=[{candidates:[mk(1)],attemptedSources:4,successfulSources:2},{candidates:[mk(1),mk(2),mk(3)],attemptedSources:4,successfulSources:4}];
+  let i=0,seenCandidates;
+  const result=await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,articlesDir:directory,loadCache:()=>[],sleep:async()=>{},
+    collect:async()=>results[Math.min(i++,1)],
+    request:async args=>{if(args.input&&args.input.latestInformationCandidates)seenCandidates=args.input.latestInformationCandidates;return JSON.stringify(topic);}}).catch(()=>null);
+  assert.equal(i,2);
+  assert.equal(seenCandidates.length,3);
+});

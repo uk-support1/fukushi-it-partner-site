@@ -135,7 +135,7 @@ async function enrichCandidate(candidate, fetchImpl) {
 // exclude(item): drops already-used items BEFORE the top-N cut, otherwise used
 // videos occupy the slots and starve the unused ones behind them.
 async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date(), sources = DEFAULT_SOURCES, limit = 10, extraCandidates = [],
-  maxAgeDays = 7, exclude = () => false} = {}) {
+  maxAgeDays = 7, exclude = () => false, sortBy = "relevance"} = {}) {
   const settled = await Promise.allSettled(sources.map(source => fetchFeed(source, fetchImpl)));
   // The evergreen fallback already covers days when nothing relevant published
   // within the window (see topic-selector.js).
@@ -162,7 +162,11 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
     }
   }
   const seenUrls = new Set(), seenTitles = new Set();
-  const deduped = rows.sort((a,b) => b.score-a.score || Date.parse(b.publishedAt)-Date.parse(a.publishedAt) || a.priority-b.priority)
+  // sortBy "recent" (used for videos): newest first, so a long backlog never
+  // outranks a fresh video; relevance only breaks ties. Default stays relevance-first.
+  const byRelevance = (a,b) => b.score-a.score || Date.parse(b.publishedAt)-Date.parse(a.publishedAt) || a.priority-b.priority;
+  const byRecency = (a,b) => Date.parse(b.publishedAt)-Date.parse(a.publishedAt) || b.score-a.score || a.priority-b.priority;
+  const deduped = rows.sort(sortBy === "recent" ? byRecency : byRelevance)
     .filter(item => {
       const title = item.title.normalize("NFKC").replace(/\s+/g, "").toLowerCase();
       if (seenUrls.has(item.url) || seenTitles.has(title)) return false;
@@ -180,7 +184,9 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
     if (count < PER_SOURCE_CAP) { primary.push(item); sourceCounts.set(item.source, count + 1); }
     else overflow.push(item);
   }
-  const ranked = [...primary, ...overflow].slice(0, maxTotal).map(({score,priority,...item}) => item);
+  const selected = [...primary, ...overflow].slice(0, maxTotal);
+  if (sortBy === "recent") selected.sort(byRecency);
+  const ranked = selected.map(({score,priority,...item}) => item);
   const enrichable = item => { try { return !NO_ENRICH_HOSTS.has(new URL(item.url).hostname); } catch { return false; } };
   const candidates = await Promise.all(ranked.map(item => enrichable(item) ? enrichCandidate(item,fetchImpl) : item));
   return { candidates, attemptedSources:sources.length,
