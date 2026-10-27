@@ -409,7 +409,7 @@ test("A persistently incomplete review fails closed after a bounded number of re
   assert.equal(report.error,"INCOMPLETE_DUPLICATE_REVIEW");assert.match(report.message,/15 of 16/);
   assert.ok(!JSON.stringify(report).includes("既存の記事"),"no article text in the failure report");
 });
-test("A duplicate verdict is final even inside an incomplete answer, so a retry can never overturn it; other review errors are still not retried",async()=>{
+test("A duplicate verdict is final even inside an incomplete answer, so a retry can never overturn it; a malformed review is retried a bounded number of times, then fails",async()=>{
   const two=manyArticles(2);
   assert.throws(()=>validateReview(JSON.stringify({comparisons:[{slug:two[0].slug,duplicate:true,reason:"同じ課題と解決策"}]}),two),{code:"DUPLICATE_TOPIC"});
   assert.throws(()=>validateReview(review([two[0],two[0]]),two),{code:"INCOMPLETE_DUPLICATE_REVIEW"});
@@ -417,8 +417,8 @@ test("A duplicate verdict is final even inside an incomplete answer, so a retry 
   await assert.rejects(selectTopic({apiKey:"dummy",model:DEFAULT_GEMINI_MODEL,load:()=>manyArticles(40),request:async args=>{
     // Complete rows, but one has an empty reason: malformed content, not an incomplete answer.
     calls++;return args.input.candidate?JSON.stringify({comparisons:args.input.existingArticles.map(a=>({slug:a.slug,duplicate:false,reason:""}))}):JSON.stringify(topic);
-  }}),{code:"INVALID_AI_FIELDS"});
-  assert.equal(calls,2);
+  },diagnosticLog:()=>{}}),{code:"INVALID_AI_FIELDS"});
+  assert.equal(calls,8,"four attempts (one plus three retries), each a selection and a review");
 });
 test("The selection request names the latest ten articles by id only; their details are already in existingArticles",async()=>{
   const archive=manyArticles(20);let seen;
@@ -563,22 +563,27 @@ test("Duplicate first choice is reselected and daily blog saves exactly one draf
   assert.equal(require('../scripts/lib/articles').parseFrontmatter(fs.readFileSync(result.draft.filePath,'utf8')).data.published,false);
 });
 
-test("Two latest semantic duplicates switch only the third selection to evergreen",async()=>{
-  const latestInfo=[1,2,3].map(n=>({url:`https://example.org/${n}`,title:`情報${n}`}));
+test("A video judged a duplicate leaves the candidate list for later tries; the first three attempts may use videos and the rest are evergreen",async()=>{
+  const latestInfo=Array.from({length:8},(_,n)=>({url:`https://www.youtube.com/watch?v=video${String(n+1).padStart(6,"0")}`,title:`情報${n+1}`}));
   const selections=[],reviews=[];
-  const result=await selectTopic({apiKey:'dummy',load:()=>articles,latestInfo,request:async args=>{
+  const result=await selectTopic({apiKey:'dummy',load:()=>articles,latestInfo,diagnosticLog:()=>{},request:async args=>{
     if(args.input.candidate) {
       reviews.push(args);
-      return JSON.stringify({comparisons:articles.map(a=>({slug:a.slug,duplicate:reviews.length<3,reason:'実質的な問いと解決策を比較'}))});
+      return JSON.stringify({comparisons:articles.map(a=>({slug:a.slug,duplicate:reviews.length<5,reason:'実質的な問いと解決策を比較'}))});
     }
     selections.push(args);
-    return JSON.stringify(selections.length<3?{...topic,angle:`却下される切り口${selections.length}`,sourceUrls:[latestInfo[0].url],importance:'standard'}:topic);
+    const timely=args.schema!==topicSchema;
+    return JSON.stringify(timely?{...topic,angle:`却下される切り口${selections.length}`,sourceUrls:[args.input.latestInformationCandidates[0].url],importance:'standard'}:{...topic,angle:`通常の切り口${selections.length}`});
   }});
-  assert.equal(selections.length,3);assert.equal(reviews.length,3);
-  for(const args of selections.slice(0,2))assert.deepEqual(args.input.latestInformationCandidates,latestInfo);
-  assert.equal(selections[2].schema,topicSchema);
-  assert.equal(selections[2].input.latestInformationCandidates,undefined);
-  assert.deepEqual(selections[2].input.rejectedTopics.map(t=>t.angle),['却下される切り口1','却下される切り口2']);
+  assert.equal(selections.length,5);assert.equal(reviews.length,5);
+  // Attempts 1-3 use video candidates, each time without the video rejected before it.
+  assert.deepEqual(selections.slice(0,3).map(a=>a.input.latestInformationCandidates.length),[8,7,6]);
+  assert.equal(selections[1].input.latestInformationCandidates.some(c=>c.url===latestInfo[0].url),false);
+  assert.equal(selections[2].input.latestInformationCandidates.some(c=>c.url===latestInfo[1].url),false);
+  // Attempts 4-5 are evergreen even though 5 candidates remain.
+  assert.equal(selections[3].schema,topicSchema);assert.equal(selections[4].schema,topicSchema);
+  assert.equal(selections[3].input.latestInformationCandidates,undefined);
+  assert.equal(selections[4].input.rejectedTopics.length,4);
   for(const args of reviews) {
     assert.deepEqual(args.input.existingArticles,articles);
     assert.match(args.instructions,/判断が曖昧な場合もtrue/);
@@ -587,24 +592,69 @@ test("Two latest semantic duplicates switch only the third selection to evergree
   assert.equal(result.contentMode,'evergreen');assert.deepEqual(result.sources,[]);
 });
 
-test("Three duplicate choices fail safely before generation or saving",async()=>{
+test("Five duplicate choices fail safely before generation or saving",async()=>{
   let choices=0,saves=0,generations=0;
   await assert.rejects(prepareDailyBlog({env,load:()=>articles,collect:async()=>({candidates:[]}),
     request:async()=>{choices++;return JSON.stringify({...topic,title:articles[0].title});},
     articleRequest:async()=>{generations++;},save:()=>{saves++;}}),{code:'DUPLICATE_TOPIC'});
-  assert.equal(choices,3);assert.equal(generations,0);assert.equal(saves,0);
+  assert.equal(choices,5);assert.equal(generations,0);assert.equal(saves,0);
 });
 
-test("Non-duplicate selection and review errors are never retried",async()=>{
+test("API/auth errors are never retried; a malformed JSON/fields answer is retried up to three more times",async()=>{
   const {TopicError}=require('../scripts/topic-selector');
   for(const atReview of [false,true])for(const kind of ['auth','json','fields']) {
     let calls=0;
-    await assert.rejects(selectTopic({apiKey:'dummy',load:()=>articles,request:async()=>{
+    await assert.rejects(selectTopic({apiKey:'dummy',load:()=>articles,diagnosticLog:()=>{},request:async()=>{
       calls++;
-      if(atReview&&calls===1)return JSON.stringify(topic);
+      if(atReview&&calls%2===1)return JSON.stringify(topic);
       if(kind==='auth')throw new TopicError('GEMINI_HTTP_ERROR',{httpStatus:401});
       return kind==='json'?'not JSON':'{}';
     }}),{code:kind==='auth'?'GEMINI_HTTP_ERROR':kind==='json'?'INVALID_AI_JSON':'INVALID_AI_FIELDS'});
-    assert.equal(calls,atReview?2:1);
+    const perAttempt=atReview?2:1;
+    assert.equal(calls,kind==='auth'?perAttempt:perAttempt*4);
   }
+});
+
+test("Source URLs are matched by video id across URL spellings, unknown ones are dropped, and a persistently unusable source falls back to an evergreen topic",async()=>{
+  const {normalizeSourceUrl,validateLatestTopic}=require('../scripts/topic-selector');
+  for(const url of ["https://www.youtube.com/watch?v=abcDEF12345","https://youtube.com/watch?v=abcDEF12345&t=3s","https://m.youtube.com/watch?v=abcDEF12345",
+    "https://youtu.be/abcDEF12345","https://www.youtube.com/shorts/abcDEF12345","https://www.youtube.com/embed/abcDEF12345"," abcDEF12345 "])
+    assert.equal(normalizeSourceUrl(url),"youtube:abcDEF12345",url);
+  assert.equal(normalizeSourceUrl("https://www.mhlw.go.jp/a"),"https://www.mhlw.go.jp/a");
+  const latestInfo=[1,2,3].map(n=>({url:`https://www.youtube.com/shorts/video${String(n).padStart(6,"0")}`,title:`情報${n}`}));
+  const mixed=validateLatestTopic(JSON.stringify({...topic,importance:"standard",
+    sourceUrls:["https://youtu.be/video000001","https://www.youtube.com/watch?v=video000001","https://example.com/made-up"]}),articles,latestInfo);
+  assert.deepEqual(mixed.sourceUrls,[latestInfo[0].url]);
+  assert.throws(()=>validateLatestTopic(JSON.stringify({...topic,importance:"standard",sourceUrls:["https://example.com/made-up"]}),articles,latestInfo),
+    error=>error.code==="INVALID_AI_SOURCE"&&/made-up/.test(error.diagnostic.message));
+  let timelyCalls=0;
+  const result=await selectTopic({apiKey:'dummy',load:()=>articles,latestInfo,diagnosticLog:()=>{},request:async args=>{
+    if(args.input.candidate)return review(articles);
+    if(args.schema!==topicSchema){timelyCalls++;return JSON.stringify({...topic,importance:"standard",sourceUrls:["https://example.com/made-up"]});}
+    return JSON.stringify(topic);
+  }});
+  assert.equal(timelyCalls,4,"one attempt plus three retries before giving up on video candidates");
+  assert.equal(result.contentMode,'evergreen');
+});
+test("An unusable generated article (e.g. a changed title) is regenerated instead of ending the day; API errors are not retried",async t=>{
+  const directory=temporaryArticles(t);
+  const flow=articleRequest=>{
+    let topicCalls=0;
+    return prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,articlesDir:directory,
+      collect:async()=>({candidates:[],attemptedSources:0,successfulSources:0}),
+      request:async()=>++topicCalls===1?JSON.stringify(topic):review(articles),articleRequest});
+  };
+  let articleCalls=0;
+  const result=await flow(async args=>{
+    if(isEditorial(args))return editorialReview;
+    return JSON.stringify(++articleCalls===1?{...generatedArticle,title:"別のタイトル"}:generatedArticle);
+  });
+  assert.equal(result.status,"draft_saved");assert.equal(articleCalls,2);
+  const {TopicError}=require("../scripts/topic-selector");
+  let apiCalls=0;
+  await assert.rejects(flow(async()=>{apiCalls++;throw new TopicError("GEMINI_HTTP_ERROR",{httpStatus:403});}),{code:"GEMINI_HTTP_ERROR"});
+  assert.equal(apiCalls,1);
+  let always=0;
+  await assert.rejects(flow(async args=>{always++;return isEditorial(args)?editorialReview:JSON.stringify({...generatedArticle,title:"別のタイトル"});}),{code:"ARTICLE_TITLE_MISMATCH"});
+  assert.equal(always,3,"three attempts in total, then it stops");
 });

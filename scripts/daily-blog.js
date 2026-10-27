@@ -9,6 +9,27 @@ const { fetchVideoThumbnail } = require("./lib/video-thumbnail");
 
 const VIDEO_SOURCES = DEFAULT_SOURCES.filter(source => source.kind === "video");
 
+// generateArticle() already revises style/duplicate-heading problems itself; these
+// are the cases where the model's output was simply unusable (wrong title,
+// malformed JSON, a rule it could not satisfy in its own retries). A fresh
+// attempt usually succeeds, so retry rather than lose the day. API/auth/quota
+// errors are not in this list and still stop the run.
+const RETRYABLE_ARTICLE_ERRORS = new Set(["ARTICLE_TITLE_MISMATCH", "INVALID_ARTICLE_JSON", "INVALID_ARTICLE_FIELDS",
+  "INVALID_ARTICLE_LENGTH", "INVALID_ARTICLE_HEADINGS", "INVALID_ARTICLE_BODY", "INVALID_ARTICLE_DESCRIPTION",
+  "INVALID_ARTICLE_EMPHASIS", "UNSAFE_ARTICLE_MARKDOWN", "INVALID_EDITORIAL_REVIEW", "REPETITIVE_ARTICLE_STYLE",
+  "ARTICLE_EMPHASIS_RETRY_EXHAUSTED", "ARTICLE_LOCAL_STYLE_RETRY_EXHAUSTED", "ARTICLE_EDITORIAL_REVIEW_RETRY_EXHAUSTED"]);
+const MAX_ARTICLE_ATTEMPTS = 3;
+
+async function generateArticleWithRetry(args, diagnosticLog = message => console.log(message)) {
+  for (let attempt = 1; ; attempt++) {
+    try { return await generateArticle(args); }
+    catch (error) {
+      if (!(error instanceof TopicError) || !RETRYABLE_ARTICLE_ERRORS.has(error.code) || attempt >= MAX_ARTICLE_ATTEMPTS) throw error;
+      diagnosticLog(JSON.stringify({event:"daily_blog_article_regenerate",attempt,code:error.code}));
+    }
+  }
+}
+
 function usedSourceKeys(load) {
   try {
     return new Set((load || existingArticleInfo)()
@@ -61,7 +82,7 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
   const candidates = latest.candidates.length >= 3 ? latest.candidates.slice(0,10) : [];
   const selection = await selectTopic({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
     latestInfo:candidates,request,load});
-  const article = await generateArticle({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
+  const article = await generateArticleWithRetry({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
     topic:selection.topic,sources:selection.sources,recentArticleStyles:selection.recentArticleStyles,request:articleRequest === undefined ? request : articleRequest});
   // A thumbnail is a nice-to-have (see docs/daily-blog.md); fetchThumbnail()
   // already resolves to null on any failure, so a network hiccup here can

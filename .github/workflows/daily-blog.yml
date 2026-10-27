@@ -42,8 +42,8 @@ jobs:
   start:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    # 重複確認を16件ずつの複数回に分けたぶん（および不完全な応答の再試行ぶん）、Gemini APIの呼び出しが増えるため10分にしている。
-    timeout-minutes: 10
+    # 重複確認を16件ずつの複数回に分けたぶん（および不完全な応答の再試行ぶん）、Gemini APIの呼び出しが増えるため20分にしている。
+    timeout-minutes: 20
     outputs:
       status: ${{ steps.select-topic.outputs.status }}
     steps:
