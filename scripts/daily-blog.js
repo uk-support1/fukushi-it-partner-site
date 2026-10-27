@@ -8,6 +8,7 @@ const { collectLatestInfo, DEFAULT_SOURCES, loadYoutubeCache } = require("./late
 const { fetchVideoThumbnail } = require("./lib/video-thumbnail");
 
 const VIDEO_SOURCES = DEFAULT_SOURCES.filter(source => source.kind === "video");
+const NEWEST_CANDIDATES = 5;
 
 // generateArticle() already revises style/duplicate-heading problems itself; these
 // are the cases where the model's output was simply unusable (wrong title,
@@ -95,7 +96,9 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
   const used = usedSourceKeys(load);
   const latest = await collectWithRetry(collect, {now, sources, extraCandidates, maxAgeDays:90, sortBy:"recent",
     exclude:item => used.has(normalizeSourceUrl(item.url))}, sleep);
-  const candidates = latest.candidates.length >= 3 ? latest.candidates.slice(0,10) : [];
+  // Only the newest few go to the model: given ten it kept picking an older, "more useful"
+  // video over a fresh one, and the goal is to write about the newest videos.
+  const candidates = latest.candidates.length >= 3 ? latest.candidates.slice(0,NEWEST_CANDIDATES) : [];
   const selection = await selectTopic({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
     latestInfo:candidates,request,load});
   const article = await generateArticleWithRetry({apiKey:env.GEMINI_API_KEY,model:env.GEMINI_MODEL,localDate,
