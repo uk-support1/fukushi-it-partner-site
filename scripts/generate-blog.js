@@ -43,6 +43,7 @@ const STATIC_PAGES = [
   "https://fukushi-it-partner.com/homepage-cost-reduction.html",
   "https://fukushi-it-partner.com/server-domain-guide.html",
   "https://fukushi-it-partner.com/php-homepage-comparison.html",
+  "https://fukushi-it-partner.com/homepage-recovery.html",
   "https://fukushi-it-partner.com/blog.html",
 ];
 const STATIC_PAGES_AFTER_ARTICLES = [
@@ -373,6 +374,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="../server-domain-guide.html">サーバー・ドメイン比較</a></li>\n' +
     '          <li><a href="../php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>\n' +
+    '          <li><a href="../homepage-recovery.html">ホームページ再スタート 15,000円</a></li>\n' +
     '          <li><a href="../works.html">制作実績</a></li>\n' +
     '          <li><a href="../flow.html">制作までの流れ</a></li>\n' +
     '        </ul>\n' +
@@ -621,6 +623,7 @@ function buildBlogHtml(blogIndex) {
     '          <li><a href="homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="server-domain-guide.html">サーバー・ドメイン比較</a></li>\n' +
     '          <li><a href="php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>\n' +
+    '          <li><a href="homepage-recovery.html">ホームページ再スタート 15,000円</a></li>\n' +
     '          <li><a href="works.html">制作実績</a></li>\n' +
     '          <li><a href="flow.html">制作までの流れ</a></li>\n' +
     '        </ul>\n' +
