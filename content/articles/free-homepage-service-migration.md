@@ -2,7 +2,7 @@
 type: column
 category_label: "ホームページ再スタート"
 title: "無料ホームページサービスが終了するときの移行方法｜やることを順番に整理"
-date: "2026-10-30"
+date: "2026-10-29"
 image: assets/images/blog-library/hero/hero-dx-007.png
 image_alt: "タブレットを使った業務のイメージ"
 image_role: hero

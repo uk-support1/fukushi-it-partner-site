@@ -2,7 +2,7 @@
 type: column
 category_label: "ホームページ再スタート"
 title: "ホームページを安く作り直す方法と、費用の考え方｜15,000円からの選択肢"
-date: "2026-10-30"
+date: "2026-10-29"
 image: assets/images/blog-library/hero/hero-subsidy-010.png
 image_alt: "資金計画のイメージ"
 image_role: hero

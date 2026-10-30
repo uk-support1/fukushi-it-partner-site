@@ -2,7 +2,7 @@
 type: column
 category_label: "ホームページ再スタート"
 title: "WordPress.comの無料プランで知っておきたい注意点｜広告・独自ドメイン・プラグイン"
-date: "2026-10-30"
+date: "2026-10-29"
 image: assets/images/blog-library/hero/hero-general-008.png
 image_alt: "書類を確認する机のイメージ"
 image_role: hero

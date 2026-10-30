@@ -2,7 +2,7 @@
 type: column
 category_label: "ホームページ再スタート"
 title: "Ameba Ownd（アメーバオウンド）のホームページが見られない原因と確認すること"
-date: "2026-10-30"
+date: "2026-10-29"
 image: assets/images/blog-library/hero/hero-seo-005.png
 image_alt: "検索とキーワード分析のイメージ"
 image_role: hero
@@ -30,7 +30,7 @@ emphasis:
 
 「Ameba Owndで作ったホームページが、見られなくなった」。2026年10月は、こうしたご相談が増えそうな状況になっています。この記事では、Ameba Owndのホームページが見られないときに、まず確認したいことと、原因の考え方、待つか作り直すかの判断のしかたを整理します。
 
-最新の状況は、必ずAmeba Owndの公式のお知らせでご確認ください。この記事は、2026年10月28日ごろまでに確認できた情報にもとづいています。状況は変わる可能性があります。
+最新の状況は、必ずAmeba Owndの公式のお知らせでご確認ください。この記事は、2026年10月28日ごろまでに確認できた情報にもとづいています（2026年10月30日にも、公式の続報で再開の案内が出ていないことを検索で確認しました）。状況は変わる可能性があります。
 
 ## いま、Ameba Owndで何が起きていますか？
 
@@ -73,4 +73,5 @@ Ameba Owndでは、2022年6月27日にスマートフォンアプリの提供が
 
 - [Ameba Owndアプリ提供終了のお知らせ（公式ブログ）](https://blog.amebaownd.com/posts/34398403/)
 - [スマートフォン端末でAmeba Owndへログインできない（Ameba Owndヘルプ）](https://help.amebaownd.com/posts/42134199)
+- [Ameba Ownd 公式X（緊急メンテナンスの続報・10月26日付）](https://x.com/AmebaOwnd/status/2114687662338822425)
 - [Ameba Ownd 公式X](https://x.com/AmebaOwnd)

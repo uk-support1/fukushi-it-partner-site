@@ -2,7 +2,7 @@
 type: column
 category_label: "ホームページ再スタート"
 title: "NPO・福祉団体のホームページを作り直すときのポイント｜最低限そろえたい内容"
-date: "2026-10-30"
+date: "2026-10-29"
 image: assets/images/blog-library/hero/hero-general-009.png
 image_alt: "打ち合わせをしている様子のイメージ"
 image_role: hero

@@ -114,3 +114,31 @@ test("既存の49,500円〜の表記と、PHP比較ページの価格・FAQは�
   assert.match(cmp, /49,500円〜/);
   assert.equal(jsonLd(read("php-homepage-comparison.html"))[0]["@graph"].find(n => n["@type"] === "FAQPage").mainEntity.length, 8);
 });
+
+test("ひな型の見本3種：LPから到達でき、noindexでサイトマップ対象外、架空の内容であることが明示されている", () => {
+  const lp = read(LP);
+  for (const k of ["a", "b", "c"]) {
+    const file = "recovery-template-" + k + ".html";
+    assert.ok(lp.includes('href="' + file + '"'), "LP links to " + file);
+    const html = read(file);
+    assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
+    assert.match(html, /架空|サンプル/);
+    assert.match(html, new RegExp('class="tpl-' + k + '"'));
+    assert.ok(!read("sitemap.xml").includes(file), file + " not in sitemap");
+    assert.ok(require("../scripts/prepare-pages").isPublicFile(file), file + " is deployed");
+  }
+  assert.ok(fs.existsSync(path.join(ROOT, "assets/css/recovery-templates.css")));
+});
+
+test("ドメイン接続の標準範囲と追加料金の条件が、LPとサービス情報に明記されている", () => {
+  const text = visibleText(read(LP)).replace(/\s+/g, "");
+  assert.match(text, /接続設定（1回）まで15,000円に含まれます/);
+  assert.match(text, /1時間以内/);
+  assert.match(text, /2回目以降/);
+  assert.match(text, /移管/);
+  assert.match(text, /スポットサポート（5,500円〜／回）/);
+  const catalog = read("docs/ai-shared/service-catalog.md");
+  assert.match(catalog, /15,000円（税込）/);
+  assert.match(catalog, /1時間以内目安/);
+  assert.match(read("docs/ai-shared/decision-log.md"), /2026-10-30｜「ホームページ再スタート/);
+});
