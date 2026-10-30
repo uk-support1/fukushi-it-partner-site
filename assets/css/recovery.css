@@ -1,0 +1,767 @@
+/* ===========================================================
+   ホームページ再スタート 15,000円（homepage-recovery.html）専用スタイル
+   共通の style.css（変数・ヘッダー・フッター・ボタン等）を前提に、
+   このページだけで使う部品を「rc-」で始まる名前でまとめています。
+
+   ページの構成（上から）
+     ファーストビュー → 困りごと → 先に確認 → 解決の流れ → 料金
+     → 含まれるもの／別料金 → 他プランとの違い → 元データがないとき
+     → くわしい情報（アコーディオン）→ FAQ → 関連記事 → 相談のご案内
+=========================================================== */
+
+.rc-page {
+  --rc-soft: #f3f8f5;
+  --rc-line: #d9e6de;
+  --rc-blue: #2b6a95;
+  --rc-blue-soft: #e9f2f9;
+  --rc-warn: #b85f20;
+  --rc-warn-soft: #fdf1e7;
+}
+
+.rc-page [id] {
+  scroll-margin-top: 112px;
+}
+
+.rc-section {
+  padding: 72px 0;
+}
+
+.rc-section--soft {
+  background: var(--rc-soft);
+}
+
+.rc-link {
+  font-weight: 700;
+  color: var(--green-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rc-note {
+  margin-top: 20px;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--text-600);
+}
+
+/* ---------------- ファーストビュー ---------------- */
+.rc-hero {
+  padding: 28px 0 60px;
+  overflow: hidden;
+  background: linear-gradient(155deg, var(--green-100) 0%, #f6faf7 55%, var(--cream-100) 100%);
+}
+
+.rc-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  column-gap: 40px;
+  align-items: center;
+  max-width: 1080px;
+}
+
+.rc-breadcrumb {
+  grid-column: 1 / -1;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+  color: var(--text-600);
+}
+
+.rc-breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  list-style: none;
+}
+
+.rc-breadcrumb li + li::before {
+  content: "›";
+  margin-right: 8px;
+}
+
+.rc-breadcrumb a {
+  color: var(--green-700);
+  text-decoration: underline;
+}
+
+.rc-hero-text .section-tag {
+  margin-bottom: 14px;
+}
+
+.rc-hero-title {
+  margin-bottom: 16px;
+  font-size: clamp(1.75rem, 1.1rem + 2.4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.45;
+  color: var(--green-900);
+}
+
+.rc-hero-title em {
+  font-style: normal;
+  color: var(--orange-600);
+}
+
+.rc-hero-lead {
+  max-width: 31em;
+  margin-bottom: 20px;
+  font-size: 1.02rem;
+  line-height: 1.95;
+  color: var(--text-600);
+}
+
+.rc-price-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+  padding: 10px 22px;
+  border: 2px solid var(--orange-500);
+  border-radius: 28px;
+  background: var(--white);
+  color: var(--green-900);
+  font-weight: 800;
+}
+
+.rc-price-chip strong {
+  white-space: nowrap;
+  font-size: 1.9rem;
+  line-height: 1.2;
+  color: var(--orange-600);
+  font-variant-numeric: tabular-nums;
+}
+
+.rc-price-chip span {
+  font-size: 0.9rem;
+}
+
+.rc-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.rc-hero-actions .btn {
+  padding: 16px 32px;
+}
+
+.rc-hero-caution {
+  margin-top: 18px;
+  padding: 12px 16px;
+  border-left: 4px solid var(--orange-500);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--text-900);
+}
+
+.rc-hero-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+/* ---------------- 共通のカード ---------------- */
+.rc-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.rc-grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.rc-grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rc-card {
+  padding: 28px 24px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.rc-card-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: var(--green-100);
+  color: var(--green-700);
+}
+
+.rc-card-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.rc-card-title {
+  margin-bottom: 8px;
+  font-size: 1.12rem;
+  font-weight: 800;
+  line-height: 1.55;
+  color: var(--green-900);
+}
+
+.rc-card p {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--text-600);
+}
+
+.rc-card--voice .rc-card-title::before {
+  content: "「";
+}
+
+.rc-card--voice .rc-card-title::after {
+  content: "」";
+}
+
+/* ---------------- 先に確認（復旧を待つだけで済む場合） ---------------- */
+.rc-check {
+  padding: 28px;
+  border: 2px solid var(--rc-blue-soft);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+}
+
+.rc-check-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+  list-style: none;
+  counter-reset: rc-check;
+}
+
+.rc-check-list li {
+  position: relative;
+  padding: 14px 16px 14px 62px;
+  border-radius: var(--radius-sm);
+  background: var(--rc-blue-soft);
+  font-size: 0.97rem;
+  line-height: 1.8;
+  counter-increment: rc-check;
+}
+
+.rc-check-list li::before {
+  content: counter(rc-check);
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--rc-blue);
+  color: var(--white);
+  font-weight: 800;
+}
+
+.rc-check-list b {
+  color: var(--green-900);
+}
+
+/* ---------------- 流れ ---------------- */
+.rc-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  list-style: none;
+  counter-reset: rc-step;
+}
+
+.rc-step {
+  position: relative;
+  padding: 26px 20px 22px;
+  border: 1px solid var(--rc-line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  counter-increment: rc-step;
+}
+
+.rc-step::before {
+  content: "STEP " counter(rc-step);
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--green-700);
+  color: var(--white);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.rc-step h3 {
+  margin-bottom: 6px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--green-900);
+}
+
+.rc-step p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-600);
+}
+
+/* ---------------- 料金 ---------------- */
+.rc-price {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  background: var(--white);
+}
+
+.rc-price-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 32px;
+  background: var(--green-900);
+  color: var(--white);
+  text-align: center;
+}
+
+.rc-price-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.rc-price-num {
+  margin: 6px 0;
+  font-size: clamp(2.6rem, 2rem + 3vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.rc-price-num small {
+  margin-left: 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.rc-price-tax {
+  display: inline-block;
+  align-self: center;
+  margin-bottom: 14px;
+  padding: 2px 14px;
+  border-radius: 999px;
+  background: var(--orange-500);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.rc-price-once {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  opacity: 0.92;
+}
+
+.rc-price-side {
+  padding: 32px 28px;
+}
+
+.rc-price-side h3 {
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--green-900);
+}
+
+.rc-cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+}
+
+.rc-cost-table th,
+.rc-cost-table td {
+  padding: 11px 8px;
+  border-bottom: 1px solid var(--border-soft);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.7;
+}
+
+.rc-cost-table th {
+  width: 40%;
+  font-weight: 700;
+  color: var(--green-900);
+}
+
+.rc-cost-table td b {
+  color: var(--orange-600);
+}
+
+/* ---------------- 含まれるもの／別料金 ---------------- */
+.rc-list-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 1.12rem;
+  font-weight: 800;
+}
+
+.rc-list-card--in {
+  border-top: 5px solid var(--green-700);
+}
+
+.rc-list-card--in h3 {
+  color: var(--green-700);
+}
+
+.rc-list-card--out {
+  border-top: 5px solid var(--orange-500);
+}
+
+.rc-list-card--out h3 {
+  color: var(--rc-warn);
+}
+
+.rc-list {
+  list-style: none;
+}
+
+.rc-list li {
+  position: relative;
+  padding: 8px 0 8px 28px;
+  border-bottom: 1px dashed var(--border-soft);
+  font-size: 0.94rem;
+  line-height: 1.75;
+}
+
+.rc-list li:last-child {
+  border-bottom: 0;
+}
+
+.rc-list li::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--green-700);
+}
+
+.rc-list--out li::before {
+  background: var(--orange-500);
+}
+
+.rc-list li small {
+  display: block;
+  color: var(--text-600);
+  font-size: 0.84rem;
+}
+
+/* ---------------- 比較表 ---------------- */
+.rc-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  background: var(--white);
+}
+
+.rc-compare {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.rc-compare th,
+.rc-compare td {
+  padding: 14px 14px;
+  border-bottom: 1px solid var(--border-soft);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.7;
+}
+
+.rc-compare thead th {
+  background: var(--green-100);
+  color: var(--green-900);
+  font-weight: 800;
+}
+
+.rc-compare thead th.rc-ours {
+  background: var(--orange-500);
+  color: var(--white);
+}
+
+.rc-compare tbody th {
+  width: 18%;
+  background: #fafcfb;
+  font-weight: 700;
+  color: var(--green-900);
+}
+
+.rc-compare td.rc-ours {
+  background: var(--orange-100);
+  font-weight: 700;
+}
+
+.rc-compare .rc-price-row td {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--green-900);
+}
+
+/* ---------------- 元データがないとき ---------------- */
+.rc-warn-box {
+  margin-top: 24px;
+  padding: 20px 22px;
+  border-radius: var(--radius-md);
+  background: var(--rc-warn-soft);
+  border: 1px solid #f1cba8;
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+.rc-warn-box strong {
+  color: var(--rc-warn);
+}
+
+/* ---------------- アコーディオン・FAQ ---------------- */
+.rc-acc {
+  display: grid;
+  gap: 12px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.rc-acc details {
+  border: 1px solid var(--rc-line);
+  border-radius: var(--radius-md);
+  background: var(--white);
+}
+
+.rc-acc summary {
+  position: relative;
+  padding: 18px 52px 18px 20px;
+  cursor: pointer;
+  font-weight: 800;
+  line-height: 1.6;
+  color: var(--green-900);
+  list-style: none;
+}
+
+.rc-acc summary::-webkit-details-marker {
+  display: none;
+}
+
+.rc-acc summary::after {
+  content: "+";
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--green-700);
+}
+
+.rc-acc details[open] summary::after {
+  content: "−";
+}
+
+.rc-acc-body {
+  padding: 0 20px 20px;
+  font-size: 0.94rem;
+  line-height: 1.95;
+  color: var(--text-900);
+}
+
+.rc-acc-body p + p,
+.rc-acc-body ul + p,
+.rc-acc-body p + ul {
+  margin-top: 10px;
+}
+
+.rc-acc-body ul {
+  padding-left: 1.3em;
+}
+
+.rc-acc-body li + li {
+  margin-top: 4px;
+}
+
+/* ---------------- 関連記事 ---------------- */
+.rc-articles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+  list-style: none;
+}
+
+.rc-articles a {
+  display: block;
+  padding: 14px 18px;
+  border: 1px solid var(--rc-line);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--green-900);
+  text-decoration: none;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.rc-articles a:hover {
+  border-color: var(--green-500);
+  transform: translateY(-2px);
+}
+
+/* ---------------- 最後の相談ボックス ---------------- */
+.rc-cta {
+  padding: 48px 28px;
+  border-radius: var(--radius-lg);
+  background: var(--green-900);
+  color: var(--white);
+  text-align: center;
+}
+
+.rc-cta h2 {
+  margin-bottom: 10px;
+  font-size: clamp(1.35rem, 1.1rem + 1.2vw, 1.8rem);
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.rc-cta p {
+  max-width: 34em;
+  margin: 0 auto 22px;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  opacity: 0.93;
+}
+
+/* ---------------- ほかのページに置く「15,000円」の案内（比較ページ・LPなど） ---------------- */
+.rc-banner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  padding: 22px 26px;
+  border: 2px solid var(--orange-500);
+  border-radius: var(--radius-md);
+  background: var(--orange-100);
+}
+
+.rc-banner-price {
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--orange-600);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.rc-banner-price small {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--text-600);
+}
+
+.rc-banner h3 {
+  margin-bottom: 4px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--green-900);
+}
+
+.rc-banner p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-900);
+}
+
+/* ---------------- レスポンシブ ---------------- */
+@media (max-width: 960px) {
+  .rc-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rc-price {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .rc-hero-inner {
+    grid-template-columns: 1fr;
+    row-gap: 12px;
+  }
+
+  .rc-hero-visual {
+    order: -1;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .rc-grid--3,
+  .rc-grid--2,
+  .rc-articles {
+    grid-template-columns: 1fr;
+  }
+
+  .rc-banner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .rc-section {
+    padding: 52px 0;
+  }
+
+  .rc-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .rc-hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .rc-price-main {
+    padding: 30px 20px;
+  }
+
+  .rc-price-side {
+    padding: 24px 18px;
+  }
+
+  .rc-cost-table th,
+  .rc-cost-table td {
+    display: block;
+    width: 100%;
+    padding: 4px 0;
+  }
+
+  .rc-cost-table td {
+    padding-bottom: 12px;
+  }
+
+  .rc-check {
+    padding: 20px 16px;
+  }
+}

@@ -1,0 +1,88 @@
+/* ひな型の見本（recovery-template-a/b/c.html）専用スタイル
+   「ホームページ再スタート 15,000円」で選べるひな型3種の見本です。
+   実際の納品物と同じく、1枚のページ・外部の仕組みなしで動く作りにしています。
+   内容は架空の事業所（サンプル）です。 */
+
+:root {
+  --t-main: #2c6b54;
+  --t-dark: #1f4d3c;
+  --t-soft: #e8f4ee;
+  --t-accent: #e8965a;
+  --t-bg: #fbf6ec;
+  --t-text: #34383a;
+}
+
+.tpl-b { --t-main: #2b6a95; --t-dark: #1d4a69; --t-soft: #e9f2f9; --t-accent: #2b6a95; --t-bg: #ffffff; }
+.tpl-c { --t-main: #b85f20; --t-dark: #7d3f12; --t-soft: #fdf1e7; --t-accent: #b85f20; --t-bg: #fffaf3; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  color: var(--t-text);
+  background: var(--t-bg);
+  line-height: 1.9;
+}
+
+.tpl-note {
+  padding: 10px 16px;
+  background: #1f4d3c;
+  color: #fff;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.tpl-note a { color: #fff; font-weight: 700; text-decoration: underline; }
+
+.tpl-wrap { width: min(920px, 100% - 32px); margin: 0 auto; }
+
+.tpl-head { padding: 18px 0; border-bottom: 3px solid var(--t-main); background: #fff; }
+.tpl-head .tpl-wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; }
+.tpl-name { font-size: 1.15rem; font-weight: 800; color: var(--t-dark); }
+.tpl-nav { display: flex; flex-wrap: wrap; gap: 4px 18px; list-style: none; font-size: 0.9rem; }
+.tpl-nav a { color: var(--t-dark); text-decoration: none; font-weight: 700; }
+
+.tpl-hero { padding: 64px 0; background: var(--t-soft); text-align: center; }
+.tpl-hero h1 { margin-bottom: 14px; font-size: clamp(1.6rem, 1.1rem + 2vw, 2.3rem); line-height: 1.5; color: var(--t-dark); }
+.tpl-hero p { max-width: 34em; margin: 0 auto 24px; }
+.tpl-btn { display: inline-block; padding: 14px 32px; border-radius: 999px; background: var(--t-accent); color: #fff; font-weight: 800; text-decoration: none; }
+
+.tpl-section { padding: 56px 0; }
+.tpl-section h2 { margin-bottom: 18px; font-size: 1.4rem; color: var(--t-dark); }
+.tpl-section h2::after { content: ""; display: block; width: 56px; height: 4px; margin-top: 8px; border-radius: 2px; background: var(--t-accent); }
+
+.tpl-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; list-style: none; }
+.tpl-cards li { padding: 20px; border-radius: 14px; background: #fff; border: 1px solid #e3ece6; }
+.tpl-cards b { display: block; margin-bottom: 4px; color: var(--t-main); }
+
+.tpl-info { width: 100%; border-collapse: collapse; background: #fff; }
+.tpl-info th, .tpl-info td { padding: 12px 14px; border-bottom: 1px solid #e3ece6; text-align: left; vertical-align: top; }
+.tpl-info th { width: 28%; background: var(--t-soft); color: var(--t-dark); }
+
+.tpl-contact { padding: 56px 0; background: var(--t-dark); color: #fff; text-align: center; }
+.tpl-contact h2 { color: #fff; margin-bottom: 10px; }
+.tpl-contact h2::after { margin-left: auto; margin-right: auto; }
+.tpl-contact a.tpl-tel { color: #fff; font-size: 1.6rem; font-weight: 800; text-decoration: none; }
+
+.tpl-foot { padding: 20px 0; font-size: 0.82rem; text-align: center; color: #5b6562; }
+
+/* ひな型A：やわらかい中央そろえ（初期の見た目） */
+
+/* ひな型B：左そろえ・すっきり */
+.tpl-b .tpl-hero { text-align: left; background: #fff; border-bottom: 1px solid #d5e4ef; }
+.tpl-b .tpl-hero p { margin-left: 0; }
+.tpl-b .tpl-btn { border-radius: 6px; }
+.tpl-b .tpl-cards li { border-radius: 4px; border-left: 5px solid var(--t-main); }
+.tpl-b .tpl-head { border-bottom-width: 1px; }
+
+/* ひな型C：あたたかい・大きな丸み */
+.tpl-c .tpl-hero { border-radius: 0 0 48px 48px; }
+.tpl-c .tpl-cards li { border-radius: 24px; background: var(--t-soft); border: 0; }
+.tpl-c .tpl-section h2::after { width: 80px; height: 6px; }
+.tpl-c .tpl-contact { border-radius: 48px 48px 0 0; }
+
+@media (max-width: 720px) {
+  .tpl-cards { grid-template-columns: 1fr; }
+  .tpl-hero { padding: 44px 0; }
+  .tpl-info th, .tpl-info td { display: block; width: 100%; }
+}

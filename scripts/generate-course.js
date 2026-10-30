@@ -192,6 +192,7 @@ function siteFooter(depth) {
     '          <li><a href="' + prefix + 'homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="' + prefix + 'server-domain-guide.html">サーバー・ドメイン比較</a></li>\n' +
     '          <li><a href="' + prefix + 'php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>\n' +
+    '          <li><a href="' + prefix + 'homepage-recovery.html">ホームページ再スタート 15,000円</a></li>\n' +
     '          <li><a href="' + prefix + 'works.html">制作実績</a></li>\n' +
     '          <li><a href="' + prefix + 'flow.html">制作までの流れ</a></li>\n' +
     '        </ul>\n' +
