@@ -118,11 +118,11 @@ test("比較ページ（下部のくわしい比較表）：A-①・A-②・B・
   assert.ok(!/絶対に安全(?:です|だ)(?!か)|必ず安くなります|必ず解決/.test(visibleText(page)));
 });
 
-test("誤認防止：49,500円は基本プランの料金で、PHPフォーム・会員・予約などは個別見積り。診断は脆弱性診断・侵害調査ではないと明記している", () => {
+test("誤認防止：49,500円は標準範囲の料金で、PHPフォーム・会員・予約やページ数が非常に多い場合は追加料金の可能性があると明記。診断は脆弱性診断・侵害調査ではないと明記している", () => {
   for (const file of [COMPARE, "homepage-cost-reduction.html"]) {
     const text = visibleText(read(file));
-    assert.match(text, /49,500円で一律に移行できるわけではありません/, file);
-    assert.match(text, /個別のお見積り/, file);
+    assert.match(text, /49,500円の範囲を超え、追加料金が発生することがあります/, file);
+    assert.match(text, /ページ数が非常に多い場合（数百ページ規模など）/, file);
     assert.match(text, /脆弱性診断や、攻撃を受けたかどうかの調査は行っていません/, file);
   }
   for (const slug of ["php-possible-attack-checklist", HUB]) {
@@ -130,10 +130,10 @@ test("誤認防止：49,500円は基本プランの料金で、PHPフォーム�
     assert.match(text, /脆弱性診断/, slug);
     assert.match(text, /攻撃を受けたかどうか/, slug);
   }
-  // 49,500円に触れる記事は、必ず「一律ではない」旨を添えている
+  // 49,500円に触れる記事は、必ず「追加料金が発生することがある」旨を添えている
   for (const slug of SLUGS) {
     const text = visibleText(read("blog/" + slug + ".html"));
-    if (text.includes("49,500円")) assert.match(text, /個別(?:の|に)(?:お)?見積り/, slug + " caveat");
+    if (text.includes("49,500円")) assert.match(text, /追加料金/, slug + " caveat");
   }
 });
 
@@ -355,18 +355,18 @@ test("視覚的な比較：A・B・Cを横に固定し、費用・管理の手�
   assert.match(css, /\.pc-mx tbody th\s*\{[^}]*grid-column:\s*1 \/ -1/);
 });
 
-test("福祉ITパートナーの提案：49,500円と、フォーム・予約・会員などは個別見積りであること、無料相談ボタンが同じ場所にある", () => {
+test("福祉ITパートナーの提案：49,500円と、フォーム・予約・会員・ページ数が非常に多い場合は追加料金の可能性があること、無料相談ボタンが同じ場所にある", () => {
   const proposal = sectionOf(read(COMPARE), "pc-proposal");
   const text = textOf(proposal);
   assert.ok(text.includes("ホームページの管理をもっと簡単にしませんか？"));
-  assert.ok(text.includes("49,500円〜") || /49,500\s*円〜/.test(text));
-  assert.match(text, /動的なフォーム・予約機能・会員機能・ネットショップ・データベースを使った機能などがある場合は、49,500円で一律に移行できるわけではありません。個別のお見積りになります。/);
+  assert.ok(/49,500\s*円/.test(text) && !text.includes("49,500円〜"));
+  assert.match(text, /動的なフォーム・予約機能・会員機能・ネットショップ・データベースを使った機能などがある場合や、ページ数が非常に多い場合（数百ページ規模など）は、49,500円の範囲を超え、追加料金が発生することがあります。/);
   assert.match(text, /脆弱性診断や、攻撃を受けたかどうかの調査は行っていません/);
   assert.match(proposal, /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
   assert.match(proposal, /<a href="homepage-cost-reduction\.html" class="btn btn-outline">乗り換えプランと費用の比較例を見る<\/a>/);
   // 料金の注意書きは、金額と同じカードの中にある（金額だけが目に入らない）
   const card = proposal.match(/<div class="pc-proposal-card">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/) || proposal.match(/<div class="pc-proposal-card">[\s\S]*$/);
-  assert.ok(card[0].includes("49,500") && card[0].includes("個別のお見積り"));
+  assert.ok(card[0].includes("49,500") && card[0].includes("追加料金が発生することがあります"));
 });
 
 test("専門的な内容は、下部の閉じたアコーディオンにまとまり、記事12本へのリンクも残っている", () => {
