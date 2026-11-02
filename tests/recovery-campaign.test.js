@@ -41,7 +41,8 @@ test("LP：復旧・復元を保証する表現と、原因をPHPと断定する
 test("LP：既存プランの価格表記が公開ページと一致している", () => {
   const text = visibleText(read(LP));
   assert.match(text, /19,800円/);
-  assert.match(text, /49,500円〜/);
+  assert.match(text, /49,500円/);
+  assert.doesNotMatch(text, /49,500円〜/);
   assert.match(text, /5,500円〜/);
   assert.match(text, /4,400円/);
   assert.match(read("homepage-plan.html"), /19,800/);
@@ -109,9 +110,12 @@ test("導線：サイトマップ・フッター・PHP比較ページ・維持�
   assert.match(read("scripts/generate-course.js"), /homepage-recovery\.html/);
 });
 
-test("既存の49,500円〜の表記と、PHP比較ページの価格・FAQは変わっていない", () => {
+test("乗り換えプランは49,500円と言い切り、追加料金の条件を併記している。PHP比較ページのFAQ数は変わっていない", () => {
   const cmp = visibleText(read("php-homepage-comparison.html"));
-  assert.match(cmp, /49,500円〜/);
+  assert.match(cmp, /49,500円/);
+  assert.doesNotMatch(cmp, /49,500円〜/);
+  assert.match(cmp, /ページ数が非常に多い場合（数百ページ規模など）/);
+  assert.match(cmp, /追加料金が発生することがあります/);
   assert.equal(jsonLd(read("php-homepage-comparison.html"))[0]["@graph"].find(n => n["@type"] === "FAQPage").mainEntity.length, 8);
 });
 
