@@ -114,7 +114,7 @@ test("乗り換えプランは49,500円と言い切り、追加料金の条件�
   const cmp = visibleText(read("php-homepage-comparison.html"));
   assert.match(cmp, /49,500円/);
   assert.doesNotMatch(cmp, /49,500円〜/);
-  assert.match(cmp, /ページ数が非常に多い場合（数百ページ規模など）/);
+  assert.match(cmp, /ページ数が非常に多い場合/);
   assert.match(cmp, /追加料金が発生することがあります/);
   assert.equal(jsonLd(read("php-homepage-comparison.html"))[0]["@graph"].find(n => n["@type"] === "FAQPage").mainEntity.length, 8);
 });
@@ -145,4 +145,15 @@ test("ドメイン接続の標準範囲と追加料金の条件が、LPとサー
   assert.match(catalog, /15,000円（税込）/);
   assert.match(catalog, /1時間以内目安/);
   assert.match(read("docs/ai-shared/decision-log.md"), /2026-10-30｜「ホームページ再スタート/);
+});
+
+test("追加料金の説明：PHPフォームのGoogleフォーム等への切り替えは含み、ページ数の具体的な目安は公開文に書かない", () => {
+  const files = ["homepage-cost-reduction.html", "php-homepage-comparison.html", "homepage-recovery.html", ...fs.readdirSync(path.join(ROOT, "blog")).filter(f => f.endsWith(".html")).map(f => "blog/" + f)];
+  for (const file of files) {
+    const text = visibleText(read(file));
+    assert.doesNotMatch(text, /数百ページ/, file);
+    if (/49,500円/.test(text)) assert.doesNotMatch(text, /(?:フォーム[^。]{0,40}(?:通常の範囲を超える|追加料金が発生))/, file + " must not treat PHP forms as extra-cost");
+  }
+  const cost = visibleText(read("homepage-cost-reduction.html"));
+  assert.match(cost, /PHPで動くお問い合わせフォームの、Googleフォームなどへの切り替え/);
 });

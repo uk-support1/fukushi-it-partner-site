@@ -122,7 +122,8 @@ test("誤認防止：49,500円は標準範囲の料金で、PHPフォーム・�
   for (const file of [COMPARE, "homepage-cost-reduction.html"]) {
     const text = visibleText(read(file));
     assert.match(text, /49,500円の範囲を超え、追加料金が発生することがあります/, file);
-    assert.match(text, /ページ数が非常に多い場合（数百ページ規模など）/, file);
+    assert.match(text, /ページ数が非常に多い場合は、49,500円の範囲を超え/, file);
+    assert.match(text, /Googleフォームなどの外部サービスに切り替えます/, file);
     assert.match(text, /脆弱性診断や、攻撃を受けたかどうかの調査は行っていません/, file);
   }
   for (const slug of ["php-possible-attack-checklist", HUB]) {
@@ -360,7 +361,8 @@ test("福祉ITパートナーの提案：49,500円と、フォーム・予約・
   const text = textOf(proposal);
   assert.ok(text.includes("ホームページの管理をもっと簡単にしませんか？"));
   assert.ok(/49,500\s*円/.test(text) && !text.includes("49,500円〜"));
-  assert.match(text, /動的なフォーム・予約機能・会員機能・ネットショップ・データベースを使った機能などがある場合や、ページ数が非常に多い場合（数百ページ規模など）は、49,500円の範囲を超え、追加料金が発生することがあります。/);
+  assert.match(text, /PHPで動くお問い合わせフォームは、Googleフォームなどへの切り替えまで49,500円に含まれます。/);
+  assert.match(text, /会員機能・予約機能・ネットショップ・データベースを使った機能などがある場合や、ページ数が非常に多い場合は、49,500円の範囲を超え、追加料金が発生することがあります。/);
   assert.match(text, /脆弱性診断や、攻撃を受けたかどうかの調査は行っていません/);
   assert.match(proposal, /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
   assert.match(proposal, /<a href="homepage-cost-reduction\.html" class="btn btn-outline">乗り換えプランと費用の比較例を見る<\/a>/);
