@@ -57,7 +57,7 @@ inline_image_selection:
     - recruit
     - seo
   allowTechnology: true
-published: false
+published: true
 description: 令和9年度の報酬改定で話題となっている就労継続支援B型のスコア制について、精神保健福祉士うさぎ氏の動画をヒントに、数字に表れにくい生産活動の実際や支援の価値をホームページで誠実に伝えるための工夫を解説します。
 slug: article-2026-11-03-edbbdb4c2887
 buhio:
