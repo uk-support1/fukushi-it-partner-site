@@ -302,11 +302,11 @@ section {
   align-items: center;
   flex-wrap: nowrap;
   white-space: nowrap;
-  gap: 14px;
+  gap: 22px;
 }
 
 .nav-links a {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: var(--text-900);
   position: relative;
@@ -329,47 +329,14 @@ section {
   width: 100%;
 }
 
-/* 「PHP対応」の小さなバッジ。目立たせつつ、不安をあおらないよう
-   やわらかいオレンジ系の淡い色にとどめる（点滅・警告色は使わない） */
-.nav-links .nav-badge {
-  display: inline-block;
-  margin-left: 6px;
-  padding: 1px 7px;
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  line-height: 1.5;
-  vertical-align: 0.12em;
-  color: #944a10;
-  background: var(--orange-100);
-  border: 1px solid #f1cba8;
-  border-radius: 999px;
-}
-
-/* メニューは9項目。ハンバーガーに切り替わる直前の幅では、
-   ロゴ・相談ボタンと重ならないよう、間隔と文字を少しずつ詰める */
-@media (min-width: 1280px) and (max-width: 1339px) {
-  .nav-links {
-    gap: 10px;
-  }
-  .nav-links a {
-    font-size: 0.84rem;
-  }
-}
-
-@media (min-width: 1340px) and (max-width: 1439px) {
+/* ハンバーガーメニューに切り替わる直前の幅では、メニュー9項目が
+   ロゴ・相談ボタンと重ならないよう間隔と文字を少しだけ詰める */
+@media (min-width: 1201px) and (max-width: 1360px) {
   .nav-links {
     gap: 14px;
   }
   .nav-links a {
     font-size: 0.86rem;
-  }
-}
-
-/* 画面が広いときは、ヘッダーの横幅を少し広げて、メニューにゆとりを持たせる */
-@media (min-width: 1280px) {
-  .nav-bar {
-    max-width: 1400px;
   }
 }
 
@@ -403,7 +370,7 @@ section {
   transition: var(--transition);
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 1200px) {
   .nav-cta {
     display: none;
   }
@@ -459,7 +426,7 @@ section {
   display: none;
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 1200px) {
   .nav-cta-mobile {
     display: flex;
   }
