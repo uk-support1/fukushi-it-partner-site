@@ -39,6 +39,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // 電話番号（tel:リンク）のクリック・タップの計測
+  document.querySelectorAll(".js-phone-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      sendGaEvent("phone_click");
+    });
+  });
+
   // お問い合わせフォーム（Formspree）の送信処理
   var contactForm = document.getElementById("contact-form");
 
