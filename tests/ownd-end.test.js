@@ -85,10 +85,10 @@ test("終了ガイド：公式の発表どおりの日付・条件が書かれ�
 test("終了ガイド：Ameba Ownd引き継ぎの限定価格15,000円を、含まれないものと一緒に書き、あおる表現・ページ数の矛盾を入れていない", () => {
   const page = read(PAGE);
   const ours = textOf(sectionOf(page, "oe-ours"));
-  for (const fact of ["Ameba Ownd 引き継ぎ（限定価格）", "15,000円", "税込", "ひな型3種から選べて、最短2日で公開します", "お持ちの独自ドメインへの接続を、1回まで含みます",
+  for (const fact of ["Ameba Ownd 引き継ぎ（限定価格）", "15,000円", "税込", "ひな型3種から選べて、最短48時間で公開します", "お持ちの独自ドメインへの接続を、1回まで含みます",
     "月額の管理費は0円", "ページ数が多くても、できるだけ対応します", "15,000円に含まれないもの", "ページ数が非常に多い場合は、別途お見積りになります",
     "予約・会員などの機能", "Ameba Owndの内容をそのまま再現することや、データの復旧も含まれません",
-    "独自ドメインを使う場合の年額の実費は、別にかかります", "納期は、素材がそろってから最短2日、目安は約14日です", "将来も無料である保証はない"]) assert.ok(ours.includes(fact), "offer states: " + fact);
+    "独自ドメインを使う場合の年額の実費は、別にかかります", "納期は、素材がそろってから最短48時間、目安は約14日です", "将来も無料である保証はない"]) assert.ok(ours.includes(fact), "offer states: " + fact);
   assert.match(sectionOf(page, "oe-ours"), /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
   // 依頼者の指示（2026-11-05）：「含まれないもの」から、ブログ機能と納品後の修正は外した（含む・含まないは、このページでは言い切らない）
   for (const removed of ["ブログ機能", "納品後の修正", "5,500"]) assert.ok(!ours.includes(removed), "removed from the exclusions: " + removed);
