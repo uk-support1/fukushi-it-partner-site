@@ -28,6 +28,7 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/recovery.css">
 <link rel="stylesheet" href="assets/css/php-compare.css?v=2">
+<link rel="stylesheet" href="assets/css/lp-shell.css?v=1">
 <script src="assets/js/ga4.js"></script>
 <script type="application/ld+json">
 {
@@ -106,7 +107,7 @@
           "name": "49,500円で、どんなホームページでも乗り換えられますか？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "事業所紹介を中心とした小規模なホームページであれば、49,500円で承ります。PHPで動くお問い合わせフォームがある場合は、Googleフォームなどの外部サービスに切り替えます（確認画面・自動返信・ファイル添付など、同じ形にできない機能もあります）。ただし、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合や、ページ数が非常に多い場合は、追加料金が発生することがあります。機能によっては移行できないこともあり、その場合は個別のお見積りか、現状維持をおすすめします。診断で、乗り換えが向くかどうか、今のままがよいかを正直にお伝えします。"
+            "text": "会社・事業所・お店の紹介を中心とした小規模なホームページであれば、49,500円で承ります。PHPで動くお問い合わせフォームがある場合は、Googleフォームなどの外部サービスに切り替えます（確認画面・自動返信・ファイル添付など、同じ形にできない機能もあります）。ただし、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合や、ページ数が非常に多い場合は、追加料金が発生することがあります。機能によっては移行できないこともあり、その場合は個別のお見積りか、現状維持をおすすめします。診断で、乗り換えが向くかどうか、今のままがよいかを正直にお伝えします。"
           }
         },
         {
@@ -147,33 +148,37 @@
 }
 </script>
 </head>
-<body>
+<body class="lp-shell">
 
-<header class="site-header">
-  <div class="nav-bar">
-    <a href="index.html" class="brand">
-      <img src="assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">
+<header class="lp-header">
+  <div class="lp-header-inner container">
+    <a href="index.html" class="lp-header-brand">
+      <img src="assets/images/logo-mark.png" alt="福祉ITパートナー ロゴ" class="lp-header-logo" width="40" height="40">
+      <span class="lp-header-brand-text">
+        <span class="lp-header-brand-name">福祉ITパートナー</span>
+        <span class="lp-header-brand-service">PHP対応</span>
+      </span>
     </a>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="index.html">HOME</a></li>
-        <li><a href="homepage-plan.html">料金プラン</a></li>
-        <li><a href="php-homepage-comparison.html" class="nav-php active">PHP対応<span class="nav-badge">NEW</span></a></li>
-        <li><a href="ameba-ownd-end.html" class="nav-ownd">Ameba Ownd終了<span class="nav-badge">NEW</span></a></li>
-        <li><a href="works.html">制作実績</a></li>
-        <li><a href="flow.html">制作までの流れ</a></li>
-        <li><a href="blog.html">ブログ</a></li>
-        <li><a href="profile.html">プロフィール</a></li>
-        <li><a href="contact.html">お問い合わせ</a></li>
-        <li class="nav-cta-mobile">
-          <a href="contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+
+    <nav class="lp-header-nav" aria-label="このページの内容">
+      <ul class="lp-nav-links">
+        <li><a href="#pc-choices">3つの方法</a></li>
+        <li><a href="#pc-compare">費用などの比較</a></li>
+        <li><a href="#pc-proposal">ご提案</a></li>
+        <li><a href="#pc-faq">よくある質問</a></li>
+        <li class="lp-nav-official-mobile"><a href="index.html">福祉ITパートナー公式サイトへ →</a></li>
+        <li class="lp-nav-cta-mobile">
+          <a href="contact.html#google-form-embed" class="btn btn-accent js-consult-link">無料相談はこちら</a>
         </li>
       </ul>
     </nav>
-    <div class="nav-cta">
-      <a href="contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+
+    <div class="lp-header-actions">
+      <a href="index.html" class="lp-header-official-link">福祉ITパートナー公式サイトへ →</a>
+      <a href="contact.html#google-form-embed" class="btn btn-accent lp-header-cta js-consult-link">無料相談はこちら</a>
     </div>
-    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+
+    <button type="button" class="lp-nav-toggle" aria-label="メニューを開く" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -227,6 +232,22 @@
               <path d="M-14 19l-1-11 11 2z" fill="#fff"/>
             </g>
           </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 全業種向けの案内 ===== -->
+  <section class="lp-scope" aria-labelledby="lp-scope-title">
+    <div class="container">
+      <div class="lp-scope-card reveal">
+        <div class="lp-scope-head">
+          <span class="lp-scope-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18"/><path d="M5 21V8l6-4v17"/><path d="M11 21V11l8 3v7"/><path d="M8 11v.01M8 15v.01M15 17v.01"/></svg></span>
+          <h2 class="lp-scope-title" id="lp-scope-title">業種・規模を問わず、ご利用いただけます</h2>
+        </div>
+        <ul class="lp-scope-chips">
+          <li>建設・工事</li><li>製造・工場</li><li>卸売・小売</li><li>飲食・宿泊</li><li>医療・福祉・介護</li><li>美容・サービス</li><li>士業・コンサル</li><li>不動産</li><li>運送・物流</li><li>教育・スクール</li><li>農業・漁業</li><li>NPO・各種団体</li>
+        </ul>
+        <p class="lp-scope-note">個人事業主の方から、小さな会社、大きな法人まで、ご相談いただけます。<strong>規模が大きい場合や、会員・予約・ネットショップなどの特別な機能がある場合は、</strong>内容を確認して、個別にお見積りします。</p>
       </div>
     </div>
   </section>
@@ -352,7 +373,7 @@
         <div class="pc-proposal-main">
           <span class="section-tag">福祉ITパートナーからのご提案</span>
           <h2 class="pc-proposal-title" id="pc-proposal-title">ホームページの管理を<br class="pc-sp-br">もっと簡単にしませんか？</h2>
-          <p class="pc-proposal-lead">PHPの更新に悩まない、管理しやすいホームページへの乗り換えを、福祉の現場に寄り添ってお手伝いします。</p>
+          <p class="pc-proposal-lead">PHPの更新に悩まない、管理しやすいホームページへの乗り換えを、専門用語を使わず、やさしくお手伝いします。</p>
           <ul class="pc-proposal-points">
             <li><span class="pc-point-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M24 6l14 5v11c0 9-6 15-14 19-8-4-14-10-14-19V11z"/><path d="M17.5 23.5l4.5 4.5 8.5-9.5"/></svg></span><span>PHPの更新が、必要なくなります</span></li>
             <li><span class="pc-point-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="17"/><path d="M17.5 15.5L24 25l6.5-9.5"/><path d="M24 25v10"/><path d="M18.5 27.5h11"/><path d="M18.5 31.5h11"/></svg></span><span>毎月の管理の手間と費用を、減らしやすくなります</span></li>
@@ -362,7 +383,7 @@
         <div class="pc-proposal-card">
           <p class="pc-proposal-plan">ホームページ維持費削減・乗り換えプラン</p>
           <p class="pc-proposal-price"><span class="pc-num">49,500</span>円</p>
-          <p class="pc-proposal-sub">事業所紹介を中心とした、小規模なホームページの乗り換え料金です。通常の範囲であれば、この金額で承ります。サーバー・ドメインなどの実費は別にかかります。月額の管理費は必須ではありません。</p>
+          <p class="pc-proposal-sub">会社・事業所・お店の紹介を中心とした、小規模なホームページの乗り換え料金です。通常の範囲であれば、この金額で承ります。サーバー・ドメインなどの実費は別にかかります。月額の管理費は必須ではありません。</p>
           <div class="pc-warn" role="note">
             <p class="pc-warn-title">追加料金が発生する場合があります</p>
             <p>PHPで動くお問い合わせフォームは、Googleフォームなどへの切り替えまで49,500円に含まれます。会員機能・予約機能・ネットショップ・データベースを使った機能などがある場合や、ページ数が非常に多い場合は、49,500円の範囲を超え、追加料金が発生することがあります。作業の前にお見積りをお伝えし、ご了承をいただいてから進めます。</p>
@@ -715,7 +736,7 @@
         </details>
         <details class="pc-faq-item">
           <summary>49,500円で、どんなホームページでも乗り換えられますか？</summary>
-          <p>事業所紹介を中心とした小規模なホームページであれば、49,500円で承ります。PHPで動くお問い合わせフォームがある場合は、Googleフォームなどの外部サービスに切り替えます（確認画面・自動返信・ファイル添付など、同じ形にできない機能もあります）。ただし、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合や、ページ数が非常に多い場合は、追加料金が発生することがあります。機能によっては移行できないこともあり、その場合は個別のお見積りか、現状維持をおすすめします。診断で、乗り換えが向くかどうか、今のままがよいかを正直にお伝えします。</p>
+          <p>会社・事業所・お店の紹介を中心とした小規模なホームページであれば、49,500円で承ります。PHPで動くお問い合わせフォームがある場合は、Googleフォームなどの外部サービスに切り替えます（確認画面・自動返信・ファイル添付など、同じ形にできない機能もあります）。ただし、会員機能、予約システム、ネットショップ、データベースを使った機能などがある場合や、ページ数が非常に多い場合は、追加料金が発生することがあります。機能によっては移行できないこともあり、その場合は個別のお見積りか、現状維持をおすすめします。診断で、乗り換えが向くかどうか、今のままがよいかを正直にお伝えします。</p>
         </details>
         <details class="pc-faq-item">
           <summary>PHPで動く問い合わせフォームは、どうなりますか？</summary>
@@ -850,6 +871,10 @@
         </ul>
       </div>
     </div>
+        <div class="lp-footer-operator">
+      <span class="lp-footer-note">運営：福祉ITパートナー</span>
+      <a href="index.html">福祉ITパートナー公式サイトへ →</a>
+    </div>
     <div class="footer-bottom">
       &copy; 2026 福祉ITパートナー
     </div>
@@ -857,6 +882,7 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/lp-shell.js"></script>
 <script>
 // 「くわしい情報」のアコーディオン内の見出しへリンクしたとき（#pc-questions など）、その項目を自動で開く
 (function () {

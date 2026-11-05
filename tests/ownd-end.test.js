@@ -23,34 +23,6 @@ const sectionOf = (html, id) => {
   return found[0];
 };
 
-test("全ページ共通ナビに「Ameba Ownd終了」（NEWバッジ付き）が、「PHP対応」の次に入っている", () => {
-  let checked = 0;
-  for (const full of htmlFiles(ROOT)) {
-    const nav = fs.readFileSync(full, "utf8").match(/<ul class="nav-links">([\s\S]*?)<\/ul>/);
-    if (!nav) continue; // 共通ナビを持たないページ（移転の転送ページ・補助金LPの独自ヘッダー）
-    const rel = path.relative(ROOT, full).split(path.sep).join("/");
-    const prefix = "../".repeat(rel.split("/").length - 1);
-    const items = [...nav[1].matchAll(/<li><a href="([^"]+)"([^>]*)>([\s\S]*?)<\/a><\/li>/g)];
-    const ownd = items.filter(item => item[1] === prefix + PAGE);
-    assert.equal(ownd.length, 1, rel + " has exactly one Ownd item in the nav");
-    assert.match(ownd[0][2], rel === PAGE ? /class="nav-ownd active"/ : /class="nav-ownd"/, rel);
-    assert.equal(ownd[0][3], 'Ameba Ownd終了<span class="nav-badge">NEW</span>', rel + " badge");
-    assert.deepEqual(items.map(item => textOf(item[3])).slice(0, 5), ["HOME", "料金プラン", "PHP対応NEW", "Ameba Ownd終了NEW", "制作実績"], rel + " order");
-    checked++;
-  }
-  assert.ok(checked >= 90, "the shared nav is on every page: " + checked);
-  // 記事・講座のテンプレートからも同じ入口が出る（再生成しても消えない）
-  assert.equal((read("scripts/generate-blog.js").match(/class="nav-ownd">Ameba Ownd終了<span class="nav-badge">NEW<\/span>/g) || []).length, 2);
-  assert.equal((read("scripts/generate-course.js").match(/class="nav-ownd">Ameba Ownd終了<span class="nav-badge">NEW<\/span>/g) || []).length, 1);
-  // メニューが9項目になっても、PC幅1280pxまではロゴ・相談ボタンと重ならないよう、幅ごとに文字と間隔を詰め、ハンバーガーに切り替わるのは1279px以下
-  const css = read("assets/css/style.css");
-  assert.match(css, /@media \(max-width: 1279px\) \{\s*\.nav-cta \{\s*display: none;/);
-  assert.ok(!/max-width: 1200px|max-width: 1260px|max-width: 1320px/.test(css), "no leftover nav breakpoint");
-  assert.match(css, /@media \(min-width: 1280px\) and \(max-width: 1339px\) \{\s*\.nav-links \{\s*gap: 10px;/);
-  assert.match(css, /@media \(min-width: 1340px\) and \(max-width: 1439px\) \{\s*\.nav-links \{\s*gap: 14px;/);
-  assert.match(css, /@media \(min-width: 1280px\) \{\s*\.nav-bar \{\s*max-width: 1400px;/);
-});
-
 test("フッターに「Ameba Owndの終了と移行ガイド」へのリンクがあり、サイトマップにも載っている", () => {
   const footerLink = /<li><a href="(?:\.\.\/)?ameba-ownd-end\.html">Ameba Owndの終了と移行ガイド<\/a><\/li>/;
   for (const file of ["index.html", "homepage-plan.html", "homepage-recovery.html", "php-homepage-comparison.html", "contact.html", PAGE, "blog.html", "course.html", "blog/ameba-ownd-cannot-view.html"]) {

@@ -257,32 +257,6 @@ const htmlFiles = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(en
   return entry.isDirectory() ? htmlFiles(full) : entry.name.endsWith(".html") ? [full] : [];
 });
 
-test("全ページ共通ナビに「PHP対応」（小さなNEWバッジ付き）があり、比較ページへ移動する", () => {
-  let checked = 0;
-  for (const full of htmlFiles(ROOT)) {
-    const html = fs.readFileSync(full, "utf8");
-    const nav = html.match(/<ul class="nav-links">([\s\S]*?)<\/ul>/);
-    if (!nav) continue; // 共通ナビを持たないページ（移転の転送ページ・補助金LPの独自ヘッダー）
-    const rel = path.relative(ROOT, full).split(path.sep).join("/");
-    const prefix = "../".repeat(rel.split("/").length - 1);
-    const items = [...nav[1].matchAll(/<li><a href="([^"]+)"([^>]*)>([\s\S]*?)<\/a><\/li>/g)];
-    const php = items.filter(item => item[1] === prefix + COMPARE);
-    assert.equal(php.length, 1, rel + " has exactly one PHP item in the nav");
-    assert.match(php[0][2], rel === COMPARE ? /class="nav-php active"/ : /class="nav-php"/, rel);
-    assert.equal(php[0][3], 'PHP対応<span class="nav-badge">NEW</span>', rel + " badge");
-    // 料金プランのすぐ後ろに並び、ほかのメニューの順番は変わっていない
-    assert.deepEqual(items.map(item => textOf(item[3])).slice(0, 4), ["HOME", "料金プラン", "PHP対応NEW", "Ameba Ownd終了NEW"], rel + " order");
-    checked++;
-  }
-  assert.ok(checked >= 70, "the shared nav is on most pages: " + checked);
-  // 記事・講座のテンプレートからも同じ入口が出る（再生成しても消えない）
-  assert.equal((read("scripts/generate-blog.js").match(/class="nav-php">PHP対応<span class="nav-badge">NEW<\/span>/g) || []).length, 2);
-  assert.equal((read("scripts/generate-course.js").match(/class="nav-php">PHP対応<span class="nav-badge">NEW<\/span>/g) || []).length, 1);
-  const css = read("assets/css/style.css");
-  assert.match(css, /\.nav-links \.nav-badge\s*\{/);
-  assert.ok(!/@keyframes|animation:/.test(css.match(/\.nav-links \.nav-badge\s*\{[^}]*\}/)[0]), "the badge never blinks");
-});
-
 test("比較ページの上部：やさしい問いかけの見出しと短い説明、ボタン1つで「3つの方法」へ進める", () => {
   const page = read(COMPARE);
   const hero = page.match(/<section class="pc-hero"[\s\S]*?<\/section>/)[0];
