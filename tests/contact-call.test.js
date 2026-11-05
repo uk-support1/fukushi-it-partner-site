@@ -33,11 +33,12 @@ test("問い合わせページ：電話番号が先頭に大きく表示され�
   assert.equal(textOf(section.match(/<h2 class="section-title">[\s\S]*?<\/h2>/)[0]), "フォームから相談する");
   // 電話の絵は、読み上げの邪魔にならない（装飾）
   assert.match(call, /<svg [^>]*aria-hidden="true"/);
-  // 大きく表示する（PCで3rem、スマホでも1.6rem以上）。幅の狭い画面でも、はみ出さない
+  // 目立つが、大きすぎない（PCは2.1rem＝約34px以下、スマホでも1.6rem以上）。幅の狭い画面でも、はみ出さない
   const css = read("assets/css/style.css");
   const number = css.match(/\.contact-call-number \{[^}]*\}/)[0];
-  assert.match(number, /font-size: clamp\(1\.6rem, [^)]*, 3rem\);/);
+  assert.match(number, /font-size: clamp\(1\.6rem, [^)]*, 2\.1rem\);/);
   assert.match(number, /max-width: 100%;/);
+  assert.match(css.match(/\.contact-call \{[^}]*\}/)[0], /max-width: 680px;/);
   assert.match(css, /\.contact-form-section \{[^}]*scroll-margin-top:/);
 });
 
@@ -71,4 +72,12 @@ test("メールの欄は残り、電話のタップはGA4で計測される", ()
   assert.match(js, /querySelectorAll\("\.js-phone-link"\)[\s\S]*sendGaEvent\("phone_click"\)/);
   // 既存の計測（フォームへの「無料相談」ボタン）は、そのまま
   assert.match(js, /querySelectorAll\("\.js-consult-link"\)[\s\S]*sendGaEvent\("free_consultation_click"\)/);
+});
+
+test("フォームの「ご希望のサービス」に、PHP・Ameba Ownd・再スタート・維持費の見直しの選択肢がある", () => {
+  const select = read("contact.html").match(/<select id="cf-service" name="ご希望のサービス" required>([\s\S]*?)<\/select>/)[1];
+  const options = [...select.matchAll(/<option value="([^"]*)"[^>]*>([^<]*)<\/option>/g)].map(match => { assert.equal(match[1] === "" ? "選択してください" : match[1], match[2]); return match[2]; });
+  assert.deepEqual(options, ["選択してください", "ホームページ制作", "ホームページ更新", "SEO・集客支援", "AI・IT活用", "補助金活用",
+    "PHP・WordPressの更新・乗り換え", "Ameba Ownd終了の移行（引き継ぎ）", "ホームページ再スタート（作り直し）", "ホームページ維持費の見直し", "その他"]);
+  assert.ok(options[options.length - 1] === "その他", "'other' stays last");
 });
