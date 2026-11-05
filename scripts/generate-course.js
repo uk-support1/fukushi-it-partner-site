@@ -156,6 +156,7 @@ function siteHeader(depth) {
     '        <li><a href="' + prefix + 'index.html">HOME</a></li>\n' +
     '        <li><a href="' + prefix + 'homepage-plan.html">料金プラン</a></li>\n' +
     '        <li><a href="' + prefix + 'php-homepage-comparison.html" class="nav-php">PHP対応<span class="nav-badge">NEW</span></a></li>\n' +
+    '        <li><a href="' + prefix + 'ameba-ownd-end.html" class="nav-ownd">Ownd終了<span class="nav-badge">NEW</span></a></li>\n' +
     '        <li><a href="' + prefix + 'works.html">制作実績</a></li>\n' +
     '        <li><a href="' + prefix + 'flow.html">制作までの流れ</a></li>\n' +
     '        <li><a href="' + prefix + 'blog.html">ブログ</a></li>\n' +
@@ -193,6 +194,7 @@ function siteFooter(depth) {
     '          <li><a href="' + prefix + 'server-domain-guide.html">サーバー・ドメイン比較</a></li>\n' +
     '          <li><a href="' + prefix + 'php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>\n' +
     '          <li><a href="' + prefix + 'homepage-recovery.html">ホームページ再スタート 15,000円</a></li>\n' +
+    '          <li><a href="' + prefix + 'ameba-ownd-end.html">Ameba Owndの終了と移行ガイド</a></li>\n' +
     '          <li><a href="' + prefix + 'works.html">制作実績</a></li>\n' +
     '          <li><a href="' + prefix + 'flow.html">制作までの流れ</a></li>\n' +
     '        </ul>\n' +

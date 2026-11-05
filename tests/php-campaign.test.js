@@ -271,7 +271,7 @@ test("全ページ共通ナビに「PHP対応」（小さなNEWバッジ付き�
     assert.match(php[0][2], rel === COMPARE ? /class="nav-php active"/ : /class="nav-php"/, rel);
     assert.equal(php[0][3], 'PHP対応<span class="nav-badge">NEW</span>', rel + " badge");
     // 料金プランのすぐ後ろに並び、ほかのメニューの順番は変わっていない
-    assert.deepEqual(items.map(item => textOf(item[3])).slice(0, 4), ["HOME", "料金プラン", "PHP対応NEW", "制作実績"], rel + " order");
+    assert.deepEqual(items.map(item => textOf(item[3])).slice(0, 4), ["HOME", "料金プラン", "PHP対応NEW", "Ownd終了NEW"], rel + " order");
     checked++;
   }
   assert.ok(checked >= 70, "the shared nav is on most pages: " + checked);

@@ -90,11 +90,16 @@ test("記事：データ復旧ではないこと・日付付きの注意が書�
   for (const slug of SLUGS) {
     const text = visibleText(read("blog/" + slug + ".html")).replace(/\s+/g, "");
     if (/15,000円/.test(text)) assert.match(text, /データ復旧ではなく/, slug);
-    for (const bad of [/PHPの脆弱性が原因です/, /PHPが原因でした/, /サービスが終了(します|しました)(?!か)/, /完全に復旧(します|できます)/]) {
+    // Ameba Owndの終了だけは、2026-11-02に公式ブログで発表された事実なので、日付つきで書いてよい（下で確認する）。
+    // そのほかの記事・サービスについては、これまでどおり「終了します」と断定しない。
+    const officialEnd = slug === "ameba-ownd-cannot-view";
+    for (const bad of [/PHPの脆弱性が原因です/, /PHPが原因でした/, ...(officialEnd ? [] : [/サービスが終了(します|しました)(?!か)/]), /完全に復旧(します|できます)/]) {
       assert.doesNotMatch(text, bad, slug + " " + bad);
     }
   }
   const ownd = visibleText(read("blog/ameba-ownd-cannot-view.html")).replace(/\s+/g, "");
+  assert.match(ownd, /2026年11月2日に、2026年12月24日（木）11時でサービスを終了することを発表しました/);
+  assert.match(ownd, /AmebaOwndの終了は、2026年11月2日に公式ブログで発表されています/); // 空白は取り除いて比べる
   assert.match(ownd, /2026年10月28日ごろまでに確認できた情報/);
   assert.match(ownd, /PHPとの関係(について)?も、公式には触れられていません/);
   assert.match(ownd, /公式のお知らせでご確認ください/);
