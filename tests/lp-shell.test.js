@@ -17,8 +17,8 @@ const htmlFiles = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(en
 });
 
 const PAGES = [
-  { file: "php-homepage-comparison.html", service: "PHP対応", anchors: ["#pc-choices", "#pc-compare", "#pc-proposal", "#pc-faq"] },
-  { file: "ameba-ownd-end.html", service: "Ameba Ownd終了", anchors: ["#oe-todo", "#oe-free", "#oe-ours", "#oe-faq"] }
+  { file: "php-homepage-comparison.html", service: "PHP対応", anchors: ["#pc-choices", "#pc-compare", "#pc-proposal", "#pc-faq"], reason: "PHPの重大な脆弱性の公表（2026年10月）を受けた、緊急対応です。" },
+  { file: "ameba-ownd-end.html", service: "Ameba Ownd終了", anchors: ["#oe-todo", "#oe-free", "#oe-ours", "#oe-faq"], reason: "2026年12月24日のAmeba Ownd終了を受けた、緊急対応です。" }
 ];
 const INDUSTRIES = ["建設・工事", "製造・工場", "卸売・小売", "飲食・宿泊", "医療・福祉・介護", "美容・サービス", "士業・コンサル", "不動産", "運送・物流", "教育・スクール", "農業・漁業", "NPO・各種団体"];
 
@@ -48,6 +48,13 @@ test("共通メニューは、もとの7項目のまま。「PHP対応」「Ameb
 for (const page of PAGES) {
   test(`独立型ページ ${page.file}：専用ヘッダー・全業種向けの案内・運営表記がそろっている`, () => {
     const html = read(page.file);
+    // 一番上の「緊急対応」のお知らせ：ふだんは福祉事業所向けだが、今回は特別に業種を問わず受ける、という趣旨
+    const notice = html.match(/<div class="lp-notice" role="note"[\s\S]*?<\/div>\s*<\/div>/)[0];
+    assert.ok(html.indexOf('class="lp-notice"') > html.indexOf("<body") && html.indexOf('class="lp-notice"') < html.indexOf('<header class="lp-header">'), "the notice is the very first thing on the page");
+    assert.equal(textOf(notice.match(/lp-notice-tag">([\s\S]*?)<\/span>/)[1]), "緊急対応");
+    assert.equal(textOf(notice.match(/lp-notice-text">([\s\S]*?)<\/p>/)[1]), "今回は特別に、業種を問わずご相談をお受けしています。福祉ITパートナーは、ふだんは福祉事業所向けのサービスです。" + page.reason);
+    // 不安をあおる言い方・期限や数量の限定（景品表示法の面でも不適切）は使わない
+    for (const word of ["今だけ", "先着", "期間限定", "残りわずか", "急いで", "今すぐ", "限定"]) assert.ok(!textOf(notice).includes(word), "no pressure wording in the notice: " + word);
     // 専用ヘッダー（共通メニューは使わない）
     assert.match(html, /<body class="lp-shell">/);
     assert.match(html, /<link rel="stylesheet" href="assets\/css\/lp-shell\.css\?v=1">/);
@@ -87,6 +94,10 @@ test("独立型ページのスタイルは、専用の部品ファイルにま�
   const css = read("assets/css/lp-shell.css");
   for (const selector of [".lp-header", ".lp-nav-links", ".lp-nav-toggle", ".lp-scope", ".lp-scope-chips", ".lp-footer-operator"]) assert.ok(css.includes(selector), selector);
   assert.ok(!/\bjlp-/.test(css.replace(/\/\*[\s\S]*?\*\//g, "")), "no jlp- class (those belong to the subsidy LP)");
+  // お知らせの帯は、やわらかいオレンジ系。点滅・動き・固定表示は使わない
+  const notice = css.match(/\.lp-notice \{[^}]*\}/)[0];
+  assert.ok(!/position:\s*(fixed|sticky)|animation/.test(css.match(/\.lp-notice[^{]*\{[^}]*\}/g).join("")), "the notice does not blink, move or stick");
+  assert.match(notice, /background: #fff4e8;/);
   // 幅が狭いときのメニュー：開いたときだけ表示され、画面が低くても最後のボタンまで届く
   assert.match(css, /@media \(max-width: 1100px\)[\s\S]*\.lp-nav-links \{[\s\S]*max-height: calc\(100vh - 71px\);[\s\S]*overflow-y: auto;/);
   const js = read("assets/js/lp-shell.js");
