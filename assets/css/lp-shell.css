@@ -2,6 +2,7 @@
    独立型ページ共通の部品（lp-shell.css）
    「補助金活用支援」と同じ形の、専用ヘッダーつきのページで使います。
      ・専用ヘッダー（ロゴ ＋ サービス名のバッジ ＋ ページ内リンク ＋ 公式サイトへ／無料相談）
+     ・一番上の「緊急対応」のお知らせ（lp-notice）
      ・全業種向けの案内帯（lp-scope）
      ・フッターの「運営」表記（lp-footer-operator）
    使うページ：php-homepage-comparison.html ／ ameba-ownd-end.html
@@ -10,6 +11,46 @@
    ※ 補助金活用支援（subsidy-support/）は、専用の subsidy-support-lp.css（jlp-）を使っており、このファイルとは独立しています。
    ※ クラス名はすべて「lp-」で始めます。
 =========================================================== */
+
+/* ---------------- 一番上の「緊急対応」のお知らせ ----------------
+   ふだんは福祉事業所向けだが、今回は特別に業種を問わず受ける、という趣旨を伝える帯。
+   不安をあおらないよう、点滅や赤は使わず、やわらかいオレンジ系にとどめる */
+.lp-notice {
+  background: #fff4e8;
+  border-bottom: 1px solid #f1cba8;
+}
+
+.lp-notice-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+.lp-notice-tag {
+  flex-shrink: 0;
+  padding: 2px 12px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  color: var(--white);
+  background: #b85f20;
+  border-radius: 999px;
+}
+
+.lp-notice-text {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--text-900);
+}
+
+.lp-notice-text strong {
+  font-weight: 800;
+  color: #7a3f0f;
+}
 
 /* ---------------- 専用ヘッダー ---------------- */
 .lp-header {
@@ -172,8 +213,8 @@
     display: flex;
   }
   .lp-nav-links {
-    position: fixed;
-    top: 71px;
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
     flex-direction: column;
@@ -185,7 +226,7 @@
     padding: 8px 24px 24px;
     border-bottom: 1px solid var(--border-soft);
     box-shadow: var(--shadow-soft);
-    transform: translateY(-110%);
+    transform: translateY(-12px);
     opacity: 0;
     visibility: hidden;
     transition: transform var(--transition), opacity var(--transition), visibility var(--transition);
@@ -336,6 +377,19 @@ body.lp-shell .pc-page [id] {
 }
 
 @media (max-width: 640px) {
+  .lp-notice-inner {
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .lp-notice-text {
+    font-size: 0.82rem;
+    line-height: 1.7;
+    text-align: left;
+  }
+
   .lp-scope {
     padding: 28px 0;
   }

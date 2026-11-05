@@ -117,6 +117,9 @@ test("無料の移行先の表：Googleサイト・アメブロ・Wixを、列�
   assert.ok(order.every((position, index) => position > 0 && (index === 0 || position > order[index - 1])), "section order: " + order);
   assert.ok(!/15,000|当社|ホームページ再スタート|19,800/.test(textOf(free)), "the free-options section never mentions the company plan");
   assert.match(table, /<caption class="visually-hidden">/, "the table has a caption for screen readers");
+  // 見出しと説明文には、「○△×」の文字は書かない（表の中の印は、そのまま）
+  assert.equal(textOf(free.match(/<h2[\s\S]*?<\/h2>/)[0]), "主な移行先を比較する");
+  assert.ok(!/[○△×]/.test(textOf(free.match(/<div class="section-head reveal">[\s\S]*?<\/div>/)[0]) + page.match(/<meta name="description" content="[^"]*"/)[0] + page.match(/<meta property="og:description" content="[^"]*"/)[0]), "no ○△× in the heading, lead or descriptions");
   // 横：3つのサービス
   const heads = [...table.matchAll(/<th scope="col" role="columnheader" class="oe-tbl-h oe-tbl-h--free">([\s\S]*?)<\/th>/g)];
   assert.deepEqual(heads.map(match => textOf(match[1])), ["Googleサイト", "アメブロ（Amebaブログ）", "Wix（無料プラン）"]);
