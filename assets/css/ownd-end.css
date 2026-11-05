@@ -22,6 +22,13 @@
   color: var(--green-900);
 }
 
+/* とても小さい画面では、注記の中の折り返し禁止の部分も折り返せるようにする */
+@media (max-width: 480px) {
+  .oe-hero-note .no-break {
+    white-space: normal;
+  }
+}
+
 .oe-hero-date {
   margin-top: 10px;
   font-size: 0.8rem;
@@ -281,67 +288,131 @@
   height: 20px;
 }
 
-.oe-svc-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-  align-items: stretch;
-}
-
-.oe-svc {
-  display: flex;
-  flex-direction: column;
-  padding: 22px 22px 18px;
+/* 移行先の比較表：PCは表、スマホは項目ごとの帯 */
+.oe-tbl-wrap {
+  overflow: hidden;
   background: var(--white);
   border: 1px solid var(--pc-line);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
 }
 
-.oe-svc-name {
-  margin-bottom: 4px;
-  font-size: 1.15rem;
+.oe-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.oe-tbl-corner {
+  width: 15%;
+  background: var(--pc-soft);
+}
+
+.oe-tbl thead th {
+  padding: 14px 10px 12px;
+  font-size: 1rem;
   font-weight: 800;
-  line-height: 1.5;
-  color: var(--green-900);
+  line-height: 1.45;
+  text-align: center;
+  color: var(--white);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.oe-svc-lead {
-  margin-bottom: 8px;
-  font-size: 0.88rem;
-  line-height: 1.8;
-  color: var(--text-600);
-}
-
-.oe-svc-rows {
-  list-style: none;
-}
-
-.oe-svc-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 11px 0;
-  font-size: 0.88rem;
-  line-height: 1.75;
-  color: var(--text-600);
-  border-top: 1px dashed var(--pc-line);
-}
-
-.oe-svc-row .oe-mark {
-  margin-top: 1px;
-}
-
-.oe-svc-row strong {
+.oe-tbl thead small {
   display: block;
+  margin-top: 2px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.oe-tbl-h--free {
+  background: var(--green-700);
+}
+
+.oe-tbl-h--ours {
+  background: var(--pc-c);
+}
+
+.oe-tbl tbody th,
+.oe-tbl tbody td {
+  border-top: 1px solid var(--pc-line);
+}
+
+.oe-tbl tbody th {
+  padding: 16px 14px;
+  text-align: left;
+  vertical-align: middle;
+  background: var(--pc-soft);
+}
+
+.oe-tbl-rowtitle {
+  display: block;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.45;
   color: var(--green-900);
 }
 
-.oe-svc-link {
-  margin-top: auto;
-  padding-top: 12px;
-  font-size: 0.88rem;
+.oe-tbl-rowsub {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-600);
+}
+
+.oe-tbl-cell {
+  padding: 16px 12px 14px;
+  text-align: center;
+  vertical-align: top;
+  border-left: 1px solid var(--pc-line);
+}
+
+.oe-tbl-cell--ours {
+  background: #fffaf5;
+  border-left: 2px solid var(--pc-c-line);
+  border-right: 2px solid var(--pc-c-line);
+}
+
+.oe-tbl-who {
+  display: none;
+}
+
+.oe-tbl-cell .oe-mark {
+  display: block;
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 6px;
+}
+
+.oe-tbl-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: var(--green-900);
+}
+
+.oe-tbl-note {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text-600);
+  text-align: left;
+}
+
+.oe-tbl-links .oe-tbl-cell {
+  padding-top: 14px;
+  text-align: left;
+}
+
+.oe-tbl-link {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
   font-weight: 700;
+  line-height: 1.6;
   color: var(--green-700);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -381,8 +452,7 @@
 
 /* ---------------- 画面幅ごとの調整 ---------------- */
 @media (max-width: 960px) {
-  .oe-scale-grid,
-  .oe-svc-grid {
+  .oe-scale-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -396,8 +466,7 @@
 }
 
 @media (max-width: 640px) {
-  .oe-scale-grid,
-  .oe-svc-grid {
+  .oe-scale-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -413,11 +482,108 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .oe-svc {
-    padding: 20px 18px 16px;
-  }
-
   .oe-caution {
     padding: 16px 16px;
+  }
+}
+
+/* 比較表：幅が狭いときは、項目名を各行の帯にし、サービスごとのセルを2列に並べる（先頭に名前を出す） */
+@media (max-width: 860px) {
+  .oe-tbl,
+  .oe-tbl tbody {
+    display: block;
+  }
+
+  .oe-tbl thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .oe-tbl tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .oe-tbl tbody th {
+    grid-column: 1 / -1;
+    padding: 9px 14px;
+  }
+
+  .oe-tbl-rowtitle,
+  .oe-tbl-rowsub {
+    display: inline;
+  }
+
+  .oe-tbl-rowsub {
+    margin-left: 8px;
+  }
+
+  .oe-tbl-cell {
+    padding: 9px 9px 11px;
+  }
+
+  .oe-tbl-cell:nth-of-type(odd) {
+    border-left: 0;
+  }
+
+  /* 4つのサービスは2×2に並べる。同じ内容を共有する行（更新など）は、全幅で1つにまとめる */
+  .oe-tbl-cell--span,
+  .oe-tbl-cell--span + .oe-tbl-cell--ours {
+    grid-column: 1 / -1;
+  }
+
+  .oe-tbl-cell--ours {
+    border-left: 2px solid var(--pc-c-line);
+    border-right: 0;
+  }
+
+  .oe-tbl-cell--span + .oe-tbl-cell--ours {
+    border-left: 0;
+    border-top: 2px solid var(--pc-c-line);
+  }
+
+  .oe-tbl-who {
+    display: inline-block;
+    margin-bottom: 5px;
+    padding: 0 9px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1.7;
+    color: var(--white);
+    background: var(--green-700);
+    border-radius: 999px;
+  }
+
+  .oe-tbl-cell--ours .oe-tbl-who {
+    background: var(--pc-c);
+  }
+
+  .oe-tbl-cell .oe-mark {
+    width: 26px;
+    height: 26px;
+    margin-bottom: 2px;
+  }
+
+  .oe-tbl-label {
+    margin-bottom: 2px;
+    font-size: 0.86rem;
+  }
+
+  .oe-tbl-note {
+    font-size: 0.76rem;
+    line-height: 1.6;
+  }
+
+  .oe-tbl-links .oe-tbl-cell {
+    padding-top: 9px;
+  }
+
+  .oe-tbl-link {
+    margin-bottom: 4px;
+    font-size: 0.78rem;
   }
 }

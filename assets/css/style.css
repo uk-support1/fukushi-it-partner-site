@@ -346,9 +346,18 @@ section {
   border-radius: 999px;
 }
 
-/* ハンバーガーメニューに切り替わる直前の幅では、メニュー9項目が
-   ロゴ・相談ボタンと重ならないよう間隔と文字を少しだけ詰める */
-@media (min-width: 1261px) and (max-width: 1439px) {
+/* メニューは9項目。ハンバーガーに切り替わる直前の幅では、
+   ロゴ・相談ボタンと重ならないよう、間隔と文字を少しずつ詰める */
+@media (min-width: 1280px) and (max-width: 1339px) {
+  .nav-links {
+    gap: 10px;
+  }
+  .nav-links a {
+    font-size: 0.84rem;
+  }
+}
+
+@media (min-width: 1340px) and (max-width: 1439px) {
   .nav-links {
     gap: 14px;
   }
@@ -358,7 +367,7 @@ section {
 }
 
 /* 画面が広いときは、ヘッダーの横幅を少し広げて、メニューにゆとりを持たせる */
-@media (min-width: 1440px) {
+@media (min-width: 1280px) {
   .nav-bar {
     max-width: 1400px;
   }
@@ -394,7 +403,7 @@ section {
   transition: var(--transition);
 }
 
-@media (max-width: 1260px) {
+@media (max-width: 1279px) {
   .nav-cta {
     display: none;
   }
@@ -450,7 +459,7 @@ section {
   display: none;
 }
 
-@media (max-width: 1260px) {
+@media (max-width: 1279px) {
   .nav-cta-mobile {
     display: flex;
   }
