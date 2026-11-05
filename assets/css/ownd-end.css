@@ -350,10 +350,6 @@
   border-left: 1px solid var(--pc-line);
 }
 
-.oe-tbl-who {
-  display: none;
-}
-
 .oe-tbl-cell .oe-mark {
   display: block;
   width: 34px;
@@ -455,110 +451,77 @@
   }
 }
 
-/* 比較表：幅が狭いときは、項目名を各行の帯にし、3つのサービスを3列に並べる（各セルの先頭に名前を出す） */
+/* 比較表：幅が狭いときも、表のまま（項目が左、サービス名が上）。文字と余白を小さくして、続きの説明は省く */
 @media (max-width: 860px) {
-  .oe-tbl,
-  .oe-tbl tbody {
-    display: block;
+  .oe-tbl-wrap {
+    border-radius: var(--radius-md);
   }
 
-  .oe-tbl thead {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
+  .oe-tbl-corner {
+    width: 23%;
   }
 
-  .oe-tbl tbody tr {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .oe-tbl thead th {
+    padding: 9px 3px 8px;
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+
+  .oe-tbl thead small {
+    font-size: 0.6rem;
   }
 
   .oe-tbl tbody th {
-    grid-column: 1 / -1;
-    padding: 9px 14px;
+    padding: 8px 4px 8px 6px;
   }
 
-  .oe-tbl-rowtitle,
-  .oe-tbl-rowsub {
-    display: inline;
+  .oe-tbl-rowtitle {
+    font-size: 0.68rem;
+    line-height: 1.4;
   }
 
   .oe-tbl-rowsub {
-    margin-left: 8px;
+    display: none;
   }
 
   .oe-tbl-cell {
-    padding: 9px 7px 11px;
-  }
-
-  .oe-tbl-cell:nth-of-type(3n + 1) {
-    border-left: 0;
-  }
-
-  /* 3つのサービスで同じ内容の行（更新・また終わるリスク）は、全幅で1つにまとめる */
-  .oe-tbl-cell--span {
-    grid-column: 1 / -1;
-    border-left: 0;
-    text-align: left;
-  }
-
-  .oe-tbl-cell--span .oe-tbl-note {
-    font-size: 0.78rem;
-  }
-
-  .oe-tbl-who {
-    display: inline-block;
-    margin-bottom: 5px;
-    padding: 0 8px;
-    font-size: 0.66rem;
-    font-weight: 800;
-    line-height: 1.7;
-    color: var(--white);
-    background: var(--green-700);
-    border-radius: 999px;
+    padding: 8px 3px 9px;
   }
 
   .oe-tbl-cell .oe-mark {
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     margin-bottom: 2px;
-  }
-
-  .oe-tbl-cell--span .oe-mark {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0 6px 0 0;
-  }
-
-  .oe-tbl-cell--span .oe-tbl-label {
-    display: inline;
-    font-size: 0.9rem;
-  }
-
-  .oe-tbl-cell--span .oe-tbl-note {
-    margin-top: 2px;
   }
 
   .oe-tbl-label {
     margin-bottom: 2px;
-    font-size: 0.82rem;
-    line-height: 1.4;
+    font-size: 0.7rem;
+    line-height: 1.35;
   }
 
   .oe-tbl-note {
-    font-size: 0.72rem;
-    line-height: 1.55;
+    font-size: 0.66rem;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .oe-tbl-more {
+    display: none;
+  }
+
+  .oe-tbl-cell--span .oe-tbl-note {
+    font-size: 0.7rem;
   }
 
   .oe-tbl-links .oe-tbl-cell {
-    padding-top: 9px;
+    padding: 8px 3px;
+    text-align: center;
   }
 
   .oe-tbl-link {
     margin-bottom: 4px;
-    font-size: 0.74rem;
+    font-size: 0.66rem;
+    line-height: 1.5;
   }
 }
