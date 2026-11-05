@@ -1,0 +1,423 @@
+/* ===========================================================
+   Ameba Owndの終了と移行ガイド（ameba-ownd-end.html）専用スタイル
+   共通の style.css と、比較ページの php-compare.css（「pc-」で始まる部品：
+   ファーストビュー・提案カード・FAQ・関連記事・情報源）を前提に、
+   このページだけで使う部品を「oe-」で始まる名前でまとめています。
+=========================================================== */
+
+/* ---------------- ファーストビューの補足 ---------------- */
+.oe-hero-note {
+  max-width: 31em;
+  margin-top: 18px;
+  padding: 12px 16px;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--text-900);
+  background: rgba(255, 255, 255, 0.85);
+  border-left: 4px solid var(--orange-500);
+  border-radius: 0 10px 10px 0;
+}
+
+.oe-hero-note strong {
+  color: var(--green-900);
+}
+
+.oe-hero-date {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--text-600);
+}
+
+/* ---------------- まずやること ---------------- */
+.oe-todo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.oe-todo {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 22px 22px;
+  background: var(--white);
+  border: 2px solid var(--pc-a-line);
+  border-top: 8px solid var(--green-700);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.oe-todo-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.oe-todo-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--white);
+  background: var(--green-700);
+  border-radius: 50%;
+}
+
+.oe-todo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  color: var(--green-700);
+  background: var(--green-100);
+  border-radius: 20px;
+}
+
+.oe-todo-icon svg {
+  width: 42px;
+  height: 42px;
+}
+
+.oe-todo-title {
+  margin-bottom: 8px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.5;
+  color: var(--green-900);
+}
+
+.oe-todo-text {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--text-600);
+}
+
+.oe-todo-sub {
+  margin-top: auto;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--text-900);
+  background: #fff7ed;
+  border-radius: var(--radius-sm);
+}
+
+.oe-dates {
+  max-width: 860px;
+  margin: 36px auto 0;
+  padding: 24px 28px 20px;
+  background: var(--white);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--radius-lg);
+}
+
+.oe-dates-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--green-900);
+}
+
+.oe-dates-list {
+  margin-top: 10px;
+  list-style: none;
+}
+
+.oe-dates-list li {
+  display: grid;
+  grid-template-columns: 12.5em minmax(0, 1fr);
+  gap: 4px 16px;
+  padding: 13px 0;
+  border-top: 1px dashed var(--pc-line);
+}
+
+.oe-date {
+  font-weight: 800;
+  line-height: 1.6;
+  color: var(--green-900);
+}
+
+.oe-date-end .oe-date {
+  color: var(--pc-c);
+}
+
+.oe-date-text {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--text-600);
+}
+
+.oe-dates-note {
+  margin-top: 6px;
+  font-size: 0.88rem;
+  line-height: 1.85;
+  color: var(--text-600);
+}
+
+/* ---------------- 移行先の比べ方（5つのものさし） ---------------- */
+.oe-scale-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.oe-scale {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px 20px;
+  background: var(--white);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.oe-scale-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 12px;
+  color: var(--green-700);
+  background: var(--green-100);
+  border-radius: 16px;
+}
+
+.oe-scale-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.oe-scale-title {
+  margin-bottom: 6px;
+  font-size: 1.02rem;
+  font-weight: 800;
+  line-height: 1.55;
+  color: var(--green-900);
+}
+
+.oe-scale-text {
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: var(--text-600);
+}
+
+.oe-scale--ask {
+  background: var(--orange-100);
+  border: 2px solid var(--pc-c-line);
+}
+
+.oe-scale--ask .oe-scale-icon {
+  color: var(--pc-c);
+  background: var(--white);
+}
+
+.oe-scale-btn {
+  width: 100%;
+  margin-top: auto;
+  padding: 14px 16px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.oe-scale--ask .oe-scale-text {
+  margin-bottom: 14px;
+}
+
+/* ---------------- 今も無料で使える移行先 ---------------- */
+.oe-mark {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+}
+
+.oe-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.oe-mark--ok {
+  color: var(--green-700);
+}
+
+.oe-mark--warn {
+  color: #b9770e;
+}
+
+.oe-mark--no {
+  color: #a8402c;
+}
+
+.oe-mark--none {
+  color: #8a9490;
+}
+
+.oe-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 22px;
+  margin-bottom: 28px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-900);
+}
+
+.oe-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.oe-legend .oe-mark {
+  width: 20px;
+  height: 20px;
+}
+
+.oe-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  align-items: stretch;
+}
+
+.oe-svc {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px 18px;
+  background: var(--white);
+  border: 1px solid var(--pc-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.oe-svc-name {
+  margin-bottom: 4px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.5;
+  color: var(--green-900);
+}
+
+.oe-svc-lead {
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--text-600);
+}
+
+.oe-svc-rows {
+  list-style: none;
+}
+
+.oe-svc-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 0;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--text-600);
+  border-top: 1px dashed var(--pc-line);
+}
+
+.oe-svc-row .oe-mark {
+  margin-top: 1px;
+}
+
+.oe-svc-row strong {
+  display: block;
+  color: var(--green-900);
+}
+
+.oe-svc-link {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--green-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.oe-caution {
+  max-width: 860px;
+  margin: 32px auto 0;
+  padding: 18px 22px;
+  background: #fff7ed;
+  border-left: 4px solid #cc995d;
+  border-radius: 0 10px 10px 0;
+}
+
+.oe-caution p {
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: var(--text-900);
+}
+
+.oe-caution .oe-caution-title {
+  margin-bottom: 2px;
+  font-weight: 800;
+  color: #8a4b12;
+}
+
+/* ---------------- 当社にお任せの場合 ---------------- */
+.oe-price-tax {
+  margin-left: 4px;
+  font-size: 0.6em;
+  font-weight: 700;
+}
+
+.oe-fit {
+  margin-top: 32px;
+}
+
+/* ---------------- 画面幅ごとの調整 ---------------- */
+@media (max-width: 960px) {
+  .oe-scale-grid,
+  .oe-svc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .oe-todo-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .oe-scale-grid,
+  .oe-svc-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .oe-todo {
+    padding: 22px 18px 18px;
+  }
+
+  .oe-dates {
+    padding: 20px 18px 16px;
+  }
+
+  .oe-dates-list li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .oe-svc {
+    padding: 20px 18px 16px;
+  }
+
+  .oe-caution {
+    padding: 16px 16px;
+  }
+}
