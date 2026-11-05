@@ -166,74 +166,59 @@
   color: var(--text-600);
 }
 
-/* ---------------- 移行先の比べ方（5つのものさし） ---------------- */
-.oe-scale-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.oe-scale {
-  display: flex;
-  flex-direction: column;
-  padding: 22px 22px 20px;
+/* ---------------- 比べる5点（絵なしの短い一覧） ---------------- */
+.oe-points {
+  max-width: 860px;
+  margin: 0 auto 24px;
+  padding: 14px 20px 12px;
   background: var(--white);
   border: 1px solid var(--pc-line);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
 }
 
-.oe-scale-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  margin-bottom: 12px;
-  color: var(--green-700);
-  background: var(--green-100);
-  border-radius: 16px;
-}
-
-.oe-scale-icon svg {
-  width: 32px;
-  height: 32px;
-}
-
-.oe-scale-title {
-  margin-bottom: 6px;
-  font-size: 1.02rem;
+.oe-points-title {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
   font-weight: 800;
-  line-height: 1.55;
   color: var(--green-900);
 }
 
-.oe-scale-text {
+.oe-points-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  list-style: none;
+  counter-reset: oe-point;
+}
+
+.oe-points-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 14px 3px 4px;
   font-size: 0.9rem;
-  line-height: 1.85;
-  color: var(--text-600);
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--green-900);
+  background: var(--green-100);
+  border-radius: 999px;
+  counter-increment: oe-point;
 }
 
-.oe-scale--ask {
-  background: var(--orange-100);
-  border: 2px solid var(--pc-c-line);
-}
-
-.oe-scale--ask .oe-scale-icon {
-  color: var(--pc-c);
-  background: var(--white);
-}
-
-.oe-scale-btn {
-  width: 100%;
-  margin-top: auto;
-  padding: 14px 16px;
-  line-height: 1.5;
-  text-align: center;
-}
-
-.oe-scale--ask .oe-scale-text {
-  margin-bottom: 14px;
+.oe-points-list li::before {
+  content: counter(oe-point);
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--white);
+  background: var(--green-700);
+  border-radius: 50%;
 }
 
 /* ---------------- 今も無料で使える移行先 ---------------- */
@@ -304,7 +289,7 @@
 }
 
 .oe-tbl-corner {
-  width: 15%;
+  width: 19%;
   background: var(--pc-soft);
 }
 
@@ -328,10 +313,6 @@
 
 .oe-tbl-h--free {
   background: var(--green-700);
-}
-
-.oe-tbl-h--ours {
-  background: var(--pc-c);
 }
 
 .oe-tbl tbody th,
@@ -367,12 +348,6 @@
   text-align: center;
   vertical-align: top;
   border-left: 1px solid var(--pc-line);
-}
-
-.oe-tbl-cell--ours {
-  background: #fffaf5;
-  border-left: 2px solid var(--pc-c-line);
-  border-right: 2px solid var(--pc-c-line);
 }
 
 .oe-tbl-who {
@@ -439,6 +414,13 @@
   color: #8a4b12;
 }
 
+.oe-bridge {
+  margin-top: 22px;
+  font-size: 0.92rem;
+  text-align: center;
+  color: var(--text-600);
+}
+
 /* ---------------- 当社にお任せの場合 ---------------- */
 .oe-price-tax {
   margin-left: 4px;
@@ -446,17 +428,7 @@
   font-weight: 700;
 }
 
-.oe-fit {
-  margin-top: 32px;
-}
-
 /* ---------------- 画面幅ごとの調整 ---------------- */
-@media (max-width: 960px) {
-  .oe-scale-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 860px) {
   .oe-todo-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -466,10 +438,6 @@
 }
 
 @media (max-width: 640px) {
-  .oe-scale-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .oe-todo {
     padding: 22px 18px 18px;
   }
@@ -487,7 +455,7 @@
   }
 }
 
-/* 比較表：幅が狭いときは、項目名を各行の帯にし、サービスごとのセルを2列に並べる（先頭に名前を出す） */
+/* 比較表：幅が狭いときは、項目名を各行の帯にし、3つのサービスを3列に並べる（各セルの先頭に名前を出す） */
 @media (max-width: 860px) {
   .oe-tbl,
   .oe-tbl tbody {
@@ -505,7 +473,7 @@
 
   .oe-tbl tbody tr {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .oe-tbl tbody th {
@@ -523,43 +491,34 @@
   }
 
   .oe-tbl-cell {
-    padding: 9px 9px 11px;
+    padding: 9px 7px 11px;
   }
 
-  .oe-tbl-cell:nth-of-type(odd) {
+  .oe-tbl-cell:nth-of-type(3n + 1) {
     border-left: 0;
   }
 
-  /* 4つのサービスは2×2に並べる。同じ内容を共有する行（更新など）は、全幅で1つにまとめる */
-  .oe-tbl-cell--span,
-  .oe-tbl-cell--span + .oe-tbl-cell--ours {
+  /* 3つのサービスで同じ内容の行（更新・また終わるリスク）は、全幅で1つにまとめる */
+  .oe-tbl-cell--span {
     grid-column: 1 / -1;
-  }
-
-  .oe-tbl-cell--ours {
-    border-left: 2px solid var(--pc-c-line);
-    border-right: 0;
-  }
-
-  .oe-tbl-cell--span + .oe-tbl-cell--ours {
     border-left: 0;
-    border-top: 2px solid var(--pc-c-line);
+    text-align: left;
+  }
+
+  .oe-tbl-cell--span .oe-tbl-note {
+    font-size: 0.78rem;
   }
 
   .oe-tbl-who {
     display: inline-block;
     margin-bottom: 5px;
-    padding: 0 9px;
-    font-size: 0.68rem;
+    padding: 0 8px;
+    font-size: 0.66rem;
     font-weight: 800;
     line-height: 1.7;
     color: var(--white);
     background: var(--green-700);
     border-radius: 999px;
-  }
-
-  .oe-tbl-cell--ours .oe-tbl-who {
-    background: var(--pc-c);
   }
 
   .oe-tbl-cell .oe-mark {
@@ -568,14 +527,30 @@
     margin-bottom: 2px;
   }
 
+  .oe-tbl-cell--span .oe-mark {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 6px 0 0;
+  }
+
+  .oe-tbl-cell--span .oe-tbl-label {
+    display: inline;
+    font-size: 0.9rem;
+  }
+
+  .oe-tbl-cell--span .oe-tbl-note {
+    margin-top: 2px;
+  }
+
   .oe-tbl-label {
     margin-bottom: 2px;
-    font-size: 0.86rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
   }
 
   .oe-tbl-note {
-    font-size: 0.76rem;
-    line-height: 1.6;
+    font-size: 0.72rem;
+    line-height: 1.55;
   }
 
   .oe-tbl-links .oe-tbl-cell {
@@ -584,6 +559,6 @@
 
   .oe-tbl-link {
     margin-bottom: 4px;
-    font-size: 0.78rem;
+    font-size: 0.74rem;
   }
 }
