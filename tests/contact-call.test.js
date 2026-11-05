@@ -24,10 +24,10 @@ test("問い合わせページ：電話番号が先頭に大きく表示され�
   assert.match(call, /<a href="tel:07091272425" class="contact-call-number js-phone-link" aria-label="070-9127-2425 に電話をかける">/);
   assert.equal(textOf(call.match(/<a [^>]*contact-call-number[\s\S]*?<\/a>/)[0]), "070-9127-2425");
   assert.equal(textOf(call.match(/contact-call-tag">([\s\S]*?)<\/span>/)[1]), "お電話でのご相談");
-  assert.equal(textOf(call.match(/<h2[\s\S]*?<\/h2>/)[0]), "お電話が、いちばん早いです");
+  assert.equal(textOf(call.match(/<h2[\s\S]*?<\/h2>/)[0]), "お気軽に、お電話をどうぞ");
   // 電話したくなる、気軽な書き方（相談だけでもよい）
-  assert.ok(textOf(call).includes("気軽にお電話ください。ご相談だけでも、まったく問題ありません。"));
-  assert.ok(textOf(call).includes("「こんなことで電話していいのかな？」という内容でも、大丈夫です。"));
+  assert.ok(textOf(call).includes("ご相談だけでも、まったく問題ありません。「こんなことで電話していいのかな？」という内容でも、大丈夫です。"));
+  assert.ok(!/いちばん早い|一番早い/.test(textOf(call)), "no 'fastest' claim");
   assert.ok(textOf(call).includes("受付時間：8:00～21:00"));
   assert.equal(textOf(section.match(/<p class="contact-or"[\s\S]*?<\/p>/)[0]), "電話がむずかしいときは、フォームからどうぞ");
   assert.equal(textOf(section.match(/<h2 class="section-title">[\s\S]*?<\/h2>/)[0]), "フォームから相談する");
@@ -74,10 +74,10 @@ test("メールの欄は残り、電話のタップはGA4で計測される", ()
   assert.match(js, /querySelectorAll\("\.js-consult-link"\)[\s\S]*sendGaEvent\("free_consultation_click"\)/);
 });
 
-test("フォームの「ご希望のサービス」に、PHP・Ameba Ownd・再スタート・維持費の見直しの選択肢がある", () => {
+test("フォームの「ご希望のサービス」に、PHP・Ameba Ownd・維持費の見直しの選択肢がある（再スタートは入れない）", () => {
   const select = read("contact.html").match(/<select id="cf-service" name="ご希望のサービス" required>([\s\S]*?)<\/select>/)[1];
   const options = [...select.matchAll(/<option value="([^"]*)"[^>]*>([^<]*)<\/option>/g)].map(match => { assert.equal(match[1] === "" ? "選択してください" : match[1], match[2]); return match[2]; });
   assert.deepEqual(options, ["選択してください", "ホームページ制作", "ホームページ更新", "SEO・集客支援", "AI・IT活用", "補助金活用",
-    "PHP・WordPressの更新・乗り換え", "Ameba Ownd終了の移行（引き継ぎ）", "ホームページ再スタート（作り直し）", "ホームページ維持費の見直し", "その他"]);
+    "PHP・WordPressの更新・乗り換え", "Ameba Ownd終了の移行（引き継ぎ）", "ホームページ維持費の見直し", "その他"]);
   assert.ok(options[options.length - 1] === "その他", "'other' stays last");
 });
