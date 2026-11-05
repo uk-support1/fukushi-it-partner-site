@@ -115,9 +115,11 @@ test("終了ガイド：Ameba Ownd引き継ぎの限定価格15,000円を、含�
   const ours = textOf(sectionOf(page, "oe-ours"));
   for (const fact of ["Ameba Ownd 引き継ぎ（限定価格）", "15,000円", "税込", "ひな型3種から選べて、最短2日で公開します", "お持ちの独自ドメインへの接続を、1回まで含みます",
     "月額の管理費は0円", "ページ数が多くても、できるだけ対応します", "15,000円に含まれないもの", "ページ数が非常に多い場合は、別途お見積りになります",
-    "ブログ機能", "納品後の修正（5,500円〜／回）", "予約・会員などの機能", "Ameba Owndの内容をそのまま再現することや、データの復旧も含まれません",
+    "予約・会員などの機能", "Ameba Owndの内容をそのまま再現することや、データの復旧も含まれません",
     "独自ドメインを使う場合の年額の実費は、別にかかります", "納期は、素材がそろってから最短2日、目安は約14日です", "将来も無料である保証はない"]) assert.ok(ours.includes(fact), "offer states: " + fact);
   assert.match(sectionOf(page, "oe-ours"), /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
+  // 依頼者の指示（2026-11-05）：「含まれないもの」から、ブログ機能と納品後の修正は外した（含む・含まないは、このページでは言い切らない）
+  for (const removed of ["ブログ機能", "納品後の修正", "5,500"]) assert.ok(!ours.includes(removed), "removed from the exclusions: " + removed);
   // 19,800円のプランは1ページ。「ページ数が多い場合は19,800円」「2ページ以上は対象外」のような、矛盾する案内は書かない
   const text = textOf(page);
   for (const stale of ["2ページ以上", "19,800", "1ページの新しいホームページ", "（税込・1ページ）", "また終わる", "ペライチ"]) assert.ok(!text.includes(stale), "no stale or contradictory wording: " + stale);
@@ -152,9 +154,11 @@ test("無料の移行先の表：Googleサイト・アメブロ・Wixを、列�
   assert.deepEqual(rows.map(row => textOf(row.match(/<span class="oe-tbl-rowtitle">[\s\S]*?<\/span>/)[0])), ["料金", "独自ドメイン", "広告", "更新", "ページ・容量", "くわしくは"]);
   const spoken = { ok: "良い・使える", warn: "注意が必要", no: "使えない", none: "公式の記載なし" };
   const marks = row => [...row.matchAll(/oe-mark oe-mark--(ok|warn|no|none)" role="img" aria-label="([^"]+)"/g)].map(match => { assert.equal(match[2], spoken[match[1]], "spoken label"); return match[1]; });
-  // 行ごとの評価（Googleサイト・アメブロ・Wixの順。更新は、3つで同じ内容なので全幅の1セル）
-  assert.deepEqual(rows.map(marks), [["none", "ok", "ok"], ["ok", "no", "no"], ["none", "warn", "warn"], ["ok"], ["none", "warn", "warn"], []]);
-  assert.match(rows[3], /<td class="oe-tbl-cell oe-tbl-cell--free oe-tbl-cell--span" role="cell" colspan="3">/, "shared cell in the update row");
+  // 行ごとの評価（Googleサイト・アメブロ・Wixの順。更新も、3つのサービスをそれぞれ別のセルにする）
+  assert.deepEqual(rows.map(marks), [["none", "ok", "ok"], ["ok", "no", "no"], ["none", "warn", "warn"], ["ok", "ok", "ok"], ["none", "warn", "warn"], []]);
+  // どの行も、3つのサービスが別々のセル（セルを結合しない）
+  for (const row of rows) assert.equal([...row.matchAll(/<td class="oe-tbl-cell/g)].length, 3, "three separate cells per row: " + textOf(row).slice(0, 12));
+  assert.ok(!/colspan|rowspan|oe-tbl-cell--span/.test(table + read("assets/css/ownd-end.css")), "no merged cells");
   // 公式で確認できた内容だけを書き、確認できなかった項目は「公式の記載なし」の印にしている（コメントは、PCでは続きまで、スマホでは短い一文）
   const text = textOf(table);
   for (const fact of ["料金の記載なし。公式ヘルプで確認できませんでした。", "有料は月980円〜（税込）。", "一部は有料です。独自ドメインや広告の非表示は、有料のプレミアムプランが必要です。",
