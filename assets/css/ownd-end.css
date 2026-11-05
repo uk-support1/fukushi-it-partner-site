@@ -510,10 +510,6 @@
     display: none;
   }
 
-  .oe-tbl-cell--span .oe-tbl-note {
-    font-size: 0.7rem;
-  }
-
   .oe-tbl-links .oe-tbl-cell {
     padding: 8px 3px;
     text-align: center;
