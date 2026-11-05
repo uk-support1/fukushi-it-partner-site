@@ -110,26 +110,34 @@ test("終了ガイド：公式の発表どおりの日付・条件が書かれ�
   for (const match of text.matchAll(/12月(\d+)日[^。、]{0,6}11時/g)) assert.equal(match[1], "24", "the end date is always the 24th: " + match[0]);
 });
 
-test("終了ガイド：料金は誤解を招かない書き方で、15,000円の範囲外を先に伝え、あおる表現を使っていない", () => {
+test("終了ガイド：Ameba Ownd引き継ぎの限定価格15,000円を、含まれないものと一緒に書き、あおる表現・ページ数の矛盾を入れていない", () => {
   const page = read(PAGE);
   const ours = textOf(sectionOf(page, "oe-ours"));
-  for (const fact of ["15,000円", "税込", "月額の管理費は0円", "15,000円に含まれないもの", "2ページ以上", "ブログ機能", "納品後の修正（5,500円〜／回）",
-    "Ameba Owndの内容をそのまま再現することや、データの復旧も含まれません", "独自ドメインを使う場合の年額の実費は、別にかかります",
-    "将来も無料である保証はない", "19,800円のおまかせライトプラン"]) assert.ok(ours.includes(fact), "offer states: " + fact);
-  assert.match(page, /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
-  assert.match(page, /<a href="homepage-recovery\.html" class="btn btn-outline">15,000円の内容をくわしく見る<\/a>/);
+  for (const fact of ["Ameba Ownd 引き継ぎ（限定価格）", "15,000円", "税込", "ひな型3種から選べて、最短2日で公開します", "お持ちの独自ドメインへの接続を、1回まで含みます",
+    "月額の管理費は0円", "ページ数が多くても、できるだけ対応します", "15,000円に含まれないもの", "ページ数が非常に多い場合は、別途お見積りになります",
+    "ブログ機能", "納品後の修正（5,500円〜／回）", "予約・会員などの機能", "Ameba Owndの内容をそのまま再現することや、データの復旧も含まれません",
+    "独自ドメインを使う場合の年額の実費は、別にかかります", "納期は、素材がそろってから最短2日、目安は約14日です", "将来も無料である保証はない"]) assert.ok(ours.includes(fact), "offer states: " + fact);
+  assert.match(sectionOf(page, "oe-ours"), /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
+  // 19,800円のプランは1ページ。「ページ数が多い場合は19,800円」「2ページ以上は対象外」のような、矛盾する案内は書かない
   const text = textOf(page);
-  for (const word of ["ぽっきり", "ポッキリ", "今だけ", "先着", "限定", "絶対", "必ず安く", "最安", "業界No", "急いで", "いますぐ"]) assert.ok(!text.includes(word), "avoid: " + word);
+  for (const stale of ["2ページ以上", "19,800", "1ページの新しいホームページ", "（税込・1ページ）", "また終わる", "ペライチ"]) assert.ok(!text.includes(stale), "no stale or contradictory wording: " + stale);
+  // 「限定」は、依頼者が決めた「Ameba Ownd引き継ぎ限定価格」だけ。期間・数量の限定や、あおる表現は使わない
+  assert.equal((text.match(/限定/g) || []).length, (text.match(/限定価格/g) || []).length, "limited only as 'limited price for Ownd migrants'");
+  for (const word of ["ぽっきり", "ポッキリ", "今だけ", "先着", "期間限定", "数量限定", "絶対", "必ず安く", "最安", "業界No", "急いで", "いますぐ", "通常価格", "本来は"]) assert.ok(!text.includes(word), "avoid: " + word);
   assert.ok(!/15,000円(?:だけ|のみ)で/.test(text), "never imply nothing else is needed");
-  // 「15,000円で何でもできる」と読めない：ページ数が多い場合などの案内がある
-  assert.match(text, /ページ数が多い場合やブログ記事がたくさんある場合は、19,800円のプランや個別のお見積り/);
+  // 最終CTAは、1ページの再スタートではなく、料金プランへ（ページ数の違うプランと混同させない）
+  const cta = page.match(/<section class="cta-section">[\s\S]*?<\/section>/)[0];
+  assert.match(cta, /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
+  assert.match(cta, /<a href="homepage-plan\.html" class="btn btn-outline">料金プランを見る<\/a>/);
+  // FAQ：15,000円の範囲（表示と構造化データは、別のテストで一致を確認）
+  assert.match(text, /ページ数が多くても、できるだけ対応します。ただし、ページ数が非常に多い場合は、別途お見積りになります。/);
 });
 
-test("無料の移行先の表：Googleサイト・アメブロ・Wixを○△×ーの印とコメントで比べ（当社の列はなし）、当社の15,000円はそのあとに出る", () => {
+test("無料の移行先の表：Googleサイト・アメブロ・Wixを、列と行の表（PCもスマホも）で、○△×ーの印とコメントで比べ、当社の15,000円はそのあとに出る", () => {
   const page = read(PAGE);
   const free = sectionOf(page, "oe-free");
   const table = free.match(/<table class="oe-tbl" role="table">[\s\S]*?<\/table>/)[0];
-  assert.ok(!/oe-svc|oe-scale|oe-fit|--ours/.test(page) && !/oe-svc|oe-scale|oe-fit|--ours/.test(read("assets/css/ownd-end.css")), "the old cards and the company column are gone");
+  assert.ok(!/oe-svc|oe-scale|oe-fit|--ours|oe-tbl-who/.test(page) && !/oe-svc|oe-scale|oe-fit|--ours|oe-tbl-who/.test(read("assets/css/ownd-end.css")), "old cards, company column and mobile chips are gone");
   // 順番：やること → 無料の移行先の表 → 当社の15,000円 → FAQ。表のあるsectionに、当社・料金は出てこない
   const order = ['id="oe-todo"', 'id="oe-free"', 'id="oe-ours"', 'id="oe-faq"'].map(marker => page.indexOf(marker));
   assert.ok(order.every((position, index) => position > 0 && (index === 0 || position > order[index - 1])), "section order: " + order);
@@ -139,41 +147,47 @@ test("無料の移行先の表：Googleサイト・アメブロ・Wixを○△×
   const heads = [...table.matchAll(/<th scope="col" role="columnheader" class="oe-tbl-h oe-tbl-h--free">([\s\S]*?)<\/th>/g)];
   assert.deepEqual(heads.map(match => textOf(match[1])), ["Googleサイト", "アメブロ（Amebaブログ）", "Wix（無料プラン）"]);
   assert.equal([...table.matchAll(/<th scope="col"/g)].length, 3);
-  // 縦：項目（比べる5点と同じ順番。先頭に料金）
+  // 縦：項目（比べる4点と同じ順番。先頭に料金）。「また終わるリスク」は載せない
   const rows = [...table.matchAll(/<tr role="row"[^>]*>\s*<th scope="row"[\s\S]*?<\/tr>/g)].map(match => match[0]);
-  assert.deepEqual(rows.map(row => textOf(row.match(/<span class="oe-tbl-rowtitle">[\s\S]*?<\/span>/)[0])), ["料金", "独自ドメイン", "広告", "更新", "ページ・容量", "また終わるリスク", "くわしくは"]);
+  assert.deepEqual(rows.map(row => textOf(row.match(/<span class="oe-tbl-rowtitle">[\s\S]*?<\/span>/)[0])), ["料金", "独自ドメイン", "広告", "更新", "ページ・容量", "くわしくは"]);
   const spoken = { ok: "良い・使える", warn: "注意が必要", no: "使えない", none: "公式の記載なし" };
   const marks = row => [...row.matchAll(/oe-mark oe-mark--(ok|warn|no|none)" role="img" aria-label="([^"]+)"/g)].map(match => { assert.equal(match[2], spoken[match[1]], "spoken label"); return match[1]; });
-  // 行ごとの評価（Googleサイト・アメブロ・Wixの順。更新・また終わるリスクは、3つで同じ内容なので全幅の1セル）
-  assert.deepEqual(rows.map(marks), [["none", "ok", "ok"], ["ok", "no", "no"], ["none", "warn", "warn"], ["ok"], ["none", "warn", "warn"], ["warn"], []]);
-  for (const index of [3, 5]) assert.match(rows[index], /<td class="oe-tbl-cell oe-tbl-cell--free oe-tbl-cell--span" role="cell" colspan="3">/, "shared cell in row " + index);
-  // 公式で確認できた内容だけを書き、確認できなかった項目は「公式の記載なし」にしている
+  // 行ごとの評価（Googleサイト・アメブロ・Wixの順。更新は、3つで同じ内容なので全幅の1セル）
+  assert.deepEqual(rows.map(marks), [["none", "ok", "ok"], ["ok", "no", "no"], ["none", "warn", "warn"], ["ok"], ["none", "warn", "warn"], []]);
+  assert.match(rows[3], /<td class="oe-tbl-cell oe-tbl-cell--free oe-tbl-cell--span" role="cell" colspan="3">/, "shared cell in the update row");
+  // 公式で確認できた内容だけを書き、確認できなかった項目は「公式の記載なし」の印にしている（コメントは、PCでは続きまで、スマホでは短い一文）
   const text = textOf(table);
-  for (const fact of ["DNS設定が必要。反映に最大48時間かかります。", "アメブロは独自ドメインを使えません。", "有料プランは月980円〜（税込）。", "非表示は有料のライトプラン（月1,490円・税込）。",
-    "Wixの広告バナーが表示されます。", "保存500MB・通信500MBです。", "有料のプレミアムプランが必要です。", "独自ドメインや広告の非表示は有料です。", "ご自分で更新できる",
-    "ペライチの無料公開", "条件が変わったり終了したりします"]) assert.ok(text.includes(fact), "table states: " + fact);
+  for (const fact of ["料金の記載なし。公式ヘルプで確認できませんでした。", "有料は月980円〜（税込）。", "一部は有料です。独自ドメインや広告の非表示は、有料のプレミアムプランが必要です。",
+    "DNS設定が必要。反映に最大48時間かかります。", "独自ドメインは使えません。", "有料プランで可。接続には、有料のプレミアムプランが必要です。",
+    "非表示は有料。ライトプラン（月1,490円・税込）の機能です。", "Wixの広告バナー。ページに表示されます。", "編集画面から更新します。ただし、最初に作る時間と、操作に慣れる手間はかかります。",
+    "上限の記載なし。", "見た目や構成が変わります。ホームページとは作りが異なります。", "保存500MB・通信500MB。"]) assert.ok(text.includes(fact), "table states: " + fact);
   assert.equal((table.match(/oe-mark--none" role="img"/g) || []).length, 3, "Google: price/ads/limits are 'no official statement'");
   assert.ok(!/Googleサイト[^。]{0,20}無料で使える/.test(text), "no unverified claim that Google Sites is free");
+  assert.ok(!page.includes("ペライチ") && !table.includes("また終わる"), "the 'risk of ending again' row and its example are gone");
   // 外部の公式リンクはhttpsで別タブ・noopener
   const links = [...table.matchAll(/<a class="oe-tbl-link" href="([^"]+)"([^>]*)>/g)];
   assert.deepEqual(links.map(match => match[1]), ["https://support.google.com/sites/answer/9068867?hl=ja", "https://helps.ameba.jp/faq/premium/paid_plan/about.html", "https://help.amebaownd.com/posts/875", "https://ja.wix.com/upgrade/website"]);
   for (const [, href, attrs] of links) assert.equal(attrs, ' target="_blank" rel="noopener"', href);
-  assert.ok(table.includes('href="https://peraichi.com/pages/pricing" target="_blank" rel="noopener"'), "the Peraichi example links to the official pricing page");
   // 凡例と、当社のプランへのつなぎ（価格は出さない）
   assert.equal([...free.matchAll(/<span class="oe-legend-item">/g)].length, 4);
   assert.match(textOf(free), /無料プランの条件は変わることがあるため、お申し込みの前に、公式ページでご確認ください/);
   assert.match(free, /<p class="oe-bridge reveal">ご自分で作るのが大変な方は、<a class="pc-text-link" href="#oe-ours">お任せの場合<\/a>をご覧ください。<\/p>/);
   // 消したサービス（STUDIO・ジンドゥー・WordPress.com）は、比較には載せない
   for (const gone of ["STUDIO", "ジンドゥー", "Jimdo", "WordPress"]) assert.ok(!free.includes(gone), "removed from the comparison: " + gone);
-  // 比べる5点：絵のない短い一覧（絵・長い説明・相談ボタンは入れない）
+  // 比べる4点：絵のない短い一覧（絵・長い説明・相談ボタンは入れない）
   const points = free.match(/<div class="oe-points reveal" id="oe-compare">[\s\S]*?<\/div>/)[0];
-  assert.deepEqual([...points.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(match => match[1]), ["今のURL（独自ドメイン）を使えるか", "広告が出ないか", "自分たちで更新できるか", "ページ数・容量の制限", "また終わらないか・データの持ち出し"]);
-  assert.ok(!/<svg|<img|btn|js-consult-link/.test(points), "the 5 points have no pictures or buttons");
-  assert.ok(textOf(points).length < 140, "the 5 points stay short: " + textOf(points).length);
-  // スマホでは、項目名を各行の帯にして、3つのサービスを3列に並べる
+  assert.match(points, /比べるときは、この4点を見ます/);
+  assert.deepEqual([...points.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(match => match[1]), ["今のURL（独自ドメイン）を使えるか", "広告が出ないか", "自分たちで更新できるか", "ページ数・容量の制限"]);
+  assert.ok(!/<svg|<img|btn|js-consult-link/.test(points), "the points have no pictures or buttons");
+  assert.ok(textOf(points).length < 120, "the points stay short: " + textOf(points).length);
+  // スマホでも、列と行の表のまま（グリッドに作り替えない）。続きの説明は省いて、文字と余白を小さくする
   const css = read("assets/css/ownd-end.css");
-  assert.match(css, /@media \(max-width: 860px\) \{[\s\S]*?\.oe-tbl tbody tr \{\s*display: grid;\s*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\);/);
-  assert.match(css, /\.oe-tbl tbody th \{\s*grid-column: 1 \/ -1;/);
+  const mobile = css.slice(css.indexOf("@media (max-width: 860px) {\n  .oe-tbl-wrap"));
+  assert.ok(mobile.includes("@media (max-width: 860px)"), "a dedicated mobile block exists");
+  assert.ok(!/\.oe-tbl tbody tr\s*\{[^}]*display:\s*grid/.test(css), "the table is never turned into a grid");
+  assert.match(mobile, /\.oe-tbl-more \{\s*display: none;/);
+  assert.match(mobile, /\.oe-tbl-rowsub \{\s*display: none;/);
+  assert.match(css, /\.oe-tbl \{\s*width: 100%;\s*border-collapse: collapse;\s*table-layout: fixed;/);
 });
 
 test("終了ガイド：内部リンクが実在し、外部リンクはhttpsで、関連記事・情報源がそろっている", () => {
@@ -190,10 +204,11 @@ test("終了ガイド：内部リンクが実在し、外部リンクはhttpsで
   }
   const sources = sectionOf(page, "oe-sources");
   assert.match(sources, /確認した公式情報（最終確認：2026年11月5日）/);
-  for (const url of ["https://blog.amebaownd.com/posts/59351287/", "https://help.amebaownd.com/posts/875", "https://support.google.com/sites/answer/9068867?hl=ja", "https://helps.ameba.jp/faq/premium/paid_plan/about.html", "https://ja.wix.com/upgrade/website", "https://peraichi.com/pages/pricing"]) {
+  for (const url of ["https://blog.amebaownd.com/posts/59351287/", "https://help.amebaownd.com/posts/875", "https://support.google.com/sites/answer/9068867?hl=ja", "https://helps.ameba.jp/faq/premium/paid_plan/about.html", "https://ja.wix.com/upgrade/website"]) {
     assert.ok(sources.includes('href="' + url + '" target="_blank" rel="noopener"'), "source: " + url);
   }
   assert.match(sources, /最新の情報は、必ず公式のお知らせでご確認ください/);
+  assert.ok(!sources.includes("peraichi"), "no source for the removed example");
 });
 
 test("再スタートのページと、既存のOwnd記事から終了ガイドへ案内している。記事は発表後の状況に合わせて更新済み", () => {
