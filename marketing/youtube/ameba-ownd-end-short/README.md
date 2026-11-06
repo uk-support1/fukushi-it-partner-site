@@ -6,8 +6,7 @@
 
 | ファイル | 内容 |
 | --- | --- |
-| `ameba-ownd-end-short.mp4` | **BGM＋ナレーションつき**（約29秒） |
-| `ameba-ownd-end-short-bgm-only.mp4` | BGMだけ（ナレーションなし）。ナレーションの声が合わない場合に使う |
+| `ameba-ownd-end-short.mp4` | **BGM＋ナレーションつき**（約29秒）。BGMだけの版は、ご希望により、作らないことにした（必要なら `bash build.sh bgm-only` で書き出せる） |
 
 - **画面**：特設ページのスクリーンショットを切り抜いて貼り（`crops/`）、テロップと「動くぶひお」を重ねています。ページに載っていない情報は入れていません。
 - **ぶひお**：`docs/buhio-pet/`（ブランチ `claude/buhio-pet-validation-fdm5m4`）に保管された、動くぶひおのスプライトシートから、**waiting（心配）・idle・running-right（走る）・review（確認）・thinking（考える）・jumping（喜ぶ）・waving（手を振る）**を使っています。場面2だけは、固定画像の「ここ重要！」の看板（`assets/images/buhio/`）です。
