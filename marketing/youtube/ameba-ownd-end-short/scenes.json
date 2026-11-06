@@ -18,10 +18,15 @@
     "sub": ""
    },
    "mascot": {
-    "img": "buhio-05-surprised",
-    "size": 360,
-    "x": 590,
-    "y": 1385
+    "size": 340,
+    "x": 595,
+    "y": 1425,
+    "sprites": [
+     {
+      "anim": "waiting",
+      "from": 0
+     }
+    ]
    }
   },
   {
@@ -54,10 +59,23 @@
     "sub": ""
    },
    "mascot": {
-    "img": "buhio-03-pointing",
-    "size": 360,
-    "x": 590,
-    "y": 1385
+    "size": 330,
+    "x": 600,
+    "y": 1425,
+    "noPop": true,
+    "sprites": [
+     {
+      "anim": "running-right",
+      "from": 0.2,
+      "to": 1.4,
+      "dx0": -760,
+      "dx1": 0
+     },
+     {
+      "anim": "idle",
+      "from": 1.4
+     }
+    ]
    }
   },
   {
@@ -72,10 +90,15 @@
     "sub": "書き出し機能は<em>11月中の予定</em>"
    },
    "mascot": {
-    "img": "buhio-03-pointing",
-    "size": 360,
-    "x": 590,
-    "y": 1385
+    "size": 340,
+    "x": 595,
+    "y": 1425,
+    "sprites": [
+     {
+      "anim": "review",
+      "from": 0
+     }
+    ]
    }
   },
   {
@@ -90,10 +113,15 @@
     "sub": "<em>12月24日 11時</em>まで"
    },
    "mascot": {
-    "img": "buhio-03-pointing",
-    "size": 360,
-    "x": 590,
-    "y": 1385
+    "size": 340,
+    "x": 595,
+    "y": 1425,
+    "sprites": [
+     {
+      "anim": "waiting",
+      "from": 0
+     }
+    ]
    }
   },
   {
@@ -108,10 +136,15 @@
     "sub": "比べるポイントは<em>4つ</em>"
    },
    "mascot": {
-    "img": "buhio-03-pointing",
-    "size": 360,
-    "x": 590,
-    "y": 1385
+    "size": 340,
+    "x": 595,
+    "y": 1425,
+    "sprites": [
+     {
+      "anim": "thinking",
+      "from": 0
+     }
+    ]
    }
   },
   {
@@ -126,10 +159,15 @@
     "sub": "<em>15,000円（税込）</em><br>素材がそろってから最短48時間"
    },
    "mascot": {
-    "img": "buhio-04-jumping",
-    "size": 380,
-    "x": 575,
-    "y": 1420
+    "size": 390,
+    "x": 570,
+    "y": 1415,
+    "sprites": [
+     {
+      "anim": "jumping",
+      "from": 0
+     }
+    ]
    },
    "telopTop": 950
   },
@@ -138,10 +176,15 @@
    "dur": 3.5,
    "end": true,
    "mascot": {
-    "img": "buhio-02-waving",
-    "size": 430,
-    "x": 325,
-    "y": 1010
+    "size": 400,
+    "x": 340,
+    "y": 950,
+    "sprites": [
+     {
+      "anim": "waving",
+      "from": 0
+     }
+    ]
    }
   }
  ]
