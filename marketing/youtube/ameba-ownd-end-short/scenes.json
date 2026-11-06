@@ -1,0 +1,148 @@
+{
+ "width": 1080,
+ "height": 1920,
+ "fps": 30,
+ "overlap": 0.25,
+ "narrationOffset": 0.35,
+ "scenes": [
+  {
+   "id": "s1",
+   "dur": 4.4,
+   "crops": [
+    "hero-title",
+    "hero-visual"
+   ],
+   "cropTop": 285,
+   "telop": {
+    "main": "Ameba Ownd、<br><em>12月24日</em>に終了",
+    "sub": ""
+   },
+   "mascot": {
+    "img": "buhio-05-surprised",
+    "size": 360,
+    "x": 590,
+    "y": 1385
+   }
+  },
+  {
+   "id": "s2",
+   "dur": 3.8,
+   "crops": [
+    "hero-note"
+   ],
+   "cropTop": 350,
+   "telop": {
+    "main": "終了するのは<br>Ameba Owndだけ",
+    "sub": "<em>アメブロは続きます</em>"
+   },
+   "mascot": {
+    "img": "buhio-06-important",
+    "size": 470,
+    "x": 500,
+    "y": 670
+   }
+  },
+  {
+   "id": "s3",
+   "dur": 2.6,
+   "crops": [
+    "todo-head"
+   ],
+   "cropTop": 310,
+   "telop": {
+    "main": "やることは、<em>3つだけ</em>",
+    "sub": ""
+   },
+   "mascot": {
+    "img": "buhio-03-pointing",
+    "size": 360,
+    "x": 590,
+    "y": 1385
+   }
+  },
+  {
+   "id": "s4",
+   "dur": 3.4,
+   "crops": [
+    "todo-1"
+   ],
+   "cropTop": 265,
+   "telop": {
+    "main": "<b class=\"no\">1</b>データを保存",
+    "sub": "書き出し機能は<em>11月中の予定</em>"
+   },
+   "mascot": {
+    "img": "buhio-03-pointing",
+    "size": 360,
+    "x": 590,
+    "y": 1385
+   }
+  },
+  {
+   "id": "s5",
+   "dur": 3.6,
+   "crops": [
+    "todo-2"
+   ],
+   "cropTop": 265,
+   "telop": {
+    "main": "<b class=\"no\">2</b>ドメインの設定変更",
+    "sub": "<em>12月24日 11時</em>まで"
+   },
+   "mascot": {
+    "img": "buhio-03-pointing",
+    "size": 360,
+    "x": 590,
+    "y": 1385
+   }
+  },
+  {
+   "id": "s6",
+   "dur": 3.2,
+   "crops": [
+    "todo-3"
+   ],
+   "cropTop": 285,
+   "telop": {
+    "main": "<b class=\"no\">3</b>移行先を決める",
+    "sub": "比べるポイントは<em>4つ</em>"
+   },
+   "mascot": {
+    "img": "buhio-03-pointing",
+    "size": 360,
+    "x": 590,
+    "y": 1385
+   }
+  },
+  {
+   "id": "s7",
+   "dur": 4.8,
+   "crops": [
+    "price-card"
+   ],
+   "cropTop": 290,
+   "telop": {
+    "main": "大変なら、<br><em>お任せください</em>",
+    "sub": "<em>15,000円（税込）</em><br>素材がそろってから最短48時間"
+   },
+   "mascot": {
+    "img": "buhio-04-jumping",
+    "size": 380,
+    "x": 575,
+    "y": 1420
+   },
+   "telopTop": 950
+  },
+  {
+   "id": "s8",
+   "dur": 3.5,
+   "end": true,
+   "mascot": {
+    "img": "buhio-02-waving",
+    "size": 430,
+    "x": 325,
+    "y": 1010
+   }
+  }
+ ]
+}

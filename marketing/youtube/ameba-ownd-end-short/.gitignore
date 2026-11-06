@@ -1,0 +1,5 @@
+# 動画づくりの途中でできる、大きな中間ファイル（build.sh・render.js・make-*.py で再生成できる）
+frames/
+frames-preview/
+audio/*.wav
+audio/total.txt

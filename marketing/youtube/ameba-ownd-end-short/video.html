@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ショート動画：Ameba Ownd 終了（フレーム描画）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --green-900:#1f4d3c; --green-700:#2c6b54; --green-500:#4a8c6f; --green-100:#e8f4ee; --cream:#fbf6ec;
+          --orange-500:#e8965a; --orange-600:#d97f3f; --orange-100:#fdf1e7; --text:#34383a; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:1080px; height:1920px; overflow:hidden; background:#fff; }
+  body { font-family:"Noto Sans JP","IPAexGothic",sans-serif; color:var(--text); -webkit-font-smoothing:antialiased; }
+  #stage { position:relative; width:1080px; height:1920px; overflow:hidden;
+           background:linear-gradient(180deg,#fdf9f0 0%,#f1f7f1 100%); }
+  /* うすい緑の丸（サイトと同じ飾り。文字は載せない） */
+  #stage::before { content:""; position:absolute; right:-260px; top:-200px; width:820px; height:820px; border-radius:50%;
+                   background:radial-gradient(circle at 40% 40%, rgba(120,175,140,.20), rgba(120,175,140,.06) 70%); }
+  #stage::after  { content:""; position:absolute; left:-300px; bottom:-340px; width:900px; height:900px; border-radius:50%;
+                   background:radial-gradient(circle at 60% 40%, rgba(232,150,90,.12), rgba(232,150,90,0) 70%); }
+  .tag { position:absolute; left:60px; top:150px; z-index:5; background:rgba(255,255,255,.92); color:var(--green-900);
+         font-size:38px; font-weight:800; padding:10px 30px; border-radius:999px; box-shadow:0 6px 18px rgba(31,77,60,.10); letter-spacing:.03em; }
+  .scene { position:absolute; inset:0; opacity:0; }
+  .crop { position:absolute; left:60px; width:960px; background:#fff; border-radius:40px; padding:18px;
+          box-shadow:0 14px 40px rgba(31,77,60,.14); overflow:hidden; }
+  .crop img { display:block; width:100%; height:auto; }
+  .crop .gap { height:14px; }
+  .crop img.rounded { border-radius:22px; }
+  .telop { position:absolute; left:60px; width:870px; top:1090px; background:#fff; border-radius:44px; padding:30px 44px 34px;
+           box-shadow:0 14px 40px rgba(31,77,60,.14); border-top:12px solid var(--green-700); }
+  .telop .main { font-size:72px; font-weight:900; line-height:1.28; color:var(--green-900); letter-spacing:.01em; }
+  .telop .sub { margin-top:12px; font-size:50px; font-weight:800; line-height:1.4; color:var(--text); }
+  .telop em { font-style:normal; color:var(--orange-600); }
+  .telop .no { display:inline-flex; align-items:center; justify-content:center; width:84px; height:84px; margin-right:22px;
+               border-radius:50%; background:var(--green-700); color:#fff; font-size:54px; font-weight:900; vertical-align:middle; position:relative; top:-4px; }
+  .mascot { position:absolute; }
+  .mascot img { display:block; width:100%; height:auto; filter:drop-shadow(0 10px 14px rgba(0,0,0,.12)); }
+  /* 最後の画面 */
+  .end .logo { position:absolute; left:50%; top:300px; width:230px; margin-left:-115px; mix-blend-mode:multiply; }
+  .end .brandname { position:absolute; left:0; right:0; top:560px; text-align:center; font-size:92px; font-weight:900; color:var(--green-900); letter-spacing:.02em; }
+  .end .guide { position:absolute; left:50%; top:700px; transform:translateX(-50%); background:var(--green-700); color:#fff; font-size:50px; font-weight:800;
+                padding:14px 44px; border-radius:999px; white-space:nowrap; }
+  .end .cta { position:absolute; left:80px; width:840px; top:830px; background:#fff; border-radius:44px; padding:30px 20px 36px; text-align:center;
+              box-shadow:0 14px 40px rgba(31,77,60,.14); border-top:12px solid var(--orange-500); }
+  .end .cta .t { font-size:68px; font-weight:900; line-height:1.3; color:var(--green-900); }
+  .end .cta em { font-style:normal; color:var(--orange-600); }
+  .end .note { position:absolute; left:80px; width:840px; top:1470px; text-align:center; font-size:34px; font-weight:700; color:#5b6562; line-height:1.45; }
+</style>
+</head>
+<body>
+<div id="stage"><div class="tag">Ameba Ownd 終了ガイド</div></div>
+<script>
+  const ASSET = "../../../assets/images/";
+  const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);              // 出てくる動き
+  const back = x => { x = Math.min(1, Math.max(0, x)); const c1 = 1.8, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }; // 少しはねる
+  let CFG = null, T = [];
+
+  function setup(cfg) {
+    CFG = cfg; const stage = document.getElementById("stage"); let t0 = 0;
+    cfg.scenes.forEach(sc => {
+      const el = document.createElement("div"); el.className = "scene" + (sc.end ? " end" : ""); el.id = sc.id;
+      let h = "";
+      if (sc.end) {
+        h += `<img class="logo" src="${ASSET}logo-mark.png" alt="">
+              <div class="brandname">福祉ITパートナー</div>
+              <div class="guide">Ameba Ownd 終了と移行ガイド</div>
+              <div class="cta"><div class="t">くわしくは、<br><em>概要欄のページ</em>へ</div></div>
+              <div class="note">※2026年11月5日時点の、<br>公式の発表にもとづきます</div>`;
+      } else {
+        h += `<div class="crop" style="top:${sc.cropTop}px">` + sc.crops.map((c, i) => (i ? '<div class="gap"></div>' : '') + `<img class="${sc.crops.length > 1 && i === 1 ? 'rounded' : ''}" src="crops/${c}.png" alt="">`).join("") + `</div>`;
+        h += `<div class="telop" style="top:${sc.telopTop || 1140}px"><div class="main">${sc.telop.main}</div>${sc.telop.sub ? `<div class="sub">${sc.telop.sub}</div>` : ""}</div>`;
+      }
+      if (sc.mascot) h += `<div class="mascot" style="left:${sc.mascot.x}px;top:${sc.mascot.y}px;width:${sc.mascot.size}px"><img src="${ASSET}buhio/${sc.mascot.img}.png" alt=""></div>`;
+      el.innerHTML = h; stage.appendChild(el);
+      T.push({ id: sc.id, el, start: t0, dur: sc.dur, sc }); t0 += sc.dur;
+    });
+    return { total: t0 };
+  }
+  async function ready() { await document.fonts.ready; await Promise.all([...document.images].map(i => i.complete ? 1 : new Promise(r => { i.onload = i.onerror = r; }))); return true; }
+
+  function renderAt(t) {
+    const ov = CFG.overlap;
+    T.forEach((s, i) => {
+      const u = t - s.start, end = s.dur + (i < T.length - 1 ? ov : 0);
+      const el = s.el;
+      if (u < 0 || u > end) { el.style.opacity = 0; el.style.visibility = "hidden"; return; }
+      el.style.visibility = "visible";
+      const fin = ease(u / 0.30), fout = (i < T.length - 1 && u > s.dur) ? 1 - (u - s.dur) / ov : 1;
+      el.style.opacity = Math.max(0, Math.min(1, fin * fout));
+      const crop = el.querySelector(".crop"), telop = el.querySelector(".telop"), mas = el.querySelector(".mascot");
+      const zoom = 1 + 0.035 * Math.min(1, u / s.dur);
+      if (crop) { crop.style.transform = `translateY(${(1 - ease(u / 0.5)) * 50}px) scale(${zoom})`; crop.style.transformOrigin = "50% 40%"; }
+      if (telop) { const k = ease((u - 0.15) / 0.45); telop.style.transform = `translateY(${(1 - k) * 36}px)`; telop.style.opacity = k; }
+      if (mas) {
+        const k = back((u - 0.30) / 0.55), bob = Math.sin((u + 0.3) * 3.2) * 7;
+        mas.style.transform = `translateY(${bob}px) scale(${0.55 + 0.45 * k})`; mas.style.opacity = Math.min(1, Math.max(0, (u - 0.28) / 0.2));
+        mas.style.transformOrigin = "50% 100%";
+      }
+      if (s.sc.end) {
+        const logo = el.querySelector(".logo"), cta = el.querySelector(".cta"), note = el.querySelector(".note"), nm = el.querySelector(".brandname"), gd = el.querySelector(".guide");
+        const k1 = back((u - 0.05) / 0.6); logo.style.transform = `scale(${0.6 + 0.4 * k1})`;
+        nm.style.opacity = ease((u - 0.2) / 0.4); gd.style.opacity = ease((u - 0.35) / 0.4);
+        const k2 = ease((u - 0.5) / 0.5); cta.style.transform = `translateY(${(1 - k2) * 40}px)`; cta.style.opacity = k2;
+        note.style.opacity = ease((u - 1.0) / 0.5);
+      }
+    });
+  }
+  window.setup = setup; window.ready = ready; window.renderAt = renderAt;
+</script>
+</body>
+</html>
