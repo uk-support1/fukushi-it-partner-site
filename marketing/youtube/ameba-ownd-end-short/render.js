@@ -19,14 +19,17 @@ const still = process.argv.includes("--still");
   const { total } = await page.evaluate(c => setup(c), cfg);
   await page.evaluate(() => ready());
   const outDir = path.join(HERE, still ? "frames-preview" : "frames");
-  fs.rmSync(outDir, { recursive: true, force: true }); fs.mkdirSync(outDir, { recursive: true });
+  if (!process.argv.includes("--range")) fs.rmSync(outDir, { recursive: true, force: true });
+  fs.mkdirSync(outDir, { recursive: true });
   if (still) {
     let t0 = 0;
     for (const s of cfg.scenes) { const t = t0 + Math.min(s.dur - 0.2, 2.2); await page.evaluate(t => renderAt(t), t); await page.screenshot({ path: path.join(outDir, s.id + ".png") }); t0 += s.dur; }
     console.log("静止画:", cfg.scenes.length, "枚 →", path.relative(process.cwd(), outDir));
   } else {
     const n = Math.round(total * cfg.fps);
-    for (let i = 0; i < n; i++) {
+    // --range 開始 終了：その範囲のコマだけを書き出し直す（既存の frames/ を残す）
+    const ri = process.argv.indexOf("--range"), r0 = ri > 0 ? +process.argv[ri + 1] : 0, r1 = ri > 0 ? Math.min(n, +process.argv[ri + 2]) : n;
+    for (let i = r0; i < r1; i++) {
       await page.evaluate(t => renderAt(t), i / cfg.fps);
       await page.screenshot({ path: path.join(outDir, String(i).padStart(5, "0") + ".png") });
       if (i % 120 === 0) console.log("フレーム", i, "/", n);

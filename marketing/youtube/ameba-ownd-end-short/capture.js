@@ -33,6 +33,9 @@ const TARGETS = [
   await page.goto(URL, { waitUntil: "networkidle", timeout: 60000 });
   await page.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 300) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 100)); } window.scrollTo(0, 0); });
   await page.waitForTimeout(800);
+  // 動画では、料金に「税込」を載せない（2026-11-06のご判断。当社は消費税の免税事業者のため）。
+  // ※公開中のページには「（税込）」と書かれているため、切り抜きだけ、その部分を取り除いてから撮る。ページ側は、変えていない
+  await page.evaluate(() => { document.querySelectorAll(".pc-proposal-price *").forEach(e => { if (e.textContent.includes("税込")) e.remove(); }); });
   // 固定のヘッダーが写り込まないようにする
   await page.addStyleTag({ content: "header, .site-header, .pc-header, .sticky, [class*='sticky'] { position: static !important; }" });
   for (const [name, sel, mode] of TARGETS) {
