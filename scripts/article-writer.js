@@ -84,13 +84,22 @@ function articleImage(category, { root = path.join(__dirname, ".."), articlesDir
       return !imageLibrary.sameImage(candidate, use) && (!use.series || candidate.series !== use.series) &&
         (!known || !known.scene || candidate.scene !== known.scene);
     }));
-    if (apart.length) candidates = apart;
+    // Also keep clear of the heroes of the newest-window articles that come after it, because
+    // the "no repeated hero within the recent window" check counts the newest articles by date.
+    const laterHashes = new Set(later.slice(-imageLibrary.HERO_RECENT_ARTICLE_LIMIT).map(use => use.hash).filter(Boolean));
+    const wide = apart.filter(candidate => !laterHashes.has(candidate.hash));
+    if (wide.length) candidates = wide;
+    else if (apart.length) candidates = apart;
   }
+  // A past-dated inline image must also differ from those of the articles that come after it,
+  // since "the latest ten inline images are unique" counts the newest articles by date.
+  const laterInlineHashes = asOfDate && kind === "inline"
+    ? fullHistory.filter(use => use.date && use.date > asOfDate).slice(-imageLibrary.RECENT_ARTICLE_LIMIT).map(use => use.hash).filter(Boolean) : [];
   const selected = imageLibrary.selectImage({ category,
     candidates,
     history: imageHistory,
     recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT,
-    excludedHashes: new Set([...excludedHashes, ...recentInlineHashes]), profile, diversifyHero: kind === "hero",
+    excludedHashes: new Set([...excludedHashes, ...recentInlineHashes, ...laterInlineHashes]), profile, diversifyHero: kind === "hero",
     // 記事内画像の自動投稿では、候補が尽きたら再利用せず null（=画像を省略）にする
     reuseWhenExhausted: !(kind === "inline" && omitWhenExhausted) });
   if (selected) return { image: selected.path, imageAlt: "", category: selected.category, series: selected.series, hash: selected.hash, profile };
