@@ -2,7 +2,7 @@
 type: column
 category_label: ホームページ制作
 title: 福祉事業所のGoogleマップ活用｜Googleビジネスプロフィールを登録するメリット
-date: 2025-08-12
+date: 2025-08-03
 image: assets/images/blog-library/hero/hero-seo-001.png
 image_alt: 情報発信を支えるイメージ
 published: true

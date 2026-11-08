@@ -2,7 +2,7 @@
 type: column
 category_label: ホームページ改善
 title: 障害者グループホームのホームページにおける一日の流れの伝え方：見学前の不安をやわらげるタイムスケジュールの公開コツ
-date: 2025-12-23
+date: 2025-12-17
 image: assets/images/blog-library/hero/hero-welfare-007.png
 image_alt: ""
 image_role: hero

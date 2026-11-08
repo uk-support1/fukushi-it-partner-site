@@ -2,7 +2,7 @@
 type: column
 category_label: ホームページ制作
 title: 福祉事業所にホームページが必要な5つの理由
-date: 2025-06-26
+date: 2025-06-19
 image: assets/images/blog-library/hero/hero-welfare-013.png
 image_alt: 福祉の現場を支えるイメージ
 published: true

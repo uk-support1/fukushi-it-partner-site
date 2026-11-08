@@ -2,7 +2,7 @@
 type: column
 category_label: AI活用
 title: 福祉現場でAIを活用する第一歩
-date: 2025-05-26
+date: 2025-05-28
 image: assets/images/blog-library/hero/hero-ai-002.png
 image_alt: AI活用のイメージ
 published: true
