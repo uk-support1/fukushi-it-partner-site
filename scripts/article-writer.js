@@ -72,8 +72,22 @@ function articleImage(category, { root = path.join(__dirname, ".."), articlesDir
   // 公開が止まる原因になった。除外に加えておけば、候補が尽きない限り重複しない。
   const recentInlineHashes = kind === "inline"
     ? imageHistory.slice(0, imageLibrary.RECENT_ARTICLE_LIMIT).map(use => use.hash).filter(Boolean) : [];
+  // A past-dated (backfill) hero sits between two existing articles on the blog list, so it
+  // must differ in series and scene from BOTH neighbours: the one just before it (already
+  // handled by the history order) and the one just after it (handled here).
+  let candidates = imageLibrary.discoverImages({ root, kind });
+  if (asOfDate && kind === "hero") {
+    const later = fullHistory.filter(use => use.date && use.date > asOfDate);
+    const neighbours = [imageHistory[0], later[later.length - 1]].filter(Boolean);
+    const apart = candidates.filter(candidate => neighbours.every(use => {
+      const known = candidates.find(other => imageLibrary.sameImage(other, use));
+      return !imageLibrary.sameImage(candidate, use) && (!use.series || candidate.series !== use.series) &&
+        (!known || !known.scene || candidate.scene !== known.scene);
+    }));
+    if (apart.length) candidates = apart;
+  }
   const selected = imageLibrary.selectImage({ category,
-    candidates: imageLibrary.discoverImages({ root, kind }),
+    candidates,
     history: imageHistory,
     recentLimit: kind === "hero" ? imageLibrary.HERO_RECENT_ARTICLE_LIMIT : imageLibrary.RECENT_ARTICLE_LIMIT,
     excludedHashes: new Set([...excludedHashes, ...recentInlineHashes]), profile, diversifyHero: kind === "hero",

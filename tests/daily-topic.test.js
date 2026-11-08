@@ -753,3 +753,16 @@ test("Backfill: a past-dated article avoids the images of the articles just befo
   const unscoped=articleImage("福祉事業所の広報",{kind:"hero",history,content:{title:"福祉",body:"福祉"}});
   assert.ok(unscoped.hash);
 });
+
+test("Backfill: a past-dated hero also differs in series and scene from the article just AFTER it on the timeline",t=>{
+  const imageLibrary=require("../scripts/lib/image-library");
+  const {articleImage}=require("../scripts/article-writer");
+  const candidates=imageLibrary.discoverImages({root:ROOT,kind:"hero"}).filter(c=>c.category==="welfare");
+  const next=candidates[0];
+  const history=[{image:next.path,hash:next.hash,category:next.category,series:next.series,article:"later",date:"2026-09-12"}];
+  for(const asOf of ["2025-12-12","2026-01-12","2026-03-12"]){
+    const picked=articleImage("福祉事業所の広報",{kind:"hero",history,asOfDate:asOf,content:{title:"福祉",body:"福祉"}});
+    assert.notEqual(picked.series,next.series,asOf);
+    assert.notEqual(imageLibrary.discoverImages({root:ROOT,kind:"hero"}).find(c=>c.path===picked.image).scene,next.scene,asOf);
+  }
+});
