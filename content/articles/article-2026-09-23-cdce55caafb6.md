@@ -2,7 +2,7 @@
 type: column
 category_label: ホームページ制作
 title: 特例子会社の仕組みと情報発信に学ぶ、福祉事業所のホームページを活用した信頼獲得と透明性向上のポイント
-date: 2026-05-26
+date: 2026-09-23
 image: assets/images/blog-library/hero-video/tiRjtXeAa-4.jpg
 image_alt: ""
 image_role: hero
