@@ -2,7 +2,7 @@
 type: column
 category_label: ホームページ制作
 title: 就労継続支援B型のホームページで伝えるべき5つのこと
-date: 2026-03-12
+date: 2025-06-12
 image: assets/images/blog-library/hero/hero-welfare-004.png
 image_alt: 福祉の現場を支えるイメージ
 published: true

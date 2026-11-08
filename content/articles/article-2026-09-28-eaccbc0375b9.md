@@ -2,7 +2,7 @@
 type: column
 category_label: ホームページ改善
 title: 就労継続支援B型における身だしなみ支援の理由に学ぶ、ホームページを活用した事業所の支援方針の伝え方
-date: 2026-09-28
+date: 2026-09-12
 image: assets/images/blog-library/hero-video/FZ8JgwjzPWM.jpg
 image_alt: ""
 image_role: hero

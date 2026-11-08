@@ -2,7 +2,7 @@
 type: column
 category_label: ホームページ制作
 title: 障害者グループホームのホームページに何を載せる？入居希望者と家族に伝えたい内容
-date: 2026-05-11
+date: 2025-07-12
 image: assets/images/blog-library/hero/hero-welfare-001.png
 image_alt: 福祉の現場を支えるイメージ
 published: true

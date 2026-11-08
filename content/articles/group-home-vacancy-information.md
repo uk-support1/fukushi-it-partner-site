@@ -2,7 +2,7 @@
 type: column
 category_label: ホームページ制作
 title: 障害者グループホームの入居者募集｜ホームページで空室を減らすためにできること
-date: 2026-07-08
+date: 2025-08-26
 image: assets/images/blog-library/hero/hero-welfare-006.png
 image_alt: 福祉の現場を支えるイメージ
 published: true

@@ -1,7 +1,7 @@
 ---
 type: news
 title: 福祉ITパートナーの情報発信を始めます
-date: 2026-01-15
+date: 2025-05-12
 image: assets/images/blog-library/hero/hero-welfare-011.png
 image_alt: 福祉の現場を支えるイメージ
 published: true
