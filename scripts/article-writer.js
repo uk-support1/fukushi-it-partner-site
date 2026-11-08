@@ -56,12 +56,16 @@ function baseSlugFor(title, date) {
   return `article-${date}-${digest}`;
 }
 
-function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {}, history = null, excludedHashes = new Set(), precomputedHero = null, omitWhenExhausted = false } = {}) {
+function articleImage(category, { root = path.join(__dirname, ".."), articlesDir = lib.ARTICLES_DIR, kind = "hero", content = {}, history = null, excludedHashes = new Set(), precomputedHero = null, asOfDate = null, omitWhenExhausted = false } = {}) {
   const profile = articleImageProfile({ ...content, category });
   // A video's own thumbnail (fetched once, beforehand, by scripts/lib/video-thumbnail.js)
   // takes priority over the curated stock library, but only for the hero image.
   if (kind === "hero" && precomputedHero) return { ...precomputedHero, profile };
-  const imageHistory = history || imageLibrary.usageHistory({ root, articlesDir, kind });
+  // asOfDate: an article written for a past date (backfill) must avoid the images of the
+  // articles just before it on the timeline, not those of the newest ones. For a normal
+  // same-day article every entry is on/before today, so this changes nothing.
+  const fullHistory = history || imageLibrary.usageHistory({ root, articlesDir, kind });
+  const imageHistory = asOfDate ? fullHistory.filter(use => !use.date || use.date <= asOfDate) : fullHistory;
   // 記事内画像は、直近の記事で使った画像（同一内容＝同じハッシュ）を必ず避ける。
   // 採用など「強いテーマ」の画像が少ないカテゴリでは、テーマ一致を優先する選び方だと
   // 直近の記事と同じ画像を繰り返してしまい、公開前の自動テスト（直近10本は重複なし）で
@@ -214,7 +218,7 @@ function saveArticleDraft({ article, topic, date, sources = [], directory = lib.
     const filename = `${slug}.md`;
     const filePath = path.join(directory, filename);
     const built = buildArticleMarkdown({ article, topic, date, slug, sources,
-      imageOptions: { root: imageRoot || path.join(__dirname, ".."), articlesDir: directory, kind: imageKind, precomputedHero: videoThumbnail } });
+      imageOptions: { root: imageRoot || path.join(__dirname, ".."), articlesDir: directory, kind: imageKind, precomputedHero: videoThumbnail, asOfDate: date } });
     try {
       fs.writeFileSync(filePath, built.markdown, { encoding: "utf8", flag: "wx" });
       return { slug, filename, filePath, metadata: built.metadata };

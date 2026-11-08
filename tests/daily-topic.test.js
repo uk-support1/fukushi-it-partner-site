@@ -714,3 +714,42 @@ test("The best live result across attempts is the one used",async t=>{
   assert.equal(i,2);
   assert.equal(seenCandidates.length,3);
 });
+
+test("Backfill: a manual run can date an evergreen article in the past; the cron can never, and invalid or non-past dates fail",async t=>{
+  const directory=temporaryArticles(t);
+  const base={now:new Date("2026-11-08T03:00:00Z"),load:()=>articles,articlesDir:directory,loadCache:()=>[{title:"動画",url:"https://www.youtube.com/watch?v=cached00001",publishedAt:"2026-11-07T00:00:00.000Z",source:"x",summary:"福祉",kind:"video"}]};
+  let collectArgs=0,topicSchemaSeen=[];
+  const run=(extraEnv,overrides={})=>{
+    let n=0;collectArgs=0;
+    return prepareDailyBlog({env:{...env,...extraEnv},...base,
+      collect:async()=>{collectArgs++;return {candidates:[],attemptedSources:0,successfulSources:0};},
+      request:async args=>isEditorial(args)?editorialReview:(topicSchemaSeen.push(args.schema),++n===1?JSON.stringify(topic):n===2?review(articles):JSON.stringify(generatedArticle)),
+      ...overrides});
+  };
+  const past=await run({DAILY_BLOG_EVENT_NAME:"workflow_dispatch",DAILY_BLOG_TARGET_DATE:"2025-10-12",DAILY_BLOG_FORCE_EVERGREEN:"true"});
+  assert.equal(past.localDate,"2025-10-12");
+  assert.match(past.draft.slug,/^article-2025-10-12-/);
+  assert.equal(past.contentMode,"evergreen");
+  assert.deepEqual(past.sources,[]);
+  assert.equal(past.latestInformation.candidateCount,0);
+  const cron=await run({DAILY_BLOG_EVENT_NAME:"schedule",DAILY_BLOG_TARGET_DATE:"2025-10-12",DAILY_BLOG_FORCE_EVERGREEN:"true"},{alreadyPublishedToday:()=>false});
+  assert.equal(cron.localDate,"2026-11-08","the schedule ignores a target date");
+  for(const bad of ["2025-13-40","abc","2026-11-08","2027-01-01","2025-1-5"])
+    await assert.rejects(run({DAILY_BLOG_EVENT_NAME:"workflow_dispatch",DAILY_BLOG_TARGET_DATE:bad,DAILY_BLOG_FORCE_EVERGREEN:"true"}),{code:"INVALID_TARGET_DATE"},bad);
+  // Without the evergreen flag a manual run still collects video candidates as usual.
+  await run({DAILY_BLOG_EVENT_NAME:"workflow_dispatch",DAILY_BLOG_TARGET_DATE:"2025-10-26"});
+  assert.equal(collectArgs,1);
+});
+
+test("Backfill: a past-dated article avoids the images of the articles just before it on the timeline, not those of the newest ones",t=>{
+  const imageLibrary=require("../scripts/lib/image-library");
+  const {articleImage}=require("../scripts/article-writer");
+  const candidates=imageLibrary.discoverImages({root:ROOT,kind:"hero"}).filter(c=>c.category==="welfare");
+  assert.ok(candidates.length>3);
+  const history=candidates.slice(0,3).map((c,i)=>({image:c.path,hash:c.hash,category:c.category,series:c.series,article:"a"+i,date:["2026-11-07","2025-10-10","2025-10-01"][i]}));
+  const asOf=articleImage("福祉事業所の広報",{kind:"hero",history,asOfDate:"2025-10-12",content:{title:"福祉",body:"福祉"}});
+  assert.notEqual(asOf.hash,history[1].hash,"avoids the article dated just before it");
+  assert.notEqual(asOf.hash,history[2].hash);
+  const unscoped=articleImage("福祉事業所の広報",{kind:"hero",history,content:{title:"福祉",body:"福祉"}});
+  assert.ok(unscoped.hash);
+});

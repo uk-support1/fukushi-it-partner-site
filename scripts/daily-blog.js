@@ -64,13 +64,25 @@ function hasArticleDatedToday(localDate, articlesDir) {
   catch { return false; }
 }
 
+// Backfill support (manual runs only; the cron can never use it): write an
+// evergreen article dated to a past day, e.g. to fill a gap in the timeline.
+function resolveLocalDate(now, env) {
+  const real = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
+  }).format(now);
+  const target = env.DAILY_BLOG_TARGET_DATE;
+  if (!target || env.DAILY_BLOG_EVENT_NAME === "schedule") return real;
+  const valid = /^\d{4}-\d{2}-\d{2}$/.test(target) && Number.isFinite(Date.parse(target)) &&
+    new Date(target).toISOString().slice(0, 10) === target;
+  if (!valid || target >= real) throw new TopicError("INVALID_TARGET_DATE");
+  return target;
+}
+
 async function prepareDailyBlog({now = new Date(), env = process.env, request, articleRequest, load,
   collect = collectLatestInfo, loadCache = loadYoutubeCache, fetchThumbnail = fetchVideoThumbnail,
   save = saveArticleDraft, articlesDir, alreadyPublishedToday = hasArticleDatedToday,
   sleep = ms => new Promise(resolve => setTimeout(resolve, ms))} = {}) {
-  const localDate = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Tokyo", year: "numeric", month: "2-digit", day: "2-digit"
-  }).format(now);
+  const localDate = resolveLocalDate(now, env);
   // A second, later cron exists as a backup for when the primary 06:17 JST
   // trigger is delayed or silently dropped by GitHub (observed in production
   // on 2026-09-22, 09-23 and 09-24 — see docs/daily-blog.md). Both firings
@@ -88,9 +100,12 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
   // cache the daily YouTube Cache workflow accumulates (keeps unused videos up
   // to 90 days, and covers a day a live fetch fails).
   // DAILY_BLOG_SOURCES_FILTER=cache / live isolates one path for debugging.
+  // A backdated article is always evergreen: it must not cite any video or official
+  // item, whose publication date would postdate the article.
+  const evergreenOnly = env.DAILY_BLOG_FORCE_EVERGREEN === "true" && env.DAILY_BLOG_EVENT_NAME !== "schedule";
   const filter = env.DAILY_BLOG_SOURCES_FILTER;
-  const sources = filter === "cache" ? [] : VIDEO_SOURCES;
-  const extraCandidates = filter === "live" ? [] : loadCache({now});
+  const sources = evergreenOnly || filter === "cache" ? [] : VIDEO_SOURCES;
+  const extraCandidates = evergreenOnly || filter === "live" ? [] : loadCache({now});
   // Already-used videos are dropped before the top-10 cut so they can't crowd
   // out unused ones, and unused videos stay eligible for a month.
   const used = usedSourceKeys(load);

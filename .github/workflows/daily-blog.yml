@@ -25,6 +25,16 @@ on:
           - cache
           - live
         default: auto
+      target_date:
+        description: '過去の日付（YYYY-MM-DD）で記事を作る（月2本の穴埋め用）。空欄なら今日の記事。指定すると出典なしの一般テーマで作り、定時実行では使われない'
+        required: false
+        type: string
+        default: ''
+      evergreen_only:
+        description: 'trueにすると、動画や公的機関の出典を使わず一般テーマだけで作る（target_dateを指定するときはtrueにする）'
+        required: false
+        type: boolean
+        default: false
       simulate_failure:
         description: '失敗通知の動作確認用。trueにすると、記事を作らず最初のステップで意図的に失敗させ、失敗通知（Issue）が作られるかを確認する'
         required: false
@@ -73,6 +83,8 @@ jobs:
           DAILY_BLOG_RESULT_FILE: ${{ runner.temp }}/daily-blog-result.json
           DAILY_BLOG_SOURCES_FILTER: ${{ inputs.sources_filter }}
           DAILY_BLOG_EVENT_NAME: ${{ github.event_name }}
+          DAILY_BLOG_TARGET_DATE: ${{ inputs.target_date }}
+          DAILY_BLOG_FORCE_EVERGREEN: ${{ inputs.evergreen_only }}
         run: |
           node scripts/daily-blog.js
           echo "status=$(node -e 'process.stdout.write(JSON.parse(require("fs").readFileSync(process.env.DAILY_BLOG_RESULT_FILE,"utf8")).status)')" >> "$GITHUB_OUTPUT"
