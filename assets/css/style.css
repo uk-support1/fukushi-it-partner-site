@@ -2707,6 +2707,14 @@ section {
   opacity: 0.95;
 }
 
+.contact-call-note {
+  margin: 10px auto 0;
+  max-width: 34em;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
 /* 電話の下の「または、フォームから」の区切り */
 .contact-or {
   display: flex;
