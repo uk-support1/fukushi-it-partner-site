@@ -23,6 +23,7 @@
 const fs = require("fs");
 const path = require("path");
 const lib = require("./lib/articles");
+const blogArchive = require("./lib/blog-archive");
 const imageLibrary = require("./lib/image-library");
 const { renderBuhio } = require("./lib/buhio");
 const { assertNoMarkdownLeak } = require("./lib/markdown");
@@ -506,8 +507,11 @@ function buildBlogCardHtml(entry, variant) {
 }
 
 function buildBlogHtml(blogIndex) {
-  const featured = blogIndex[0];
-  const rest = blogIndex.slice(1);
+  // 一覧に出すのは最新 BLOG_LATEST_COUNT 本だけ。ほかの記事は「過去の記事をさがす」（カレンダー）から。
+  const latest = blogIndex.slice(0, blogArchive.BLOG_LATEST_COUNT);
+  const featured = latest[0];
+  const rest = latest.slice(1);
+  const hasOlder = blogIndex.length > latest.length;
   const featuredHtml = featured ? buildBlogCardHtml(featured, "featured") : "";
   const listHtml = rest.map((e) => buildBlogCardHtml(e, "list")).join("\n\n");
 
@@ -540,6 +544,7 @@ function buildBlogHtml(blogIndex) {
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
     '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">\n' +
     '<link rel="stylesheet" href="assets/css/style.css">\n' +
+    '<link rel="stylesheet" href="assets/css/blog-archive.css">\n' +
     '<script src="assets/js/ga4.js"></script>\n' +
     "</head>\n" +
     "<body>\n" +
@@ -597,8 +602,13 @@ function buildBlogHtml(blogIndex) {
     "\n" +
     "\n" +
     "      </div>\n" +
+    (hasOlder
+      ? '      <p class="blog-more"><a href="#archive">ほかの記事は、日付から さがせます ↓</a></p>\n'
+      : "") +
     "    </div>\n" +
     "  </section>\n" +
+    "\n" +
+    blogArchive.buildBlogArchiveHtml(blogIndex) +
     "\n" +
     '  <section class="cta-section">\n' +
     '    <div class="container reveal">\n' +
@@ -655,6 +665,7 @@ function buildBlogHtml(blogIndex) {
     "</footer>\n" +
     "\n" +
     '<script src="assets/js/main.js"></script>\n' +
+    '<script src="assets/js/blog-archive.js" defer></script>\n' +
     "</body>\n" +
     "</html>\n"
   );

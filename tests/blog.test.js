@@ -56,6 +56,7 @@ test("Published article, index, and blog card always share the Markdown hero", (
   const published = lib.loadArticles(path.join(ROOT, "content", "articles")).filter(article => article.data.published === true);
   const metadata = new Map(require("../data/image-library.json").images.map(item => [item.path, item]));
   assert.equal(index.length, published.length);
+  const latestSlugs = new Set(index.slice(0, require("../scripts/lib/blog-archive").BLOG_LATEST_COUNT).map(item => item.slug));
   for (const article of published) {
     const expected = article.data.image;
     const entry = index.find(item => item.slug === article.slug);
@@ -71,6 +72,10 @@ test("Published article, index, and blog card always share the Markdown hero", (
     assert.equal(hero[1].replace(/^\.\.\//, ""), expected, article.slug + " article image");
     assert.equal(imageLibrary.imageHashForPath(ROOT, hero[1].replace(/^\.\.\//, "")), imageLibrary.imageHashForPath(ROOT, expected), article.slug + " article hash");
     const escaped = article.slug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // The list page shows cards only for the newest BLOG_LATEST_COUNT articles; every article
+    // (newest included) is reachable from the archive (calendar + monthly list).
+    assert.match(cards, new RegExp('<li class="archive-item" data-date="' + entry.date + '"[^>]*>(?:(?!</li>)[\\s\\S])*?<a class="archive-title" href="blog/' + escaped + '\\.html">'), article.slug + " archive link");
+    if (!latestSlugs.has(article.slug)) continue;
     const card = cards.match(new RegExp('<a class="(?:blog-featured|blog-list-item) reveal" href="blog/' + escaped + '\\.html">[\\s\\S]*?<img src="([^"]+)"[^>]*style="--hero-object-position: ([^;]+);"'));
     assert.ok(card, article.slug + " blog card");
     assert.equal(card[1], expected, article.slug + " card image");
