@@ -33,10 +33,16 @@ test("問い合わせページ：電話番号が先頭に大きく表示され�
   assert.equal(textOf(section.match(/<h2 class="section-title">[\s\S]*?<\/h2>/)[0]), "フォームから相談する");
   // 電話の絵は、読み上げの邪魔にならない（装飾）
   assert.match(call, /<svg [^>]*aria-hidden="true"/);
-  // 目立つが、大きすぎない（PCは2.1rem＝約34px以下、スマホでも1.6rem以上）。幅の狭い画面でも、はみ出さない
+  // 目立つが、大きすぎない（PCは1.75rem＝約28px以下、スマホでも1.4rem以上）。幅の狭い画面でも、はみ出さない
   const css = read("assets/css/style.css");
   const number = css.match(/\.contact-call-number \{[^}]*\}/)[0];
-  assert.match(number, /font-size: clamp\(1\.6rem, [^)]*, 2\.1rem\);/);
+  assert.match(number, /font-size: clamp\(1\.4rem, [^)]*, 1\.75rem\);/);
+  // 明るく、やさしい色：カードはクリーム〜うすいオレンジ、番号のボタンはオレンジ。暗い緑のグラデーションは使わない
+  const card = css.match(/\.contact-call \{[^}]*\}/)[0];
+  assert.match(card, /background: linear-gradient\(135deg, #fffaf2, #ffeedb\);/);
+  assert.ok(!/green-900|green-700/.test(card.match(/background:[^;]*;/)[0]), "the card is not dark green");
+  assert.match(number, /background: var\(--orange-500\);/);
+  assert.match(number, /color: var\(--white\);/);
   assert.match(number, /max-width: 100%;/);
   assert.match(css.match(/\.contact-call \{[^}]*\}/)[0], /max-width: 680px;/);
   assert.match(css, /\.contact-form-section \{[^}]*scroll-margin-top:/);

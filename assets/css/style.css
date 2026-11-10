@@ -2635,15 +2635,17 @@ section {
 }
 
 /* ===== お電話でのご相談（問い合わせページの先頭。電話番号を大きく表示し、その下にフォーム） ===== */
+/* 明るく、やさしい色（あたたかいクリーム〜うすいオレンジ）。暗い色は使わない */
 .contact-call {
   max-width: 680px;
   margin: 0 auto;
   padding: 30px 28px 26px;
   text-align: center;
-  color: var(--white);
-  background: linear-gradient(135deg, var(--green-900), var(--green-700));
+  color: var(--text-900);
+  background: linear-gradient(135deg, #fffaf2, #ffeedb);
+  border: 2px solid #f6d6b4;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 8px 24px rgba(232, 150, 90, 0.16);
 }
 
 .contact-call-tag {
@@ -2652,8 +2654,9 @@ section {
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: var(--green-900);
+  color: #9a4f12;
   background: var(--white);
+  border: 1px solid #f1cba8;
   border-radius: 999px;
 }
 
@@ -2662,49 +2665,53 @@ section {
   font-size: clamp(1.4rem, 1rem + 1.4vw, 1.8rem);
   font-weight: 800;
   line-height: 1.5;
+  color: var(--green-900);
 }
 
 .contact-call-lead {
   margin: 10px 0 20px;
   font-size: 0.98rem;
   line-height: 1.95;
-  opacity: 0.96;
+  color: var(--text-900);
+  text-wrap: pretty;
+  word-break: auto-phrase;
 }
 
 .contact-call-number {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   max-width: 100%;
-  padding: 10px 30px;
-  font-size: clamp(1.6rem, 1rem + 3vw, 2.1rem);
+  padding: 9px 26px;
+  font-size: clamp(1.4rem, 0.9rem + 2.4vw, 1.75rem);
   font-weight: 800;
   letter-spacing: 0.03em;
   line-height: 1.25;
-  color: var(--green-900);
-  background: var(--white);
+  color: var(--white);
+  background: var(--orange-500);
   border-radius: 999px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
-  transition: transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 8px 20px rgba(232, 150, 90, 0.35);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
 }
 
 .contact-call-number:hover {
+  background: var(--orange-600);
   transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 10px 24px rgba(232, 150, 90, 0.42);
 }
 
 .contact-call-number svg {
   flex-shrink: 0;
   width: 0.85em;
   height: 0.85em;
-  color: var(--orange-500);
+  color: var(--white);
 }
 
 .contact-call-hours {
   margin-top: 12px;
   font-size: 0.9rem;
-  opacity: 0.95;
+  color: var(--text-600);
 }
 
 .contact-call-note {
@@ -2712,7 +2719,9 @@ section {
   max-width: 34em;
   font-size: 0.8rem;
   line-height: 1.7;
-  opacity: 0.9;
+  color: var(--text-600);
+  text-wrap: pretty;
+  word-break: auto-phrase;
 }
 
 /* 電話の下の「または、フォームから」の区切り */
@@ -2742,13 +2751,12 @@ section {
 
   .contact-call-number {
     gap: 10px;
-    padding: 12px 22px;
-    font-size: clamp(1.6rem, 7.2vw, 1.9rem);
+    padding: 10px 22px;
+    font-size: clamp(1.4rem, 6.4vw, 1.6rem);
   }
 
   .contact-call-lead {
     font-size: 0.95rem;
-    text-align: left;
   }
 
   .contact-or {
