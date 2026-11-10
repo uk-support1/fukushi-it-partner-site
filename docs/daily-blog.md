@@ -415,6 +415,25 @@ stage前、commit後、push直前に対象一覧を検査します。origin/main
 Daily BlogとGenerate Blogは同じ `github-pages` concurrency groupを使い、CMS更新と
 自動投稿の生成・デプロイを直列化します。既存Generate BlogはCMS更新用として維持します。
 
+## ブログ一覧ページの表示：最新10本＋カレンダー（2026-11-11〜）
+
+`blog.html` に出すカードは、`data/blog-index.json` の**新しい方から10本**（先頭1本が注目記事、残り9本が一覧）だけです
+（`scripts/lib/blog-archive.js` の `BLOG_LATEST_COUNT`）。11本目以降は、カードの下の「過去の記事をさがす」から探します。
+
+- **カレンダー：** 月ごとの表（記事がある日はリンク。同じ日に複数あれば本数を表示）。`assets/js/blog-archive.js` が、
+  月の切り替え（前月・次月・選択欄）と、日を押したときの記事表示を担当します。JavaScript が動かないときは、
+  全月を縦に並べて表示します。共有URL（`#d-2026-10-27`、`#m-2026-10`）で開くと、その日・その月を表示します。
+- **月ごとの記事一覧（折りたたみ）：** 全記事を、月ごと・新しい順にHTMLへ出します（`<details>`）。検索エンジンや
+  JavaScript なしでも全記事に届くようにするためで、日を押したときの表示もこの一覧から作ります。
+- **生成：** `buildBlogHtml`（`scripts/generate-blog.js`）が `buildBlogArchiveHtml`（`scripts/lib/blog-archive.js`）を呼びます。
+  自動投稿の公開処理（`publish-draft.js`）は従来どおり `blog.html` を作り直しますが、カレンダーも同じ処理で更新されるため、
+  **公開commitの対象は変わらず5ファイル**です（CSS・JS は一度だけ追加した固定のファイルで、毎日は変わりません）。
+- **CSS・JS は一覧ページだけが読み込みます**（`assets/css/blog-archive.css`、`assets/js/blog-archive.js`）。
+  `scripts/prepare-pages.js` は `assets/` 以下の追跡済みファイルを公開するため、追加の設定は不要です。
+- **テスト：** `tests/blog-archive.test.js`（カードは最新10本／全記事がアーカイブに1回ずつ／カレンダーの印と本数の一致／
+  曜日の位置・うるう年／文字のエスケープ／CSS・JSが公開対象であること）。`tests/blog.test.js` は「最新10本はカード、
+  全記事はアーカイブにリンクがある」という前提です。ページの形を変えるときは、モジュールとテストを一緒に直します。
+
 ## 失敗通知と、画像が足りないときの動作（2026-10-14〜）
 
 ### 失敗したら GitHub Issue で通知します
