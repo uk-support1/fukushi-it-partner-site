@@ -143,5 +143,6 @@ fukushi-it-partner-site/
 - **サービス名・現在の掲載料金・提供内容：** [docs/ai-shared/service-catalog.md](docs/ai-shared/service-catalog.md) を参照する。
 - **確定した変更の経緯・理由：** [docs/ai-shared/decision-log.md](docs/ai-shared/decision-log.md) を参照する。
 - 料金などを編集する前に、対応する公開ページ（`homepage-plan.html` / `homepage-cost-reduction.html`）も確認する。古い会話・自動メモリだけで正式情報を上書きしない。
+- **ブログ自動投稿の仕組み・背景・注意点：** [docs/ai-shared/auto-posting-handoff.md](docs/ai-shared/auto-posting-handoff.md)（引き継ぎ用の記録。詳細仕様は [docs/daily-blog.md](docs/daily-blog.md)）を参照する。
 - GitHubの文書はChatGPTのメモリと自動同期しない。ユーザーが決定した内容を、明示的な作業として反映する。
 - このリポジトリは公開。顧客情報・内部限定情報・認証情報を書かない。サイト本体の料金表示は別途依頼がなければ変更しない。
