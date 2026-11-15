@@ -5160,3 +5160,100 @@ section {
   .blog-article .buhio-note { gap: 12px; padding: 12px; align-items: flex-start; }
   .blog-article .buhio-note img { width: 88px; }
 }
+
+/* ===== 料金プラン → 新規開設サポート（startup-support.html）への導線 ===== */
+.plan-startup-link {
+  margin-top: 20px !important;
+  font-size: 0.95rem;
+}
+
+.plan-startup-link a {
+  color: var(--green-700);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.startup-teaser-section {
+  padding: 24px 0 56px;
+}
+
+.startup-teaser {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--green-900);
+  color: var(--white);
+  box-shadow: 0 16px 40px rgba(31, 77, 60, 0.18);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.startup-teaser:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 48px rgba(31, 77, 60, 0.24);
+}
+
+.startup-teaser-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  object-fit: cover;
+}
+
+.startup-teaser-body {
+  padding: 40px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.startup-teaser-eyebrow {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffd2ad;
+  margin-bottom: 6px;
+}
+
+.startup-teaser-title {
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 1.9rem);
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+
+.startup-teaser-price {
+  display: inline-block;
+  margin-left: 14px;
+  color: var(--orange-500);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.startup-teaser-price small {
+  font-size: 0.6em;
+  margin-left: 2px;
+}
+
+.startup-teaser-text {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  opacity: 0.92;
+  margin-bottom: 20px;
+}
+
+.startup-teaser-more {
+  align-self: flex-start;
+  background: var(--orange-500);
+  color: var(--white);
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 999px;
+}
+
+@media (max-width: 900px) {
+  .startup-teaser { grid-template-columns: 1fr; }
+  .startup-teaser-media img { aspect-ratio: 16 / 9; min-height: 0; height: auto; }
+  .startup-teaser-body { padding: 28px 24px 32px; }
+  .startup-teaser-price { display: block; margin-left: 0; }
+  .startup-teaser-more { align-self: stretch; text-align: center; }
+}

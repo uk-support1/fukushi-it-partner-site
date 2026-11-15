@@ -1,0 +1,723 @@
+/* ===========================================================
+   障害福祉事業所の開業・開設支援（startup-support.html）
+   共通の style.css の変数・クラス（.section-head / .btn / .reveal 等）を使い、
+   このページだけの見た目を ss- で始まるクラスにまとめる
+=========================================================== */
+
+.ss-page section {
+  padding: 96px 0;
+}
+
+.ss-br-sp { display: none; }
+
+@media (max-width: 768px) {
+  .ss-page section { padding: 64px 0; }
+  .ss-br-pc { display: none; }
+  .ss-br-sp { display: inline; }
+}
+
+.ss-section--cream { background: var(--cream-100); }
+.ss-section--green { background: linear-gradient(170deg, var(--green-100), var(--white) 70%); }
+
+/* width/height 属性の高さを打ち消し、aspect-ratio で比率をそろえる */
+.ss-page img { height: auto; }
+
+.ss-hero-lead,
+.ss-step-text,
+.ss-promise-sub,
+.ss-base-list li,
+.ss-option p,
+.ss-team-head p,
+.ss-worry figcaption p { word-break: auto-phrase; }
+
+/* 白抜きの補助ボタン（写真の上で使う） */
+.ss-btn-ghost {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+}
+
+.ss-btn-ghost:hover {
+  background: var(--white);
+  color: var(--green-900);
+  transform: translateY(-2px);
+}
+
+/* ===== ファーストビュー ===== */
+.ss-page .ss-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0 112px;
+  color: var(--white);
+  isolation: isolate;
+}
+
+.ss-page .ss-hero-bg,
+.ss-page .ss-promise-bg,
+.ss-page .ss-cta-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.ss-hero-bg { object-position: 60% 40%; }
+
+.ss-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(100deg, rgba(31, 77, 60, 0.94) 0%, rgba(31, 77, 60, 0.84) 42%, rgba(31, 77, 60, 0.25) 78%, rgba(31, 77, 60, 0.1) 100%);
+}
+
+.ss-hero-copy { max-width: 620px; }
+
+.ss-eyebrow {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--green-900);
+  background: var(--white);
+  padding: 6px 16px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+
+.ss-hero-title {
+  font-size: clamp(1.8rem, 1.2rem + 2.6vw, 3rem);
+  font-weight: 800;
+  line-height: 1.45;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+}
+
+.ss-hero-accent {
+  color: #ffd2ad;
+}
+
+.ss-hero-lead {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  opacity: 0.95;
+  margin-bottom: 28px;
+}
+
+.ss-hero-price {
+  display: inline-block;
+  background: var(--white);
+  color: var(--green-900);
+  border-radius: var(--radius-md);
+  padding: 16px 24px 14px;
+  margin-bottom: 28px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+  border-left: 6px solid var(--orange-500);
+}
+
+.ss-hero-price-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--green-700);
+}
+
+.ss-hero-price-amount {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.ss-hero-price-amount strong {
+  font-size: clamp(2.2rem, 1.8rem + 1.6vw, 2.8rem);
+  font-weight: 800;
+  color: var(--orange-600);
+  letter-spacing: 0.02em;
+  margin-right: 2px;
+}
+
+.ss-hero-price-note {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-600);
+}
+
+@media (max-width: 768px) {
+  .ss-page .ss-hero { padding: 72px 0 64px; }
+  .ss-hero-bg { object-position: 70% 50%; }
+  .ss-hero::after {
+    background: linear-gradient(180deg, rgba(31, 77, 60, 0.82) 0%, rgba(31, 77, 60, 0.92) 100%);
+  }
+  .ss-hero-price { display: block; }
+}
+
+/* ===== お悩み ===== */
+.ss-worry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.ss-worry {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.ss-worry img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.ss-worry figcaption {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 22px 22px 24px;
+  font-weight: 700;
+  color: var(--green-900);
+  line-height: 1.7;
+}
+
+.ss-worry-q {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--orange-500);
+  color: var(--white);
+  font-weight: 800;
+  margin-top: -2px;
+}
+
+.ss-worry-answer {
+  margin: 48px auto 0;
+  max-width: 760px;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 2;
+  color: var(--text-900);
+  word-break: auto-phrase;
+}
+
+.ss-worry-answer strong {
+  color: var(--green-900);
+  background: linear-gradient(transparent 62%, #ffe1c8 62%);
+}
+
+@media (max-width: 900px) {
+  .ss-worry-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+  .ss-worry img { aspect-ratio: 16 / 9; }
+}
+
+/* ===== 7つのステップ ===== */
+.ss-steps {
+  list-style: none;
+  position: relative;
+  display: grid;
+  gap: 56px;
+}
+
+.ss-step {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.ss-step:nth-child(even) .ss-step-media { order: 2; }
+
+.ss-step-media {
+  position: relative;
+}
+
+.ss-step-media::before {
+  content: "";
+  position: absolute;
+  inset: 18px -18px -18px 18px;
+  border-radius: var(--radius-lg);
+  background: var(--green-100);
+  z-index: 0;
+}
+
+.ss-step:nth-child(even) .ss-step-media::before {
+  inset: 18px 18px -18px -18px;
+  background: var(--orange-100);
+}
+
+.ss-step-media img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.ss-step-num {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--green-500);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.ss-step-num span {
+  display: inline-block;
+  font-size: 2.6rem;
+  color: var(--green-900);
+  margin-left: 8px;
+  vertical-align: -0.12em;
+}
+
+.ss-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin: 0 6px 10px 0;
+}
+
+.ss-badge--base {
+  background: var(--green-900);
+  color: var(--white);
+}
+
+.ss-badge--option {
+  background: var(--white);
+  color: var(--orange-600);
+  border: 1.5px solid var(--orange-500);
+}
+
+.ss-step-title {
+  font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.7rem);
+  color: var(--green-900);
+  margin: 4px 0 12px;
+}
+
+.ss-step-text {
+  color: var(--text-600);
+  margin-bottom: 16px;
+}
+
+.ss-step-list li {
+  position: relative;
+  padding-left: 26px;
+  margin-bottom: 6px;
+  line-height: 1.7;
+}
+
+.ss-step-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.45em;
+  width: 14px;
+  height: 8px;
+  border-left: 3px solid var(--green-500);
+  border-bottom: 3px solid var(--green-500);
+  transform: rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+  .ss-steps { gap: 64px; }
+  .ss-step { grid-template-columns: 1fr; gap: 32px; }
+  .ss-step:nth-child(even) .ss-step-media { order: 0; }
+  .ss-step-media::before,
+  .ss-step:nth-child(even) .ss-step-media::before { inset: 12px -10px -12px 10px; }
+}
+
+/* ===== 想い（写真帯） ===== */
+.ss-page .ss-promise {
+  position: relative;
+  overflow: hidden;
+  padding: 120px 0;
+  color: var(--white);
+  text-align: center;
+  isolation: isolate;
+}
+
+.ss-promise-bg { object-position: center 45%; }
+
+.ss-promise::after,
+.ss-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, rgba(31, 77, 60, 0.78), rgba(44, 107, 84, 0.58));
+}
+
+.ss-promise-main {
+  font-size: clamp(1.6rem, 1.1rem + 2vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.ss-promise-sub {
+  font-size: 1.05rem;
+  opacity: 0.95;
+}
+
+@media (max-width: 768px) {
+  .ss-page .ss-promise { padding: 80px 0; }
+}
+
+/* ===== ベースプラン ===== */
+.ss-base {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(31, 77, 60, 0.12);
+  border: 2px solid var(--green-700);
+}
+
+.ss-base-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: cover;
+}
+
+.ss-base-body {
+  padding: 44px 48px;
+}
+
+.ss-base-target {
+  font-weight: 700;
+  color: var(--green-700);
+  font-size: 0.95rem;
+}
+
+.ss-base-name {
+  font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.7rem);
+  color: var(--green-900);
+  margin: 4px 0 8px;
+}
+
+.ss-base-price {
+  color: var(--orange-600);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.ss-base-price-num {
+  font-size: clamp(2.6rem, 2rem + 2vw, 3.4rem);
+  letter-spacing: 0.02em;
+}
+
+.ss-base-price-unit {
+  font-size: 1.4rem;
+  margin-left: 4px;
+}
+
+.ss-base-span {
+  font-size: 0.9rem;
+  color: var(--text-600);
+  margin: 8px 0 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed var(--border-soft);
+}
+
+.ss-base-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.ss-base-list li {
+  position: relative;
+  padding-left: 32px;
+  line-height: 1.65;
+  color: var(--text-600);
+  font-size: 0.95rem;
+}
+
+.ss-base-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--green-100);
+}
+
+.ss-base-list li::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  width: 10px;
+  height: 6px;
+  border-left: 2.5px solid var(--green-700);
+  border-bottom: 2.5px solid var(--green-700);
+  transform: rotate(-45deg);
+}
+
+.ss-base-list strong {
+  display: block;
+  color: var(--green-900);
+  font-size: 1rem;
+}
+
+.ss-base-notes {
+  margin-top: 32px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+  border: 1px solid var(--border-soft);
+}
+
+.ss-base-notes-title {
+  font-weight: 700;
+  color: var(--green-900);
+  margin-bottom: 10px;
+}
+
+.ss-base-notes li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 0.92rem;
+  color: var(--text-600);
+  line-height: 1.75;
+  margin-bottom: 6px;
+}
+
+.ss-base-notes li::before {
+  content: "※";
+  position: absolute;
+  left: 0;
+}
+
+.ss-base-notes strong { color: var(--text-900); }
+
+@media (max-width: 900px) {
+  .ss-base { grid-template-columns: 1fr; }
+  .ss-base-media img { aspect-ratio: 16 / 9; min-height: 0; height: auto; object-position: center 60%; }
+  .ss-base-body { padding: 32px 24px; }
+}
+
+/* ===== オプション ===== */
+.ss-option-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 28px;
+}
+
+.ss-option-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.ss-option {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ss-option--photo {
+  padding: 0;
+  overflow: hidden;
+}
+
+.ss-option-media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.ss-option-body {
+  padding: 24px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.ss-option-name {
+  font-size: 1.2rem;
+  color: var(--green-900);
+  margin-bottom: 8px;
+}
+
+.ss-option p {
+  color: var(--text-600);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.ss-option .ss-option-price {
+  margin-top: auto;
+  padding-top: 16px;
+  font-weight: 700;
+  color: var(--orange-600);
+}
+
+@media (max-width: 900px) {
+  .ss-option-feature,
+  .ss-option-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== 専門家との連携 ===== */
+.ss-team {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.ss-team-head p { color: var(--text-600); }
+
+.ss-team-list {
+  display: grid;
+  gap: 12px;
+}
+
+.ss-team-list li {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 16px;
+  align-items: center;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
+  box-shadow: var(--shadow-soft);
+  font-size: 0.93rem;
+  color: var(--text-600);
+  line-height: 1.6;
+}
+
+.ss-team-list li:first-child {
+  background: var(--green-900);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.ss-team-role {
+  font-weight: 700;
+  color: var(--green-900);
+}
+
+.ss-team-list li:first-child .ss-team-role { color: var(--white); }
+
+@media (max-width: 900px) {
+  .ss-team { grid-template-columns: 1fr; gap: 32px; }
+  .ss-team-list li { grid-template-columns: 1fr; gap: 2px; }
+}
+
+/* ===== 対応している事業 ===== */
+.ss-target-tags {
+  justify-content: center;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* ===== よくある質問 ===== */
+.ss-faq {
+  max-width: 820px;
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+}
+
+.ss-faq-item {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.ss-faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  padding: 20px 56px 20px 24px;
+  font-weight: 700;
+  color: var(--green-900);
+  line-height: 1.6;
+}
+
+.ss-faq-item summary::-webkit-details-marker { display: none; }
+
+.ss-faq-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--green-500);
+}
+
+.ss-faq-item[open] summary::after { content: "−"; }
+
+.ss-faq-item p {
+  padding: 0 24px 22px;
+  color: var(--text-600);
+}
+
+.ss-faq-item a {
+  color: var(--green-700);
+  text-decoration: underline;
+}
+
+/* ===== CTA（写真背景） ===== */
+.ss-page .ss-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--white);
+  text-align: center;
+}
+
+.ss-cta h2 {
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem);
+  margin-bottom: 12px;
+}
+
+.ss-cta p { margin-bottom: 28px; opacity: 0.95; }
+
+.ss-cta .btn-group { justify-content: center; }
+
+/* ===== 写真の出典 ===== */
+.ss-page .ss-credits {
+  padding: 32px 0;
+  background: var(--white);
+  font-size: 0.85rem;
+  color: var(--text-600);
+}
+
+.ss-credits summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.ss-credits p { margin: 10px 0 6px; }
+
+.ss-credits li { line-height: 1.8; }
+
+.ss-credits a {
+  text-decoration: underline;
+}
