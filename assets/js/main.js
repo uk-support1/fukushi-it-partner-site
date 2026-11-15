@@ -297,3 +297,13 @@ document.addEventListener("DOMContentLoaded", function () {
     updateParallax();
   }
 });
+
+// ===== フッターの「お役立ち情報を更新しました」 =====
+// 表示の中身は assets/js/latest-updates.js（全ページで共通。main.js と同じ場所から読み込む）
+(function () {
+  var self = document.querySelector('script[src*="assets/js/main.js"]');
+  if (!self || !document.querySelector(".site-footer")) return;
+  var js = document.createElement("script");
+  js.src = self.src.replace(/main\.js(\?.*)?$/, "latest-updates.js");
+  document.body.appendChild(js);
+})();

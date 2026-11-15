@@ -1,0 +1,146 @@
+/* フッターの「お役立ち情報を更新しました」
+ * HTMLは assets/js/latest-updates.js が作る。色・角丸・影は style.css の変数を使う。 */
+
+.latest-updates {
+  margin-bottom: 44px;
+  padding: 24px 28px 22px;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.latest-updates-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 8px;
+}
+
+.latest-updates-titlebox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.latest-updates-badge {
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  background: var(--orange-600);
+  border-radius: 999px;
+}
+
+.latest-updates-title {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--green-900);
+}
+
+.latest-updates-latest {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-600);
+}
+
+.latest-updates-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.latest-updates-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.latest-updates-time {
+  flex: 0 0 auto;
+  min-width: 5.6em;
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-600);
+}
+
+.latest-updates-kind {
+  flex: 0 0 auto;
+  padding: 3px 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 999px;
+}
+
+.latest-updates-kind.is-blog {
+  color: var(--green-700);
+  background: var(--green-100);
+}
+
+.latest-updates-kind.is-course {
+  color: var(--orange-600);
+  background: var(--orange-100);
+}
+
+.latest-updates-link {
+  flex: 1 1 18em;
+  min-width: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--green-900);
+}
+
+.latest-updates-link:hover {
+  color: var(--green-700);
+  text-decoration: underline;
+}
+
+.latest-updates-more {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 8px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.latest-updates-more a {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--green-700);
+}
+
+.latest-updates-more a:hover {
+  color: var(--green-900);
+  text-decoration: underline;
+}
+
+.latest-updates a:focus-visible {
+  outline: 3px solid var(--orange-500);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .latest-updates {
+    padding: 18px 16px 16px;
+    margin-bottom: 32px;
+  }
+
+  .latest-updates-title {
+    font-size: 1.05rem;
+  }
+
+  /* 日付と種類を1行目に、題名を2行目に */
+  .latest-updates-link {
+    flex-basis: 100%;
+  }
+}
