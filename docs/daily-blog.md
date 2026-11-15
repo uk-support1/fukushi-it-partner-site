@@ -417,6 +417,9 @@ Daily BlogとGenerate Blogは同じ `github-pages` concurrency groupを使い、
 
 ## ブログ一覧ページの表示：最新10本＋カレンダー（2026-11-11〜）
 
+（サイト上の名前は、2026-11-15 から「お役立ち情報」です。ここでの「ブログ」「blog.html」は同じものを指します。
+フッターの新着欄については、`docs/ai-shared/auto-posting-handoff.md` の 3-7 を参照。）
+
 `blog.html` に出すカードは、`data/blog-index.json` の**新しい方から10本**（先頭1本が注目記事、残り9本が一覧）だけです
 （`scripts/lib/blog-archive.js` の `BLOG_LATEST_COUNT`）。11本目以降は、カードの下の「過去の記事をさがす」から探します。
 
