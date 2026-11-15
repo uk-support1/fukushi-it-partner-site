@@ -1,5 +1,15 @@
 [
   {
+    "title": "文章づくりにAIを使うときの3つの基本",
+    "date": "2026-11-15",
+    "category_label": "AI・IT活用",
+    "image": "assets/images/blog-library/hero/hero-ai-001.png",
+    "image_alt": "文章づくりにAIを活用するイメージ",
+    "description": "お便りや案内文づくりに、AIを安心して使うための基本をやさしく紹介します。はじめての方でも今日から試せる、3つのステップと気をつけたいことをまとめました。",
+    "excerpt": "AIが文章づくりでどんなお手伝いをしてくれるかが分かります 上手に頼むための、伝え方の基本が分かります 使うときに気をつけたいことが分かります AIは「下書きの…",
+    "slug": "course-2026-11-15-ai-writing-helper"
+  },
+  {
     "title": "Googleマップに事業所を載せる3つの基本",
     "date": "2026-11-14",
     "category_label": "Googleマップ・SNS・広報",
