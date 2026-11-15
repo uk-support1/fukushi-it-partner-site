@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * Pages CMSの「お知らせ・コラム」collection（content/articles/*.md）から、
+ * Pages CMSの「お役立ち情報」collection（content/articles/*.md）から、
  *   ① data/blog-index.json      … 一覧用データ（published:trueのみ、新しい順）
  *   ② blog/<slug>.html          … 記事詳細ページ（既存記事と同じURL・同じCSS構造）
  *   ③ blog.html                 … 記事一覧ページ（注目記事＋時系列一覧）
@@ -190,7 +190,7 @@ function articleStructuredData(article, imageUrl) {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "ホーム", item: "https://fukushi-it-partner.com/" },
-          { "@type": "ListItem", position: 2, name: "お知らせ・コラム", item: "https://fukushi-it-partner.com/blog.html" },
+          { "@type": "ListItem", position: 2, name: "お役立ち情報", item: "https://fukushi-it-partner.com/blog.html" },
           { "@type": "ListItem", position: 3, name: data.title, item: pageUrl }
         ]
       }
@@ -276,7 +276,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '        <li><a href="../homepage-plan.html">料金プラン</a></li>\n' +
     '        <li><a href="../works.html">制作実績</a></li>\n' +
     '        <li><a href="../flow.html">制作までの流れ</a></li>\n' +
-    '        <li><a href="../blog.html" class="active">ブログ</a></li>\n' +
+    '        <li><a href="../blog.html" class="active">お役立ち情報</a></li>\n' +
     '        <li><a href="../profile.html">プロフィール</a></li>\n' +
     '        <li><a href="../contact.html">お問い合わせ</a></li>\n' +
     '        <li class="nav-cta-mobile">\n' +
@@ -296,7 +296,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     "<main>\n" +
     "  <section>\n" +
     '    <div class="container blog-article">\n' +
-    '      <a href="../blog.html" class="back-link">← ブログ一覧へ戻る</a>\n' +
+    '      <a href="../blog.html" class="back-link">← お役立ち情報一覧へ戻る</a>\n' +
     "      <h1>" +
     title +
     "</h1>\n" +
@@ -384,10 +384,10 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '      <div class="footer-col">\n' +
     '        <h2 class="footer-title">情報発信・学び</h2>\n' +
     '        <ul>\n' +
-    '          <li><a href="../blog.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="#4a8c6f"></rect><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"></path></svg>ブログ</a></li>\n' +
+    '          <li><a href="../blog.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="#4a8c6f"></rect><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"></path></svg>お役立ち情報</a></li>\n' +
     '          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>\n' +
     '          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>\n' +
-    '          <li><a href="../course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>お役立ち講座</a></li>\n' +
+    '          <li><a href="../course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>ホームページ作成講座</a></li>\n' +
     '        </ul>\n' +
     '      </div>\n' +
     '      <div class="footer-col">\n' +
@@ -522,12 +522,12 @@ function buildBlogHtml(blogIndex) {
     '<meta charset="UTF-8">\n' +
     '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
     '<meta name="google-site-verification" content="nfXiE9TQ6FSj5KBW42sQfUnjAfDYocSnfIRQKvavYdE" />\n' +
-    "<title>お知らせ・コラム｜福祉ITパートナー・ホームページ制作・IT支援</title>\n" +
-    '<meta name="description" content="福祉事業所のホームページづくり、IT活用、Googleサービス、AI活用などに関する情報を発信しています。福祉ITパートナーのお知らせ・コラム一覧です。">\n' +
+    "<title>お役立ち情報｜福祉ITパートナー・ホームページ制作・IT支援</title>\n" +
+    '<meta name="description" content="福祉事業所のホームページづくり、IT活用、Googleサービス、AI活用などに関する情報を発信しています。福祉ITパートナーのお役立ち情報一覧です。">\n' +
     '<link rel="canonical" href="https://fukushi-it-partner.com/blog.html">\n' +
     "\n" +
     '<meta property="og:type" content="website">\n' +
-    '<meta property="og:title" content="お知らせ・コラム｜福祉ITパートナー">\n' +
+    '<meta property="og:title" content="お役立ち情報｜福祉ITパートナー">\n' +
     '<meta property="og:description" content="福祉事業所のホームページづくり、IT活用、Googleサービス、AI活用などに関する情報を発信しています。">\n' +
     '<meta property="og:url" content="https://fukushi-it-partner.com/blog.html">\n' +
     '<meta property="og:site_name" content="福祉ITパートナー">\n' +
@@ -560,7 +560,7 @@ function buildBlogHtml(blogIndex) {
     '        <li><a href="homepage-plan.html">料金プラン</a></li>\n' +
     '        <li><a href="works.html">制作実績</a></li>\n' +
     '        <li><a href="flow.html">制作までの流れ</a></li>\n' +
-    '        <li><a href="blog.html" class="active">ブログ</a></li>\n' +
+    '        <li><a href="blog.html" class="active">お役立ち情報</a></li>\n' +
     '        <li><a href="profile.html">プロフィール</a></li>\n' +
     '        <li><a href="contact.html">お問い合わせ</a></li>\n' +
     '        <li class="nav-cta-mobile">\n' +
@@ -581,8 +581,8 @@ function buildBlogHtml(blogIndex) {
     "\n" +
     '  <section class="page-hero">\n' +
     '    <div class="container reveal">\n' +
-    '      <span class="section-tag">お知らせ・コラム</span>\n' +
-    "      <h1>お知らせ・コラム</h1>\n" +
+    '      <span class="section-tag">お役立ち情報</span>\n' +
+    "      <h1>お役立ち情報</h1>\n" +
     "      <p>福祉事業所のホームページづくり、IT活用、Googleサービス、AI活用などに関する情報を発信しています。</p>\n" +
     "    </div>\n" +
     "  </section>\n" +
@@ -642,10 +642,10 @@ function buildBlogHtml(blogIndex) {
     '      <div class="footer-col">\n' +
     '        <h2 class="footer-title">情報発信・学び</h2>\n' +
     '        <ul>\n' +
-    '          <li><a href="blog.html">ブログ</a></li>\n' +
+    '          <li><a href="blog.html">お役立ち情報</a></li>\n' +
     '          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>\n' +
     '          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>\n' +
-    '          <li><a href="course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>お役立ち講座</a></li>\n' +
+    '          <li><a href="course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>ホームページ作成講座</a></li>\n' +
     '        </ul>\n' +
     '      </div>\n' +
     '      <div class="footer-col">\n' +
@@ -710,9 +710,9 @@ function buildSitemap(publishedArticles, managedArticles, blogDir = BLOG_DIR, ro
       })
     );
 
-  // お役立ち講座のURL（存在する場合のみ追加）。
+  // ホームページ作成講座のURL（存在する場合のみ追加）。
   // data/course-index.jsonが無い・不正な場合は既存のブログsitemap生成に
-  // 一切影響しない（お役立ち講座を導入する前のsitemap.xmlと完全に同じ結果になる）。
+  // 一切影響しない（ホームページ作成講座を導入する前のsitemap.xmlと完全に同じ結果になる）。
   let courseUrls = [];
   try {
     const courseIndexPath = path.join(root, "data", "course-index.json");

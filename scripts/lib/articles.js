@@ -1,5 +1,5 @@
 /*
- * content/articles/*.md（Pages CMS「お知らせ・コラム」collection）を扱う
+ * content/articles/*.md（Pages CMS「お役立ち情報」collection）を扱う
  * 共通ロジック。data/blog-index.json生成・blog/<slug>.html生成・
  * sitemap.xml更新の3スクリプトから読み込んで使う。
  *

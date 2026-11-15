@@ -4,7 +4,7 @@ date: 2026-09-12
 category_label: ホームページ・Web制作
 image: assets/images/services/service-homepage.jpg
 image_alt: 福祉事業所のホームページ制作をイメージした写真
-description: 福祉事業所がホームページ制作を検討する際に知っておきたい基礎知識を、初めての方にも分かりやすく解説する、お役立ち講座のデザイン確認用サンプル記事です。
+description: 福祉事業所がホームページ制作を検討する際に知っておきたい基礎知識を、初めての方にも分かりやすく解説する、ホームページ作成講座のデザイン確認用サンプル記事です。
 published: true
 slug: sample-course-design-check
 ---

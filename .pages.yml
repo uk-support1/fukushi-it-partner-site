@@ -4,8 +4,8 @@ media:
 
 content:
   - name: articles
-    label: "お知らせ・コラム"
-    description: "公式サイトの「お知らせ・コラム」ページに公開する記事を管理します。保存すると自動的にサイトへ反映されます。"
+    label: "お役立ち情報"
+    description: "公式サイトの「お役立ち情報」ページに公開する記事を管理します。保存すると自動的にサイトへ反映されます。"
     type: collection
     path: content/articles
     filename:
@@ -113,8 +113,8 @@ content:
         hidden: true
 
   - name: courses
-    label: "お役立ち講座"
-    description: "福祉事業所向けのストック型学習コンテンツです。お知らせ・コラムとは別に、Web・AI・IT・集客などについてじっくり学べる記事を管理します。保存すると自動的にサイトへ反映されます。"
+    label: "ホームページ作成講座"
+    description: "福祉事業所向けのストック型学習コンテンツです。お役立ち情報とは別に、Web・AI・IT・集客などについてじっくり学べる記事を管理します。保存すると自動的にサイトへ反映されます。"
     type: collection
     path: content/courses
     filename:

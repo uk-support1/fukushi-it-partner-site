@@ -69,7 +69,7 @@ fukushi-it-partner-site/
 ├── index.html          # トップページ
 ├── services.html       # サービス
 ├── works.html          # 制作実績
-├── blog.html           # ブログ一覧
+├── blog.html           # お役立ち情報一覧（旧ブログ）
 ├── profile.html        # プロフィール
 ├── contact.html        # お問い合わせ
 ├── privacy.html        # プライバシーポリシー

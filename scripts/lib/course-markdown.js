@@ -1,6 +1,6 @@
 "use strict";
 /*
- * 「お役立ち講座」（content/courses/*.md）専用のMarkdown→HTML変換。
+ * 「ホームページ作成講座」（content/courses/*.md）専用のMarkdown→HTML変換。
  *
  * 既存ブログの scripts/lib/markdown.js とは完全に独立したファイル。
  * ブログ側の変換処理・テンプレートには一切変更を加えないため、

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * 「お役立ち講座」（content/courses/*.md）から、
+ * 「ホームページ作成講座」（content/courses/*.md）から、
  *   ① data/course-index.json   … 一覧用データ（published:trueのみ、新しい順）
  *   ② course/<slug>.html       … 講座記事詳細ページ
  *   ③ course.html              … 講座トップ・一覧ページ
@@ -11,7 +11,7 @@
  * テンプレート・Daily Blog自動化ロジックには変更を加えない。
  *
  * sitemap.xmlについてのみ、scripts/generate-blog.js が既に export している
- * buildSitemap()（お役立ち講座のURLをdata/course-index.jsonから読み取って
+ * buildSitemap()（ホームページ作成講座のURLをdata/course-index.jsonから読み取って
  * 追加できるよう拡張済み。course-index.jsonが無い場合は従来と完全に同じ
  * 出力になる）をそのまま呼び出して再生成する。generate-blog.yml側が先に
  * 実行された場合・generate-course.yml側が先に実行された場合のどちらでも、
@@ -157,7 +157,7 @@ function siteHeader(depth) {
     '        <li><a href="' + prefix + 'homepage-plan.html">料金プラン</a></li>\n' +
     '        <li><a href="' + prefix + 'works.html">制作実績</a></li>\n' +
     '        <li><a href="' + prefix + 'flow.html">制作までの流れ</a></li>\n' +
-    '        <li><a href="' + prefix + 'blog.html">ブログ</a></li>\n' +
+    '        <li><a href="' + prefix + 'blog.html">お役立ち情報</a></li>\n' +
     '        <li><a href="' + prefix + 'profile.html">プロフィール</a></li>\n' +
     '        <li><a href="' + prefix + 'contact.html">お問い合わせ</a></li>\n' +
     '        <li class="nav-cta-mobile">\n' +
@@ -200,10 +200,10 @@ function siteFooter(depth) {
     '      <div class="footer-col">\n' +
     '        <h2 class="footer-title">情報発信・学び</h2>\n' +
     '        <ul>\n' +
-    '          <li><a href="' + prefix + 'blog.html">ブログ</a></li>\n' +
+    '          <li><a href="' + prefix + 'blog.html">お役立ち情報</a></li>\n' +
     '          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>\n' +
     '          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>\n' +
-    '          <li><a href="' + prefix + 'course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>お役立ち講座</a></li>\n' +
+    '          <li><a href="' + prefix + 'course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>ホームページ作成講座</a></li>\n' +
     '        </ul>\n' +
     '      </div>\n' +
     '      <div class="footer-col">\n' +
@@ -252,7 +252,7 @@ function renderCoursePage(course) {
   const imageSrc = toSiteImagePath(data.image, "blog"); // "blog" depth = 1階層下からの相対パス（course/も同じ深さ）
   const { html: bodyHtml, headings } = courseBodyToHtml(course.body, "course");
   const description = descriptionOf(data, course.body);
-  const title = data.title + "｜お役立ち講座｜福祉ITパートナー";
+  const title = data.title + "｜ホームページ作成講座｜福祉ITパートナー";
 
   return (
     siteHead({
@@ -266,7 +266,7 @@ function renderCoursePage(course) {
     "<main>\n" +
     "  <section>\n" +
     '    <div class="container course-article reveal">\n' +
-    '      <a href="../course.html" class="back-link">← お役立ち講座一覧へ戻る</a>\n' +
+    '      <a href="../course.html" class="back-link">← ホームページ作成講座一覧へ戻る</a>\n' +
     '      <div class="meta-row">\n' +
     '        <span class="category-badge">' + escapeHtml(data.category_label) + "</span>\n" +
     '        <span class="blog-date"><time datetime="' + escapeHtml(data.date) + '">' + escapeHtml(dateDisplay) + "</time></span>\n" +
@@ -340,7 +340,7 @@ function buildCourseTopHtml(courseIndex) {
 
   return (
     siteHead({
-      title: "福祉事業所のお役立ち講座｜福祉ITパートナー",
+      title: "福祉事業所のホームページ作成講座｜福祉ITパートナー",
       description:
         "福祉事業所の経営者・管理者、これから福祉事業を始める方向けに、Web・AI・IT・集客について基礎からやさしく学べる講座コンテンツです。",
       canonicalPath: "/course.html",
@@ -351,9 +351,9 @@ function buildCourseTopHtml(courseIndex) {
     "<main>\n\n" +
     '  <section class="page-hero course-hero">\n' +
     '    <div class="container reveal">\n' +
-    '      <span class="section-tag">お役立ち講座</span>\n' +
-    "      <h1>福祉事業所のお役立ち講座</h1>\n" +
-    "      <p>福祉事業所の経営者・管理者の方や、これから福祉事業を始める方に向けて、ホームページ・AI・IT活用・集客について、初めてでも分かるやさしい言葉で解説します。</p>\n" +
+    '      <span class="section-tag">ホームページ作成講座</span>\n' +
+    "      <h1>福祉事業所のホームページ作成講座</h1>\n" +
+    "      <p>福祉事業所の経営者・管理者の方や、これから福祉事業を始める方に向けて、ホームページづくりを中心に、AI・IT活用・集客についても、初めてでも分かるやさしい言葉で解説します。</p>\n" +
     '      <ul class="course-category-list">\n' +
     "            " + categoryBadges + "\n" +
     "      </ul>\n" +
@@ -422,7 +422,7 @@ function generateCourse({ root = ROOT } = {}) {
 
   // sitemap.xmlは既存ブログ側（scripts/generate-blog.js）のbuildSitemap()を
   // そのまま呼び出して再生成する。ブログ記事の読み込み・URL組み立ては
-  // 完全に既存ロジックのままで、お役立ち講座のURLだけが追加される。
+  // 完全に既存ロジックのままで、ホームページ作成講座のURLだけが追加される。
   const sitemapFile = path.join(root, "sitemap.xml");
   const blogArticlesDir = path.join(root, "content", "articles");
   let blogArticles = [];

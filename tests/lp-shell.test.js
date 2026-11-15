@@ -29,7 +29,7 @@ test("共通メニューは、もとの7項目のまま。「PHP対応」「Ameb
     if (!nav) continue; // 共通メニューを持たないページ（独立型ページ・補助金LP・移転の転送ページ）
     const rel = path.relative(ROOT, full).split(path.sep).join("/");
     const items = [...nav[1].matchAll(/<li><a href="([^"]+)"([^>]*)>([\s\S]*?)<\/a><\/li>/g)];
-    assert.deepEqual(items.map(item => textOf(item[3])), ["HOME", "料金プラン", "制作実績", "制作までの流れ", "ブログ", "プロフィール", "お問い合わせ"], rel);
+    assert.deepEqual(items.map(item => textOf(item[3])), ["HOME", "料金プラン", "制作実績", "制作までの流れ", "お役立ち情報", "プロフィール", "お問い合わせ"], rel);
     assert.ok(!/php-homepage-comparison|ameba-ownd-end|nav-badge/.test(nav[1]), rel + " has no PHP/Ownd item");
     checked++;
   }
