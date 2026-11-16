@@ -1040,8 +1040,20 @@ a:hover > * > .h2-arrow-link {
 .h2-marquee--works .h2-wcard-body { flex: 1; }
 .h2-wcard-chips span:first-child { background: var(--orange-100); color: var(--orange-600); }
 @media (max-width: 600px) {
-  .h2-marquee--works .h2-wcard { width: 250px; }
-  .h2-marquee--works > .h2-marquee-track > li.h2-panel { padding: 16px 14px 20px; margin: 0 8px; }
+  /* スマホ：カードを小さめにして、2枚近く見渡せるようにする */
+  .h2-marquee--works .h2-wcard { width: 168px; border-radius: 14px; }
+  .h2-marquee--works .h2-panel-cards { gap: 10px; }
+  .h2-marquee--works > .h2-marquee-track > li.h2-panel { padding: 12px 10px 14px; margin: 0 6px; border-radius: 20px; }
+  .h2-marquee--works .h2-panel-head { gap: 4px 8px; margin-bottom: 10px; }
+  .h2-marquee--works .h2-panel-en { font-size: 1.05rem; }
+  .h2-marquee--works .h2-panel-title { font-size: 0.92rem; padding: 3px 14px; }
+  .h2-marquee--works .h2-panel-sub { font-size: 0.72rem; }
+  .h2-marquee--works .h2-wcard-body { padding: 8px 10px 10px; }
+  .h2-marquee--works .h2-wcard-meta { font-size: 0.66rem; }
+  .h2-marquee--works .h2-wcard-title { font-size: 0.8rem; margin: 4px 0 4px; line-height: 1.45; }
+  .h2-marquee--works .h2-wcard-text { font-size: 0.7rem; }
+  .h2-marquee--works .h2-wcard-chips { flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .h2-marquee--works .h2-wcard-chips span { font-size: 0.66rem; padding: 1px 7px; }
 }
 
 /* モデルカードの「デザインの特徴」 */
@@ -1296,3 +1308,10 @@ a:hover > * > .h2-arrow-link {
   .w2-ring-panel { padding: 20px 18px 22px; }
 }
 @media (prefers-reduced-motion: reduce) { .w2-ring.is-ready .w2-ring-track { will-change: auto; } }
+
+/* スマホ：制作実績カードの「デザインの特徴」も小さめに */
+@media (max-width: 600px) {
+  .h2-marquee--works .h2-feats { gap: 3px; margin-top: 6px; }
+  .h2-marquee--works .h2-feats li { font-size: 0.64rem; line-height: 1.5; padding: 3px 6px 3px 18px; border-radius: 6px; }
+  .h2-marquee--works .h2-feats li::before { left: 7px; width: 4px; height: 7px; }
+}
