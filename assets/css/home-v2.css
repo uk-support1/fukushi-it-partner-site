@@ -275,7 +275,7 @@ a:hover > * > .h2-arrow-link {
 }
 .h2-start:hover { transform: translateY(-3px); box-shadow: 0 20px 36px rgba(31, 77, 60, 0.24); }
 .h2-start-photo { display: block; aspect-ratio: 16 / 7; overflow: hidden; }
-.h2-start-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 30% 30%; transition: transform 0.8s ease; }
+.h2-start-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transition: transform 0.8s ease; }
 .h2-start:hover .h2-start-photo img { transform: scale(1.04); }
 .h2-start-body { display: flex; flex-direction: column; gap: 6px; padding: 16px 20px 18px; }
 .h2-start-tag {
@@ -964,4 +964,10 @@ a:hover > * > .h2-arrow-link {
 .w2-model-body .badge { align-self: flex-start; }
 @media (max-width: 520px) {
   .w2-models { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* スマホでは開設サポートの写真を少し縦長にして、お二人の表情が見えるように */
+@media (max-width: 600px) {
+  .h2-start-photo { aspect-ratio: 16 / 10; }
+  .h2-start-photo img { object-position: 38% 20%; }
 }
