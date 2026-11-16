@@ -1018,3 +1018,30 @@ a:hover > * > .h2-arrow-link {
 }
 
 .h2-soon { font-size: 0.72rem; font-weight: 800; color: var(--orange-600); background: var(--orange-100); border-radius: 999px; padding: 1px 10px; }
+
+/* 制作実績：グループごとにパネルで囲み、画像全体が見えるカードに */
+.h2-marquee--works { --h2-speed: 90s; padding: 10px 0 30px; }
+.h2-marquee--works > .h2-marquee-track > li.h2-panel { padding: 0; margin: 0 14px; border-radius: 28px; padding: 20px 20px 24px; display: flex; flex-direction: column; }
+.h2-marquee--works .h2-panel-cards { display: flex; list-style: none; gap: 16px; flex: 1; }
+.h2-marquee--works .h2-panel-cards > li { padding: 0; flex-shrink: 0; display: flex; }
+.h2-panel--care { background: #d3e8dc; }
+.h2-panel--other { background: #fbe0cb; }
+.h2-panel-head { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; margin-bottom: 16px; }
+.h2-panel-en { font-family: var(--h2-script, "Caveat", cursive); font-size: 1.4rem; line-height: 1; color: var(--green-700); }
+.h2-panel--other .h2-panel-en { color: var(--orange-600); }
+.h2-panel-title { font-size: 1.2rem; font-weight: 800; color: #fff; background: var(--green-900); border-radius: 999px; padding: 4px 20px; }
+.h2-panel--other .h2-panel-title { background: var(--orange-600); }
+.h2-panel-sub { font-size: 0.82rem; font-weight: 700; color: var(--text-600); }
+.h2-panel-arrow { flex: 1; min-width: 60px; height: 2px; background: currentColor; color: var(--green-700); position: relative; opacity: 0.6; }
+.h2-panel--other .h2-panel-arrow { color: var(--orange-600); }
+.h2-panel-arrow::after { content: ""; position: absolute; right: 0; top: -5px; width: 10px; height: 10px; border-top: 2px solid currentColor; border-right: 2px solid currentColor; transform: rotate(45deg); }
+.h2-panel-arrow i { display: none; }
+.h2-marquee--works .h2-wcard { width: 300px; height: auto; display: flex; flex-direction: column; }
+.h2-marquee--works .h2-wcard-shot { background: #fff; }
+.h2-marquee--works .h2-wcard-shot img { aspect-ratio: 1 / 1; object-fit: contain; }
+.h2-marquee--works .h2-wcard-body { flex: 1; }
+.h2-wcard-chips span:first-child { background: var(--orange-100); color: var(--orange-600); }
+@media (max-width: 600px) {
+  .h2-marquee--works .h2-wcard { width: 250px; }
+  .h2-marquee--works > .h2-marquee-track > li.h2-panel { padding: 16px 14px 20px; margin: 0 8px; }
+}
