@@ -428,43 +428,44 @@ a:hover > * > .h2-arrow-link {
   display: flex;
   width: max-content;
   list-style: none;
-  animation: h2-scroll var(--h2-speed) linear infinite;
 }
-.h2-marquee:hover .h2-marquee-track,
-.h2-marquee:focus-within .h2-marquee-track,
-.is-marquee-paused .h2-marquee-track {
-  animation-play-state: paused;
+/* 自分で動かせる列（ドラッグ・スワイプ・左右ボタン） */
+.h2-marquee[data-marquee] {
+  overflow-x: auto;
+  scroll-behavior: auto;
+  scrollbar-width: none;
+  cursor: grab;
+  touch-action: pan-x pan-y;
 }
-@keyframes h2-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+.h2-marquee[data-marquee]::-webkit-scrollbar { display: none; }
+.h2-marquee.is-dragging { cursor: grabbing; user-select: none; }
+.h2-marquee.is-dragging a { pointer-events: none; }
+.h2-slide-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-.h2-pause {
+.h2-slide-btn {
+  width: 48px;
+  height: 48px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   font: inherit;
-  font-size: 0.82rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--green-900);
   background: #fff;
   border: 1px solid rgba(31, 77, 60, 0.18);
-  border-radius: 999px;
-  padding: 6px 14px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(31, 77, 60, 0.08);
   cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
 }
-.h2-pause-icon {
-  width: 10px;
-  height: 12px;
-  border-left: 3px solid currentColor;
-  border-right: 3px solid currentColor;
-}
-.h2-pause[aria-pressed="true"] .h2-pause-icon {
-  border: 0;
-  border-left: 10px solid currentColor;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-}
+.h2-slide-btn:hover { background: var(--green-900); color: #fff; transform: translateY(-1px); }
+.h2-slide-btn:focus-visible { outline: 3px solid var(--orange-500); outline-offset: 2px; }
+.h2-slide-hint { font-size: 0.8rem; color: rgba(31, 77, 60, 0.7); margin-left: 4px; }
 
 .h2-works {
   background: linear-gradient(180deg, var(--green-100), #f3f8f5);
@@ -954,9 +955,7 @@ a:hover > * > .h2-arrow-link {
 
 /* ---------- 動きを控える設定のとき ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .h2-marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
-  .h2-marquee-track { animation: none; }
-  .h2-pause { display: none; }
+  .h2-marquee { -webkit-mask-image: none; mask-image: none; }
   .h2-open.is-visible .h2-open-badge { animation: none; }
 }
 
