@@ -385,7 +385,6 @@ a:hover > * > .h2-arrow-link {
   overflow: hidden;
   transition: transform var(--transition), box-shadow var(--transition);
 }
-.h2-value:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(31, 77, 60, 0.12); }
 .h2-value--green { background: var(--green-100); }
 .h2-value--orange { background: var(--orange-100); }
 .h2-value--blue { background: var(--h2-blue-100); }
@@ -1072,3 +1071,8 @@ a:hover > * > .h2-arrow-link {
 /* リンクのないお悩みカード（押せない・動かない） */
 .h2-issue--static { cursor: default; }
 .h2-issue--static:hover { transform: none; box-shadow: none; }
+
+/* 選ばれる理由：押せるカードに見えないよう、動かさない。写真の位置を整える */
+.h2-value { transition: none; cursor: default; }
+.h2-value:hover { transform: none; box-shadow: none; }
+.h2-value--green .h2-value-photo, .h2-value--orange .h2-value-photo { object-position: 50% 80%; }
