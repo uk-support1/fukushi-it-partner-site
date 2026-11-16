@@ -1016,3 +1016,5 @@ a:hover > * > .h2-arrow-link {
   .h2-group { width: 190px; min-height: 300px; }
   .h2-group-title { font-size: 1.25rem; }
 }
+
+.h2-soon { font-size: 0.72rem; font-weight: 800; color: var(--orange-600); background: var(--orange-100); border-radius: 999px; padding: 1px 10px; }
