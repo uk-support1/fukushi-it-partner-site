@@ -18,11 +18,13 @@ const SLUGS = [
 ];
 const jsonLd = html => [...html.matchAll(/<script type="application\/ld\+json">\n([\s\S]*?)\n<\/script>/g)].map(m => JSON.parse(m[1]));
 
-test("LP：15,000円（税込）が明示され、データ復旧と誤解させる記載がある", () => {
+test("LP：15,000円が明示され（消費税はかからない旨を注記し、税込とは書かない）、データ復旧と誤解させる記載がある", () => {
   const html = read(LP);
   const text = visibleText(html);
   assert.match(text, /15,000円/);
-  assert.match(text, /税込/);
+  // 依頼者の指示（2026-11-16）：消費税を請求しないため「税込」とは書かず、総額である旨を注記する
+  assert.match(text, /表示価格がお支払いの総額です。消費税はかかりません。/);
+  assert.ok(!/税込|税別|税抜/.test(text), "no tax-included/excluded wording");
   assert.match(text, /データの復旧|データ復旧/);
   assert.match(text, /完全な(再現|復元)/);
   assert.match(text, /月額の?管理費[^。]{0,6}0円/);
@@ -147,7 +149,7 @@ test("ドメイン接続の標準範囲と追加料金の条件が、LPとサー
   assert.match(text, /移管/);
   assert.match(text, /スポットサポート（5,500円〜／回）/);
   const catalog = read("docs/ai-shared/service-catalog.md");
-  assert.match(catalog, /15,000円（税込）/);
+  assert.match(catalog, /\*\*15,000円\*\*/);
   assert.match(catalog, /1時間以内目安/);
   assert.match(read("docs/ai-shared/decision-log.md"), /2026-10-30｜「ホームページ再スタート/);
 });
