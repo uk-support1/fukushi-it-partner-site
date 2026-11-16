@@ -44,11 +44,12 @@
 <link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css?v=20260930-1">
+<link rel="stylesheet" href="assets/css/home-v2.css?v=20261116-22">
 <script src="assets/js/ga4.js"></script>
 </head>
-<body>
+<body class="home2">
 
 <header class="site-header">
   <div class="nav-bar">
@@ -78,7 +79,7 @@
   </div>
 </header>
 
-<main>
+<main class="h2-main">
 
   <!-- ===== ファーストビュー ===== -->
   <div class="hero-sticky-wrap">
@@ -101,216 +102,443 @@
 
   <div class="catch-banner"><span class="catch-banner-accent">ホームページ制作</span>だけではなく、<span class="catch-banner-accent">安心</span>を<span class="no-break">届けるお手伝い。</span></div>
 
-  <!-- ===== サービス ===== -->
-  <section class="services-section" id="services" style="scroll-margin-top: 90px;">
+  <!-- ===== お悩み ===== -->
+  <section class="h2-section h2-issues" id="issues" aria-labelledby="h2-issues-title">
     <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">サービス</span>
-        <h2 class="section-title">ホームページ制作を中心に、<span class="no-break">福祉の現場をサポート</span></h2>
-        <p class="section-lead">制作だけで終わらない、運用まで見据えたサポートをご提供します。</p>
+      <div class="h2-head h2-head--center reveal">
+        <p class="h2-script" aria-hidden="true">Worries</p>
+        <h2 class="h2-title" id="h2-issues-title">こんなこと、<span class="no-break">ひとりで抱えていませんか？</span></h2>
+        <p class="h2-lead">まだ、まとまっていなくても大丈夫です。<br>まずは、今のお困りごとから聞かせてください。</p>
+      </div>
+      <ol class="h2-issue-grid">
+        <li class="reveal"><a href="homepage-plan.html" class="h2-issue">
+          <span class="h2-num">01</span>
+          <svg class="h2-issue-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="9" width="36" height="26" rx="4"/><path d="M6 16h36M18 41h12M24 35v6"/><circle cx="11" cy="12.5" r=".8"/></svg>
+          <span class="h2-issue-text">ホームページを作りたいけれど、何から始めればいいかわからない</span></a></li>
+        <li class="reveal"><a href="homepage-cost-reduction.html" class="h2-issue">
+          <span class="h2-num">02</span>
+          <svg class="h2-issue-icon" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="14" rx="14" ry="5"/><path d="M10 14v8c0 2.8 6.3 5 14 5s14-2.2 14-5v-8M10 22v8c0 2.8 6.3 5 14 5s14-2.2 14-5v-8"/><path d="M36 36l6 6M42 36v6h-6"/></svg>
+          <span class="h2-issue-text">ホームページの管理費を、毎月払い続けている</span></a></li>
+        <li class="reveal"><a href="startup-support.html" class="h2-issue">
+          <span class="h2-num">03</span>
+          <svg class="h2-issue-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 22 24 9l16 13"/><path d="M12 19v20h24V19"/><path d="M20 39V28h8v11"/></svg>
+          <span class="h2-issue-text">これから事業所を開設する。準備をまとめて相談したい</span></a></li>
+        <li class="reveal"><a href="homepage-recovery.html" class="h2-issue">
+          <span class="h2-num">04</span>
+          <svg class="h2-issue-icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="9" width="36" height="26" rx="4"/><path d="M18 17l12 12M30 17 18 29M18 41h12M24 35v6"/></svg>
+          <span class="h2-issue-text">無料サービスの終了で、ホームページが見られなくなった</span></a></li>
+        <li class="reveal"><a href="subsidy-support/" class="h2-issue">
+          <span class="h2-num">05</span>
+          <svg class="h2-issue-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 6h17l8 8v28H12z"/><path d="M29 6v8h8M18 22h12M18 28h12M18 34h7"/></svg>
+          <span class="h2-issue-text">補助金を使って、ホームページを作れるか知りたい</span></a></li>
+        <li class="reveal"><a href="contact.html#google-form-embed" class="h2-issue js-consult-link">
+          <span class="h2-num">06</span>
+          <svg class="h2-issue-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 43s-13-12.6-13-23a13 13 0 0 1 26 0c0 10.4-13 23-13 23z"/><circle cx="24" cy="20" r="5"/></svg>
+          <span class="h2-issue-text">Googleマップや検索で、事業所を見つけてもらいたい</span></a></li>
+        <li class="reveal"><a href="contact.html#google-form-embed" class="h2-issue js-consult-link">
+          <span class="h2-num">07</span>
+          <svg class="h2-issue-icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l3.5 9.5L37 19l-9.5 3.5L24 32l-3.5-9.5L11 19l9.5-3.5z"/><path d="M37 30l1.6 4.4L43 36l-4.4 1.6L37 42l-1.6-4.4L31 36l4.4-1.6z"/></svg>
+          <span class="h2-issue-text">生成AIや業務ツールを、現場で使えるようにしたい</span></a></li>
+        <li class="reveal"><a href="contact.html#google-form-embed" class="h2-issue js-consult-link">
+          <span class="h2-num">08</span>
+          <svg class="h2-issue-icon" viewBox="0 0 48 48" aria-hidden="true"><circle cx="17" cy="17" r="6"/><circle cx="33" cy="19" r="5"/><path d="M6 39c0-7 5-11 11-11s11 4 11 11M28 39c0-5 2.5-9 6-9s8 3 8 9"/></svg>
+          <span class="h2-issue-text">ITに詳しい職員がいない。気軽に聞ける相手がほしい</span></a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== サービス（開所前／開所後） ===== -->
+  <section class="h2-section h2-services" id="services" aria-labelledby="h2-services-title">
+    <div class="container">
+      <div class="h2-head h2-head--split reveal">
+        <div>
+          <p class="h2-script" aria-hidden="true">Services</p>
+          <h2 class="h2-title" id="h2-services-title">これから開所する方も、<br class="h2-br-pc"><span class="no-break">すでに開所している方も。</span></h2>
+        </div>
+        <p class="h2-lead h2-head-side">事業所の立ち上げや、はじめてのホームページづくりから、開所後の見直し・集客・IT活用まで。必要なところだけのご相談も歓迎です。</p>
       </div>
 
-      <div class="service-featured reveal">
-        <div class="service-featured-photo">
-          <div class="bg-parallax" data-parallax-factor="0.2" style="background-image: url('assets/images/services/service-homepage.jpg');" role="img" aria-label="福祉向けのやさしいデザインでホームページを制作している画面"></div>
+      <div class="h2-flow2">
+        <!-- 開所前 -->
+        <div class="h2-col h2-col--before reveal">
+          <p class="h2-col-label"><span>これから開所する方</span>開設の準備から、ホームページづくりまで</p>
+          <a href="startup-support.html" class="h2-start">
+            <span class="h2-start-photo"><img src="assets/images/home/home-startup-photo.jpg" alt="相談員が、パソコンを見ながら事業所の開設について説明し、担当の方がメモを取っている相談の様子" width="1254" height="705" loading="lazy"></span>
+            <span class="h2-start-body">
+              <span class="h2-start-tag">NEW ｜ いちばんのおすすめ</span>
+              <span class="h2-start-title">福祉事業所等の<span class="no-break">開設サポート</span></span>
+              <span class="h2-start-text">福祉事業所等の開設を、ご相談から開所の日まで伴走します。ホームページとGoogleマップの登録なども含みます。</span>
+              <span class="h2-start-foot">
+                <span class="h2-price h2-price--light"><span class="h2-price-num">99,000</span>円</span>
+                <span class="h2-start-more">くわしく見る <span aria-hidden="true">→</span></span>
+              </span>
+            </span>
+          </a>
+          <a href="homepage-plan.html#plan-section" class="h2-row h2-row--hp">
+            <span class="h2-row-photo"><img src="assets/images/services/service-homepage.jpg" alt="" width="1400" height="1050" loading="lazy"></span>
+            <span class="h2-row-body">
+              <span class="h2-row-title">ホームページ制作</span>
+              <span class="h2-row-text">福祉・介護・医療分野に特化。スマホ対応・Googleマップの掲載も標準です。</span>
+            </span>
+            <span class="h2-row-price"><span class="h2-price-num">19,800</span>円〜</span>
+          </a>
         </div>
-        <div class="service-featured-body">
-          <span class="badge badge-real">メインサービス</span>
-          <h3>ホームページ制作</h3>
-          <p>福祉・介護・医療分野に特化したホームページ・ランディングページを制作します。</p>
-          <p class="svc-price svc-price--lg"><span class="svc-price-num">19,800</span>円〜</p>
-          <div class="service-featured-actions">
-            <a href="homepage-plan.html#plan-section" class="btn btn-accent">料金を見る</a>
-            <a href="works.html" class="btn btn-outline">制作実績</a>
-            <a href="#value-prop" class="btn btn-outline">選ばれる理由</a>
-          </div>
+
+        <!-- 開所 -->
+        <div class="h2-open reveal reveal-d1" aria-hidden="true">
+          <span class="h2-open-line"></span>
+        </div>
+
+        <!-- 開所後 -->
+        <div class="h2-col h2-col--after reveal reveal-d2">
+          <p class="h2-col-label h2-col-label--after"><span>すでに開所している方</span>運営をささえる・広げる</p>
+          <ul class="h2-rows">
+            <li><a href="homepage-recovery.html" class="h2-row">
+              <span class="h2-row-photo"><img src="assets/images/services/service-recovery.jpg" alt="" width="960" height="540" loading="lazy"></span>
+              <span class="h2-row-body">
+                <span class="h2-row-title">ホームページ再スタート</span>
+                <span class="h2-row-text">見られなくなったホームページを、1ページで新しく作り直します。</span>
+              </span>
+              <span class="h2-row-price"><span class="h2-price-num">15,000</span>円</span>
+            </a></li>
+            <li><a href="homepage-cost-reduction.html" class="h2-row">
+              <span class="h2-row-photo"><img src="assets/images/services/service-cost-reduction.jpg" alt="" width="960" height="540" loading="lazy"></span>
+              <span class="h2-row-body">
+                <span class="h2-row-title">HP維持費の見直し</span>
+                <span class="h2-row-text">毎月の管理費を見直し、管理費のいらない形への乗り換えをご提案します。</span>
+              </span>
+              <span class="h2-row-price"><small>診断</small><span class="h2-price-num">0</span>円</span>
+            </a></li>
+            <li><a href="subsidy-support/" class="h2-row">
+              <span class="h2-row-photo"><img src="assets/images/services/service-subsidy-support.jpg" alt="" width="1448" height="1086" loading="lazy"></span>
+              <span class="h2-row-body">
+                <span class="h2-row-title">補助金活用支援</span>
+                <span class="h2-row-text">小規模事業者持続化補助金を活用した、ホームページ制作と集客のご提案です。</span>
+              </span>
+              <span class="h2-row-price h2-row-price--consult">無料で相談</span>
+            </a></li>
+            <li><a href="contact.html#google-form-embed" class="h2-row js-consult-link">
+              <span class="h2-row-photo"><img src="assets/images/services/service-google-support.jpg" alt="" width="1400" height="1050" loading="lazy"></span>
+              <span class="h2-row-body">
+                <span class="h2-row-title">集客・広報支援</span>
+                <span class="h2-row-text">Googleマップ、SNS、チラシなどで、見つけてもらう工夫をお手伝いします。</span>
+              </span>
+              <span class="h2-row-price h2-row-price--consult">ご相談</span>
+            </a></li>
+            <li><a href="contact.html#google-form-embed" class="h2-row js-consult-link">
+              <span class="h2-row-photo"><img src="assets/images/services/service-ai-support.jpg" alt="" width="1400" height="1050" loading="lazy"></span>
+              <span class="h2-row-body">
+                <span class="h2-row-title">AI・IT活用支援</span>
+                <span class="h2-row-text">生成AIや業務ツールの使い方を、現場に合わせてやさしくご案内します。</span>
+              </span>
+              <span class="h2-row-price h2-row-price--consult">ご相談</span>
+            </a></li>
+          </ul>
         </div>
       </div>
 
-      <div class="cards-grid cards-grid--three cards-grid--compact svc-grid">
-        <div class="card svc-card card--featured reveal">
-          <span class="card-badge">NEW</span>
-          <div class="card-photo">
-            <img src="assets/images/services/service-startup.jpg" alt="オフィスで、ノートパソコンを見ながら開設準備について相談している2人" loading="lazy" width="960" height="540">
-          </div>
-          <div class="card-body">
-            <h3>新規開設サポート</h3>
-            <p class="svc-desc">障害福祉事業所の開業・開設を、相談から開所の日まで伴走。ホームページとGoogleマップ登録も含みます。</p>
-            <p class="svc-price"><span class="svc-price-num">99,000</span>円</p>
-            <div class="card-cta">
-              <a href="startup-support.html" class="btn btn-accent">詳しく見る</a>
-            </div>
-          </div>
-        </div>
-        <div class="card svc-card reveal">
-          <div class="card-photo">
-            <img src="assets/images/services/service-recovery.jpg" alt="ノートパソコンとスマートフォンに表示された、新しいホームページ" loading="lazy" width="960" height="540">
-          </div>
-          <div class="card-body">
-            <h3>ホームページ再スタート</h3>
-            <p class="svc-desc">無料サービスの終了などで見られなくなったホームページを、1ページで新しく作り直します。</p>
-            <p class="svc-price"><span class="svc-price-num">15,000</span>円<small>／1ページ</small></p>
-            <div class="card-cta">
-              <a href="homepage-recovery.html" class="btn btn-outline">詳しく見る</a>
-            </div>
-          </div>
-        </div>
-        <div class="card svc-card reveal">
-          <div class="card-photo">
-            <img src="assets/images/services/service-cost-reduction.jpg" alt="電卓と資料が置かれた、明るいデスク" loading="lazy" width="960" height="540">
-          </div>
-          <div class="card-body">
-            <h3>HP維持費の見直し</h3>
-            <p class="svc-desc">毎月の管理費を見直し、月額管理費のいらない形への乗り換えをご提案します。</p>
-            <p class="svc-price"><small>診断</small><span class="svc-price-num">0</span>円<small class="svc-price-sep">／乗り換え</small><span class="svc-price-num">49,500</span>円</p>
-            <div class="card-cta">
-              <a href="homepage-cost-reduction.html" class="btn btn-outline">詳しく見る</a>
-            </div>
-          </div>
-        </div>
-        <div class="card svc-card reveal">
-          <div class="card-photo">
-            <img src="assets/images/services/service-subsidy-support.jpg" alt="申請書・見積書・事業計画書・スケジュール表など補助金申請の準備書類がデスクに並んでいる様子" loading="lazy" width="960" height="540">
-          </div>
-          <div class="card-body">
-            <h3>補助金活用支援</h3>
-            <p class="svc-desc">小規模事業者持続化補助金を活用した、ホームページ制作と集客のご提案です。</p>
-            <p class="svc-price svc-price--consult">補助金が使えるか無料でご相談</p>
-            <div class="card-cta">
-              <a href="subsidy-support/" class="btn btn-outline">詳しく見る</a>
-            </div>
-          </div>
-        </div>
-        <div class="card svc-card reveal">
-          <div class="card-photo">
-            <img src="assets/images/services/service-google-support.jpg" alt="Googleマップを使ったアクセス情報をホームページに組み込んでいる画面" loading="lazy" width="960" height="540">
-          </div>
-          <div class="card-body">
-            <h3>集客・広報支援</h3>
-            <p class="svc-desc">Googleマップ、SNS、チラシなど、利用者さんや職員さんに見つけてもらう工夫をお手伝いします。</p>
-            <p class="svc-price svc-price--consult">料金はご相談ください</p>
-            <div class="card-cta">
-              <a href="contact.html#google-form-embed" class="btn btn-outline js-consult-link">相談する</a>
-            </div>
-          </div>
-        </div>
-        <div class="card svc-card reveal">
-          <div class="card-photo">
-            <img src="assets/images/services/service-ai-support.jpg" alt="生成AI活用支援の画面が表示されたノートパソコン" loading="lazy" width="960" height="540">
-          </div>
-          <div class="card-body">
-            <h3>AI・IT活用支援</h3>
-            <p class="svc-desc">生成AIや業務ツールの使い方を、現場に合わせてやさしくご案内します。</p>
-            <p class="svc-price svc-price--consult">料金はご相談ください</p>
-            <div class="card-cta">
-              <a href="contact.html#google-form-embed" class="btn btn-outline js-consult-link">相談する</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="svc-foot reveal">
+      <div class="h2-svc-foot">
         <p class="tax-free-note">表示価格がお支払いの総額です。消費税はかかりません。</p>
-        <a href="homepage-plan.html" class="svc-foot-link">すべてのサービスの料金を一覧で見る <span aria-hidden="true">→</span></a>
+        <p class="h2-small-note">PHP・WordPressのホームページをお使いの方は、<a href="php-homepage-comparison.html">更新・乗り換え方法の比較</a>もご覧ください。</p>
+        <a href="homepage-plan.html" class="h2-arrow-link">すべてのサービスの料金を一覧で見る <span aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
 
-  <!-- ===== 既存HPをお持ちの方へ（維持費削減・乗り換えプラン） ===== -->
-  <section class="cost-teaser-section">
-    <div class="container">
-      <div class="cost-teaser reveal">
-        <div class="cost-teaser-body">
-          <p class="cost-teaser-eyebrow">すでにホームページをお持ちの方へ</p>
-          <h2 class="cost-teaser-title">ホームページの管理費、<span class="no-break">毎月払っていませんか？</span></h2>
-          <p class="cost-teaser-text">管理費・保守費を見直すことで、毎月の固定費を減らせる可能性があります。現在の契約を確認する診断は<strong>0円</strong>です。今の契約の方がお得な場合は、そのままをおすすめします。</p>
-          <a href="homepage-cost-reduction.html" class="btn btn-primary cost-teaser-btn">維持費の見直しについて見る</a>
-          <p class="cost-teaser-sub">PHP・WordPressのホームページをお使いの方は、<a href="php-homepage-comparison.html">更新・乗り換え方法の比較</a>もご覧ください。</p>
-        </div>
-        <div class="cost-teaser-art" aria-hidden="false">
-          <svg viewBox="0 0 380 270" role="img" aria-label="いまの管理費の大きな硬貨の山から、乗り換え後は小さな硬貨の山へ下がるイメージ" xmlns="http://www.w3.org/2000/svg">
-  <line x1="14" y1="237" x2="366" y2="237" stroke="#cfd9d3" stroke-width="3" stroke-linecap="round"/>
-  <rect x="46" y="211" width="92" height="15" fill="#a3afa9"/><ellipse cx="92" cy="226" rx="46" ry="11" fill="#a3afa9"/><path d="M46 226a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><rect x="46" y="196" width="92" height="15" fill="#a3afa9"/><ellipse cx="92" cy="211" rx="46" ry="11" fill="#a3afa9"/><path d="M46 211a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><rect x="46" y="181" width="92" height="15" fill="#a3afa9"/><ellipse cx="92" cy="196" rx="46" ry="11" fill="#a3afa9"/><path d="M46 196a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><rect x="46" y="166" width="92" height="15" fill="#a3afa9"/><ellipse cx="92" cy="181" rx="46" ry="11" fill="#a3afa9"/><path d="M46 181a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><rect x="46" y="151" width="92" height="15" fill="#a3afa9"/><ellipse cx="92" cy="166" rx="46" ry="11" fill="#a3afa9"/><path d="M46 166a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><rect x="46" y="136" width="92" height="15" fill="#a3afa9"/><ellipse cx="92" cy="151" rx="46" ry="11" fill="#a3afa9"/><path d="M46 151a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><rect x="46" y="121" width="92" height="15" fill="#a3afa9"/><ellipse cx="92" cy="136" rx="46" ry="11" fill="#a3afa9"/><path d="M46 136a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><rect x="46" y="106" width="92" height="15" fill="#a3afa9"/><ellipse cx="92" cy="121" rx="46" ry="11" fill="#a3afa9"/><path d="M46 121a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><ellipse cx="92" cy="106" rx="46" ry="11" fill="#c4cdc8" stroke="#8f9b95" stroke-width="2"/>
-  <rect x="244" y="211" width="92" height="15" fill="#4a8c6f"/><ellipse cx="290" cy="226" rx="46" ry="11" fill="#4a8c6f"/><path d="M244 226a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><rect x="244" y="196" width="92" height="15" fill="#4a8c6f"/><ellipse cx="290" cy="211" rx="46" ry="11" fill="#4a8c6f"/><path d="M244 211a46 11 0 0 0 92 0" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"/><ellipse cx="290" cy="196" rx="46" ry="11" fill="#79b196" stroke="#2c6b54" stroke-width="2"/>
-  <path d="M290 172v-14" stroke="#2c6b54" stroke-width="4" stroke-linecap="round"/>
-  <path d="M290 160c-2-14-14-20-26-18 2 13 12 20 26 18z" fill="#79b196"/>
-  <path d="M290 160c2-14 14-20 26-18-2 13-12 20-26 18z" fill="#4a8c6f"/>
-  <path d="M104 70C160 54 226 66 262 122" fill="none" stroke="#e8965a" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 0"/>
-  <path d="M246 124l18 4 5-19" fill="none" stroke="#e8965a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="92" y="262" text-anchor="middle" font-size="16" font-weight="700" fill="#1f4d3c" font-family="'Noto Sans JP',sans-serif">いまの管理費</text>
-  <text x="290" y="262" text-anchor="middle" font-size="16" font-weight="700" fill="#1f4d3c" font-family="'Noto Sans JP',sans-serif">乗り換え後</text>
-</svg>
+  <!-- ===== 選ばれる理由 ===== -->
+  <section class="h2-section h2-values" id="value-prop" aria-labelledby="h2-values-title">
+    <div class="container h2-values-grid">
+      <div class="h2-values-head">
+        <div class="h2-sticky">
+          <p class="h2-script" aria-hidden="true">Our Values</p>
+          <h2 class="h2-title" id="h2-values-title">低価格でも、<br><span class="no-break">妥協しません。</span></h2>
+          <p class="h2-lead">早い、安い、それでも高品質。<br>福祉の現場を知っているからこそ、伝わるホームページを制作します。</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ===== 選ばれる理由・機能 ===== -->
-  <section class="value-prop-section" id="value-prop" style="scroll-margin-top: 90px;">
-    <div class="container">
-      <div class="section-head reveal">
-        <span class="section-tag">選ばれる理由</span>
-        <h2 class="section-title">低価格でも、<span class="no-break">妥協しません。</span></h2>
-        <p class="section-lead">早い、安い、それでも高品質。<br>福祉の現場を知っているからこそ、伝わるホームページを制作します。</p>
-      </div>
-      <div class="value-prop-grid">
-        <div class="value-prop-card reveal">
-          <div class="value-prop-media bg-parallax" data-parallax-factor="0.2" data-parallax-rest="-10" style="background-image: url('assets/images/home/value-prop-speed.jpg');" role="img" aria-label="時計を横に置いてノートパソコンで作業する様子"></div>
-          <div class="value-prop-overlay">
-            <p class="value-prop-num">最短48時間</p>
-            <p class="value-prop-label">スピード制作</p>
-            <p class="value-prop-desc">早い・短納期対応で、お急ぎの方にもスピーディーにホームページを公開できます。</p>
+      <ol class="h2-value-list">
+        <li class="h2-value h2-value--green reveal">
+          <div class="h2-value-body">
+            <span class="h2-num">01</span>
+            <p class="h2-value-big">最短<strong>48</strong>時間</p>
+            <h3 class="h2-value-title">お急ぎでも、スピード制作</h3>
+            <p>素材がそろっていれば、最短48時間で公開できます。開所や行事に間に合わせたい方もご相談ください。</p>
           </div>
-        </div>
-        <div class="value-prop-card reveal">
-          <div class="value-prop-media bg-parallax" data-parallax-factor="0.2" data-parallax-rest="-10" style="background-image: url('assets/images/home/value-prop-price.jpg');" role="img" aria-label="電卓と硬貨が置かれたデスク"></div>
-          <div class="value-prop-overlay">
-            <p class="value-prop-num">19,800円</p>
-            <p class="value-prop-label">HP制作費</p>
-            <p class="value-prop-desc">安い・格安・激安と言われるほどの低価格。福祉事業所・小規模団体の方でも始めやすい設定です。</p>
+          <img class="h2-value-photo" src="assets/images/home/value-prop-speed.jpg" alt="時計を横に置いてノートパソコンで作業する様子" width="700" height="875" loading="lazy">
+        </li>
+        <li class="h2-value h2-value--orange reveal">
+          <div class="h2-value-body">
+            <span class="h2-num">02</span>
+            <p class="h2-value-big"><strong>19,800</strong>円〜</p>
+            <h3 class="h2-value-title">小さな事業所でも、始めやすい価格</h3>
+            <p>福祉事業所・小規模団体の方でも始めやすい料金にしています。必要なところだけのご依頼もご相談ください。</p>
             <p class="tax-free-note">表示価格がお支払いの総額です。消費税はかかりません。</p>
           </div>
-        </div>
-        <div class="value-prop-card reveal">
-          <div class="value-prop-media bg-parallax" data-parallax-factor="0.2" data-parallax-rest="-10" style="background-image: url('assets/images/home/value-prop-quality.jpg');" role="img" aria-label="ノートパソコンとスマートフォンにホームページのデザインが表示されている様子"></div>
-          <div class="value-prop-overlay">
-            <p class="value-prop-num">高品質</p>
-            <p class="value-prop-label">スマホでもきれい</p>
-            <p class="value-prop-desc">高品質・ハイクオリティなクオリティで、見やすく伝わるデザインに。</p>
+          <img class="h2-value-photo" src="assets/images/home/value-prop-price.jpg" alt="電卓と硬貨が置かれたデスク" width="700" height="875" loading="lazy">
+        </li>
+        <li class="h2-value h2-value--blue reveal">
+          <div class="h2-value-body">
+            <span class="h2-num">03</span>
+            <p class="h2-value-big"><strong>スマホ</strong>でもきれい</p>
+            <h3 class="h2-value-title">見やすく、伝わるデザイン</h3>
+            <p>スマートフォンでの見やすさ、検索されやすい基本設定、お問い合わせフォームやGoogleマップまで標準で整えます。公開後の文章や写真の差し替えは、ご自身でも行えます。</p>
           </div>
+          <img class="h2-value-photo" src="assets/images/home/value-prop-quality.jpg" alt="ノートパソコンとスマートフォンにホームページのデザインが表示されている様子" width="700" height="875" loading="lazy">
+        </li>
+        <li class="h2-value h2-value--cream reveal">
+          <div class="h2-value-body">
+            <span class="h2-num">04</span>
+            <p class="h2-value-big"><strong>現場</strong>を知っている</p>
+            <h3 class="h2-value-title">福祉・介護・医療に特化</h3>
+            <p>精神保健福祉士として現場に立った経験から、ご本人やご家族が知りたいことを整理して伝えます。個人情報保護士として、フォームや情報の扱いも一緒に確認します。他業種の方もご相談いただけます。</p>
+          </div>
+          <img class="h2-value-photo" src="assets/images/home/home-value-field.jpg" alt="福祉施設で、職員が利用者さんに寄り添い、笑顔で話を聞いている様子" width="1100" height="688" loading="lazy">
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== 制作実績（横に流れる） =====
+       実績を追加するときは、下の <li> を1つコピーして、画像（assets/images/works/ に 3:2 か 16:9 のPC画面）・名前・説明・タグ・リンクを書き換えるだけで、流れる列に加わります。 -->
+  <section class="h2-section h2-works" id="works" aria-labelledby="h2-works-title">
+    <div class="container">
+      <div class="h2-head h2-head--split reveal">
+        <div>
+          <p class="h2-script" aria-hidden="true">Works</p>
+          <h2 class="h2-title" id="h2-works-title">直近の制作実績</h2>
+        </div>
+        <div class="h2-head-side">
+          <p class="h2-lead">福祉事業所関連の制作事例と、ほかの業種のモデルページです。気になるものは、カードから実物をご覧いただけます。</p>
+          <button type="button" class="h2-pause" data-marquee-toggle aria-pressed="false"><span class="h2-pause-icon" aria-hidden="true"></span><span class="h2-pause-text">動きを止める</span></button>
         </div>
       </div>
-      <a href="works.html" class="value-prop-more reveal">制作例はモデルページでご覧いただけます <span aria-hidden="true">→</span></a>
+    </div>
 
-      <div class="feature-strip-grid feature-strip-grid--merged">
-        <div class="feature-strip-item reveal">
-          <h3>自分で更新・カスタマイズも可能</h3>
-          <p>公開後の文章修正や写真の差し替えも、ご自身で行っていただけます。</p>
+    <div class="h2-marquee h2-marquee--works" data-marquee>
+      <ul class="h2-marquee-track">
+        <li class="h2-panel h2-panel--care">
+          <div class="h2-panel-head">
+            <p class="h2-panel-en" aria-hidden="true">FOR WELFARE</p>
+            <p class="h2-panel-title">福祉事業所関連</p>
+            <p class="h2-panel-sub">福祉・介護・医療の分野のホームページ</p>
+            <span class="h2-panel-arrow" aria-hidden="true"><i></i></span>
+          </div>
+          <ul class="h2-panel-cards">
+        <li><article class="h2-wcard">
+          <a class="h2-wcard-shot" href="https://uk-support1.github.io/yasuragi-no-kai-site/" target="_blank" rel="noopener noreferrer" aria-label="やすらぎの会のホームページを見る（新しいタブ）"><img src="assets/images/works/card-yasuragi.jpg" alt="家族会「やすらぎの会」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
+          <div class="h2-wcard-body">
+            <p class="h2-wcard-meta">家族会・地域福祉団体</p>
+            <h3 class="h2-wcard-title">新座市精神障害者家族会<span class="no-break">「やすらぎの会」</span></h3>
+            <p class="h2-wcard-chips"><span>制作費 55,000円</span><span>3日間</span></p>
+          </div>
+        </article></li>
+        <li><article class="h2-wcard">
+          <a class="h2-wcard-shot" href="https://lumera-inc.com/" target="_blank" rel="noopener noreferrer" aria-label="cocoruのホームページを見る（新しいタブ）"><img src="assets/images/works/card-cocoru.jpg" alt="就労継続支援B型事業所「cocoru」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
+          <div class="h2-wcard-body">
+            <p class="h2-wcard-meta">新規開業・福祉事業所</p>
+            <h3 class="h2-wcard-title">就労継続支援B型事業所<span class="no-break">「cocoru」</span></h3>
+            <p class="h2-wcard-chips"><span>制作費 19,800円</span><span>5日間</span></p>
+          </div>
+        </article></li>
+        <li><article class="h2-wcard">
+          <a class="h2-wcard-shot" href="https://bluebody-seitai.my.canva.site/" target="_blank" rel="noopener noreferrer" aria-label="Blueボディのホームページを見る（新しいタブ）"><img src="assets/images/works/card-blue.jpg" alt="出張整体サービス「Blueボディ」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
+          <div class="h2-wcard-body">
+            <p class="h2-wcard-meta">出張整体・機能維持運動</p>
+            <h3 class="h2-wcard-title">出張整体サービス<span class="no-break">「Blueボディ」</span></h3>
+            <p class="h2-wcard-chips"><span>制作費 19,800円</span><span>5日間</span></p>
+          </div>
+        </article></li>
+        <li><article class="h2-wcard">
+          <a class="h2-wcard-shot" href="https://kumanomien.co.jp/" target="_blank" rel="noopener noreferrer" aria-label="クマノミ園のホームページを見る（新しいタブ）"><img src="assets/images/works/card-kumanomi.jpg" alt="グループホーム「クマノミ園」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
+          <div class="h2-wcard-body">
+            <p class="h2-wcard-meta">グループホーム</p>
+            <h3 class="h2-wcard-title">グループホーム<span class="no-break">「クマノミ園」</span></h3>
+            <p class="h2-wcard-chips"><span>ブランディングプラン</span><span>約1ヶ月間</span></p>
+          </div>
+        </article></li>
+        <li><article class="h2-wcard">
+          <span class="h2-wcard-shot"><img src="assets/images/works/card-namioto.jpg" alt="訪問看護「なみおと看護リハビリステーション」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></span>
+          <div class="h2-wcard-body">
+            <p class="h2-wcard-meta">訪問看護<span class="h2-soon">公開前</span></p>
+            <h3 class="h2-wcard-title">訪問看護<span class="no-break">「なみおと看護リハビリステーション」</span></h3>
+            <p class="h2-wcard-chips"><span>制作費 19,800円</span><span>7日間</span></p>
+          </div>
+        </article></li>
+          </ul>
+        </li>
+        <li class="h2-panel h2-panel--other">
+          <div class="h2-panel-head">
+            <p class="h2-panel-en" aria-hidden="true">OTHER FIELDS</p>
+            <p class="h2-panel-title">その他の業種</p>
+            <p class="h2-panel-sub">福祉以外の業種のモデルページ</p>
+            <span class="h2-panel-arrow" aria-hidden="true"><i></i></span>
+          </div>
+          <ul class="h2-panel-cards">
+        <li><article class="h2-wcard">
+          <a class="h2-wcard-shot" href="https://uk-support1.github.io/tsuya-hair-salon-sample/" target="_blank" rel="noopener noreferrer" aria-label="美容室のモデルページを見る（新しいタブ）"><img src="assets/images/works/card-tsuya.jpg" alt="美容室のモデルページ「艶-TSUYA-」のトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
+          <div class="h2-wcard-body">
+            <p class="h2-wcard-meta">美容室</p>
+            <h3 class="h2-wcard-title">艶-TSUYA-</h3>
+            <ul class="h2-feats"><li>完全個室のサロン</li><li>落ち着いた黒基調</li><li>上質で大人な印象</li></ul>
+          </div>
+        </article></li>
+        <li><article class="h2-wcard">
+          <a class="h2-wcard-shot" href="https://uk-support1.github.io/akari-personal-fitness-sample/" target="_blank" rel="noopener noreferrer" aria-label="パーソナルジムのモデルページを見る（新しいタブ）"><img src="assets/images/works/card-akari.jpg" alt="パーソナルジムのモデルページ「灯-AKARI-」のトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
+          <div class="h2-wcard-body">
+            <p class="h2-wcard-meta">パーソナルジム</p>
+            <h3 class="h2-wcard-title">灯-AKARI-</h3>
+            <ul class="h2-feats"><li>明るく前向きな配色</li><li>未経験でも入りやすい</li><li>無料体験へ導く設計</li></ul>
+          </div>
+        </article></li>
+        <li><article class="h2-wcard">
+          <a class="h2-wcard-shot" href="https://uk-support1.github.io/nagi-ryokan-sample/" target="_blank" rel="noopener noreferrer" aria-label="旅館のモデルページを見る（新しいタブ）"><img src="assets/images/works/card-nagi.jpg" alt="旅館のモデルページ「凪-NAGI-」のトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
+          <div class="h2-wcard-body">
+            <p class="h2-wcard-meta">旅館</p>
+            <h3 class="h2-wcard-title">凪-NAGI-</h3>
+            <ul class="h2-feats"><li>一日一組限定の世界観</li><li>静けさと余白</li><li>自然の写真が主役</li></ul>
+          </div>
+        </article></li>
+        <li><article class="h2-wcard">
+          <a class="h2-wcard-shot" href="https://uk-support1.github.io/architect-3d-demo/" target="_blank" rel="noopener noreferrer" aria-label="建築設計事務所のモデルページを見る（新しいタブ）"><img src="assets/images/works/card-architect.jpg" alt="建築設計事務所のモデルページ「CHABURIN ARCHITECTS」のトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
+          <div class="h2-wcard-body">
+            <p class="h2-wcard-meta">建築設計事務所</p>
+            <h3 class="h2-wcard-title">CHABURIN ARCHITECTS</h3>
+            <ul class="h2-feats"><li>3D住宅モデル</li><li>スクロール演出</li><li>作品が映えるダーク基調</li></ul>
+          </div>
+        </article></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="container">
+      <p class="h2-small-note h2-center-note">表示価格がお支払いの総額です。消費税はかかりません。※各案件の制作実績です。制作内容・ページ数・原稿や写真の準備状況により、費用・期間は異なります。</p>
+      <div class="h2-more-row reveal">
+        <a href="works.html" class="h2-more">制作実績をくわしく見る <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+  <!-- ===== 制作までの流れ ===== -->
+  <section class="h2-section h2-process" id="process" aria-labelledby="h2-process-title">
+    <div class="container">
+      <div class="h2-head h2-head--split reveal">
+        <div>
+          <p class="h2-script" aria-hidden="true">Process</p>
+          <h2 class="h2-title" id="h2-process-title">ご相談から、公開のあとまで</h2>
         </div>
-        <div class="feature-strip-item reveal">
-          <h3>SEO対策・スマホ対応も標準装備</h3>
-          <p>検索されやすい基本設定や、お問い合わせフォーム・Googleマップなど、必要な機能を標準搭載しています。</p>
-        </div>
-        <div class="feature-strip-item reveal">
-          <h3>福祉・介護・医療・看護に特化</h3>
-          <p>精神保健福祉士として現場に立った経験があるからこそわかる、伝わるホームページのポイントがあります。他業種の方もご相談いただけます。</p>
-        </div>
+        <p class="h2-lead h2-head-side">原稿や写真がそろっていなくても大丈夫です。専門用語やむずかしい準備は必要ありません。</p>
+      </div>
+      <ol class="h2-steps">
+        <li class="h2-step reveal">
+          <span class="h2-step-photo"><img src="assets/images/flow/flow-01-consultation.jpg" alt="" width="1448" height="1086" loading="lazy"></span>
+          <span class="h2-num">01</span>
+          <h3>ご相談</h3>
+          <p>メール・お電話・オンライン・対面から、ご都合のよい方法で。ご相談は無料です。</p>
+        </li>
+        <li class="h2-step reveal">
+          <span class="h2-step-photo"><img src="assets/images/flow/flow-02-hearing.jpg" alt="" width="1448" height="1086" loading="lazy"></span>
+          <span class="h2-num">02</span>
+          <h3>ヒアリング・構成の整理</h3>
+          <p>想いや伝えたいことをお聞きして、載せる情報とページの構成案をご用意します。</p>
+        </li>
+        <li class="h2-step reveal">
+          <span class="h2-step-photo"><img src="assets/images/flow/flow-04-website-production.jpg" alt="" width="1448" height="1086" loading="lazy"></span>
+          <span class="h2-num">03</span>
+          <h3>制作・内容の確認</h3>
+          <p>デザインと文章を形にし、パソコンとスマートフォンの両方で見ていただきながら整えます。</p>
+        </li>
+        <li class="h2-step reveal">
+          <span class="h2-step-photo"><img src="assets/images/flow/flow-06-publish-delivery.jpg" alt="" width="1448" height="1086" loading="lazy"></span>
+          <span class="h2-num">04</span>
+          <h3>公開・その後のIT相談</h3>
+          <p>公開して終わりではありません。更新や「ちょっと困った」も、気軽にご相談ください。</p>
+        </li>
+      </ol>
+      <div class="h2-more-row reveal">
+        <a href="flow.html" class="h2-more">制作までの流れをくわしく見る <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== よくあるご質問 ===== -->
+  <section class="h2-section h2-faq" id="faq" aria-labelledby="h2-faq-title">
+    <div class="container h2-faq-grid">
+      <div class="h2-faq-head reveal">
+        <p class="h2-script" aria-hidden="true">Questions</p>
+        <h2 class="h2-title" id="h2-faq-title">よくあるご質問</h2>
+      </div>
+      <div class="h2-faq-list reveal">
+        <details class="h2-faq-item">
+          <summary>何を作りたいか、まだ決まっていなくても相談できますか？</summary>
+          <p>はい、大丈夫です。「何から始めればいいかわからない」「今のホームページを見直したい」といった段階からご相談いただけます。原稿や写真がそろっていなくてもかまいません。ご相談は無料です。</p>
+        </details>
+        <details class="h2-faq-item">
+          <summary>費用はどれくらいかかりますか？</summary>
+          <p>ホームページ制作は、おまかせライトプラン19,800円、ブランディングプラン55,000円です（表示価格がお支払いの総額です。消費税はかかりません）。サーバー契約・ドメイン取得・公開作業は基本料金に含まれません。くわしくは<a href="homepage-plan.html">料金プラン</a>をご覧ください。</p>
+        </details>
+        <details class="h2-faq-item">
+          <summary>どれくらいで公開できますか？</summary>
+          <p>納期の目安は14日、素材がそろっている場合は最短48時間からです。内容量や修正回数、ご確認のタイミングにより前後します。</p>
+        </details>
+        <details class="h2-faq-item">
+          <summary>公開したあとの更新は、自分でできますか？</summary>
+          <p>文章の修正や写真の差し替えは、ご自身でも行っていただけます。更新のご依頼や「ちょっと困った」ときのご相談も承ります。</p>
+        </details>
+        <details class="h2-faq-item">
+          <summary>今のホームページの管理費が高い気がします。</summary>
+          <p>今の契約を確認する<a href="homepage-cost-reduction.html">HP維持費の見直し診断</a>は0円です。必ず安くなるとはお約束できませんが、乗り換えた方がよいか、そのままがよいかを正直にお伝えします。</p>
+        </details>
+        <details class="h2-faq-item">
+          <summary>福祉以外の業種でも依頼できますか？</summary>
+          <p>はい、ご相談いただけます。美容室・パーソナルジム・旅館・建築設計事務所などの<a href="works.html">モデルページ</a>もご覧ください。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 運営者 ===== -->
+  <section class="h2-section h2-about" id="about" aria-labelledby="h2-about-title">
+    <div class="container h2-about-grid">
+      <div class="h2-about-photo reveal">
+        <img src="assets/images/profile/uehara-profile.webp" alt="福祉ITパートナー代表 上原健太のプロフィール写真" width="900" height="1200" loading="lazy">
+      </div>
+      <div class="h2-about-body reveal">
+        <p class="h2-script" aria-hidden="true">About us</p>
+        <h2 class="h2-title" id="h2-about-title">ホームページ制作だけではなく、<br class="h2-br-pc">安心を届けるお手伝い。</h2>
+        <p class="h2-about-role">精神保健福祉士 × 個人情報保護士 × ウェブデザイナー<br><strong>代表　上原 健太</strong></p>
+        <p>精神保健福祉士として相談に携わる中で、良い支援をしているのに、その魅力が十分に伝わっていない事業所を多く見てきました。事業所が大切にしている想いや現場ならではの魅力を整理し、ご本人やご家族が「ここなら安心して通えそう」と感じられるホームページをつくることを大切にしています。</p>
+        <ul class="h2-about-links">
+          <li><a href="profile.html">プロフィール <span aria-hidden="true">→</span></a></li>
+          <li><a href="blog.html">お役立ち情報 <span aria-hidden="true">→</span></a></li>
+          <li><a href="course.html">ホームページ作成講座 <span aria-hidden="true">→</span></a></li>
+          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer">YouTube｜ぶひおの3分福祉 <span aria-hidden="true">↗</span></a></li>
+        </ul>
       </div>
     </div>
   </section>
 
   <!-- ===== CTA ===== -->
-  <section class="cta-section">
+  <section class="h2-cta" aria-labelledby="h2-cta-title">
     <div class="container reveal">
-      <h2>まずはお気軽にご相談<span class="no-break">ください。</span></h2>
-      <div class="btn-group">
+      <p class="h2-script" aria-hidden="true">Let's talk</p>
+      <h2 class="h2-cta-title" id="h2-cta-title">まずは、今のお困りごとを<br><span class="no-break">聞かせてください。</span></h2>
+      <p class="h2-cta-text">ご相談は無料です。決まっていないことが多くても、<span class="no-break">いっしょに整理するところから始めます。</span></p>
+      <div class="h2-cta-actions">
         <a href="contact.html#google-form-embed" class="btn btn-accent js-consult-link">無料相談はこちら</a>
+        <a href="contact.html" class="btn btn-outline h2-btn-light">お問い合わせ方法を見る</a>
       </div>
     </div>
   </section>
 
-
 </main>
+
+<!-- 画面右下の小さな相談案内（閉じられる） -->
+<aside class="h2-bubble" data-bubble hidden aria-label="無料相談のご案内">
+  <a href="contact.html#google-form-embed" class="h2-bubble-link js-consult-link">
+    <svg class="h2-bubble-icon" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#e8f4ee"/><path d="M11 14.5c0-2 1.6-3.5 3.5-3.5h11c2 0 3.5 1.5 3.5 3.5v7c0 2-1.5 3.5-3.5 3.5H19l-5 4v-4h0c-1.7 0-3-1.5-3-3.5z" fill="#2c6b54"/><circle cx="16" cy="18" r="1.4" fill="#fff"/><circle cx="20" cy="18" r="1.4" fill="#fff"/><circle cx="24" cy="18" r="1.4" fill="#fff"/></svg>
+    <span><small>何から始めればいい？</small>無料で相談してみる</span>
+  </a>
+  <button type="button" class="h2-bubble-close" data-bubble-close aria-label="相談の案内を閉じる">×</button>
+</aside>
 
 <footer class="site-footer">
   <div class="container">
@@ -355,5 +583,7 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js"></script></body>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/home-v2.js?v=20261116-22"></script>
+</body>
 </html>
