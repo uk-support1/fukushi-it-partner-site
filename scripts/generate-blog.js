@@ -38,6 +38,7 @@ const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 const STATIC_PAGES = [
   "https://fukushi-it-partner.com/",
   "https://fukushi-it-partner.com/subsidy-support/",
+  "https://fukushi-it-partner.com/startup-support.html",
   "https://fukushi-it-partner.com/works.html",
   "https://fukushi-it-partner.com/flow.html",
   "https://fukushi-it-partner.com/homepage-plan.html",
