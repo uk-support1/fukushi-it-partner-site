@@ -1068,3 +1068,7 @@ a:hover > * > .h2-arrow-link {
   border-bottom: 2px solid var(--orange-600);
   transform: translateY(-62%) rotate(45deg);
 }
+
+/* リンクのないお悩みカード（押せない・動かない） */
+.h2-issue--static { cursor: default; }
+.h2-issue--static:hover { transform: none; box-shadow: none; }
