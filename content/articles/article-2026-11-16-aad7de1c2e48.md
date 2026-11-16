@@ -57,7 +57,7 @@ inline_image_selection:
     - recruit
     - seo
   allowTechnology: true
-published: false
+published: true
 description: 就労継続支援B型の報酬改定における利用時間の議論をもとに、事業所が無理なくステップアップの工夫や支援の実際をホームページ上でどう表現するかを実務目線で解説します。
 slug: article-2026-11-16-aad7de1c2e48
 buhio:
