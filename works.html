@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/home-v2.css?v=20261116-26">
+<link rel="stylesheet" href="assets/css/home-v2.css?v=20261116-27">
 <script src="assets/js/ga4.js"></script>
 </head>
 <body class="home2">
@@ -69,11 +69,11 @@
         <p class="h2-script w2-hero-script" aria-hidden="true">Works</p>
         <h1 class="w2-hero-title" id="w2-hero-title">制作実績<span>と、モデルページ</span></h1>
         <p class="w2-hero-lead">福祉事業所のホームページ制作実績と、ほかの業種のモデルページです。<br class="pc-only">流れるカードから、気になるものを実物のサイトでご覧いただけます。</p>
-        <dl class="w2-hero-facts">
-          <div><dt>制作実績</dt><dd><b>5</b>件</dd></div>
-          <div><dt>モデルページ</dt><dd><b>4</b>件</dd></div>
-          <div><dt>制作期間の実績</dt><dd><b>3日</b>〜約1ヶ月</dd></div>
-        </dl>
+        <ul class="w2-hero-tags">
+          <li>福祉の現場目線</li>
+          <li>スマホでもきれい</li>
+          <li>費用と期間を先にお伝え</li>
+        </ul>
         <a class="w2-hero-scroll" href="#lanes"><span>カードを見る</span><i aria-hidden="true"></i></a>
       </div>
       <div class="w2-hero-visual" aria-hidden="true">
@@ -84,130 +84,50 @@
     </div>
   </section>
 
-  <!-- ===== 流れるカード（2段） =====
-       カードを足すときは、各列の <li> を1つコピーして、画像・名前・リンクを書き換えるだけで、流れる列に加わります。 -->
-  <section class="w2-lanes" id="lanes" aria-labelledby="w2-lanes-title">
+  <!-- ===== くるくる回るカード =====
+       カードを足すときは、下の <a class="w2-ring-card"> を1つコピーして、画像・名前・リンクを書き換えるだけで、輪に加わります。 -->
+  <section class="w2-gallery" id="lanes" aria-labelledby="w2-lanes-title">
     <div class="container">
-      <div class="h2-head h2-head--split reveal">
-        <div>
-          <p class="h2-script" aria-hidden="true">Gallery</p>
-          <h2 class="h2-title" id="w2-lanes-title">これまでに作ったページ</h2>
-        </div>
-        <div class="h2-head-side">
-          <p class="h2-lead">上の段は、実際にご依頼いただいた福祉事業所関連の制作実績。下の段は、ほかの業種でのデザインをお見せするモデルページです。カードを押すと、実物のサイトが開きます。</p>
-          <button type="button" class="h2-pause" data-marquee-toggle aria-pressed="false"><span class="h2-pause-icon" aria-hidden="true"></span><span class="h2-pause-text">動きを止める</span></button>
-        </div>
+      <div class="h2-head h2-head--center reveal">
+        <p class="h2-script" aria-hidden="true">Gallery</p>
+        <h2 class="h2-title" id="w2-lanes-title">これまでに作ったページ</h2>
+        <p class="h2-lead">福祉事業所関連の制作例と、ほかの業種のモデルページが、ひとつの輪になって回っています。気になるカードを押すと正面に来て、くわしい内容と実物のサイトへのリンクが出ます。</p>
       </div>
     </div>
 
-    <div class="w2-lane h2-panel--care">
-      <div class="container">
-        <div class="h2-panel-head">
-          <p class="h2-panel-en" aria-hidden="true">REAL WORKS</p>
-          <p class="h2-panel-title">福祉事業所関連の制作実績</p>
-          <p class="h2-panel-sub">福祉・介護・医療の分野のホームページ</p>
-          <span class="h2-panel-arrow" aria-hidden="true"><i></i></span>
-        </div>
-      </div>
-      <div class="h2-marquee h2-marquee--works h2-marquee--lane" data-marquee style="--h2-speed: 70s">
-        <ul class="h2-marquee-track">
-        <li><article class="h2-wcard">
-          <a class="h2-wcard-shot" href="https://uk-support1.github.io/yasuragi-no-kai-site/" target="_blank" rel="noopener noreferrer" aria-label="やすらぎの会のホームページを見る（新しいタブ）"><img src="assets/images/works/card-yasuragi.jpg" alt="家族会「やすらぎの会」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
-          <div class="h2-wcard-body">
-            <p class="h2-wcard-meta">家族会・地域福祉団体</p>
-            <h3 class="h2-wcard-title">新座市精神障害者家族会<span class="no-break">「やすらぎの会」</span></h3>
-            <p class="h2-wcard-chips"><span>制作費 55,000円</span><span>3日間</span></p>
-          </div>
-        </article></li>
-        <li><article class="h2-wcard">
-          <a class="h2-wcard-shot" href="https://lumera-inc.com/" target="_blank" rel="noopener noreferrer" aria-label="cocoruのホームページを見る（新しいタブ）"><img src="assets/images/works/card-cocoru.jpg" alt="就労継続支援B型事業所「cocoru」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
-          <div class="h2-wcard-body">
-            <p class="h2-wcard-meta">新規開業・福祉事業所</p>
-            <h3 class="h2-wcard-title">就労継続支援B型事業所<span class="no-break">「cocoru」</span></h3>
-            <p class="h2-wcard-chips"><span>制作費 19,800円</span><span>5日間</span></p>
-          </div>
-        </article></li>
-        <li><article class="h2-wcard">
-          <a class="h2-wcard-shot" href="https://bluebody-seitai.my.canva.site/" target="_blank" rel="noopener noreferrer" aria-label="Blueボディのホームページを見る（新しいタブ）"><img src="assets/images/works/card-blue.jpg" alt="出張整体サービス「Blueボディ」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
-          <div class="h2-wcard-body">
-            <p class="h2-wcard-meta">出張整体・機能維持運動</p>
-            <h3 class="h2-wcard-title">出張整体サービス<span class="no-break">「Blueボディ」</span></h3>
-            <p class="h2-wcard-chips"><span>制作費 19,800円</span><span>5日間</span></p>
-          </div>
-        </article></li>
-        <li><article class="h2-wcard">
-          <a class="h2-wcard-shot" href="https://kumanomien.co.jp/" target="_blank" rel="noopener noreferrer" aria-label="クマノミ園のホームページを見る（新しいタブ）"><img src="assets/images/works/card-kumanomi.jpg" alt="グループホーム「クマノミ園」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
-          <div class="h2-wcard-body">
-            <p class="h2-wcard-meta">グループホーム</p>
-            <h3 class="h2-wcard-title">グループホーム<span class="no-break">「クマノミ園」</span></h3>
-            <p class="h2-wcard-chips"><span>ブランディングプラン</span><span>約1ヶ月間</span></p>
-          </div>
-        </article></li>
-        <li><article class="h2-wcard">
-          <span class="h2-wcard-shot"><img src="assets/images/works/card-namioto.jpg" alt="訪問看護「なみおと看護リハビリステーション」ホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy"></span>
-          <div class="h2-wcard-body">
-            <p class="h2-wcard-meta">訪問看護<span class="h2-soon">公開前</span></p>
-            <h3 class="h2-wcard-title">訪問看護<span class="no-break">「なみおと看護リハビリステーション」</span></h3>
-            <p class="h2-wcard-chips"><span>制作費 19,800円</span><span>7日間</span></p>
-          </div>
-        </article></li>
-        </ul>
+    <div class="w2-ring" id="w2Ring" aria-label="制作例とモデルページの3Dカード">
+      <div class="w2-ring-track">
+        <a class="w2-ring-card" data-group="care" data-meta="家族会・地域福祉団体" data-name="新座市精神障害者家族会「やすらぎの会」" data-points="制作費 55,000円|3日間" data-url="https://uk-support1.github.io/yasuragi-no-kai-site/" href="https://uk-support1.github.io/yasuragi-no-kai-site/" target="_blank" rel="noopener noreferrer" aria-label="やすらぎの会のホームページを見る（新しいタブ）"><span class="w2-ring-face w2-ring-front"><img src="assets/images/works/card-yasuragi.jpg" alt="やすらぎの会のホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">やすらぎの会<small>家族会・地域福祉団体</small></span></span><span class="w2-ring-face w2-ring-back" aria-hidden="true"><img src="assets/images/works/card-yasuragi.jpg" alt="" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">やすらぎの会<small>家族会・地域福祉団体</small></span></span></a>
+        <a class="w2-ring-card" data-group="care" data-meta="新規開業・福祉事業所" data-name="就労継続支援B型事業所「cocoru」" data-points="制作費 19,800円|5日間" data-url="https://lumera-inc.com/" href="https://lumera-inc.com/" target="_blank" rel="noopener noreferrer" aria-label="cocoruのホームページを見る（新しいタブ）"><span class="w2-ring-face w2-ring-front"><img src="assets/images/works/card-cocoru.jpg" alt="cocoruのホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">cocoru<small>新規開業・福祉事業所</small></span></span><span class="w2-ring-face w2-ring-back" aria-hidden="true"><img src="assets/images/works/card-cocoru.jpg" alt="" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">cocoru<small>新規開業・福祉事業所</small></span></span></a>
+        <a class="w2-ring-card" data-group="care" data-meta="出張整体・機能維持運動" data-name="出張整体サービス「Blueボディ」" data-points="制作費 19,800円|5日間" data-url="https://bluebody-seitai.my.canva.site/" href="https://bluebody-seitai.my.canva.site/" target="_blank" rel="noopener noreferrer" aria-label="Blueボディのホームページを見る（新しいタブ）"><span class="w2-ring-face w2-ring-front"><img src="assets/images/works/card-blue.jpg" alt="Blueボディのホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">Blueボディ<small>出張整体・機能維持運動</small></span></span><span class="w2-ring-face w2-ring-back" aria-hidden="true"><img src="assets/images/works/card-blue.jpg" alt="" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">Blueボディ<small>出張整体・機能維持運動</small></span></span></a>
+        <a class="w2-ring-card" data-group="care" data-meta="グループホーム" data-name="グループホーム「クマノミ園」" data-points="ブランディングプラン|約1ヶ月間" data-url="https://kumanomien.co.jp/" href="https://kumanomien.co.jp/" target="_blank" rel="noopener noreferrer" aria-label="クマノミ園のホームページを見る（新しいタブ）"><span class="w2-ring-face w2-ring-front"><img src="assets/images/works/card-kumanomi.jpg" alt="クマノミ園のホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">クマノミ園<small>グループホーム</small></span></span><span class="w2-ring-face w2-ring-back" aria-hidden="true"><img src="assets/images/works/card-kumanomi.jpg" alt="" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">クマノミ園<small>グループホーム</small></span></span></a>
+        <span class="w2-ring-card" tabindex="0" data-group="care" data-meta="訪問看護" data-name="訪問看護「なみおと看護リハビリステーション」" data-points="制作費 19,800円|7日間" data-soon="1" role="group" aria-label="なみおと（公開前）"><span class="w2-ring-face w2-ring-front"><img src="assets/images/works/card-namioto.jpg" alt="なみおとのホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">なみおと<small>訪問看護</small></span></span><span class="w2-ring-face w2-ring-back" aria-hidden="true"><img src="assets/images/works/card-namioto.jpg" alt="" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">なみおと<small>訪問看護</small></span></span></span>
+        <a class="w2-ring-card" data-group="other" data-meta="美容室" data-name="艶-TSUYA-" data-points="完全個室のサロン|落ち着いた黒基調|上質で大人な印象" data-url="https://uk-support1.github.io/tsuya-hair-salon-sample/" href="https://uk-support1.github.io/tsuya-hair-salon-sample/" target="_blank" rel="noopener noreferrer" aria-label="艶-TSUYA-のホームページを見る（新しいタブ）"><span class="w2-ring-face w2-ring-front"><img src="assets/images/works/card-tsuya.jpg" alt="艶-TSUYA-のホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">艶-TSUYA-<small>美容室</small></span></span><span class="w2-ring-face w2-ring-back" aria-hidden="true"><img src="assets/images/works/card-tsuya.jpg" alt="" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">艶-TSUYA-<small>美容室</small></span></span></a>
+        <a class="w2-ring-card" data-group="other" data-meta="パーソナルジム" data-name="灯-AKARI-" data-points="明るく前向きな配色|未経験でも入りやすい|無料体験へ導く設計" data-url="https://uk-support1.github.io/akari-personal-fitness-sample/" href="https://uk-support1.github.io/akari-personal-fitness-sample/" target="_blank" rel="noopener noreferrer" aria-label="灯-AKARI-のホームページを見る（新しいタブ）"><span class="w2-ring-face w2-ring-front"><img src="assets/images/works/card-akari.jpg" alt="灯-AKARI-のホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">灯-AKARI-<small>パーソナルジム</small></span></span><span class="w2-ring-face w2-ring-back" aria-hidden="true"><img src="assets/images/works/card-akari.jpg" alt="" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">灯-AKARI-<small>パーソナルジム</small></span></span></a>
+        <a class="w2-ring-card" data-group="other" data-meta="旅館" data-name="凪-NAGI-" data-points="一日一組限定の世界観|静けさと余白|自然の写真が主役" data-url="https://uk-support1.github.io/nagi-ryokan-sample/" href="https://uk-support1.github.io/nagi-ryokan-sample/" target="_blank" rel="noopener noreferrer" aria-label="凪-NAGI-のホームページを見る（新しいタブ）"><span class="w2-ring-face w2-ring-front"><img src="assets/images/works/card-nagi.jpg" alt="凪-NAGI-のホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">凪-NAGI-<small>旅館</small></span></span><span class="w2-ring-face w2-ring-back" aria-hidden="true"><img src="assets/images/works/card-nagi.jpg" alt="" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">凪-NAGI-<small>旅館</small></span></span></a>
+        <a class="w2-ring-card" data-group="other" data-meta="建築設計事務所" data-name="CHABURIN ARCHITECTS" data-points="3D住宅モデル|スクロール演出|作品が映えるダーク基調" data-url="https://uk-support1.github.io/architect-3d-demo/" href="https://uk-support1.github.io/architect-3d-demo/" target="_blank" rel="noopener noreferrer" aria-label="CHABURINのホームページを見る（新しいタブ）"><span class="w2-ring-face w2-ring-front"><img src="assets/images/works/card-architect.jpg" alt="CHABURINのホームページのトップ画面とスマホ画面" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">CHABURIN<small>建築設計事務所</small></span></span><span class="w2-ring-face w2-ring-back" aria-hidden="true"><img src="assets/images/works/card-architect.jpg" alt="" width="800" height="800" loading="lazy" decoding="async"><span class="w2-ring-label">CHABURIN<small>建築設計事務所</small></span></span></a>
       </div>
     </div>
 
-    <div class="w2-lane h2-panel--other">
-      <div class="container">
-        <div class="h2-panel-head">
-          <p class="h2-panel-en" aria-hidden="true">MODEL PAGES</p>
-          <p class="h2-panel-title">その他の業種のモデルページ</p>
-          <p class="h2-panel-sub">福祉以外の業種でのデザイン例</p>
-          <span class="h2-panel-arrow" aria-hidden="true"><i></i></span>
-        </div>
-      </div>
-      <div class="h2-marquee h2-marquee--works h2-marquee--lane h2-marquee--reverse" data-marquee style="--h2-speed: 70s">
-        <ul class="h2-marquee-track">
-        <li><article class="h2-wcard">
-          <a class="h2-wcard-shot" href="https://uk-support1.github.io/tsuya-hair-salon-sample/" target="_blank" rel="noopener noreferrer" aria-label="美容室のモデルページを見る（新しいタブ）"><img src="assets/images/works/card-tsuya.jpg" alt="美容室のモデルページ「艶-TSUYA-」のトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
-          <div class="h2-wcard-body">
-            <p class="h2-wcard-meta">美容室</p>
-            <h3 class="h2-wcard-title">艶-TSUYA-</h3>
-            <ul class="h2-feats"><li>完全個室のサロン</li><li>落ち着いた黒基調</li><li>上質で大人な印象</li></ul>
-          </div>
-        </article></li>
-        <li><article class="h2-wcard">
-          <a class="h2-wcard-shot" href="https://uk-support1.github.io/akari-personal-fitness-sample/" target="_blank" rel="noopener noreferrer" aria-label="パーソナルジムのモデルページを見る（新しいタブ）"><img src="assets/images/works/card-akari.jpg" alt="パーソナルジムのモデルページ「灯-AKARI-」のトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
-          <div class="h2-wcard-body">
-            <p class="h2-wcard-meta">パーソナルジム</p>
-            <h3 class="h2-wcard-title">灯-AKARI-</h3>
-            <ul class="h2-feats"><li>明るく前向きな配色</li><li>未経験でも入りやすい</li><li>無料体験へ導く設計</li></ul>
-          </div>
-        </article></li>
-        <li><article class="h2-wcard">
-          <a class="h2-wcard-shot" href="https://uk-support1.github.io/nagi-ryokan-sample/" target="_blank" rel="noopener noreferrer" aria-label="旅館のモデルページを見る（新しいタブ）"><img src="assets/images/works/card-nagi.jpg" alt="旅館のモデルページ「凪-NAGI-」のトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
-          <div class="h2-wcard-body">
-            <p class="h2-wcard-meta">旅館</p>
-            <h3 class="h2-wcard-title">凪-NAGI-</h3>
-            <ul class="h2-feats"><li>一日一組限定の世界観</li><li>静けさと余白</li><li>自然の写真が主役</li></ul>
-          </div>
-        </article></li>
-        <li><article class="h2-wcard">
-          <a class="h2-wcard-shot" href="https://uk-support1.github.io/architect-3d-demo/" target="_blank" rel="noopener noreferrer" aria-label="建築設計事務所のモデルページを見る（新しいタブ）"><img src="assets/images/works/card-architect.jpg" alt="建築設計事務所のモデルページ「CHABURIN ARCHITECTS」のトップ画面とスマホ画面" width="800" height="800" loading="lazy"></a>
-          <div class="h2-wcard-body">
-            <p class="h2-wcard-meta">建築設計事務所</p>
-            <h3 class="h2-wcard-title">CHABURIN ARCHITECTS</h3>
-            <ul class="h2-feats"><li>3D住宅モデル</li><li>スクロール演出</li><li>作品が映えるダーク基調</li></ul>
-          </div>
-        </article></li>
-        </ul>
-      </div>
+    <div class="w2-ring-controls" role="group" aria-label="カードの操作">
+      <button type="button" data-ring="prev" aria-label="前のカードを正面に表示">←</button>
+      <button type="button" data-ring="toggle">回転を一時停止</button>
+      <button type="button" data-ring="next" aria-label="次のカードを正面に表示">→</button>
+      <span class="w2-ring-counter" aria-hidden="true"></span>
     </div>
 
     <div class="container">
+      <div class="w2-ring-panel" data-group="care" aria-live="polite">
+        <p class="w2-ring-kind"><span class="w2-ring-kind-tag"></span><span class="w2-ring-kind-meta"></span></p>
+        <h3 class="w2-ring-name"></h3>
+        <ul class="w2-ring-points"></ul>
+        <p class="w2-ring-action"></p>
+      </div>
       <p class="h2-small-note h2-center-note">表示価格がお支払いの総額です。消費税はかかりません。※各案件の制作実績です。制作内容・ページ数・原稿や写真の準備状況により、費用・期間は異なります。</p>
     </div>
   </section>
 
-<!-- ===== 制作実績 ===== -->
+  <!-- ===== 制作実績 ===== -->
   <section class="w2-section w2-cases-section" id="cases" aria-labelledby="w2-cases-title">
     <div class="container">
       <div class="h2-head h2-head--split reveal">
@@ -439,6 +359,7 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
-<script src="assets/js/home-v2.js?v=20261116-26"></script>
+<script src="assets/js/home-v2.js?v=20261116-27"></script>
+<script src="assets/js/works-ring.js?v=20261116-27"></script>
 </body>
 </html>
