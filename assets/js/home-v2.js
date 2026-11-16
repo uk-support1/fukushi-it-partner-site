@@ -58,17 +58,24 @@
   document.querySelectorAll("[data-marquee]").forEach(function (marquee) {
     var track = marquee.querySelector(".h2-marquee-track");
     if (!track || reduceMotion) return;
-    Array.prototype.slice.call(track.children).forEach(function (item) {
-      var clone = item.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true");
-      clone.querySelectorAll("a, button").forEach(function (el) {
-        el.setAttribute("tabindex", "-1");
+    var originals = Array.prototype.slice.call(track.children);
+    // 画面が広くても切れ目が出ないよう、列の幅が画面幅以上になるまで複製する（2の倍数のセットになるようにする）
+    var unit = track.scrollWidth || 1;
+    var screenW = Math.max(window.innerWidth, window.screen ? window.screen.width : 0);
+    var sets = Math.max(1, Math.ceil(screenW / unit)) * 2 - 1;
+    for (var n = 0; n < sets; n++) {
+      originals.forEach(function (item) {
+        var clone = item.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        clone.querySelectorAll("a, button").forEach(function (el) {
+          el.setAttribute("tabindex", "-1");
+        });
+        clone.querySelectorAll("img").forEach(function (img) {
+          img.setAttribute("alt", "");
+        });
+        track.appendChild(clone);
       });
-      clone.querySelectorAll("img").forEach(function (img) {
-        img.setAttribute("alt", "");
-      });
-      track.appendChild(clone);
-    });
+    }
   });
 
   // 「動きを止める」ボタン
