@@ -5500,3 +5500,53 @@ section {
   color: var(--orange-600);
   margin-bottom: 20px;
 }
+
+/* ===== 料金プラン：4つの括りを、色つきの囲いで分かりやすく ===== */
+.price-index { align-items: stretch; gap: 24px; }
+.pi-group {
+  border-radius: 24px;
+  padding: 22px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(31, 77, 60, 0.08);
+}
+.pi-group--1 { background: #e6f2ea; }
+.pi-group--2 { background: #fdeee0; }
+.pi-group--3 { background: #e5eef5; }
+.pi-group--4 { background: #f6f0df; }
+.pi-group-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.pi-group-num {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--green-900);
+}
+.pi-group--2 .pi-group-num { background: var(--orange-600); }
+.pi-group--3 .pi-group-num { background: #2d5f80; }
+.pi-group--4 .pi-group-num { background: #8a6420; }
+.pi-group .pi-group-title {
+  border-left: 0;
+  padding-left: 0;
+  margin-bottom: 0;
+  font-size: 1.1rem;
+}
+.pi-group-sub {
+  font-size: 0.8rem;
+  color: var(--text-600);
+  margin-top: 2px;
+}
+.pi-group .pi-list { flex: 1; align-content: start; }
+@media (max-width: 480px) {
+  .pi-group { padding: 18px 14px 20px; border-radius: 20px; }
+}
