@@ -426,6 +426,13 @@
   margin-left: 4px;
 }
 
+.ss-base-tax {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-600);
+  margin-top: 4px;
+}
+
 .ss-base-span {
   font-size: 0.9rem;
   color: var(--text-600);
