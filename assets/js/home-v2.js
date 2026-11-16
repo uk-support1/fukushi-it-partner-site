@@ -54,15 +54,16 @@
     });
   }
 
-  // 横に流れる列：中身を1回複製して、切れ目なくループさせる（複製は読み上げ・Tab移動の対象外）
+  // 横に流れる列：ゆっくり自動で流れつつ、ドラッグ・スワイプ・左右ボタンで自分でも動かせる
+  // 中身を複製して切れ目なくループさせる（複製は読み上げ・Tab移動の対象外）
   document.querySelectorAll("[data-marquee]").forEach(function (marquee) {
     var track = marquee.querySelector(".h2-marquee-track");
-    if (!track || reduceMotion) return;
+    if (!track) return;
     var originals = Array.prototype.slice.call(track.children);
-    // 画面が広くても切れ目が出ないよう、列の幅が画面幅以上になるまで複製する（2の倍数のセットになるようにする）
-    var unit = track.scrollWidth || 1;
+    if (!originals.length) return;
+    var unitGuess = track.scrollWidth || 1;
     var screenW = Math.max(window.innerWidth, window.screen ? window.screen.width : 0);
-    var sets = Math.max(1, Math.ceil(screenW / unit)) * 2 - 1;
+    var sets = Math.max(1, Math.ceil(screenW / unitGuess)) + 1;
     for (var n = 0; n < sets; n++) {
       originals.forEach(function (item) {
         var clone = item.cloneNode(true);
@@ -72,20 +73,115 @@
         });
         clone.querySelectorAll("img").forEach(function (img) {
           img.setAttribute("alt", "");
+          img.setAttribute("loading", "eager");
         });
         track.appendChild(clone);
       });
     }
-  });
+    var firstClone = track.children[originals.length];
 
-  // 「動きを止める」ボタン
-  document.querySelectorAll("[data-marquee-toggle]").forEach(function (toggle) {
-    var section = toggle.closest("section");
-    toggle.addEventListener("click", function () {
-      var paused = section.classList.toggle("is-marquee-paused");
-      toggle.setAttribute("aria-pressed", paused ? "true" : "false");
-      toggle.querySelector(".h2-pause-text").textContent = paused ? "動かす" : "動きを止める";
+    // 1セット分の幅（ここを超えたら同じ見た目の位置へ戻す）
+    function unit() {
+      return firstClone.offsetLeft - originals[0].offsetLeft || unitGuess;
+    }
+    var pos = 0;
+    var lastSet = 0;
+    function apply() {
+      var u = unit();
+      if (pos >= u) pos -= u;
+      if (pos < 0) pos += u;
+      marquee.scrollLeft = pos;
+      lastSet = marquee.scrollLeft;
+    }
+
+    var hovering = false;
+    var dragging = false;
+    var idleUntil = 0; // 自分で動かしたあと、しばらく自動で流さない
+    var anim = null; // ボタンで動かしている最中のアニメーション
+    function holdAuto(ms) { idleUntil = Date.now() + ms; }
+
+    marquee.addEventListener("mouseenter", function () { hovering = true; });
+    marquee.addEventListener("mouseleave", function () { hovering = false; });
+
+    // 指で横にスワイプしたとき（ブラウザ標準のスクロール）
+    marquee.addEventListener("scroll", function () {
+      if (Math.abs(marquee.scrollLeft - lastSet) > 2 && !anim) {
+        pos = marquee.scrollLeft;
+        holdAuto(3000);
+        apply();
+      }
+    }, { passive: true });
+    marquee.addEventListener("touchstart", function () { holdAuto(4000); }, { passive: true });
+
+    // マウスでつかんで横にドラッグ
+    var startX = 0, startPos = 0, moved = 0;
+    marquee.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      dragging = true; moved = 0; anim = null;
+      startX = e.clientX; startPos = pos;
+      marquee.classList.add("is-dragging");
     });
+    window.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - startX;
+      moved = Math.max(moved, Math.abs(dx));
+      if (moved > 4) e.preventDefault();
+      pos = startPos - dx;
+      apply();
+    });
+    window.addEventListener("pointerup", function () {
+      if (!dragging) return;
+      dragging = false;
+      marquee.classList.remove("is-dragging");
+      holdAuto(2500);
+    });
+    // ドラッグしただけのときは、カードのリンクを開かない
+    marquee.addEventListener("click", function (e) {
+      if (moved > 6) { e.preventDefault(); e.stopPropagation(); moved = 0; }
+    }, true);
+    marquee.addEventListener("dragstart", function (e) { e.preventDefault(); });
+
+    // 左右ボタン：カード約1枚分ずつ動かす
+    function step() {
+      var card = track.querySelector(".h2-wcard");
+      return card ? card.getBoundingClientRect().width + 16 : 300;
+    }
+    function glide(dist) {
+      var from = pos, t0 = performance.now(), dur = 450;
+      holdAuto(5000);
+      anim = function (now) {
+        var t = Math.min(1, (now - t0) / dur);
+        var e = 1 - Math.pow(1 - t, 3);
+        pos = from + dist * e;
+        if (t >= 1) anim = null;
+      };
+    }
+    var section = marquee.closest("section");
+    if (section) {
+      section.querySelectorAll("[data-marquee-prev]").forEach(function (b) {
+        b.addEventListener("click", function () { glide(-step()); });
+      });
+      section.querySelectorAll("[data-marquee-next]").forEach(function (b) {
+        b.addEventListener("click", function () { glide(step()); });
+      });
+    }
+
+    // 自動で流す（動きを控える設定のときは流さない）
+    var speed = parseFloat(marquee.getAttribute("data-marquee-speed")) || 90; // 1セットを流しきる秒数
+    var prev = performance.now();
+    function frame(now) {
+      var dt = Math.min(100, now - prev);
+      prev = now;
+      if (anim) {
+        anim(now);
+        apply();
+      } else if (!reduceMotion && !hovering && !dragging && Date.now() > idleUntil && !marquee.matches(":focus-within")) {
+        pos += unit() / speed * dt / 1000;
+        apply();
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
   });
 
 
