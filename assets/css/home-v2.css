@@ -235,15 +235,16 @@ a:hover > * > .h2-arrow-link {
   line-height: 1.7;
 }
 
-/* ---------- サービス：開所前（左）→ 開所 → 開所後（右）を、ひと目で見渡せる一覧に ---------- */
+/* ---------- サービス：これから開所する方（左）／すでに開所している方（右）を、ひと目で見渡せる一覧に ---------- */
 .h2-services { background: #fff; }
 .h2-flow2 {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1.1fr);
   gap: 0 16px;
   align-items: stretch;
 }
 .h2-col-label {
+  flex-wrap: wrap;
   display: flex;
   align-items: baseline;
   gap: 10px;
@@ -253,6 +254,7 @@ a:hover > * > .h2-arrow-link {
   margin-bottom: 12px;
 }
 .h2-col-label span {
+  white-space: nowrap;
   font-size: 1.15rem;
   font-weight: 800;
   color: #fff;
@@ -824,7 +826,7 @@ a:hover > * > .h2-arrow-link {
   .h2-value-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .h2-issue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .h2-flow2 { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .h2-open { flex-direction: row; height: 84px; }
+  .h2-open { flex-direction: row; height: 36px; }
   .h2-open-line { height: 2px; width: auto; border-left: 0; border-top: 2px dashed rgba(232, 150, 90, 0.5); }
   .h2-open-badge::after { right: 50%; top: auto; bottom: -13px; margin: 0 -6px 0 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 9px solid var(--orange-500); border-bottom: 0; }
   .h2-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 24px; }
