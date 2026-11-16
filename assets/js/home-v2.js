@@ -2,30 +2,56 @@
 (function () {
   "use strict";
 
-  var root = document.documentElement;
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // 英語の手書き風ラベル：画面に入ったら、左から書かれていくように表示する
+  // 英語の手書き風ラベル：スクロールして画面にしっかり入ってから、1文字ずつ線で書いて塗る
   var scripts = document.querySelectorAll(".h2-script");
-  if (!reduceMotion && "IntersectionObserver" in window && scripts.length) {
-    root.classList.add("h2-js");
-    var drawObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-drawn");
-          drawObserver.unobserve(entry.target);
+  var SVG_NS = "http://www.w3.org/2000/svg";
+  function buildScript(el) {
+    var text = el.textContent.trim();
+    var svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("class", "h2-script-svg");
+    svg.setAttribute("aria-hidden", "true");
+    var t = document.createElementNS(SVG_NS, "text");
+    t.setAttribute("x", "0");
+    t.setAttribute("y", "100");
+    t.setAttribute("font-size", "100");
+    Array.prototype.forEach.call(text, function (ch, i) {
+      var span = document.createElementNS(SVG_NS, "tspan");
+      span.textContent = ch;
+      span.style.animationDelay = (i * 0.11) + "s, " + (1.2 + i * 0.11) + "s";
+      t.appendChild(span);
+    });
+    svg.appendChild(t);
+    el.textContent = "";
+    el.appendChild(svg);
+    var box = t.getBBox();
+    if (!box.width) return false;
+    var pad = 6;
+    svg.setAttribute("viewBox", (box.x - pad) + " " + (box.y - pad) + " " + (box.width + pad * 2) + " " + (box.height + pad * 2));
+    svg.style.width = ((box.width + pad * 2) / 100) + "em";
+    svg.style.height = ((box.height + pad * 2) / 100) + "em";
+    return true;
+  }
+  if (!reduceMotion && "IntersectionObserver" in window && scripts.length && document.fonts) {
+    document.fonts.load("600 40px Caveat").then(function () {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+            entry.target.classList.add("is-drawn");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: [0, 0.6, 1], rootMargin: "0px 0px -15% 0px" });
+      scripts.forEach(function (el) {
+        var original = el.textContent;
+        if (buildScript(el)) {
+          observer.observe(el);
+        } else {
+          el.textContent = original;
         }
       });
-    }, { threshold: 0, rootMargin: "0px 0px -12% 0px" });
-    scripts.forEach(function (el) {
-      drawObserver.observe(el);
     });
-    // 念のため、一定時間後にはすべて表示する
-    window.setTimeout(function () {
-      scripts.forEach(function (el) {
-        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add("is-drawn");
-      });
-    }, 2500);
   }
 
   // 横に流れる列：中身を1回複製して、切れ目なくループさせる（複製は読み上げ・Tab移動の対象外）
@@ -55,8 +81,6 @@
     });
   });
 
-  // サービス：スクロールに合わせて「開所前 → 開所後」の線が伸びる
-  var timeline = document.querySelector(".h2-timeline");
 
   // 右下の相談案内：ファーストビューを過ぎたら表示。閉じたら、このページを開いている間は出さない
   var bubble = document.querySelector("[data-bubble]");
@@ -83,11 +107,6 @@
     var y = window.scrollY || window.pageYOffset;
     var vh = window.innerHeight;
     if (header) header.classList.toggle("is-scrolled", y > 10);
-    if (timeline) {
-      var r = timeline.getBoundingClientRect();
-      var p = reduceMotion ? 1 : (vh * 0.7 - r.top) / r.height;
-      timeline.style.setProperty("--p", Math.max(0, Math.min(1, p)).toFixed(3));
-    }
     if (bubble && !bubble.hidden) {
       var nearFooter = footer && footer.getBoundingClientRect().top < vh;
       bubble.classList.toggle("is-shown", y > vh * 0.6 && !nearFooter);
