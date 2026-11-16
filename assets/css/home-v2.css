@@ -1045,3 +1045,26 @@ a:hover > * > .h2-arrow-link {
   .h2-marquee--works .h2-wcard { width: 250px; }
   .h2-marquee--works > .h2-marquee-track > li.h2-panel { padding: 16px 14px 20px; margin: 0 8px; }
 }
+
+/* モデルカードの「デザインの特徴」 */
+.h2-feats { list-style: none; display: grid; gap: 6px; margin-top: 12px; }
+.h2-feats li {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #8a4a1f;
+  background: #fdeee0;
+  border-radius: 8px;
+  padding: 5px 10px 5px 26px;
+  position: relative;
+}
+.h2-feats li::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  width: 5px;
+  height: 9px;
+  border-right: 2px solid var(--orange-600);
+  border-bottom: 2px solid var(--orange-600);
+  transform: translateY(-62%) rotate(45deg);
+}
