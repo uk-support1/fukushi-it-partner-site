@@ -4,11 +4,13 @@ const lib = require("./lib/articles");
 const { selectTopic, TopicError, existingArticleInfo, normalizeSourceUrl } = require("./topic-selector");
 const { generateArticle } = require("./article-generator");
 const { saveArticleDraft } = require("./article-writer");
-const { collectLatestInfo, DEFAULT_SOURCES, loadYoutubeCache } = require("./latest-info");
+const { collectLatestInfo, DEFAULT_SOURCES, loadYoutubeCache, onlyCurrentVideoSources } = require("./latest-info");
 const { fetchVideoThumbnail } = require("./lib/video-thumbnail");
 
 const VIDEO_SOURCES = DEFAULT_SOURCES.filter(source => source.kind === "video");
 const NEWEST_CANDIDATES = 5;
+// 古い動画も材料にしてよい（2026-11-17〜）。新しい動画から順に使い、使い切ったら古いものへ進む。
+const VIDEO_MAX_AGE_DAYS = 1100;
 
 // generateArticle() already revises style/duplicate-heading problems itself; these
 // are the cases where the model's output was simply unusable (wrong title,
@@ -93,7 +95,7 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
     return {startedAt:now.toISOString(),localDate,timeZone:"Asia/Tokyo",
       status:"already_published_today",articlesCreated:0,shouldPublish:false};
   }
-  // The run only ever selects from the 4 YouTube channels; official
+  // The run only ever selects from the registered YouTube channels (DEFAULT_SOURCES, kind "video"); official
   // government/agency RSS sources are no longer used for topic selection (see
   // docs/daily-blog.md). By default it fetches the feeds live from the cloud
   // runner (works most days; a failed fetch is just swallowed) AND merges in the
@@ -105,11 +107,11 @@ async function prepareDailyBlog({now = new Date(), env = process.env, request, a
   const evergreenOnly = env.DAILY_BLOG_FORCE_EVERGREEN === "true" && env.DAILY_BLOG_EVENT_NAME !== "schedule";
   const filter = env.DAILY_BLOG_SOURCES_FILTER;
   const sources = evergreenOnly || filter === "cache" ? [] : VIDEO_SOURCES;
-  const extraCandidates = evergreenOnly || filter === "live" ? [] : loadCache({now});
+  const extraCandidates = evergreenOnly || filter === "live" ? [] : onlyCurrentVideoSources(loadCache({now}));
   // Already-used videos are dropped before the top-10 cut so they can't crowd
   // out unused ones, and unused videos stay eligible for a month.
   const used = usedSourceKeys(load);
-  const latest = await collectWithRetry(collect, {now, sources, extraCandidates, maxAgeDays:90, sortBy:"recent",
+  const latest = await collectWithRetry(collect, {now, sources, extraCandidates, maxAgeDays:VIDEO_MAX_AGE_DAYS, sortBy:"recent",
     exclude:item => used.has(normalizeSourceUrl(item.url))}, sleep);
   // Only the newest few go to the model: given ten it kept picking an older, "more useful"
   // video over a fresh one, and the goal is to write about the newest videos.

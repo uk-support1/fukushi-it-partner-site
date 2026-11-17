@@ -157,9 +157,9 @@ test("The resolved video thumbnail is passed to save(); a thumbnail-fetch failur
   assert.equal(safeResult.status,"draft_saved");
   assert.equal(seenThumbnail,null);
 });
-test("The run only ever selects from the 4 YouTube channels (never official RSS): by default it fetches live AND reads the cache; DAILY_BLOG_SOURCES_FILTER isolates either path",async t=>{
+test("The run only ever selects from the registered YouTube channels (never official RSS): by default it fetches live AND reads the cache; DAILY_BLOG_SOURCES_FILTER isolates either path",async t=>{
   const directory=temporaryArticles(t);
-  const cached=[{title:"介護職の夜勤対応のコツ",url:"https://www.youtube.com/watch?v=cached1",publishedAt:"2026-09-11T00:00:00.000Z",source:"ケアきょう（介護職のためのチャンネル）",summary:"夜勤対応のコツを紹介する動画です。",kind:"video"}];
+  const cached=[{title:"介護職の夜勤対応のコツ",url:"https://www.youtube.com/watch?v=cached1",publishedAt:"2026-09-11T00:00:00.000Z",source:"放デイラボ（放課後等デイサービスの開業・運営）",summary:"夜勤対応のコツを紹介する動画です。",kind:"video"}];
   const collectWith=async filter=>{
     let args;
     await prepareDailyBlog({env:filter?{...env,DAILY_BLOG_SOURCES_FILTER:filter}:env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
@@ -168,12 +168,18 @@ test("The run only ever selects from the 4 YouTube channels (never official RSS)
     return args;
   };
   const auto=await collectWith(undefined);
-  assert.equal(auto.sources.length,4);
+  assert.equal(auto.sources.length,9);
   assert.ok(auto.sources.every(source=>source.kind==="video"));
   assert.deepEqual(auto.extraCandidates,cached);
-  assert.equal(auto.maxAgeDays,90);
+  const dropped=[{...cached[0],url:"https://www.youtube.com/watch?v=dropped1",source:"ケアきょう（介護職のためのチャンネル）"}];
+  let droppedArgs;
+  await prepareDailyBlog({env,now:new Date("2026-09-11T21:00:00Z"),load:()=>articles,
+    collect:async a=>{droppedArgs=a;return {candidates:[],attemptedSources:0,successfulSources:0};},
+    loadCache:()=>[...cached,...dropped],request:async()=>JSON.stringify(topic),articlesDir:directory}).catch(()=>{});
+  assert.deepEqual(droppedArgs.extraCandidates,cached,"videos of a channel that is no longer registered are ignored");
+  assert.equal(auto.maxAgeDays,1100,"old videos stay usable (about 3 years)");
   const live=await collectWith("live");
-  assert.equal(live.sources.length,4);
+  assert.equal(live.sources.length,9);
   assert.deepEqual(live.extraCandidates,[]);
   const cacheOnly=await collectWith("cache");
   assert.deepEqual(cacheOnly.sources,[]);

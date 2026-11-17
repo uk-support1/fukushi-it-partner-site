@@ -30,11 +30,13 @@ test("the welfare-industry WAM NET source is allowed and generic news sites like
   assert.equal(safeOfficialUrl("https://www.wam.go.jp/gyoseiShiryou/detail?gno=1"),"https://www.wam.go.jp/gyoseiShiryou/detail?gno=1");
 });
 
-test("the four requested YouTube channels are registered as video-kind sources with real channel RSS URLs",()=>{
-  const expected=["精神保健福祉士うさぎ","精神科医がこころの病気を解説するCh（益田裕介）","WithYouチャンネル（精神・発達専門の就労移行支援）","ケアきょう（介護職のためのチャンネル）"];
+test("the nine requested YouTube channels (startup / website-building focus, plus 益田先生) are registered as video-kind sources with real channel RSS URLs",()=>{
+  const expected=["精神科医がこころの病気を解説するCh（益田裕介）","放デイラボ（放課後等デイサービスの開業・運営）","井ノ上剛の福祉起業塾（介護・障害福祉の開業と運営）","就労継続支援B型 経営コンサルch.","就労支援ファンタジスタの事業完全ガイドTV","ウェブロード（事業者向けWeb集客塾）","比嘉太一（集客×AI・Googleマップ）","Web集客攻略@ベリウェブチャンネル","ウェブビジチャンネル（小規模事業者のSEO・Web集客）"];
   const videoSources=DEFAULT_SOURCES.filter(item=>item.kind==="video");
-  assert.equal(videoSources.length,4);
+  assert.equal(videoSources.length,9);
   for(const name of expected) assert.ok(videoSources.some(item=>item.name===name),name);
+  assert.equal(new Set(videoSources.map(item=>item.url)).size,9,"no duplicate channels");
+  for(const name of ["精神保健福祉士うさぎ","WithYouチャンネル（精神・発達専門の就労移行支援）","ケアきょう（介護職のためのチャンネル）"]) assert.ok(!videoSources.some(item=>item.name===name),name+" was dropped");
   for(const item of videoSources) {
     assert.match(item.url,/^https:\/\/www\.youtube\.com\/feeds\/videos\.xml\?channel_id=UC/);
     assert.ok(ALLOWED_HOSTS.has(new URL(item.url).hostname));
@@ -242,4 +244,18 @@ test("Gemini echoing the /watch?v= form of a candidate given as /shorts/ still v
     }});
   assert.equal(result.contentMode,"latest_info");
   assert.deepEqual(result.sources,[shortsCandidate]);
+});
+
+test("videos from channels that are no longer registered are dropped from the stored candidates, and old videos stay usable",async()=>{
+  const { onlyCurrentVideoSources } = require("../scripts/latest-info");
+  const keep={title:"放課後等デイサービスの開業で最初にすること",url:"https://www.youtube.com/watch?v=keep0000001",publishedAt:"2024-03-01T00:00:00.000Z",source:"放デイラボ（放課後等デイサービスの開業・運営）",summary:"開業の準備です。",kind:"video"};
+  const gone={...keep,url:"https://www.youtube.com/watch?v=gone0000001",source:"精神保健福祉士うさぎ"};
+  assert.deepEqual(onlyCurrentVideoSources([keep,gone,null]),[keep]);
+  const result=await collectLatestInfo({now:new Date("2026-11-17T00:00:00Z"),sources:[],fetchImpl:async()=>{throw new Error("none");},
+    extraCandidates:[keep],maxAgeDays:1100,sortBy:"recent"});
+  assert.equal(result.candidates.length,1,"a video about 2.7 years old is still a candidate");
+  const startup={title:"新規開設の流れ",summary:"グループホームを立ち上げる手順",url:"https://www.youtube.com/watch?v=term0000001",publishedAt:"2026-11-10T00:00:00.000Z",source:"x",kind:"video"};
+  const web={title:"SEOとGoogleマップの基本",summary:"集客のためのホームページ",url:"https://www.youtube.com/watch?v=term0000002",publishedAt:"2026-11-10T00:00:00.000Z",source:"y",kind:"video"};
+  const both=await collectLatestInfo({now:new Date("2026-11-17T00:00:00Z"),sources:[],fetchImpl:async()=>{throw new Error("none");},extraCandidates:[startup,web],maxAgeDays:30,limit:10});
+  assert.equal(both.candidates.length,2,"startup and website-building titles count as relevant");
 });

@@ -10,10 +10,17 @@ const DEFAULT_SOURCES = Object.freeze([
   { name: "福祉医療機構（WAM NET）", url: "https://www.wam.go.jp/gyoseiShiryou/new_rss", priority: 1 },
   { name: "デジタル庁", url: "https://www.digital.go.jp/rss/news.xml", priority: 2 },
   { name: "内閣府", url: "https://www.cao.go.jp/rss/news.rdf", priority: 4 },
-  { name: "精神保健福祉士うさぎ", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCfG0XDjNIjHm2vmrChrL4SQ", priority: 3, kind: "video" },
+  // 2026-11-17〜：「これから福祉事業を立ち上げる方」「ホームページを作る・育てる方」向けに入れ替え。
+  // 益田先生だけは、うえはらさんの希望で残している。
   { name: "精神科医がこころの病気を解説するCh（益田裕介）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC7C5oRm6cGgbjJdPPEVeNMA", priority: 3, kind: "video" },
-  { name: "WithYouチャンネル（精神・発達専門の就労移行支援）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCYG77cJbgyh0clabzxFN6pg", priority: 3, kind: "video" },
-  { name: "ケアきょう（介護職のためのチャンネル）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCNkibDFHKRpY3KNm-jTTIsQ", priority: 3, kind: "video" }
+  { name: "放デイラボ（放課後等デイサービスの開業・運営）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCbYyx02Ddc-24jECzu_H_Gg", priority: 3, kind: "video" },
+  { name: "井ノ上剛の福祉起業塾（介護・障害福祉の開業と運営）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC8l5FBVqBl9UAm0iGxnCEwg", priority: 3, kind: "video" },
+  { name: "就労継続支援B型 経営コンサルch.", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCsbJnyTUNVs5S4kVkEspGsw", priority: 3, kind: "video" },
+  { name: "就労支援ファンタジスタの事業完全ガイドTV", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC_a0gSucOget4jpw6GG3e8A", priority: 3, kind: "video" },
+  { name: "ウェブロード（事業者向けWeb集客塾）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCS8si8MFpVINLow7e4liOKw", priority: 3, kind: "video" },
+  { name: "比嘉太一（集客×AI・Googleマップ）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCywqjYr4-yJ8phqaP7L49AA", priority: 3, kind: "video" },
+  { name: "Web集客攻略@ベリウェブチャンネル", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UC3UvN1aglIdu_Pqqu4wOKTg", priority: 3, kind: "video" },
+  { name: "ウェブビジチャンネル（小規模事業者のSEO・Web集客）", url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCglL7L0BuNgecHDmUMv_YjQ", priority: 3, kind: "video" }
 ]);
 const ALLOWED_HOSTS = new Set(["www.mhlw.go.jp", "www.wam.go.jp", "www.digital.go.jp", "www.cao.go.jp", "www.youtube.com"]);
 // Hosts whose article page is a JS-rendered app, not prose: enrichCandidate()
@@ -22,7 +29,9 @@ const NO_ENRICH_HOSTS = new Set(["www.youtube.com"]);
 const RELEVANT_TERMS = [
   "障害", "福祉", "就労", "雇用", "共同生活", "グループホーム", "精神", "こども", "子ども",
   "デジタル", "dx", "ai", "it", "情報", "システム", "業務", "効率", "広報", "ウェブ", "web",
-  "ホームページ", "検索", "補助", "助成", "支援", "事業者", "法人", "手話", "介護"
+  "ホームページ", "検索", "補助", "助成", "支援", "事業者", "法人", "手話", "介護",
+  "開業", "開設", "起業", "創業", "立ち上げ", "新規", "集客", "seo", "meo", "google", "マップ", "wordpress",
+  "サイト", "採用", "融資", "指定申請", "報酬", "放課後等デイ", "放デイ", "経営", "運営", "小規模"
 ];
 const MAX_FEED_BYTES = 1_000_000;
 const MAX_PAGE_BYTES = 1_500_000;
@@ -172,7 +181,7 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
       if (seenUrls.has(item.url) || seenTitles.has(title)) return false;
       seenUrls.add(item.url); seenTitles.add(title); return true;
     });
-  const maxTotal = Math.max(3, Math.min(100, limit));
+  const maxTotal = Math.max(3, Math.min(500, limit));
   // A single prolific source (e.g. a channel that repeats the same promotional
   // boilerplate in every description, inflating relevance for unrelated
   // videos too) must not crowd out every other source. Cap it, but only after
@@ -194,6 +203,12 @@ async function collectLatestInfo({fetchImpl = globalThis.fetch, now = new Date()
 }
 
 const YOUTUBE_CACHE_MAX_AGE_DAYS = 90;
+
+// 登録から外したチャンネルの動画が、ためてある分から残り続けないようにする。
+function onlyCurrentVideoSources(items, sources = DEFAULT_SOURCES) {
+  const names = new Set(sources.filter(source => source.kind === "video").map(source => source.name));
+  return (Array.isArray(items) ? items : []).filter(item => item && names.has(item.source));
+}
 const YOUTUBE_CACHE_FILE = path.join(__dirname, "..", "data", "youtube-cache.json");
 
 // Populated daily by the youtube-cache workflow (scripts/fetch-youtube-cache.js),
@@ -210,5 +225,5 @@ function loadYoutubeCache({ file = YOUTUBE_CACHE_FILE, now = new Date(), maxAgeD
     safeOfficialUrl(item.url));
 }
 
-module.exports = { DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, YOUTUBE_CACHE_FILE, YOUTUBE_CACHE_MAX_AGE_DAYS, PER_SOURCE_CAP,
+module.exports = { onlyCurrentVideoSources, DEFAULT_SOURCES, ALLOWED_HOSTS, NO_ENRICH_HOSTS, YOUTUBE_CACHE_FILE, YOUTUBE_CACHE_MAX_AGE_DAYS, PER_SOURCE_CAP,
   parseFeed, collectLatestInfo, safeOfficialUrl, relevance, pageSummary, loadYoutubeCache };
