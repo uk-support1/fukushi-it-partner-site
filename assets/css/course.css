@@ -171,6 +171,7 @@
   gap: 16px;
   margin: 28px 0;
 }
+.course-buhio-picture { flex: none; display: block; line-height: 0; }
 .course-buhio-img {
   flex: none;
   width: 76px;

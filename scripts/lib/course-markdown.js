@@ -37,6 +37,9 @@ const BUHIO_TYPE_MAP = {
 };
 const DEFAULT_BUHIO_TYPE = "note";
 const TALKING_BUHIO_FILE = "buhio-talking.gif";
+// 身振りのある動く部品（assets/images/buhio/motion/。作り方は scripts/tools/build-buhio-motions.py）。
+// 動きを減らす設定の閲覧者には、止まった版（-still.webp）を表示する。
+const BUHIO_MOTIONS = ["smile", "waving", "cheer", "thinking", "please", "sad"];
 
 function buhioForType(type) {
   const key = typeof type === "string" && BUHIO_TYPE_MAP[type] ? type : DEFAULT_BUHIO_TYPE;
@@ -158,12 +161,17 @@ function buhioExtension() {
     },
     renderer(token) {
       const meta = buhioForType(token.buhioType);
-      const imageFile = token.buhioMotion === "talking" ? TALKING_BUHIO_FILE : meta.file;
+      const motion = BUHIO_MOTIONS.includes(token.buhioMotion) ? token.buhioMotion : "";
+      const imageFile = token.buhioMotion === "talking" ? TALKING_BUHIO_FILE : motion ? "motion/" + motion + ".webp" : meta.file;
       const comment = this.parser.parseInline(token.tokens);
       const labelHtml = meta.label ? '<span class="course-buhio-tag">' + escapeHtml(meta.label) + "</span>" : "";
+      const imgHtml = '<img src="../' + BUHIO_DIRECTORY + imageFile + '" alt="ぶひお" width="96" height="96" loading="lazy" decoding="async" class="course-buhio-img">';
+      const pictureHtml = motion
+        ? '<picture class="course-buhio-picture"><source media="(prefers-reduced-motion: reduce)" srcset="../' + BUHIO_DIRECTORY + "motion/" + motion + '-still.webp">' + imgHtml + "</picture>"
+        : imgHtml;
       return (
         '<div class="course-buhio">' +
-        '<img src="../' + BUHIO_DIRECTORY + imageFile + '" alt="ぶひお" width="96" height="96" loading="lazy" decoding="async" class="course-buhio-img">' +
+        pictureHtml +
         '<div class="course-buhio-bubble">' +
         '<p class="course-buhio-name">ぶひお' + labelHtml + "</p>" +
         '<p class="course-buhio-comment">' + comment + "</p>" +
@@ -247,4 +255,4 @@ function courseBodyToHtml(body, depth) {
   return { html: html, headings: parsed.headings };
 }
 
-module.exports = { courseBodyToHtml: courseBodyToHtml, slugifyHeading: slugifyHeading, BUHIO_TYPE_MAP: BUHIO_TYPE_MAP };
+module.exports = { courseBodyToHtml: courseBodyToHtml, slugifyHeading: slugifyHeading, BUHIO_TYPE_MAP: BUHIO_TYPE_MAP, BUHIO_MOTIONS: BUHIO_MOTIONS };

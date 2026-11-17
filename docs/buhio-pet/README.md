@@ -2,7 +2,7 @@
 
 Codex の「hatch-pet」で作成した、動くぶひお（ピンクのぶた、水色の「39」Tシャツ、紫のパンツ）の画像データの保管場所です。
 
-記事内に表示している固定画像（`assets/images/buhio/`、[docs/buhio.md](../buhio.md) 参照）とは**別物**です。記事生成スクリプトはこのフォルダを参照しません。
+記事内に表示している固定画像（`assets/images/buhio/`、[docs/buhio.md](../buhio.md) 参照）とは**別物**です。2026-11-17 から、このシートを元に講座用の動く部品（`assets/images/buhio/motion/`）を作っています（`scripts/tools/build-buhio-motions.py`）。サイトの生成スクリプトは、このフォルダを直接は参照しません。
 
 ## 保管しているファイル
 

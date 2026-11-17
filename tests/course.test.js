@@ -189,6 +189,30 @@ test("BUHIO talking motion uses the animated asset while preserving the type lab
   assert.match(image.subarray(0, 6).toString("ascii"), /^GIF8[79]a$/);
 });
 
+test("BUHIO gesture motions use animated WebP parts with a still version for reduced motion", () => {
+  const { BUHIO_MOTIONS } = require("../scripts/lib/course-markdown");
+  assert.deepEqual(BUHIO_MOTIONS, ["smile", "waving", "cheer", "thinking", "please", "sad"]);
+  for (const motion of BUHIO_MOTIONS) {
+    const body = `[BUHIO type="greeting" motion="${motion}"]コメント[/BUHIO]`;
+    const { html } = courseBodyToHtml(body, "course");
+    assert.ok(html.includes(`<picture class="course-buhio-picture"><source media="(prefers-reduced-motion: reduce)" srcset="../assets/images/buhio/motion/${motion}-still.webp">`));
+    assert.ok(html.includes(`<img src="../assets/images/buhio/motion/${motion}.webp"`));
+    for (const file of [`${motion}.webp`, `${motion}-still.webp`]) {
+      const rel = `assets/images/buhio/motion/${file}`;
+      const image = fs.readFileSync(path.join(ROOT, rel));
+      assert.equal(image.subarray(0, 4).toString("ascii"), "RIFF");
+      assert.equal(image.subarray(8, 12).toString("ascii"), "WEBP");
+      assert.ok(isPublicFile(rel));
+    }
+    const animated = fs.readFileSync(path.join(ROOT, `assets/images/buhio/motion/${motion}.webp`));
+    assert.ok(animated.includes(Buffer.from("ANMF")), `${motion}.webp should be animated`);
+  }
+  // 未知の motion は固定画像に戻る（記法ミスで画像が消えない）。
+  const { html } = courseBodyToHtml('[BUHIO type="point" motion="dance"]コメント[/BUHIO]', "course");
+  assert.match(html, /buhio-03-pointing\.png/);
+  assert.ok(!html.includes("<picture"));
+});
+
 test("E: existing blog is unaffected by running the course generator", t => {
   const dir = sandbox(t);
   const blogHtmlBefore = text(dir, "blog.html");
