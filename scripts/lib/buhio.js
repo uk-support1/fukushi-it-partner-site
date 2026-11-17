@@ -43,6 +43,7 @@ function fallbackComment(article) {
 }
 function renderBuhio(article, requested, escapeHtml) {
   const selection = selectBuhio(article, requested);
-  return `<aside class="buhio-note" aria-label="ぶひおのひとこと"><img src="../${DIRECTORY}${selection.image}" alt="${escapeHtml(selection.alt)}" width="128" height="128" loading="lazy" decoding="async"><div><strong>ぶひおのひとこと</strong><p>${escapeHtml(selection.comment)}</p></div></aside>`;
+  const pose = (selection.image.match(/^buhio-\d+-([a-z]+)\.png$/) || [])[1] || "standing";
+  return `<aside class="buhio-note" data-pose="${pose}" aria-label="ぶひおのひとこと"><img src="../${DIRECTORY}${selection.image}" alt="${escapeHtml(selection.alt)}" width="128" height="128" loading="lazy" decoding="async"><div><strong>ぶひおのひとこと</strong><p>${escapeHtml(selection.comment)}</p></div></aside>`;
 }
 module.exports = { BUHIO_IMAGES, DIRECTORY, selectBuhio, renderBuhio };

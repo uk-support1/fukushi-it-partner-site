@@ -5160,6 +5160,33 @@ section {
   .blog-article .buhio-note { gap: 12px; padding: 12px; align-items: flex-start; }
   .blog-article .buhio-note img { width: 88px; }
 }
+/* ぶひおの身振り：固定画像のポーズに合わせて、ゆっくり動いて見せる（動きを減らす設定では止める）。 */
+.blog-article .buhio-note img { transform-origin: 50% 100%; animation: buhio-breathe 3.2s ease-in-out infinite; }
+.blog-article .buhio-note[data-pose="waving"] img { animation: buhio-sway 1.8s ease-in-out infinite; }
+.blog-article .buhio-note[data-pose="pointing"] img { animation: buhio-point 2.2s ease-in-out infinite; }
+.blog-article .buhio-note[data-pose="jumping"] img { animation: buhio-hop 1.6s ease-in-out infinite; }
+.blog-article .buhio-note[data-pose="surprised"] img { animation: buhio-startle 3.4s ease-in-out infinite; }
+.blog-article .buhio-note[data-pose="important"] img { animation: buhio-show 2.4s ease-in-out infinite; }
+@keyframes buhio-breathe { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-2px) scale(1.015, 0.985); } }
+@keyframes buhio-sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes buhio-point { 0%, 60%, 100% { transform: translateX(0) rotate(0); } 30% { transform: translateX(4px) rotate(2deg); } }
+@keyframes buhio-hop {
+  0%, 55%, 100% { transform: translateY(0) scale(1, 1); }
+  10% { transform: translateY(0) scale(1.04, 0.95); }
+  25% { transform: translateY(-12px) scale(0.98, 1.03); }
+  40% { transform: translateY(0) scale(1.03, 0.97); }
+}
+@keyframes buhio-startle {
+  0%, 30%, 100% { transform: translate(0, 0) rotate(0); }
+  4% { transform: translate(0, -5px) rotate(-3deg); }
+  8% { transform: translate(0, -5px) rotate(3deg); }
+  12% { transform: translate(0, -3px) rotate(-2deg); }
+  16% { transform: translate(0, 0) rotate(0); }
+}
+@keyframes buhio-show { 0%, 100% { transform: scale(1) rotate(0); } 20% { transform: scale(1.05) rotate(-2deg); } 40% { transform: scale(1) rotate(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .blog-article .buhio-note img { animation: none; }
+}
 
 /* ===== 料金プラン → 新規開設サポート（startup-support.html）への導線 ===== */
 .plan-startup-link {

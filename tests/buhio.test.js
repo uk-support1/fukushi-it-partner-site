@@ -50,3 +50,18 @@ test("Gemini selection survives validation, Markdown storage and HTML rendering"
   const legacy = renderArticlePage({...row,data:{...row.data,buhio:undefined}}, {}, [row]);
   assert.ok(legacy.includes('class="buhio-note"'));
 });
+
+test("Article companion gets a gentle gesture per pose, and stops for reduced motion", () => {
+  const { renderBuhio } = require("../scripts/lib/buhio");
+  const esc = v => String(v);
+  for (const { file } of BUHIO_IMAGES) {
+    const pose = file.match(/^buhio-\d+-([a-z]+)\.png$/)[1];
+    const html = renderBuhio({ title: "t", description: "", bodyMarkdown: "" }, { image: file, alt: "a", comment: "c" }, esc);
+    assert.ok(html.startsWith(`<aside class="buhio-note" data-pose="${pose}"`));
+  }
+  const css = fs.readFileSync(path.join(__dirname, "..", "assets/css/style.css"), "utf8");
+  for (const pose of ["waving", "pointing", "jumping", "surprised", "important"]) {
+    assert.ok(css.includes(`.blog-article .buhio-note[data-pose="${pose}"] img { animation:`));
+  }
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\.blog-article \.buhio-note img \{ animation: none; \}/);
+});
