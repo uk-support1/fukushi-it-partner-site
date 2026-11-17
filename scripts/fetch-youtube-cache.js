@@ -6,7 +6,7 @@
 const cp = require("child_process");
 const fs = require("fs");
 const path = require("path");
-const { DEFAULT_SOURCES, collectLatestInfo, loadYoutubeCache } = require("./latest-info");
+const { DEFAULT_SOURCES, collectLatestInfo, loadYoutubeCache, onlyCurrentVideoSources } = require("./latest-info");
 
 class YoutubeCacheError extends Error {
   constructor(code) {
@@ -33,12 +33,15 @@ const sleepMs = ms => new Promise(resolve => setTimeout(resolve, ms));
 // be fetched directly; instead each run folds the previous cache back in
 // (collect's extraCandidates) and keeps up to 90 days of videos. `previous`
 // carries videos not yet used as an article source across days the machine was off.
-async function fetchYoutubeCache({ now = new Date(), collect = collectLatestInfo, previous = loadYoutubeCache({ now }),
+// 古い動画も記事の材料にしてよい（うえはらさんの希望、2026-11-17）。最大約3年分をためる。
+const YOUTUBE_CACHE_VIDEO_MAX_AGE_DAYS = 1100;
+
+async function fetchYoutubeCache({ now = new Date(), collect = collectLatestInfo, previous = onlyCurrentVideoSources(loadYoutubeCache({ now })),
   attempts = 3, retryDelayMs = 30000, sleep = sleepMs } = {}) {
   const videoSources = DEFAULT_SOURCES.filter(source => source.kind === "video");
   let result;
   for (let attempt = 1; attempt <= attempts; attempt++) {
-    result = await collect({ now, sources: videoSources, limit: 150, maxAgeDays: 90, sortBy: "recent", extraCandidates: previous });
+    result = await collect({ now, sources: videoSources, limit: 400, maxAgeDays: YOUTUBE_CACHE_VIDEO_MAX_AGE_DAYS, sortBy: "recent", extraCandidates: previous });
     if (result.successfulSources > 0) break;
     // Often just a network that isn't up yet right after the PC boots.
     if (attempt < attempts) await sleep(retryDelayMs);

@@ -49,26 +49,26 @@ const video = { title: "障がい者施設が作ったクッキーについて",
 test("fetchYoutubeCache only ever live-fetches the video sources, never the official ones",async()=>{
   let seenSources;
   const result=await fetchYoutubeCache({now:new Date("2026-09-18T03:00:00Z"),
-    collect:async args=>{seenSources=args.sources;return {candidates:[video],attemptedSources:4,successfulSources:4};}});
-  assert.equal(seenSources.length,4);
+    collect:async args=>{seenSources=args.sources;return {candidates:[video],attemptedSources:9,successfulSources:9};}});
+  assert.equal(seenSources.length,9);
   assert.ok(seenSources.every(source=>source.kind==="video"));
   assert.deepEqual(seenSources,DEFAULT_SOURCES.filter(source=>source.kind==="video"));
-  assert.deepEqual(result,{fetchedAt:"2026-09-18T03:00:00.000Z",candidates:[video],attemptedSources:4,successfulSources:4});
+  assert.deepEqual(result,{fetchedAt:"2026-09-18T03:00:00.000Z",candidates:[video],attemptedSources:9,successfulSources:9});
 });
 
-test("fetchYoutubeCache folds the previous cache back in over a 90-day window, so unused videos survive days the machine was off",async()=>{
+test("fetchYoutubeCache folds the previous cache back in over a long (about 3 years) window, so unused videos survive days the machine was off",async()=>{
   let seen;
   await fetchYoutubeCache({now:new Date("2026-09-18T03:00:00Z"),previous:[video],
-    collect:async args=>{seen=args;return {candidates:[video],attemptedSources:4,successfulSources:4};}});
+    collect:async args=>{seen=args;return {candidates:[video],attemptedSources:9,successfulSources:9};}});
   assert.deepEqual(seen.extraCandidates,[video]);
-  assert.equal(seen.maxAgeDays,90);
-  assert.equal(seen.limit,150);
+  assert.equal(seen.maxAgeDays,1100);
+  assert.equal(seen.limit,400);
 });
 
 test("A transient total failure is retried, and a persistent one throws instead of caching an empty list as fresh",async()=>{
   let calls=0,slept=0;
   const recovered=await fetchYoutubeCache({now:new Date("2026-09-18T03:00:00Z"),previous:[],sleep:async()=>{slept++;},
-    collect:async()=>{calls++;return calls<3?{candidates:[],attemptedSources:4,successfulSources:0}:{candidates:[video],attemptedSources:4,successfulSources:4};}});
+    collect:async()=>{calls++;return calls<3?{candidates:[],attemptedSources:4,successfulSources:0}:{candidates:[video],attemptedSources:9,successfulSources:9};}});
   assert.equal(calls,3);
   assert.equal(slept,2);
   assert.deepEqual(recovered.candidates,[video]);
