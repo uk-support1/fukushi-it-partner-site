@@ -872,95 +872,112 @@ body.jlp-body {
   .spk-two-col { grid-template-columns: 1fr; }
 }
 
-/* ===== 補助金活用支援トップからの案内カード ===== */
-.spk-teaser {
+/* ===== 3つのプラン（カード） ===== */
+.spk-item-grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 900px) {
+  .spk-item-grid--3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .spk-item-grid--3 { grid-template-columns: 1fr; }
+}
+
+.spk-plan-cards {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 24px;
-  align-items: center;
-  max-width: 900px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  max-width: 980px;
   margin: 0 auto;
+}
+
+.spk-plan-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   background: var(--white);
-  border: 3px solid var(--orange-500);
-  border-radius: var(--radius-lg);
-  padding: 28px 32px;
+  border: 2px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 22px 18px 18px;
   box-shadow: var(--shadow-soft);
   color: inherit;
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: transform var(--transition), border-color var(--transition);
 }
 
-.spk-teaser:hover {
+a.spk-plan-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(31, 77, 60, 0.14);
+  border-color: var(--orange-500);
 }
 
-.spk-teaser-tag {
-  display: inline-block;
-  background: var(--orange-500);
-  color: var(--white);
-  font-size: 0.75rem;
+.spk-plan-card.is-max { border-color: var(--orange-500); }
+
+.spk-plan-card.is-current {
+  background: var(--green-100);
+  border-color: var(--green-700);
+}
+
+.spk-plan-card-now {
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 3px 12px;
+  color: var(--white);
+  background: var(--green-700);
+  padding: 2px 10px;
   border-radius: 999px;
   margin-bottom: 8px;
 }
 
-.spk-teaser-title {
-  font-size: 1.25rem;
+.spk-plan-card-lead {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-600);
+}
+
+.spk-plan-card-name {
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--green-900);
-  margin-bottom: 6px;
+  margin: 2px 0 6px;
 }
 
-.spk-teaser-text {
+.spk-plan-card-text {
+  font-size: 0.8rem;
+  color: var(--text-600);
+  line-height: 1.6;
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.spk-plan-card-price {
   font-size: 0.9rem;
-  color: var(--text-600);
-  line-height: 1.7;
-}
-
-.spk-teaser-price {
-  text-align: center;
-  white-space: nowrap;
-}
-
-.spk-teaser-price .tax-free-note {
-  white-space: normal;
-}
-
-.spk-teaser-price .from {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--text-600);
-}
-
-.spk-teaser-price .from b {
-  font-size: 1.2rem;
   color: var(--green-900);
 }
 
-.spk-teaser-price .to {
-  display: block;
+.spk-plan-card-price b { font-size: 1.35rem; }
+
+.spk-plan-card-real {
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--orange-600);
 }
 
-.spk-teaser-price .to b {
-  font-size: 1.9rem;
-}
+.spk-plan-card-real b { font-size: 1.6rem; }
 
-.spk-teaser-more {
-  display: inline-block;
+.spk-plan-card-more {
   margin-top: 8px;
+  font-size: 0.85rem;
   font-weight: 800;
   color: var(--green-700);
-  font-size: 0.9rem;
 }
 
-@media (max-width: 700px) {
-  .spk-teaser {
-    grid-template-columns: minmax(0, 1fr);
-    padding: 24px 20px;
-    text-align: center;
-  }
+.spk-plan-cards-note {
+  max-width: 980px;
+  margin: 16px auto 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-600);
+}
+
+@media (max-width: 760px) {
+  .spk-plan-cards { grid-template-columns: 1fr; max-width: 420px; }
 }

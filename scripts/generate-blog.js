@@ -39,6 +39,8 @@ const STATIC_PAGES = [
   "https://fukushi-it-partner.com/",
   "https://fukushi-it-partner.com/subsidy-support/",
   "https://fukushi-it-partner.com/subsidy-support/max-plan.html",
+  "https://fukushi-it-partner.com/subsidy-support/standard-plan.html",
+  "https://fukushi-it-partner.com/subsidy-support/starter-plan.html",
   "https://fukushi-it-partner.com/startup-support.html",
   "https://fukushi-it-partner.com/works.html",
   "https://fukushi-it-partner.com/flow.html",
