@@ -574,6 +574,174 @@ body.jlp-body {
   .spk-funnel-entries { grid-template-columns: 1fr 1fr; }
 }
 
+/* ===== 流れ：採択・不採択の分かれ道 ===== */
+.spk-branch {
+  max-width: 860px;
+  margin: 0 auto 40px;
+}
+
+.spk-branch-start {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.spk-branch-step {
+  background: var(--white);
+  border: 2px solid var(--green-700);
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-weight: 800;
+  color: var(--green-900);
+  font-size: 0.95rem;
+}
+
+.spk-branch-arrow {
+  font-weight: 800;
+  color: var(--green-500);
+}
+
+.spk-branch-fork {
+  position: relative;
+  height: 48px;
+  margin: 0 25%;
+}
+
+.spk-branch-fork::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 3px;
+  height: 22px;
+  background: var(--green-500);
+  transform: translateX(-50%);
+}
+
+.spk-branch-fork span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 22px;
+  height: 26px;
+  border: 3px solid var(--green-500);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+}
+
+.spk-branch-ends {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.spk-branch-end {
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.spk-branch-end.is-yes {
+  background: var(--white);
+  border: 3px solid var(--green-700);
+}
+
+.spk-branch-end.is-no {
+  background: var(--orange-500);
+  color: var(--white);
+  box-shadow: 0 12px 28px rgba(217, 120, 47, 0.28);
+}
+
+.spk-branch-label {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+  padding: 4px 16px;
+  border-radius: 999px;
+}
+
+.is-yes .spk-branch-label {
+  background: var(--green-700);
+  color: var(--white);
+}
+
+.is-no .spk-branch-label {
+  background: var(--white);
+  color: var(--orange-600);
+}
+
+.spk-branch-mini {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  font-size: 0.88rem;
+  color: var(--text-900);
+  line-height: 1.9;
+}
+
+.spk-branch-mini li + li::before {
+  content: "↓";
+  display: block;
+  color: var(--green-500);
+  line-height: 1.2;
+}
+
+.spk-branch-result {
+  font-weight: 700;
+  color: var(--green-900);
+  margin-top: auto;
+}
+
+.spk-branch-result strong {
+  display: block;
+  font-size: 2.4rem;
+  line-height: 1.2;
+  color: var(--orange-600);
+}
+
+.spk-branch-result small,
+.spk-branch-zero small {
+  font-size: 0.5em;
+  margin-left: 2px;
+}
+
+.spk-branch-zero {
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin: 8px 0 4px;
+}
+
+.spk-branch-zero strong {
+  display: block;
+  font-size: 4.2rem;
+  line-height: 1.1;
+}
+
+.spk-branch-zero-note {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.7;
+  max-width: 300px;
+}
+
+@media (max-width: 600px) {
+  .spk-branch-ends { gap: 10px; }
+  .spk-branch-end { padding: 16px 10px; }
+  .spk-branch-label { font-size: 0.92rem; padding: 4px 10px; }
+  .spk-branch-mini { font-size: 0.78rem; }
+  .spk-branch-result strong { font-size: 2rem; }
+  .spk-branch-zero strong { font-size: 3.2rem; }
+  .spk-branch-zero-note { font-size: 0.8rem; }
+  .spk-branch-step { font-size: 0.82rem; padding: 8px 14px; }
+  .spk-branch-start { flex-direction: column; gap: 2px; }
+  .spk-branch-arrow { transform: rotate(90deg); }
+}
+
 /* ===== 流れ：計画書の写真 ===== */
 .spk-plan-photo {
   max-width: 860px;
