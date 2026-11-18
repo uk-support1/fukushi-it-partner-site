@@ -1,6 +1,18 @@
 [
   {
     "type": "column",
+    "category_label": "IT活用",
+    "title": "WordPressのバックアップは何を残すべき？データベースとファイルを一組で管理するホームページ保守のポイント",
+    "date": "2026-11-18",
+    "image": "assets/images/blog-library/hero-video/RnufX5SVz1k.jpg",
+    "image_alt": "",
+    "object_position": "50% 50%",
+    "description": "福祉事業所のWordPressホームページ保守において、バックアップで残すべきデータ構造や、データベースとファイルを一組で管理する重要性を実務目線で分かりやすく解説します。",
+    "excerpt": "福祉事業所のWordPressホームページ保守において、バックアップで残すべきデータ構造や、データベースとファイルを一組で管理する重要性を実務目線で分かりやすく…",
+    "slug": "article-2026-11-18-e65209ae5b45"
+  },
+  {
+    "type": "column",
     "category_label": "ホームページ改善",
     "title": "令和9年度報酬改定のB型スコア制導入に備える、福祉事業所のホームページと支援価値の伝え方",
     "date": "2026-11-17",
