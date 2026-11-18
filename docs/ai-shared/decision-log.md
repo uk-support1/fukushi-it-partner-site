@@ -241,6 +241,16 @@
 - **反映対象：** サイト（`subsidy-support/max-plan.html`、`subsidy-support/index.html`、`assets/css/subsidy-package.css`、`sitemap.xml`、`scripts/generate-blog.js`）、service-catalog.md、テスト
 - **反映状況：** PRで確認中（main 未反映）。
 
+### 2026-11-18｜持続化補助金パッケージに、実質5万円・実質9万円のプランを加える
+
+- **決定：** 75万円の「しっかり集客パッケージ」と同じ作りで、「はじめて集客パッケージ」150,000円（実質50,000円）と「スタンダード集客パッケージ」270,000円（実質90,000円）を掲載する。補助金活用支援のページには3つのプランをカードで並べる。
+- **旧内容：** 計画案では15万円・30万円（実質5万円・10万円）。
+- **理由：** 所有者の判断。見せ方として実質5万円・9万円にしたい（「5万と9万でいきましょう」）。
+- **注意：** 「5万円・9万円」は実質負担の金額として解釈した（所有者に確認中）。
+- **適用日：** 2026-11-18
+- **反映対象：** サイト（`subsidy-support/starter-plan.html`、`subsidy-support/standard-plan.html`、`subsidy-support/max-plan.html`、`subsidy-support/index.html`、`assets/css/subsidy-package.css`、`sitemap.xml`、`scripts/generate-blog.js`）、service-catalog.md、テスト
+- **反映状況：** PRで確認中（main 未反映）。
+
 ## 今後の追記フォーマット
 
 ### YYYY-MM-DD｜変更の見出し
