@@ -15,7 +15,6 @@ const PLANS = [
   ["standard-plan.html", 27, 14],
   ["max-plan.html", 75, 40],
 ];
-const yen = man => (man * 10000).toLocaleString("en-US");
 
 for (const [file, total, web] of PLANS) {
   const page = read("subsidy-support/" + file);
@@ -23,8 +22,9 @@ for (const [file, total, web] of PLANS) {
   const self = total - subsidy;
 
   test(file + "：料金・補助額・実質負担が正しく、税の表記ルールを守っている", () => {
-    assert.ok(page.includes(yen(total) + "<small>円</small>"), "price");
-    assert.ok(page.includes(yen(self) + "<small>円</small>"), "self pay");
+    assert.ok(page.includes(">" + total + "<small>万円</small>"), "price in 万円");
+    assert.ok(page.includes(">" + self + "<small>万円</small>"), "self pay in 万円");
+    assert.ok(!/\d{2,3},000/.test(page), "no long zero-padded yen amounts (shown as 〇万円)");
     assert.ok(page.includes("＋ " + subsidy + "万円"), "subsidy in the cash diagram");
     assert.match(page, /表示価格がお支払いの総額です。消費税はかかりません。/);
     assert.ok(!/税込|税別|税抜/.test(page), "no tax wording on our own price");
