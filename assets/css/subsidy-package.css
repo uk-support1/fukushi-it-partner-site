@@ -574,38 +574,102 @@ body.jlp-body {
   .spk-funnel-entries { grid-template-columns: 1fr 1fr; }
 }
 
-/* ===== 流れ：採択・不採択の分かれ道 ===== */
+/* ===== 流れ：全体の流れと採択・不採択の分かれ道 ===== */
 .spk-branch {
-  max-width: 860px;
-  margin: 0 auto 40px;
+  max-width: 640px;
+  margin: 0 auto 44px;
+  background: var(--cream-100);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px 36px;
+  box-shadow: var(--shadow-soft);
 }
 
-.spk-branch-start {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.spk-branch-step {
-  background: var(--white);
-  border: 2px solid var(--green-700);
-  border-radius: 999px;
-  padding: 10px 20px;
+.spk-branch-title {
+  display: inline-block;
+  background: var(--green-700);
+  color: var(--white);
   font-weight: 800;
-  color: var(--green-900);
+  font-size: 1.05rem;
+  padding: 6px 22px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.spk-branch-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.spk-branch-steps li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  box-shadow: 0 4px 12px rgba(31, 77, 60, 0.08);
+  position: relative;
+}
+
+.spk-branch-steps li + li { margin-top: 22px; }
+
+.spk-branch-steps li + li::before,
+.spk-branch-chain li + li::before,
+.spk-branch-label::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 9px solid var(--green-700);
+}
+
+.spk-branch-steps li + li::before { top: -16px; }
+
+.spk-branch-num {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--green-700);
+  color: var(--white);
+  font-weight: 800;
+  display: grid;
+  place-items: center;
   font-size: 0.95rem;
 }
 
-.spk-branch-arrow {
+.spk-branch-text strong {
+  display: block;
+  color: var(--green-900);
   font-weight: 800;
-  color: var(--green-500);
+  font-size: 1.08rem;
+}
+
+.spk-branch-text small,
+.spk-branch-chain small {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-600);
+  font-weight: 500;
+}
+
+.spk-branch-q {
+  display: table;
+  margin: 26px auto 0;
+  background: var(--white);
+  border: 2px solid var(--orange-500);
+  color: var(--orange-600);
+  font-weight: 800;
+  padding: 6px 26px;
+  border-radius: 999px;
 }
 
 .spk-branch-fork {
   position: relative;
-  height: 48px;
+  height: 30px;
   margin: 0 25%;
 }
 
@@ -614,9 +678,9 @@ body.jlp-body {
   position: absolute;
   left: 50%;
   top: 0;
-  width: 3px;
-  height: 22px;
-  background: var(--green-500);
+  width: 2px;
+  height: 14px;
+  background: var(--green-700);
   transform: translateX(-50%);
 }
 
@@ -624,122 +688,124 @@ body.jlp-body {
   position: absolute;
   left: 0;
   right: 0;
-  top: 22px;
-  height: 26px;
-  border: 3px solid var(--green-500);
+  top: 14px;
+  height: 16px;
+  border: 2px solid var(--green-700);
   border-bottom: none;
-  border-radius: 10px 10px 0 0;
 }
 
 .spk-branch-ends {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 18px;
+  align-items: start;
 }
 
 .spk-branch-end {
-  border-radius: var(--radius-md);
-  padding: 22px 20px;
-  text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.spk-branch-end.is-yes {
-  background: var(--white);
-  border: 3px solid var(--green-700);
-}
-
-.spk-branch-end.is-no {
-  background: var(--orange-500);
-  color: var(--white);
-  box-shadow: 0 12px 28px rgba(217, 120, 47, 0.28);
+  align-items: stretch;
+  text-align: center;
 }
 
 .spk-branch-label {
-  font-size: 1.1rem;
-  font-weight: 800;
-  margin-bottom: 12px;
-  padding: 4px 16px;
-  border-radius: 999px;
-}
-
-.is-yes .spk-branch-label {
-  background: var(--green-700);
+  position: relative;
+  align-self: center;
   color: var(--white);
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 5px 20px;
+  border-radius: 999px;
+  margin-bottom: 22px;
 }
 
-.is-no .spk-branch-label {
+.spk-branch-label::after { top: calc(100% + 6px); }
+
+.is-no .spk-branch-label { background: #6f7a76; }
+.is-no .spk-branch-label::after { border-top-color: #6f7a76; }
+.is-yes .spk-branch-label { background: var(--green-700); }
+
+.spk-branch-free {
   background: var(--white);
-  color: var(--orange-600);
+  border: 3px solid var(--orange-500);
+  border-radius: var(--radius-md);
+  padding: 22px 12px;
+  box-shadow: 0 10px 24px rgba(217, 127, 63, 0.18);
 }
 
-.spk-branch-mini {
+.spk-branch-free-big {
+  color: var(--orange-600);
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.spk-branch-free-note {
+  color: var(--green-900);
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.spk-branch-chain {
   list-style: none;
   padding: 0;
-  margin: 0 0 12px;
-  font-size: 0.88rem;
-  color: var(--text-900);
-  line-height: 1.9;
+  margin: 0;
+  text-align: left;
 }
 
-.spk-branch-mini li + li::before {
-  content: "↓";
-  display: block;
-  color: var(--green-500);
-  line-height: 1.2;
+.spk-branch-chain li {
+  position: relative;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  box-shadow: 0 4px 12px rgba(31, 77, 60, 0.08);
 }
+
+.spk-branch-chain li + li { margin-top: 20px; }
+.spk-branch-chain li + li::before { top: -15px; }
+
+.spk-branch-chain strong {
+  display: block;
+  color: var(--green-900);
+  font-weight: 800;
+  font-size: 0.98rem;
+}
+
+.spk-branch-chain small.is-accent { color: var(--orange-600); font-weight: 700; }
 
 .spk-branch-result {
+  margin-top: 14px;
   font-weight: 700;
   color: var(--green-900);
-  margin-top: auto;
+  font-size: 0.9rem;
 }
 
 .spk-branch-result strong {
-  display: block;
-  font-size: 2.4rem;
-  line-height: 1.2;
   color: var(--orange-600);
-}
-
-.spk-branch-result small,
-.spk-branch-zero small {
-  font-size: 0.5em;
-  margin-left: 2px;
-}
-
-.spk-branch-zero {
+  font-size: 1.6rem;
   font-weight: 800;
-  font-size: 1.1rem;
-  margin: 8px 0 4px;
 }
 
-.spk-branch-zero strong {
-  display: block;
-  font-size: 4.2rem;
-  line-height: 1.1;
-}
-
-.spk-branch-zero-note {
-  font-size: 0.9rem;
-  font-weight: 700;
-  line-height: 1.7;
-  max-width: 300px;
-}
+.spk-branch-result small { font-size: 0.6em; margin-left: 1px; }
 
 @media (max-width: 600px) {
+  .spk-branch { padding: 24px 14px 28px; border-radius: var(--radius-md); }
+  .spk-branch-title { font-size: 0.95rem; padding: 5px 16px; }
+  .spk-branch-steps li { padding: 10px 14px; gap: 10px; }
+  .spk-branch-text strong { font-size: 0.98rem; }
   .spk-branch-ends { gap: 10px; }
-  .spk-branch-end { padding: 16px 10px; }
-  .spk-branch-label { font-size: 0.92rem; padding: 4px 10px; }
-  .spk-branch-mini { font-size: 0.78rem; }
-  .spk-branch-result strong { font-size: 2rem; }
-  .spk-branch-zero strong { font-size: 3.2rem; }
-  .spk-branch-zero-note { font-size: 0.8rem; }
-  .spk-branch-step { font-size: 0.82rem; padding: 8px 14px; }
-  .spk-branch-start { flex-direction: column; gap: 2px; }
-  .spk-branch-arrow { transform: rotate(90deg); }
+  .spk-branch-label { font-size: 0.88rem; padding: 4px 12px; }
+  .spk-branch-free { padding: 18px 6px; }
+  .spk-branch-free-big { font-size: 1.75rem; letter-spacing: 0; }
+  .spk-branch-free-note { font-size: 0.76rem; }
+  .spk-branch-chain li { padding: 8px 10px; }
+  .spk-branch-chain strong { font-size: 0.86rem; }
+  .spk-branch-chain small { font-size: 0.7rem; }
+  .spk-branch-result { font-size: 0.8rem; }
+  .spk-branch-result strong { font-size: 1.35rem; }
 }
 
 /* ===== 流れ：計画書の写真 ===== */

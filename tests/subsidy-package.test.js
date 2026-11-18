@@ -43,7 +43,9 @@ for (const [file, total, web] of PLANS) {
     assert.ok(!/申請(を|の)?代行します|代わりに申請します/.test(page));
     assert.match(page, /費用は別途/);
     assert.match(page, /class="spk-branch reveal"/, "branch diagram");
-    assert.match(page, /採択されなかった[\s\S]*?お支払い<strong>0<small>円<\/small><\/strong>/);
+    assert.match(page, /採択されない<\/p>[\s\S]*?完全無料[\s\S]*?費用は一切かかりません/);
+    assert.match(page, /申請はお客様ご自身で/);
+    assert.match(page, new RegExp("実質のご負担 <strong>" + self + "<small>万円</small>"), "self pay in the flow diagram");
     assert.ok(!/次の回にもう一度|再挑戦/.test(page), "no re-application wording");
     assert.match(page, new RegExp('<link rel="canonical" href="' + (BASE + file).replace(/\./g, "\\.") + '">'));
     for (const [other] of PLANS) if (other !== file) assert.ok(page.includes('href="' + other + '" class="spk-plan-card'), other);
