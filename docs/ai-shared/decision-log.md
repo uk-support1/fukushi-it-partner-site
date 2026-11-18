@@ -251,6 +251,15 @@
 - **反映対象：** サイト（`subsidy-support/starter-plan.html`、`subsidy-support/standard-plan.html`、`subsidy-support/max-plan.html`、`subsidy-support/index.html`、`assets/css/subsidy-package.css`、`sitemap.xml`、`scripts/generate-blog.js`）、service-catalog.md、テスト
 - **反映状況：** PRで確認中（main 未反映）。
 
+### 2026-11-18｜補助金パッケージの金額を「〇万円」で表記する
+
+- **決定：** 補助金活用支援のページと3つのパッケージのページでは、金額を「750,000円」ではなく「75万円」のように、数字＋「万円」で書く（図解・カードも含む）。
+- **理由：** 所有者の判断。0が並ぶと高く見えるため。
+- **注意：** 万円で表せない金額は数字のままでよい。補助金活用支援ページのフッターにある別サービス（ホームページ再スタート 15,000円）は対象外のまま。
+- **適用日：** 2026-11-18
+- **反映対象：** サイト（`subsidy-support/` の4ページ）、テスト
+- **反映状況：** PRで対応（マージ後に公開）。
+
 ## 今後の追記フォーマット
 
 ### YYYY-MM-DD｜変更の見出し
