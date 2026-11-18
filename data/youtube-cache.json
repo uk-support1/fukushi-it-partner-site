@@ -1,6 +1,94 @@
 {
-  "fetchedAt": "2026-11-17T02:45:41.423Z",
+  "fetchedAt": "2026-11-18T02:06:58.091Z",
   "candidates": [
+    {
+      "title": "WordPressの中身は、実は2つに分かれている｜WordPress保守講座 第4回 #Shorts",
+      "url": "https://www.youtube.com/shorts/rkq6aVr9zGw",
+      "publishedAt": "2026-11-17T11:00:39.000Z",
+      "source": "ウェブロード（事業者向けWeb集客塾）",
+      "summary": "WordPressでは、文章も写真も一つの画面で作るので、全部一緒に保存されているように感じますよね。実は、記事の文章や設定は「データベース」に、写真は「ファイル」として、別々の場所に入っています。 だからバックアップは、両方がそろっていないと元のページに戻せません。WordPress保守講座 第4回「バックアップで残すものを知っておく」の一部です。 ▼本編はこちら https://youtu.be/RnufX5SVz1k #月1回、事業者向けにWeb集客やSEO、コンテンツ制作についての最新情報を発信しています。Shorts #WordPress #保守管理 #ホームページ運用 ＜メールマガジン登録フォームはこちら＞ https://www.webroad.co.jp/about-mailmagazine ＜当チャンネルの対象者＞ ・WordPressを自分で作って運営したい事業者の方 ・WordPressを現在運営している事業者の方 ・Webで集客・販売していきたい事業者の方 ＜当チャンネルで使っているサーバーとテーマ＞ Lightning有料版（ベクトルパスポート） https:",
+      "kind": "video"
+    },
+    {
+      "title": "WordPressのバックアップ、何を残せばいい？データベースとファイルを一組で残す｜事業者向けWeb集客塾【ウェブロード】",
+      "url": "https://www.youtube.com/watch?v=RnufX5SVz1k",
+      "publishedAt": "2026-11-17T11:00:30.000Z",
+      "source": "ウェブロード（事業者向けWeb集客塾）",
+      "summary": "ホームページのバックアップ、「取っています」と言われても、本当に元に戻せるものが入っているでしょうか。 WordPressの中身は、記事の文章や設定を入れるデータベースと、写真やプログラムなどのファイルの2つに分かれています。片方だけでは、元のページには戻せません。 この動画では、バックアップで残しておきたいものを、ホームページ制作会社の視点でわかりやすく解説します。予約サービスやメール、ドメイン、サーバーの設定など、WordPressの外にあるものの確認や、担当の方に聞いておきたい3つの質問もご紹介します。 次回は、バックアップを取る間隔や、過去のバックアップを何回分残しておくかについてお話しします。 ※動画内の写真はイメージです（AIで生成した架空の人物・職場の画像です）。 ＜目次＞ 0:00 はじめに 0:46 1. 文章と写真は、別の場所に入っている 2:19 2. 必要なものを、一組にしてバックアップする 4:45 3. WordPressの外にあるものも確認する 6:50 まとめ 月1回、事業者向けにWeb集客やSEO、コンテンツ制作についての最新情報を発信しています。 ＜",
+      "kind": "video"
+    },
+    {
+      "title": "死や自殺について精神科医が語ります",
+      "url": "https://www.youtube.com/watch?v=If-oqgJXt-A",
+      "publishedAt": "2026-11-17T11:00:10.000Z",
+      "source": "精神科医がこころの病気を解説するCh（益田裕介）",
+      "summary": "今回は「死」について、精神科医・益田裕介が自身の経験を交えながらお話しします。 幼い頃から感じてきた死への恐怖や、死後の世界への疑問。精神科医になってから出会った患者さんたちの苦しみ、死にたい気持ちと治療の可能性、緩和ケアの現場で考えたことなどを振り返ります。 死ぬことへの怖さは簡単には消えません。それでも、苦しみの中にいる人に対して、治療を続けることや生きる可能性を信じたい。そんな医師としての思いについても語っています。 死が怖いと感じる方、死や自殺について考えることがある方、精神科医が命とどう向き合っているのか知りたい方にご覧いただきたい内容です。 00:00 OP 01:54 子供の頃から考えていた 05:54 精神科医として死と向き合う 12:42 死にたいという人たちと向き合って 16:51 老いや身近な人の死 19:45 死にまつわる苦しみ 25:02 死を考えることと医師の祈り #精神科医 #死への恐怖 #自殺 #死にたい気持ち #メンタルヘルス #精神科 #益田裕介 ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ■Kaien（益田が「こころのリワークセンター」を監修） 【個別相",
+      "kind": "video"
+    },
+    {
+      "title": "社会福祉法人「光明会」の取り組みをご紹介！",
+      "url": "https://www.youtube.com/shorts/W7Qfz5pP_b0",
+      "publishedAt": "2026-11-17T09:00:38.000Z",
+      "source": "就労継続支援B型 経営コンサルch.",
+      "summary": "【就労継続支援B型 経営コンサルch.】 ——————————————————— 【🔷このチャンネルについて】 「就労継続支援B型 経営コンサルch.」は、 就労継続支援B型の経営や運営に関わる皆様に、役立つ知識や成功事例をお伝えするYouTubeチャンネルです。 就労継続支援B型事業所の経営ノウハウから、グロスウィズが得意とする「IT分野と福祉を組み合わせた支援」など、皆様の事業所運営に役立つ情報を盛りだくさんに提供していきます！ ✨＼チャンネル登録・グッドボタン・コメント／✨ ぜひぜひよろしくお願いします‼️ ▶ ▶ チャンネル登録はこちらhttps://www.youtube.com/channel/UCsbJnyTUNVs5S4kVkEspGsw?sub_confirmation=1 ↓↓さらに詳しく知りたい方はこちら↓↓ 🔴グロスウィズに就労継続支援B型事業所の相談をする https://consult.glosswith.co.jp/contact/ 🔴 グロスウィズのコンサルティングサービス詳細 https://consult.glosswith.co.jp/lp/",
+      "kind": "video"
+    },
+    {
+      "title": "【地方福祉サービス】法人間で連携する際のコミュニケーションとは？",
+      "url": "https://www.youtube.com/shorts/zGWWldyY1w0",
+      "publishedAt": "2026-11-17T09:00:38.000Z",
+      "source": "就労継続支援B型 経営コンサルch.",
+      "summary": "【就労継続支援B型 経営コンサルch.】 ——————————————————— 【🔷このチャンネルについて】 「就労継続支援B型 経営コンサルch.」は、 就労継続支援B型の経営や運営に関わる皆様に、役立つ知識や成功事例をお伝えするYouTubeチャンネルです。 就労継続支援B型事業所の経営ノウハウから、グロスウィズが得意とする「IT分野と福祉を組み合わせた支援」など、皆様の事業所運営に役立つ情報を盛りだくさんに提供していきます！ ✨＼チャンネル登録・グッドボタン・コメント／✨ ぜひぜひよろしくお願いします‼️ ▶ ▶ チャンネル登録はこちらhttps://www.youtube.com/channel/UCsbJnyTUNVs5S4kVkEspGsw?sub_confirmation=1 ↓↓さらに詳しく知りたい方はこちら↓↓ 🔴グロスウィズに就労継続支援B型事業所の相談をする https://consult.glosswith.co.jp/contact/ 🔴 グロスウィズのコンサルティングサービス詳細 https://consult.glosswith.co.jp/lp/",
+      "kind": "video"
+    },
+    {
+      "title": "地方福祉サービスの連携！主な取り組みをご紹介！",
+      "url": "https://www.youtube.com/shorts/5158_OtxD0Q",
+      "publishedAt": "2026-11-17T09:00:09.000Z",
+      "source": "就労継続支援B型 経営コンサルch.",
+      "summary": "【就労継続支援B型 経営コンサルch.】 ——————————————————— 【🔷このチャンネルについて】 「就労継続支援B型 経営コンサルch.」は、 就労継続支援B型の経営や運営に関わる皆様に、役立つ知識や成功事例をお伝えするYouTubeチャンネルです。 就労継続支援B型事業所の経営ノウハウから、グロスウィズが得意とする「IT分野と福祉を組み合わせた支援」など、皆様の事業所運営に役立つ情報を盛りだくさんに提供していきます！ ✨＼チャンネル登録・グッドボタン・コメント／✨ ぜひぜひよろしくお願いします‼️ ▶ ▶ チャンネル登録はこちらhttps://www.youtube.com/channel/UCsbJnyTUNVs5S4kVkEspGsw?sub_confirmation=1 ↓↓さらに詳しく知りたい方はこちら↓↓ 🔴グロスウィズに就労継続支援B型事業所の相談をする https://consult.glosswith.co.jp/contact/ 🔴 グロスウィズのコンサルティングサービス詳細 https://consult.glosswith.co.jp/lp/",
+      "kind": "video"
+    },
+    {
+      "title": "【超重要】令和9年度”B型スコア方式導入”の最新情報を要点まとめ！どこよりも早くわかりやすく徹底解説しました！＃速報 #b型事業所 #b型作業所 #就労支援",
+      "url": "https://www.youtube.com/watch?v=Nyy0Y7GSVNo",
+      "publishedAt": "2026-11-17T09:00:03.000Z",
+      "source": "就労支援ファンタジスタの事業完全ガイドTV",
+      "summary": "【動画目次】 0:00 オープニング 0:50 【論点】就労継続支援B型のスコア導入について 3:35 ①平均月額工賃 5:43 ②支援時間 10:05 ③障害の程度 12:52 ④地域連携活動 22:53 ⑤個別支援計画 32:37 ⑥支援体制 35:47 ⑦事業の透明性 36:52 ⑧指定基準の遵守 39:55 生産活動「参加型」について 40:40 エンディング ＝＝＝＝＝＝＝ 就労支援ファンタジスタの事業完全ガイドTVの福田裕士です！ このチャンネルでは、就労支援事業所を作り、毎年10人以上の利用者さんを送り出している私が今事業所を作るに当たって知っておくべき知識や問題点に関する極秘情報やノウハウをお伝えしていきます！ ↓今のうちに、チャンネル登録する↓ ​​https://www.youtube.com/channel/UC_a0gSucOget4jpw6GG3e8A 🌟月額990円！就労支援を0から学べるオンラインサロン入会はコチラ👇 https://forms.gle/ZYgW6Fr6YhKWSMMz6 📱公式LINEはコチラ👇 👇事業のお悩みや立ち上げについて",
+      "kind": "video"
+    },
+    {
+      "title": "地方福祉サービスの担い手不足による運営環境の厳しさ...。",
+      "url": "https://www.youtube.com/shorts/JPrpu-Dgkvg",
+      "publishedAt": "2026-11-17T09:00:02.000Z",
+      "source": "就労継続支援B型 経営コンサルch.",
+      "summary": "【就労継続支援B型 経営コンサルch.】 ——————————————————— 【🔷このチャンネルについて】 「就労継続支援B型 経営コンサルch.」は、 就労継続支援B型の経営や運営に関わる皆様に、役立つ知識や成功事例をお伝えするYouTubeチャンネルです。 就労継続支援B型事業所の経営ノウハウから、グロスウィズが得意とする「IT分野と福祉を組み合わせた支援」など、皆様の事業所運営に役立つ情報を盛りだくさんに提供していきます！ ✨＼チャンネル登録・グッドボタン・コメント／✨ ぜひぜひよろしくお願いします‼️ ▶ ▶ チャンネル登録はこちらhttps://www.youtube.com/channel/UCsbJnyTUNVs5S4kVkEspGsw?sub_confirmation=1 ↓↓さらに詳しく知りたい方はこちら↓↓ 🔴グロスウィズに就労継続支援B型事業所の相談をする https://consult.glosswith.co.jp/contact/ 🔴 グロスウィズのコンサルティングサービス詳細 https://consult.glosswith.co.jp/lp/",
+      "kind": "video"
+    },
+    {
+      "title": "地方福祉法人間で連携する場合の制度選択とは？",
+      "url": "https://www.youtube.com/shorts/8FigFYlUX6M",
+      "publishedAt": "2026-11-17T09:00:01.000Z",
+      "source": "就労継続支援B型 経営コンサルch.",
+      "summary": "【就労継続支援B型 経営コンサルch.】 ——————————————————— 【🔷このチャンネルについて】 「就労継続支援B型 経営コンサルch.」は、 就労継続支援B型の経営や運営に関わる皆様に、役立つ知識や成功事例をお伝えするYouTubeチャンネルです。 就労継続支援B型事業所の経営ノウハウから、グロスウィズが得意とする「IT分野と福祉を組み合わせた支援」など、皆様の事業所運営に役立つ情報を盛りだくさんに提供していきます！ ✨＼チャンネル登録・グッドボタン・コメント／✨ ぜひぜひよろしくお願いします‼️ ▶ ▶ チャンネル登録はこちらhttps://www.youtube.com/channel/UCsbJnyTUNVs5S4kVkEspGsw?sub_confirmation=1 ↓↓さらに詳しく知りたい方はこちら↓↓ 🔴グロスウィズに就労継続支援B型事業所の相談をする https://consult.glosswith.co.jp/contact/ 🔴 グロスウィズのコンサルティングサービス詳細 https://consult.glosswith.co.jp/lp/",
+      "kind": "video"
+    },
+    {
+      "title": "疲れのサインはこんなものがあります。黄信号のうちに自分で気づこう",
+      "url": "https://www.youtube.com/shorts/Ads3sM-2uiU",
+      "publishedAt": "2026-11-17T09:00:01.000Z",
+      "source": "精神科医がこころの病気を解説するCh（益田裕介）",
+      "summary": "＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ■Kaien（益田が「こころのリワークセンター」を監修） 【個別相談受付中！】 休職中の方、発達障害などがあり働くことに悩んでいる方へ。益田裕介も協力しているKaienでは個別相談を行っています。 https://www.kaien-lab.com/flow/experience/ 【サービス一覧】 ・リワーク https://www.kaien-lab.com/category/kokoro-rework-center/ ・就労移行支援 https://www.kaien-lab.com/jobassistance/jobassistance/ ・生活自立訓練 https://kaien-lab.com/life-training/22081/ ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ■求人情報 https://wasedamental.com/ ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ■オンライン自助会・家族会 【オフィシャルサイト】 https://peer-support-community.com 【参加方法】 https://peer-su",
+      "kind": "video"
+    },
+    {
+      "title": "MEO対策代行を頼む決断と投資の壁｜Googleマップ閲覧数2ヶ月で12倍【函館の一棟貸しの宿】",
+      "url": "https://www.youtube.com/shorts/-VtvSECpDyU",
+      "publishedAt": "2026-11-17T03:00:11.000Z",
+      "source": "比嘉太一（集客×AI・Googleマップ）",
+      "summary": "本編動画はこちら↓ https://youtu.be/RRN25RjqICw 🏆経営者の方へ｜無料の集客・AI個別診断（60分・オンライン）🏆 あなたの現状の課題をヒアリングして、 最善の集客・AI活用のご提案をします。 ▼公式LINEからお申し込み（30大特典も届きます） https://utage-system.com/line/open/m8Tzlkid6lOx?mtid=eSvF2Eg4pPxs （「アプリで開く」を押してください） ▼ホームページからも申し込めます https://churaweb.net/contact/?utm_source=youtube&utm_campaign=shindan&utm_content=shogunvilla 【出演】SHOGUN VILLA函館 by TAKADAYA 公式サイト https://shogunvilla.com/ Instagram https://www.instagram.com/shogun_villa_hakodate Googleマップ https://www.google.com/maps?cid=83",
+      "kind": "video"
+    },
     {
       "title": "超速報❗️令和9年度報酬改定「B型スコア制度」生解説❗️",
       "url": "https://www.youtube.com/watch?v=A0zESa59lWA",
@@ -66,19 +154,19 @@
       "kind": "video"
     },
     {
-      "title": "会社合併による、身を引く覚悟...。",
-      "url": "https://www.youtube.com/shorts/cPJSz--WAZA",
-      "publishedAt": "2026-11-16T09:00:23.000Z",
-      "source": "就労継続支援B型 経営コンサルch.",
-      "summary": "【就労継続支援B型 経営コンサルch.】 ——————————————————— 【🔷このチャンネルについて】 「就労継続支援B型 経営コンサルch.」は、 就労継続支援B型の経営や運営に関わる皆様に、役立つ知識や成功事例をお伝えするYouTubeチャンネルです。 就労継続支援B型事業所の経営ノウハウから、グロスウィズが得意とする「IT分野と福祉を組み合わせた支援」など、皆様の事業所運営に役立つ情報を盛りだくさんに提供していきます！ ✨＼チャンネル登録・グッドボタン・コメント／✨ ぜひぜひよろしくお願いします‼️ ▶ ▶ チャンネル登録はこちらhttps://www.youtube.com/channel/UCsbJnyTUNVs5S4kVkEspGsw?sub_confirmation=1 ↓↓さらに詳しく知りたい方はこちら↓↓ 🔴グロスウィズに就労継続支援B型事業所の相談をする https://consult.glosswith.co.jp/contact/ 🔴 グロスウィズのコンサルティングサービス詳細 https://consult.glosswith.co.jp/lp/",
-      "kind": "video"
-    },
-    {
       "title": "問題は解決できる。死を選ぶ人へ",
       "url": "https://www.youtube.com/shorts/DsnRHeDcjQw",
       "publishedAt": "2026-11-16T09:00:23.000Z",
       "source": "精神科医がこころの病気を解説するCh（益田裕介）",
       "summary": "＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ■Kaien（益田が「こころのリワークセンター」を監修） 【個別相談受付中！】 休職中の方、発達障害などがあり働くことに悩んでいる方へ。益田裕介も協力しているKaienでは個別相談を行っています。 https://www.kaien-lab.com/flow/experience/ 【サービス一覧】 ・リワーク https://www.kaien-lab.com/category/kokoro-rework-center/ ・就労移行支援 https://www.kaien-lab.com/jobassistance/jobassistance/ ・生活自立訓練 https://kaien-lab.com/life-training/22081/ ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ■求人情報 https://wasedamental.com/ ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ■オンライン自助会・家族会 【オフィシャルサイト】 https://peer-support-community.com 【参加方法】 https://peer-su",
+      "kind": "video"
+    },
+    {
+      "title": "会社合併による、身を引く覚悟...。",
+      "url": "https://www.youtube.com/shorts/cPJSz--WAZA",
+      "publishedAt": "2026-11-16T09:00:23.000Z",
+      "source": "就労継続支援B型 経営コンサルch.",
+      "summary": "【就労継続支援B型 経営コンサルch.】 ——————————————————— 【🔷このチャンネルについて】 「就労継続支援B型 経営コンサルch.」は、 就労継続支援B型の経営や運営に関わる皆様に、役立つ知識や成功事例をお伝えするYouTubeチャンネルです。 就労継続支援B型事業所の経営ノウハウから、グロスウィズが得意とする「IT分野と福祉を組み合わせた支援」など、皆様の事業所運営に役立つ情報を盛りだくさんに提供していきます！ ✨＼チャンネル登録・グッドボタン・コメント／✨ ぜひぜひよろしくお願いします‼️ ▶ ▶ チャンネル登録はこちらhttps://www.youtube.com/channel/UCsbJnyTUNVs5S4kVkEspGsw?sub_confirmation=1 ↓↓さらに詳しく知りたい方はこちら↓↓ 🔴グロスウィズに就労継続支援B型事業所の相談をする https://consult.glosswith.co.jp/contact/ 🔴 グロスウィズのコンサルティングサービス詳細 https://consult.glosswith.co.jp/lp/",
       "kind": "video"
     },
     {
@@ -207,14 +295,6 @@
       "publishedAt": "2026-11-13T11:00:07.000Z",
       "source": "精神科医がこころの病気を解説するCh（益田裕介）",
       "summary": "嫌なことばかり思い出してしまう、過去の嫌な記憶が頭から離れない。そんなとき、脳の中では何が起きているのでしょうか。 今回の動画では、精神科医が、ネガティビティバイアスと記憶の仕組み、遺伝や養育環境、疲労やうつ状態との関係について解説します。 また、嫌なことを繰り返し考える「ぐるぐる思考」への対処として、深呼吸やマインドフルネス、注意シフトトレーニング、出来事や考えを書き出して具体的な対応策を考える方法も紹介します。 不安や嫌な記憶を完全になくすことではなく、不安に支配されず、自分に合った対処法を見つけることについて考えます。 00:00 OP 00:35 脳の構造 02:16 記憶の問題 06:36 解決策 #嫌な記憶 #ぐるぐる思考 #反すう思考 #ネガティビティバイアス #精神科医 #マインドフルネス ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ■Kaien（益田が「こころのリワークセンター」を監修） 【個別相談受付中！】 休職中の方、発達障害などがあり働くことに悩んでいる方へ。益田裕介も協力しているKaienでは個別相談を行っています。 https://www.kaien-lab.co",
-      "kind": "video"
-    },
-    {
-      "title": "死や自殺について精神科医が語ります",
-      "url": "https://www.youtube.com/watch?v=If-oqgJXt-A",
-      "publishedAt": "2026-11-13T10:57:40.000Z",
-      "source": "精神科医がこころの病気を解説するCh（益田裕介）",
-      "summary": "今回は「死」について、精神科医・益田裕介が自身の経験を交えながらお話しします。 幼い頃から感じてきた死への恐怖や、死後の世界への疑問。精神科医になってから出会った患者さんたちの苦しみ、死にたい気持ちと治療の可能性、緩和ケアの現場で考えたことなどを振り返ります。 死ぬことへの怖さは簡単には消えません。それでも、苦しみの中にいる人に対して、治療を続けることや生きる可能性を信じたい。そんな医師としての思いについても語っています。 死が怖いと感じる方、死や自殺について考えることがある方、精神科医が命とどう向き合っているのか知りたい方にご覧いただきたい内容です。 00:00 OP 01:54 子供の頃から考えていた 05:54 精神科医として死と向き合う 12:42 死にたいという人たちと向き合って 16:51 老いや身近な人の死 19:45 死にまつわる苦しみ 25:02 死を考えることと医師の祈り #精神科医 #死への恐怖 #自殺 #死にたい気持ち #メンタルヘルス #精神科 #益田裕介 ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝ ■Kaien（益田が「こころのリワークセンター」を監修） 【個別相",
       "kind": "video"
     },
     {
