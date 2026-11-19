@@ -1435,3 +1435,136 @@ body.jlp-body {
   word-break: auto-phrase;
   text-wrap: pretty;
 }
+
+/* ===== 参考動画（YouTube・ぶひお付き） ===== */
+.jlp-video-ref {
+  max-width: 760px;
+  margin: 32px auto 0;
+}
+.jlp-video-ref-buhio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.jlp-video-ref-buhio img {
+  display: block;
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+}
+.jlp-video-ref-bubble {
+  position: relative;
+  margin: 0;
+  background: var(--white);
+  border: 2px solid var(--green-700);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--green-900);
+}
+.jlp-video-ref-bubble::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 8px solid transparent;
+  border-right: 10px solid var(--green-700);
+  border-left: 0;
+}
+.jlp-video-ref-card {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 16px;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.jlp-video-ref-card:hover {
+  transform: translateY(-2px);
+}
+.jlp-video-ref-thumb {
+  position: relative;
+  display: block;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.jlp-video-ref-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.jlp-video-ref-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 56px;
+  height: 40px;
+  transform: translate(-50%, -50%);
+  background: rgba(220, 0, 0, 0.9);
+  border-radius: 10px;
+}
+.jlp-video-ref-play::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-35%, -50%);
+  border-style: solid;
+  border-width: 9px 0 9px 15px;
+  border-color: transparent transparent transparent #fff;
+}
+.jlp-video-ref-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.jlp-video-ref-tag {
+  align-self: flex-start;
+  background: var(--green-100);
+  color: var(--green-900);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+.jlp-video-ref-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--green-900);
+}
+.jlp-video-ref-desc {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text-900);
+}
+.jlp-video-ref-link {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--orange-600);
+}
+@media (max-width: 600px) {
+  .jlp-video-ref-card {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .jlp-video-ref-buhio img { width: 80px; height: 80px; }
+  .jlp-video-ref-bubble { font-size: 0.88rem; padding: 8px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jlp-video-ref-card { transition: none; }
+  .jlp-video-ref-card:hover { transform: none; }
+}
