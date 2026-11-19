@@ -1229,7 +1229,7 @@ a:hover > * > .h2-arrow-link {
 .w2-gallery .h2-lead { max-width: 640px; margin-left: auto; margin-right: auto; }
 
 /* JSが動かないときは、横にスクロールして見られる並びのまま */
-.w2-ring { --card-w: 300px; --card-gap: 80px; --label-h: 52px; --tilt: -12; position: relative; }
+.w2-ring { --card-w: 300px; --card-gap: 80px; --label-h: 112px; --tilt: -12; position: relative; }
 .w2-ring:not(.is-ready) .w2-ring-track { display: flex; gap: 16px; overflow-x: auto; padding: 20px 24px; }
 .w2-ring:not(.is-ready) .w2-ring-card { flex: 0 0 220px; }
 .w2-ring:not(.is-ready) .w2-ring-back { display: none; }
@@ -1275,6 +1275,13 @@ a:hover > * > .h2-arrow-link {
 .w2-ring-label { display: block; padding: 8px 10px 10px; text-align: center; font-size: 0.82rem; font-weight: 800; color: var(--green-900); background: #fff; line-height: 1.35; }
 .w2-ring-label small { display: block; font-size: 0.64rem; font-weight: 500; color: var(--text-600); margin-top: 2px; }
 .w2-ring-card[data-group="other"] .w2-ring-label { color: #8a4a1f; }
+/* カード下の欄：制作費・期間や特徴 */
+.w2-ring-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 5px; margin-top: 7px; }
+.w2-ring-chips span { font-size: 0.68rem; font-weight: 700; line-height: 1.4; color: var(--green-900); background: var(--green-100); border-radius: 999px; padding: 2px 9px; }
+.w2-ring-card[data-group="care"] .w2-ring-chips span:first-child { background: var(--orange-100); color: var(--orange-600); }
+.w2-ring-card[data-group="other"] .w2-ring-chips span { background: #fdeee0; color: #8a4a1f; }
+.w2-ring-go { display: block; margin-top: 7px; font-size: 0.7rem; font-weight: 800; color: var(--orange-600); }
+.w2-ring-go--soon { color: var(--text-600); font-weight: 700; }
 .w2-ring-card.is-front .w2-ring-front { box-shadow: 0 22px 44px rgba(31, 77, 60, 0.3); }
 
 .w2-ring-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin: 6px auto 0; }
@@ -1283,29 +1290,22 @@ a:hover > * > .h2-arrow-link {
 .w2-ring-controls button:focus-visible { outline: 3px solid var(--orange-500); outline-offset: 3px; }
 .w2-ring-counter { min-width: 48px; text-align: center; font-size: 0.82rem; color: var(--text-600); font-variant-numeric: tabular-nums; }
 
-/* 正面のカードの説明 */
-.w2-ring-panel { max-width: 720px; margin: 28px auto 0; padding: 26px 30px 28px; text-align: center; background: #fff; border-radius: 24px; box-shadow: 0 12px 30px rgba(31, 77, 60, 0.08); border-top: 5px solid var(--green-700); }
-.w2-ring-panel[data-group="other"] { border-top-color: var(--orange-500); }
-.w2-ring-kind { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 12px; font-size: 0.8rem; font-weight: 700; color: var(--text-600); }
-.w2-ring-kind-tag { color: #fff; background: var(--green-900); border-radius: 999px; padding: 2px 14px; }
-.w2-ring-panel[data-group="other"] .w2-ring-kind-tag { background: var(--orange-600); }
-.w2-ring-name { font-size: 1.25rem; font-weight: 800; line-height: 1.5; color: var(--green-900); margin: 10px 0 12px; }
-.w2-ring-points { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.w2-ring-points li { font-size: 0.82rem; font-weight: 700; color: var(--green-900); background: var(--green-100); border-radius: 999px; padding: 4px 14px; }
-.w2-ring-panel[data-group="other"] .w2-ring-points li { background: #fdeee0; color: #8a4a1f; }
-.w2-ring-panel[data-group="care"] .w2-ring-points li:first-child { background: var(--orange-100); color: var(--orange-600); }
-.w2-ring-action { margin-top: 18px; min-height: 48px; }
 .w2-gallery .h2-center-note { margin-top: 24px; }
 
-@media (max-width: 1100px) { .w2-ring { --card-w: 240px; --card-gap: 60px; } .w2-ring.is-ready { height: 560px; } }
+@media (max-width: 1100px) { .w2-ring { --card-w: 240px; --card-gap: 60px; } .w2-ring.is-ready { height: 600px; } }
 @media (max-width: 620px) {
   .w2-gallery { padding: 64px 0 48px; }
-  .w2-ring { --card-w: 170px; --card-gap: 44px; --label-h: 42px; --tilt: -14; }
-  .w2-ring.is-ready { height: 440px; }
+  .w2-ring { --card-w: 180px; --card-gap: 44px; --label-h: 96px; --tilt: -14; }
+  .w2-ring.is-ready { height: 500px; }
   .w2-ring-face { border-radius: 10px; }
   .w2-ring-label { font-size: 0.7rem; padding: 6px 6px 7px; }
   .w2-ring-label small { font-size: 0.56rem; }
-  .w2-ring-panel { padding: 20px 18px 22px; }
+  .w2-ring-chips { gap: 3px 4px; margin-top: 5px; }
+  .w2-ring-chips span { font-size: 0.56rem; padding: 1px 6px; }
+  .w2-ring-go { font-size: 0.6rem; margin-top: 5px; }
+  .w2-ring-card[data-group="other"] .w2-ring-chips { gap: 0; line-height: 1.5; }
+  .w2-ring-card[data-group="other"] .w2-ring-chips span { background: none; padding: 0; }
+  .w2-ring-card[data-group="other"] .w2-ring-chips span + span::before { content: "・"; }
 }
 @media (prefers-reduced-motion: reduce) { .w2-ring.is-ready .w2-ring-track { will-change: auto; } }
 

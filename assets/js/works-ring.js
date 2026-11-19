@@ -9,14 +9,12 @@
   var controls = section.querySelector(".w2-ring-controls");
   var toggle = controls.querySelector('[data-ring="toggle"]');
   var counter = controls.querySelector(".w2-ring-counter");
-  var panel = section.querySelector(".w2-ring-panel");
   var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   var count = cards.length;
   var step = 360 / count;
   var rotation = 0, frontIndex = -1, userPaused = motion.matches;
   var inView = false, hovering = false, dragging = false, frame = 0, last = 0;
   var radius = 0;
-  var GROUP = { care: "福祉事業所関連の制作実績", other: "その他の業種のモデルページ" };
 
   function cssNum(name) { return parseFloat(getComputedStyle(ring).getPropertyValue(name)); }
 
@@ -35,36 +33,6 @@
 
   function norm(a) { return ((a + 180) % 360 + 360) % 360 - 180; }
 
-  function fillPanel(card) {
-    var g = card.getAttribute("data-group");
-    panel.setAttribute("data-group", g);
-    panel.querySelector(".w2-ring-kind-tag").textContent = GROUP[g];
-    panel.querySelector(".w2-ring-kind-meta").textContent = card.getAttribute("data-meta");
-    panel.querySelector(".w2-ring-name").textContent = card.getAttribute("data-name");
-    var ul = panel.querySelector(".w2-ring-points");
-    ul.textContent = "";
-    card.getAttribute("data-points").split("|").forEach(function (t) {
-      var li = document.createElement("li");
-      li.textContent = t;
-      ul.appendChild(li);
-    });
-    var action = panel.querySelector(".w2-ring-action");
-    action.textContent = "";
-    var url = card.getAttribute("data-url");
-    if (url) {
-      var a = document.createElement("a");
-      a.className = "btn btn-accent";
-      a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
-      a.textContent = "サイトを見る ↗";
-      action.appendChild(a);
-    } else {
-      var s = document.createElement("span");
-      s.className = "h2-soon";
-      s.textContent = "公開前のため、リンクはまだありません";
-      action.appendChild(s);
-    }
-  }
-
   function render() {
     track.style.setProperty("--rotation", rotation + "deg");
     var best = 0, bestAbs = 999;
@@ -82,7 +50,6 @@
     });
     if (best !== frontIndex) {
       frontIndex = best;
-      fillPanel(cards[best]);
       counter.textContent = (best + 1) + " / " + count;
     }
   }
