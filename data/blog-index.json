@@ -2,6 +2,18 @@
   {
     "type": "column",
     "category_label": "IT活用",
+    "title": "WordPressのバックアップ頻度と保存先：事業所のホームページを守る保守管理のポイント",
+    "date": "2026-11-19",
+    "image": "assets/images/blog-library/hero-video/TaJcKzleVJ4.jpg",
+    "image_alt": "",
+    "object_position": "50% 50%",
+    "description": "WordPressのバックアップは毎日の取得で十分でしょうか。更新頻度や保存先、保存期間の考え方、サーバー障害から事業所のホームページを守る実務的な保守管理のポイントをやさしく解説します。",
+    "excerpt": "WordPressのバックアップは毎日の取得で十分でしょうか。更新頻度や保存先、保存期間の考え方、サーバー障害から事業所のホームページを守る実務的な保守管理のポ…",
+    "slug": "article-2026-11-19-378dabf261ef"
+  },
+  {
+    "type": "column",
+    "category_label": "IT活用",
     "title": "WordPressのバックアップは何を残すべき？データベースとファイルを一組で管理するホームページ保守のポイント",
     "date": "2026-11-18",
     "image": "assets/images/blog-library/hero-video/RnufX5SVz1k.jpg",

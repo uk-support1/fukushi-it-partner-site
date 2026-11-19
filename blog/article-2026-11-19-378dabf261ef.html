@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WordPressのバックアップ頻度と保存先：事業所のホームページを守る保守管理のポイント｜福祉ITパートナー</title>
+<meta name="description" content="WordPressのバックアップは毎日の取得で十分でしょうか。更新頻度や保存先、保存期間の考え方、サーバー障害から事業所のホームページを守る実務的な保守管理のポイントをやさしく解説します。">
+<link rel="canonical" href="https://fukushi-it-partner.com/blog/article-2026-11-19-378dabf261ef.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="WordPressのバックアップ頻度と保存先：事業所のホームページを守る保守管理のポイント">
+<meta property="og:description" content="WordPressのバックアップは毎日の取得で十分でしょうか。更新頻度や保存先、保存期間の考え方、サーバー障害から事業所のホームページを守る実務的な保守管理のポイントをやさしく解説します。">
+<meta property="og:url" content="https://fukushi-it-partner.com/blog/article-2026-11-19-378dabf261ef.html">
+<meta property="og:site_name" content="福祉ITパートナー">
+<meta property="og:image" content="https://fukushi-it-partner.com/assets/images/blog-library/hero-video/TaJcKzleVJ4.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/ga4.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "WordPressのバックアップ頻度と保存先：事業所のホームページを守る保守管理のポイント",
+      "description": "WordPressのバックアップは毎日の取得で十分でしょうか。更新頻度や保存先、保存期間の考え方、サーバー障害から事業所のホームページを守る実務的な保守管理のポイントをやさしく解説します。",
+      "image": [
+        "https://fukushi-it-partner.com/assets/images/blog-library/hero-video/TaJcKzleVJ4.jpg"
+      ],
+      "datePublished": "2026-11-19",
+      "dateModified": "2026-11-19",
+      "inLanguage": "ja",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fukushi-it-partner.com/blog/article-2026-11-19-378dabf261ef.html"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://fukushi-it-partner.com/assets/images/logo.png"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://fukushi-it-partner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "お役立ち情報",
+          "item": "https://fukushi-it-partner.com/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "WordPressのバックアップ頻度と保存先：事業所のホームページを守る保守管理のポイント",
+          "item": "https://fukushi-it-partner.com/blog/article-2026-11-19-378dabf261ef.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-bar">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">HOME</a></li>
+        <li><a href="../homepage-plan.html">料金プラン</a></li>
+        <li><a href="../works.html">制作実績</a></li>
+        <li><a href="../flow.html">制作までの流れ</a></li>
+        <li><a href="../blog.html" class="active">お役立ち情報</a></li>
+        <li><a href="../profile.html">プロフィール</a></li>
+        <li><a href="../contact.html">お問い合わせ</a></li>
+        <li class="nav-cta-mobile">
+          <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+    </div>
+    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="container blog-article">
+      <a href="../blog.html" class="back-link">← お役立ち情報一覧へ戻る</a>
+      <h1>WordPressのバックアップ頻度と保存先：事業所のホームページを守る保守管理のポイント</h1>
+      <div class="meta-row">
+        <span class="category-badge">IT活用</span>
+        <span class="blog-date"><time datetime="2026-11-19">2026.11.19</time></span>
+      </div>
+
+      <div class="article-eyecatch">
+        <a class="article-eyecatch-video-link" href="https://www.youtube.com/watch?v=TaJcKzleVJ4" target="_blank" rel="noopener noreferrer" aria-label="YouTubeで元の動画を見る">
+          <img src="../assets/images/blog-library/hero-video/TaJcKzleVJ4.jpg" alt="">
+        </a>
+      </div>
+
+<aside class="buhio-note" data-pose="pointing" aria-label="ぶひおのひとこと"><img src="../assets/images/buhio/buhio-03-pointing.png" alt="バックアップの頻度や保存場所を指し示しながら、大切なポイントをわかりやすく解説するぶひおのイラスト" width="128" height="128" loading="lazy" decoding="async"><div><strong>ぶひおのひとこと</strong><p>毎日バックアップしていても、いざという時にどこまで戻せるか確認しておこうね。</p></div></aside>
+
+<p>障害福祉サービスの現場において、利用者やご家族、地域への大切な窓口となるホームページの保守管理は欠かせない業務のひとつです。前回の記事では、WordPressのバックアップにおいてデータベースとファイルを一組で残す仕組みについて触れました。今回は、ウェブロードの山口さんが動画で紹介している考え方をヒントに、さらに踏み込んだ実務的なテーマとして「バックアップの頻度・保存先・保存期間」を取り上げます。</p>
+<p>「毎日バックアップしていれば安心」と漠然と考えてしまいがちですが、いざトラブルが起きたとき、その控えで本当に仕事がどこまで戻せるでしょうか。障害福祉事業所のホームページ担当者が日々の運営で迷わないための判断基準を順を追って見ていきましょう。</p>
+<h2>毎日のバックアップならどこまで戻るのか</h2>
+<p>バックアップは、ボタンを押したその瞬間のデータをそのまま残す仕組みです。例えば、月曜日の夜にバックアップを取り、火曜日に新しいイベント情報やブログ記事をお知らせとして書き加えたとします。もし火曜日の夕方に何らかのトラブルでサイトが動かなくなってしまい、月曜日の夜のバックアップから復元すると、[strong:<strong>毎日のバックアップならどこまで戻るのか</strong>]という疑問の答えは「火曜日に書いたお知らせは消えてしまう」ということになります。</p>
+<p>月に一度、基本情報を直すだけのホームページであれば大きな影響はありませんが、日々の活動報告や利用者募集の案内などをこまめに更新している事業所では、お客様の申し込みや問い合わせを見落としてしまう可能性があります。そのため、単に「みんなが毎日取っているから」という理由で決めるのではなく、どれくらい前に戻ると仕事に支障が出るかという視点で、技術担当者だけでなく連絡調整を受けているスタッフも含めて話し合うことが大切です。</p>
+<h2>サーバーが止まったときも取り出せる場所にあるか</h2>
+<p>バックアップの保存先を考えるうえで落とし穴になりやすいのが、ホームページを動かしているのと同じレンタルサーバーの中にだけ控えを置いているケースです。サーバー会社が提供する機能や、同じサーバー内の専用フォルダにバックアップを保存している場合、もしそのサーバー自体に大きな障害が発生してサイトが表示されなくなると、バックアップも一緒に取り出せなくなってしまうリスクがあります。</p>
+<p>実際に、今年起きた大手レンタルサーバーの障害事例でも、サイトが表示されないだけでなく管理画面にも入れず、サーバー会社からデータの復旧が難しいかもしれないと案内されたケースがありました。このような状況で自社の手元に別の場所へ保存したバックアップがあれば、再構築の大きな助けとなります。</p>
+<p>担当者に確認する際は、「このサーバーが使えなくなったとき、別の場所からバックアップを取り出せるか」を必ず聞いておきましょう。また、誰でも簡単に見られる場所に保存してしまうと情報セキュリティ上の問題が生じるため、適切な管理が欠かせません。</p>
+<p><img src="../assets/images/blog-library/inline/inline-welfare-001.png" alt="福祉の現場を支えるイメージ" loading="lazy" class="article-inline-image"></p>
+<h2>気づくまでの日数と残す世代数を考える</h2>
+<p>バックアップを何日前まで残すかという保存期間も重要なポイントです。最新のバックアップが1つあれば十分とは限らない理由として、例えば水曜日にサイトの不具合や不正な書き換えが始まったにもかかわらず、金曜日まで誰も気づかなかったという状況が挙げられます。木曜日と金曜日のバックアップにもすでに不具合が入り込んでいる場合、火曜日以前の正常な状態に戻るためのデータが必要になります。</p>
+<p>過去のバックアップを何回分残すかを「世代数」と呼びますが、毎日サイトをこまめにチェックしていない場合、異常に気づくまでに数日かかることがあります。一方で、残しすぎるとサーバーの保存容量を圧迫してしまうため、守りたい期間と使える容量の両方からバランスを考えて決めることが求められます。</p>
+<h2>自動バックアップでも結果を点検する仕組みづくり</h2>
+<p>多くのレンタルサーバーやWordPressのプラグインには、自動でバックアップを取得する便利な機能が備わっています。しかし、「機能があること」と「実際に正しく取れていること」は別問題です。予定では毎晩取得する設定になっていになっていても、最後の成功が先月であれば今月の分は取れていないことになります。</p>
+<p>失敗したときの通知が誰に届くかをあらかじめ決めておくとともに、毎月の保守点検の中で予定通りの日付のバックアップが実際に並んでいるかを確認する習慣をつけましょう。本番環境とは別に試すためのステージング環境があったとしても、そこは過去のバックアップを保管しておく場所ではない点にも注意が必要です。</p>
+<h2>ホームページを守るために今できること</h2>
+<p>バックアップは「頻度はなくなる情報から考え、保存像是はサーバーが使えないときに取り出せるかで考え、保存期間は何日前まで戻れるかで決める」という3つの視点が基本となります。担当者の方に「最後に成功したのはいつか」「一番古いバックアップはいつのものか」「別の場所からも取り出せるか」を具体的に聞いておくと、万が一のときの判断がスムーズになります。</p>
+<p>[marker:<span class="article-marker">バックアップは「毎日取っているから安心」と思い込まず、自社の更新頻度や業務フローから逆算して適切な設定や保存場所を見直すことが、障害福祉事業所のホームページを守る確実な備えとなります。</span>]福祉ITパートナーとしても、日々の情報発信や大切なデータを安心して守り続けるための保守管理をこれからも丁寧にお手伝いしていきたいと考えています。</p>
+<h2>出典・参考情報</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=TaJcKzleVJ4">ウェブロード（事業者向けWeb集客塾）｜WordPressのバックアップ、どれくらいの頻度で、どこに、いつまで残す？｜事業者向けWeb集客塾【ウェブロード】</a></li>
+</ul>
+
+    </div>
+  </section>
+
+  <!-- 関連記事：content/articles/article-2026-11-19-378dabf261ef.md のrelatedフィールドから自動生成 -->
+  <section style="background: var(--cream-100);">
+    <div class="container">
+      <h2 class="section-title" style="margin-bottom: 24px;">関連記事</h2>
+      <div class="blog-list">
+
+        <a class="blog-list-item reveal" href="article-2026-11-18-e65209ae5b45.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero-video/RnufX5SVz1k.jpg" alt="" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">IT活用</span>
+              <span class="blog-date">2026.11.18</span>
+            </div>
+            <h3>WordPressのバックアップは何を残すべき？データベースとファイルを一組で管理するホームページ保守のポイント</h3>
+            <p class="excerpt">福祉事業所のWordPressホームページ保守において、バックアップで残すべきデータ構造や、データベースとファイルを一組…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+        <a class="blog-list-item reveal" href="article-2026-11-10-ba59d191a9bf.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero-video/sd6cVtE-R-U.jpg" alt="" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">IT活用</span>
+              <span class="blog-date">2026.11.10</span>
+            </div>
+            <h3>2028年度新設の「障害者就労支援士」資格に備える、福祉事業所のホームページと情報発信のあり方</h3>
+            <p class="excerpt">2028年度に新設される国家資格級「障害者就労支援士」の概要と、福祉事業所がホームページや採用ページで専門性を効果的に伝…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container reveal">
+      <h2>まずはお気軽にご相談ください。</h2>
+      <div class="btn-group">
+        <a href="../contact.html#google-form-embed" class="btn btn-accent js-consult-link">無料相談はこちら</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h2 class="footer-title">サイトメニュー</h2>
+        <ul>
+          <li><a href="../index.html">HOME</a></li>
+          <li><a href="../index.html#services">サービス</a></li>
+          <li><a href="../homepage-plan.html">料金プラン</a></li>
+          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>
+          <li><a href="../server-domain-guide.html">サーバー・ドメイン比較</a></li>
+          <li><a href="../php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>
+          <li><a href="../homepage-recovery.html">ホームページ再スタート 15,000円</a></li>
+          <li><a href="../ameba-ownd-end.html">Ameba Owndの終了と移行ガイド</a></li>
+          <li><a href="../works.html">制作実績</a></li>
+          <li><a href="../flow.html">制作までの流れ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">情報発信・学び</h2>
+        <ul>
+          <li><a href="../blog.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="#4a8c6f"></rect><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"></path></svg>お役立ち情報</a></li>
+          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>
+          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>
+          <li><a href="../course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>ホームページ作成講座</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">ご相談・運営者情報</h2>
+        <ul>
+          <li><a href="../contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>
+          <li><a href="../contact.html">お問い合わせ</a></li>
+          <li><a href="../profile.html">プロフィール</a></li>
+          <li><a href="../privacy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 福祉ITパートナー
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/article-emphasis.js" defer></script>
+</body>
+</html>
