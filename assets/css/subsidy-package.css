@@ -1215,3 +1215,27 @@ a.spk-plan-card:hover {
 @media (max-width: 760px) {
   .spk-plan-cards { grid-template-columns: 1fr; max-width: 420px; }
 }
+
+/* プランカード：プランを連想させる写真を背景に（上部は写真を見せ、文字の部分は白でぼかして読みやすく） */
+.spk-plan-card--photo {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--white);
+  background-size: 100% auto;
+  background-position: center top;
+  background-repeat: no-repeat;
+  padding-top: 104px;
+}
+
+.spk-plan-card--photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.1) 56px, rgba(255, 255, 255, 0.9) 118px, var(--white) 150px);
+}
+
+.spk-plan-card--starter { background-image: url("../img/subsidy-support/plan-card-starter.jpg"); }
+.spk-plan-card--standard { background-image: url("../img/subsidy-support/plan-card-standard.jpg"); }
+.spk-plan-card--max { background-image: url("../img/subsidy-support/plan-card-max.jpg"); }
