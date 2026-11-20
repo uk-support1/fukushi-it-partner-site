@@ -57,7 +57,7 @@ inline_image_selection:
     - recruit
     - seo
   allowTechnology: true
-published: false
+published: true
 description: 福祉事業所のホームページ運営において欠かせないWordPressのバックアップと復元テスト。本番環境を守りながら安全に保守管理を行うための具体的な手順と、テスト環境活用の重要性を実務目線で分かりやすく解説します。
 slug: article-2026-11-20-4cc13fa1cab8
 buhio:
