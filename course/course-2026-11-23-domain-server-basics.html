@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ドメインとサーバーの基本を整理する3つの手順｜ホームページ作成講座｜福祉ITパートナー</title>
+<meta name="description" content="ホームページを持つときに必ず出てくる「ドメイン」と「サーバー」。むずかしそうに聞こえますが、仕組みはシンプルです。言葉の意味から、契約情報の整理、更新の見落としを防ぐ方法まで、はじめての方にも分かる3つの手順でやさしく紹介します。">
+<link rel="canonical" href="https://fukushi-it-partner.com/course/course-2026-11-23-domain-server-basics.html">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="ドメインとサーバーの基本を整理する3つの手順｜ホームページ作成講座｜福祉ITパートナー">
+<meta property="og:description" content="ホームページを持つときに必ず出てくる「ドメイン」と「サーバー」。むずかしそうに聞こえますが、仕組みはシンプルです。言葉の意味から、契約情報の整理、更新の見落としを防ぐ方法まで、はじめての方にも分かる3つの手順でやさしく紹介します。">
+<meta property="og:url" content="https://fukushi-it-partner.com/course/course-2026-11-23-domain-server-basics.html">
+<meta property="og:site_name" content="福祉ITパートナー">
+<meta property="og:image" content="https://fukushi-it-partner.com/assets/images/blog-library/hero/hero-web-006.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/course.css">
+<script src="../assets/js/ga4.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-bar">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">HOME</a></li>
+        <li><a href="../homepage-plan.html">料金プラン</a></li>
+        <li><a href="../works.html">制作実績</a></li>
+        <li><a href="../flow.html">制作までの流れ</a></li>
+        <li><a href="../blog.html">お役立ち情報</a></li>
+        <li><a href="../profile.html">プロフィール</a></li>
+        <li><a href="../contact.html">お問い合わせ</a></li>
+        <li class="nav-cta-mobile">
+          <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+    </div>
+    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="container course-article reveal">
+      <a href="../course.html" class="back-link">← ホームページ作成講座一覧へ戻る</a>
+      <div class="meta-row">
+        <span class="category-badge">ホームページ・Web制作</span>
+        <span class="blog-date"><time datetime="2026-11-23">2026.11.23</time></span>
+      </div>
+      <h1>ドメインとサーバーの基本を整理する3つの手順</h1>
+
+      <div class="article-eyecatch">
+        <img src="../assets/images/blog-library/hero/hero-web-006.png" alt="明るい机の上で、ノートに図を書きながらホームページの仕組みを整理している様子">
+      </div>
+
+      <nav class="course-toc" aria-label="目次">
+        <p class="course-toc-title">目次</p>
+        <ol>
+        <li class="course-toc-h2"><a href="#手順1ドメインとサーバーの役目を知る">手順1：ドメインとサーバーの役目を知る</a></li>
+        <li class="course-toc-h2"><a href="#手順2契約の情報を1か所にまとめる">手順2：契約の情報を1か所にまとめる</a></li>
+        <li class="course-toc-h3"><a href="#担当者が代わるときこそ確認を">担当者が代わるときこそ確認を</a></li>
+        <li class="course-toc-h2"><a href="#手順3更新の見落としを防ぐ仕組みをつくる">手順3：更新の見落としを防ぐ仕組みをつくる</a></li>
+        <li class="course-toc-h2"><a href="#まとめ">まとめ</a></li>
+        </ol>
+      </nav>
+
+      <div class="course-body">
+<div class="course-summary"><p class="course-summary-label">この記事でわかること</p><ul>
+<li>「ドメイン」と「サーバー」が、それぞれ何の役目なのかが分かります</li>
+<li>事業所として手元にまとめておきたい契約の情報が分かります</li>
+<li>更新の見落としでホームページが見られなくなるのを防ぐコツが分かります</li>
+</ul>
+</div>
+<h2 id="手順1ドメインとサーバーの役目を知る">手順1：ドメインとサーバーの役目を知る</h2>
+<p>ホームページを持つときには、「ドメイン」と「サーバー」という2つのものを用意します。言葉はむずかしく聞こえますが、身近なものにたとえると分かりやすくなります。</p>
+<p>**ドメインは、ホームページの「住所」**です。ホームページのアドレスや、メールアドレスの「@」から後ろの部分にあたります。見てくださる方は、この住所を手がかりに事業所のホームページへたどり着きます。</p>
+<p>**サーバーは、ホームページを置いておく「土地や建物」**です。文章や写真などのデータはサーバーに保管され、だれかがアドレスを開くたびに、そこから画面に届けられます。</p>
+<p><span class="course-mark">住所（ドメイン）と建物（サーバー）の両方がそろって、はじめてホームページが見られる状態になります。</span>どちらか一方が止まってしまうと、ホームページやメールが使えなくなることがあります。</p>
+<div class="course-buhio"><picture class="course-buhio-picture"><source media="(prefers-reduced-motion: reduce)" srcset="../assets/images/buhio/motion/smile-still.webp"><img src="../assets/images/buhio/motion/smile.webp" alt="ぶひお" width="96" height="96" loading="lazy" decoding="async" class="course-buhio-img"></picture><div class="course-buhio-bubble"><p class="course-buhio-name">ぶひお<span class="course-buhio-tag">POINT</span></p><p class="course-buhio-comment">住所と建物、と覚えておけば大丈夫。むずかしい仕組みまで覚えなくても、役目が分かれば十分だよ。</p></div></div>
+<h2 id="手順2契約の情報を1か所にまとめる">手順2：契約の情報を1か所にまとめる</h2>
+<p>ドメインとサーバーは、どちらも申し込んで利用するサービスです。制作会社にまとめてお願いしている場合も、事業所で直接申し込んでいる場合もあります。まずは「だれの名前で、どこと契約しているのか」を確かめておきましょう。</p>
+<div class="course-point"><ol>
+<li>ドメインとサーバーを、どの会社のサービスで契約しているかを確かめる</li>
+<li>契約している名義（事業所か、制作会社か、個人か）を確かめる</li>
+<li>管理画面へのログイン方法と、更新の時期・支払い方法を記録する</li>
+</ol>
+</div>
+<p>まとめた内容は、紙のファイルや事業所の共有フォルダなど、決まった場所に保管します。パスワードなどの大切な情報は、だれでも見られる場所に置かず、管理者が責任をもって預かるようにしましょう。</p>
+<h3 id="担当者が代わるときこそ確認を">担当者が代わるときこそ確認を</h3>
+<p>契約を担当していた職員さんが異動や退職をすると、「ログインの方法がだれにも分からない」ということが起こりがちです。担当が代わるときは、引き継ぎの項目にドメインとサーバーの情報も入れておくと安心です。</p>
+<h2 id="手順3更新の見落としを防ぐ仕組みをつくる">手順3：更新の見落としを防ぐ仕組みをつくる</h2>
+<p>ドメインとサーバーには、多くの場合「利用期間」があり、期間ごとに更新の手続きや支払いが必要です。自動で更新される設定になっていることもありますが、登録しているクレジットカードの期限が切れていたり、お知らせのメールが届くアドレスをだれも見ていなかったりすると、気づかないうちに止まってしまうことがあります。</p>
+<div class="course-buhio"><picture class="course-buhio-picture"><source media="(prefers-reduced-motion: reduce)" srcset="../assets/images/buhio/motion/sad-still.webp"><img src="../assets/images/buhio/motion/sad.webp" alt="ぶひお" width="96" height="96" loading="lazy" decoding="async" class="course-buhio-img"></picture><div class="course-buhio-bubble"><p class="course-buhio-name">ぶひお<span class="course-buhio-tag">注意</span></p><p class="course-buhio-comment">「ある朝、ホームページもメールも開けなくなっていた…」という原因が、更新のうっかりだったという話は少なくないんだ。期限は早めに確かめておこう。</p></div></div>
+<p>見落としを防ぐために、次のような工夫を取り入れてみてください。</p>
+<ul>
+<li>更新の時期を、事業所の予定表やカレンダーに書き込んでおく</li>
+<li>契約会社からのお知らせが届くメールアドレスを、ふだん見ている共有のアドレスにしておく</li>
+<li>年に1回、手順2でまとめた情報に変わりがないかを見直す日を決める</li>
+</ul>
+<div class="course-caution"><p class="course-caution-label">注意</p><p>契約会社を名乗る、支払いや更新を急がせるメールが届くことがあります。メールの中のリンクからすぐに手続きをせず、ふだん使っている管理画面に自分でログインして、本当に更新が必要かを確かめましょう。</p>
+</div>
+<h2 id="まとめ">まとめ</h2>
+<p>ドメインはホームページの「住所」、サーバーは「土地や建物」です。この2つがそろっていることで、ホームページもメールも毎日使えています。<span class="course-mark">契約の情報を1か所にまとめ、更新の時期を事業所の予定に組み込んでおくこと</span>が、ホームページを長く安心して続けるための土台になります。</p>
+<p>むずかしい設定を覚える必要はありません。まずは「どこと契約しているか」「次の更新はいつか」の2つを確かめるところから始めてみてください。分からないことがあれば、制作を担当した会社や、身近な相談先に聞いてみると安心です。</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container reveal">
+      <h2>まずはお気軽にご相談ください。</h2>
+      <div class="btn-group">
+        <a href="../contact.html#google-form-embed" class="btn btn-accent js-consult-link">無料相談はこちら</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h2 class="footer-title">サイトメニュー</h2>
+        <ul>
+          <li><a href="../index.html">HOME</a></li>
+          <li><a href="../index.html#services">サービス</a></li>
+          <li><a href="../homepage-plan.html">料金プラン</a></li>
+          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>
+          <li><a href="../server-domain-guide.html">サーバー・ドメイン比較</a></li>
+          <li><a href="../php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>
+          <li><a href="../homepage-recovery.html">ホームページ再スタート 15,000円</a></li>
+          <li><a href="../ameba-ownd-end.html">Ameba Owndの終了と移行ガイド</a></li>
+          <li><a href="../works.html">制作実績</a></li>
+          <li><a href="../flow.html">制作までの流れ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">情報発信・学び</h2>
+        <ul>
+          <li><a href="../blog.html">お役立ち情報</a></li>
+          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>
+          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>
+          <li><a href="../course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>ホームページ作成講座</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">ご相談・運営者情報</h2>
+        <ul>
+          <li><a href="../contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>
+          <li><a href="../contact.html">お問い合わせ</a></li>
+          <li><a href="../profile.html">プロフィール</a></li>
+          <li><a href="../privacy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 福祉ITパートナー
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/course-toc.js"></script>
+</body>
+</html>
