@@ -308,7 +308,11 @@ a:hover > * > .h2-arrow-link {
   transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
 }
 .h2-row:hover { transform: translateX(4px); background: #fff; box-shadow: 0 10px 22px rgba(31, 77, 60, 0.1); }
-.h2-row--hp { margin-top: 10px; background: var(--green-100); }
+.h2-row--hp { margin-bottom: 12px; background: var(--green-100); grid-template-columns: 120px minmax(0, 1fr) auto; gap: 16px; padding: 10px 20px 10px 10px; }
+.h2-row--hp .h2-row-photo { width: 120px; height: 90px; }
+.h2-row--hp .h2-row-title { font-size: 1.15rem; }
+.h2-row--hp .h2-row-text { font-size: 0.82rem; }
+.h2-row--hp .h2-row-price .h2-price-num { font-size: 1.6rem; }
 .h2-row-photo { display: block; width: 76px; height: 60px; border-radius: 10px; overflow: hidden; }
 .h2-row-photo img { width: 100%; height: 100%; object-fit: cover; }
 .h2-row-body { display: flex; flex-direction: column; min-width: 0; }
@@ -847,6 +851,9 @@ a:hover > * > .h2-arrow-link {
   .h2-row { grid-template-columns: 60px minmax(0, 1fr) auto; gap: 10px; padding-right: 12px; }
   .h2-row-photo { width: 60px; height: 52px; }
   .h2-row-text { display: none; }
+  .h2-row--hp { grid-template-columns: 88px minmax(0, 1fr) auto; gap: 12px; padding-right: 14px; }
+  .h2-row--hp .h2-row-photo { width: 88px; height: 72px; }
+  .h2-row--hp .h2-row-text { display: block; }
   .h2-value-list { gap: 10px; }
   .h2-value-body { padding: 12px 12px 14px; }
   .h2-value-big strong { font-size: 1.5rem; }
