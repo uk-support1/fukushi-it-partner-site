@@ -24,6 +24,22 @@ function createParser(depth, emphasis = []) {
       if (match) return {type:"marker",raw:match[0],text:match[1],tokens:this.lexer.inlineTokens(match[1])};
     },
     renderer(token) { return `<span class="article-marker">${this.parser.parseInline(token.tokens)}</span>`; }
+  },{
+    name: "decorationTag", level: "inline", start: src => src.search(/\[(?:marker|strong|notice)\s*[:：]/),
+    tokenizer(src) {
+      const match = /^\[(marker|strong|notice)\s*[:：]\s*([^\]\n]+?)\s*\]/.exec(src);
+      if (match) return {type:"decorationTag",raw:match[0],style:match[1],text:match[2],tokens:this.lexer.inlineTokens(match[2])};
+    },
+    renderer(token) {
+      for (const item of emphasis) if (item.style !== "notice" && token.text.includes(item.text)) used.add(item);
+      const outer=inDecoration;
+      inDecoration = true;
+      const body = this.parser.parseInline(token.tokens);
+      inDecoration = outer;
+      if (token.style === "strong") return `<strong>${body}</strong>`;
+      if (token.style === "marker") return `<span class="article-marker">${body}</span>`;
+      return body; // notice: the paragraph renderer turns the whole paragraph into a notice box
+    }
   }], renderer: {
     heading({tokens,depth:level}) {
       if (level <= 2) sectionCount = 0;
@@ -51,8 +67,10 @@ function createParser(depth, emphasis = []) {
     },
     paragraph({tokens,text}) {
       const notice=emphasis.find(item=>item.style==="notice" && !used.has(item) && text.includes(item.text));
-      if(notice && sectionCount<2) {
-        used.add(notice);sectionCount++;inDecoration=true;
+      const taggedNotice=tokens.some(t=>t.type==="decorationTag" && t.style==="notice");
+      if(taggedNotice || (notice && sectionCount<2)) {
+        if(notice) {used.add(notice);sectionCount++;}
+        inDecoration=true;
         const body=this.parser.parseInline(tokens);inDecoration=false;
         return `<div class="article-notice" role="note"><p>${body}</p></div>\n`;
       }
@@ -71,6 +89,14 @@ function createParser(depth, emphasis = []) {
   return parser;
 }
 
+// Gemini sometimes writes decoration hints inline as "[marker:...]" despite the
+// emphasis array. New drafts drop the wrapper (the emphasis array decorates the words);
+// already-published articles render the tag as the decoration it asked for.
+const INLINE_DECORATION_TAG=/\[(?:marker|strong|notice)\s*[:：]\s*([^\]\n]+?)\s*\]/g;
+function stripInlineDecorationTags(body) {
+  return String(body||"").replace(INLINE_DECORATION_TAG,"$1");
+}
+
 function markdownBodyToHtml(body, depth, emphasis = []) {
   // Historical CMS blocks contain hand-authored HTML; the AI validator still forbids HTML.
   // Recover the escaped heading form that some generated articles used by mistake.
@@ -81,8 +107,8 @@ function assertNoMarkdownLeak(html) {
   // Code examples may legitimately show syntax. Check reader-visible prose, not URLs/attributes.
   const prose=html.replace(/<(script|style|pre|code)\b[^>]*>[\s\S]*?<\/\1>/gi,"")
     .replace(/<[^>]+>/g,"\n");
-  if(/(?:^|\s)\\?#{1,6}\s|[*`]|==[^=\n]+==|^\s*\+\s+\S/m.test(prose)) {
+  if(/(?:^|\s)\\?#{1,6}\s|[*`]|==[^=\n]+==|\[(?:marker|strong|notice)\s*[:：]|^\s*\+\s+\S/m.test(prose)) {
     throw Error("UNRENDERED_ARTICLE_MARKDOWN");
   }
 }
-module.exports = { markdownBodyToHtml, createParser, assertNoMarkdownLeak };
+module.exports = { stripInlineDecorationTags, markdownBodyToHtml, createParser, assertNoMarkdownLeak };

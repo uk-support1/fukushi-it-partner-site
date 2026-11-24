@@ -168,3 +168,22 @@ test("CMS required fields and Pages artifact exclusion", () => {
   assert.equal(workflow.jobs.deploy.needs,"build-blog");
   assert.equal(workflow.jobs.deploy.permissions["pages"],"write");
 });
+
+test("inline [marker:]/[strong:]/[notice:] tags render as decorations, never as visible text", () => {
+  const { markdownBodyToHtml, assertNoMarkdownLeak, stripInlineDecorationTags } = require("../scripts/lib/markdown");
+  const body = "## 見出し\n\n背景には[strong:大切な言葉]があります。[marker:覚えてほしい一文です。]\n\n[notice:注意してほしい段落です。]";
+  const html = markdownBodyToHtml(body, "blog", [{text:"覚えてほしい一文です。",style:"marker"}]);
+  assert.doesNotMatch(html, /\[(?:marker|strong|notice)/);
+  assert.match(html, /<strong>大切な言葉<\/strong>/);
+  assert.match(html, /<span class="article-marker">覚えてほしい一文です。<\/span>/);
+  assert.doesNotMatch(html, /article-marker"><span/);
+  assert.match(html, /<div class="article-notice" role="note"><p>注意してほしい段落です。<\/p><\/div>/);
+  assertNoMarkdownLeak(html);
+  assert.equal(stripInlineDecorationTags("前[marker:大事]後"), "前大事後");
+});
+
+test("published articles never show [marker:] style tags", () => {
+  for (const file of fs.readdirSync(path.join(ROOT, "blog")).filter(f => f.endsWith(".html"))) {
+    assert.doesNotMatch(text(path.join(ROOT, "blog"), file), /\[(?:marker|strong|notice)\s*[:：]/, file);
+  }
+});
