@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WordPressの二要素認証導入：スマホ紛失に備える保守管理と安全なホームページ運営のポイント｜福祉ITパートナー</title>
+<meta name="description" content="福祉事業所のホームページを守るWordPressの二要素認証導入について、スマホ紛失や機種変更時のトラブルを防ぐ保守管理の実務的なポイントをやさしく解説します。">
+<link rel="canonical" href="https://fukushi-it-partner.com/blog/article-2026-11-26-5018c30f1f03.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="WordPressの二要素認証導入：スマホ紛失に備える保守管理と安全なホームページ運営のポイント">
+<meta property="og:description" content="福祉事業所のホームページを守るWordPressの二要素認証導入について、スマホ紛失や機種変更時のトラブルを防ぐ保守管理の実務的なポイントをやさしく解説します。">
+<meta property="og:url" content="https://fukushi-it-partner.com/blog/article-2026-11-26-5018c30f1f03.html">
+<meta property="og:site_name" content="福祉ITパートナー">
+<meta property="og:image" content="https://fukushi-it-partner.com/assets/images/blog-library/hero-video/AsGOnWmOmSw.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../assets/images/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script src="../assets/js/ga4.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "WordPressの二要素認証導入：スマホ紛失に備える保守管理と安全なホームページ運営のポイント",
+      "description": "福祉事業所のホームページを守るWordPressの二要素認証導入について、スマホ紛失や機種変更時のトラブルを防ぐ保守管理の実務的なポイントをやさしく解説します。",
+      "image": [
+        "https://fukushi-it-partner.com/assets/images/blog-library/hero-video/AsGOnWmOmSw.jpg"
+      ],
+      "datePublished": "2026-11-26",
+      "dateModified": "2026-11-26",
+      "inLanguage": "ja",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fukushi-it-partner.com/blog/article-2026-11-26-5018c30f1f03.html"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "福祉ITパートナー",
+        "url": "https://fukushi-it-partner.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://fukushi-it-partner.com/assets/images/logo.png"
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://fukushi-it-partner.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "お役立ち情報",
+          "item": "https://fukushi-it-partner.com/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "WordPressの二要素認証導入：スマホ紛失に備える保守管理と安全なホームページ運営のポイント",
+          "item": "https://fukushi-it-partner.com/blog/article-2026-11-26-5018c30f1f03.html"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-bar">
+    <a href="../index.html" class="brand">
+      <img src="../assets/images/logo-full.png" alt="福祉ITパートナー" class="brand-logo brand-logo--full" width="900" height="174">
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../index.html">HOME</a></li>
+        <li><a href="../homepage-plan.html">料金プラン</a></li>
+        <li><a href="../works.html">制作実績</a></li>
+        <li><a href="../flow.html">制作までの流れ</a></li>
+        <li><a href="../blog.html" class="active">お役立ち情報</a></li>
+        <li><a href="../profile.html">プロフィール</a></li>
+        <li><a href="../contact.html">お問い合わせ</a></li>
+        <li class="nav-cta-mobile">
+          <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="../contact.html#google-form-embed" class="btn btn-primary js-consult-link">無料相談はこちら</a>
+    </div>
+    <button type="button" class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="container blog-article">
+      <a href="../blog.html" class="back-link">← お役立ち情報一覧へ戻る</a>
+      <h1>WordPressの二要素認証導入：スマホ紛失に備える保守管理と安全なホームページ運営のポイント</h1>
+      <div class="meta-row">
+        <span class="category-badge">IT活用</span>
+        <span class="blog-date"><time datetime="2026-11-26">2026.11.26</time></span>
+      </div>
+
+      <div class="article-eyecatch">
+        <a class="article-eyecatch-video-link" href="https://www.youtube.com/watch?v=AsGOnWmOmSw" target="_blank" rel="noopener noreferrer" aria-label="YouTubeで元の動画を見る">
+          <img src="../assets/images/blog-library/hero-video/AsGOnWmOmSw.jpg" alt="">
+        </a>
+      </div>
+
+<aside class="buhio-note" data-pose="important" aria-label="ぶひおのひとこと"><img src="../assets/images/buhio/buhio-06-important.png" alt="二要素認証の導入とスマホ紛失への備えを説明するぶひおのイラスト" width="128" height="128" loading="lazy" decoding="async"><div><strong>ぶひおのひとこと</strong><p>二要素認証を入れる時は、スマホが使えなくなった時の予備コードや予定合わせを必ずセットで考えておこうね。</p></div></aside>
+
+<p>障害福祉サービスや就労支援事業所、グループホームを運営する法人にとって、ホームページは日々の温かい活動や大切な情報を地域へ届ける大切な窓口です。この情報発信を支えるシステムとしてWordPressが広く使われていますが、昨今のセキュリティ対策として「<strong>二要素認証</strong>」の導入を検討される方が増えています。ウェブロードの山口さんが動画で紹介している考え方によると、ログインの安全性を高める二要素認証は非常に効果的である一方、事前の準備を怠ると「担当者が管理画面に入れなくなってしまう」という思わぬトラブルにつながるおそれがあります。この記事では、福祉事業所が安全にホームページを保守管理するために、二要素認証の導入手順と知っておくべき備えについて順を追って見ていきましょう。</p>
+<h2>二要素認証の仕組みとパスワードだけでは足りない理由</h2>
+<p>私たちが普段ホームページの管理画面にログインする際、IDとパスワードを入力するのが一般的です。しかし、パスワードは一度知られてしまうと、どれほど複雑な文字であっても、第三者が本人のふりをして簡単に侵入できてしまいます。そこで、パスワードという「知っている情報」に加えて、<span class="article-marker">本人が持っているスマートフォンなど「別の種類の確認」を組み合わせる仕組みが二要素認証です。</span>具体的な方法の一つとして、ログインのたびに時間で自動的に切り替わる6桁の使い捨てコードをスマホの専用アプリで表示させ、それを受付画面に入力する手順が挙げられます。セキュリティを何重にも高められる反面、山口さんが動画内で指摘しているように、安全にしたつもりが会社の担当者までログインできなくなっては本末転倒です。導入を進める前に、まずはパスワードとは違う種類の確認を組み合わせる基本構造をチーム全体で正しく理解しておくことが求められます。</p>
+<h2>スマホが使えなくなった場面を想定した事前の備え</h2>
+<p>二要素認証を導入するうえで最も気をつけておきたいのが、<strong>スマホのトラブル</strong>です。万が一スマホが故障したり機種変更を行ったりして手元になくなった場合に、管理者自身がサイトに入れなくなるリスクが生じます。ウェブロードの山口さんが動画内で語っているように、導入を検討する段階から<span class="article-marker">「もし明日の朝、このスマホが使えなくなったらどうするか」を具体的に想像しておくことが欠かせません。</span>例えば、通常の認証ができないときに使う予備のコードである「リカバリーコード」をあらかじめ用意し、誰がどのように保管するかをあらかじめ決めておく必要があります。ただし、このコードを事務所内の誰もが見られる場所に紙で貼っておくのはセキュリティの観点から避けるべきです。会社で管理する担当者と適切な保管先をあらかじめ決めておくといった、現実的なルール作りが大切になります。</p>
+<p><img src="../assets/images/blog-library/inline/inline-welfare-003.png" alt="福祉の現場を支えるイメージ" loading="lazy" class="article-inline-image"></p>
+<h2>作業の日取りと認証できる人の予定を合わせる実務的な配慮</h2>
+<p>福祉事業所のホームページを外部の制作会社や保守担当者に依頼して改修してもらう際にも、二要素認証ならではの注意が必要です。山口さんが動画内で紹介している事例によると、制作会社側がサーバーにログインして作業を行おうとした際、契約している事業所の二階層認証に阻まれ、メールで届く<strong>認証コード</strong>をその都度教えてもらわなければ作業が進まないというケースが増えています。もし事前に作業日を伝え忘れていると、認証コードが有効な時間内に連絡がつかず、その日の作業が丸ごと見送りになってしまうトラブルに発展しかねません。弊社側の予定だけで勝手に作業を進めることはできないため、お客様の都合にしっかりと合わせて<span class="article-marker">作業日と連絡が取れる人の予定をあらかじめ調整しておく配慮が、スムーズな保守管理には欠かせません。</span></p>
+<h2>少人数でのテスト運用と担当者変更時の見直し</h2>
+<p>新しいセキュリティ設定を事業所全体に適用する前には、まず<span class="article-marker">少人数で確実に動くか試してみることが大切です。</span>山口さんが動画内で解説しているように、最初から全員のスマートフォンに設定してしまうのではなく、まずは担当者一人が設定を終えたあと、一度ログアウトして自分の力で再度ログインできるかを確かめる手順を踏みます。設定直後に管理画面が開いている状態と、次回自分で改めてログインできる状態は異なるため、ここを確認しておくことが安心につながります。また、1人のスマホに届いたコードを複数のスタッフで共有して使い回すのではなく、人ごとのアカウントで設定するようにします。外部の方に作業を依頼する場合も含めて、担当者が替わったときに退職した方のスマホを頼りにしなければ入れない状態を絶対に作らない<strong>運用ルール</strong>が求められます。</p>
+<h2>安心できるホームページ運営を続けるために</h2>
+<p>今回は、WordPressの二要素認証を導入する際に直面しやすいトラブルと、それを防ぐための具体的な準備について見てきました。新しいシステムを取り入れるときは、いつの間にかログインできなくなってしまう事態を防ぐために、通常の入り方と入れなくなったときの戻り方を一組セットで確認することが大切です。福祉ITパートナーとしても、動画内で山口さんが指摘しているように、<span class="article-marker">日々のセキュリティを高めつつ現場の担当者が安心して情報を発信し続けられる環境づくりをこれからもお手伝いしていきたいと考えています。</span>事業所の皆さまも、この機会に現在のログイン方法やスマホが使えなくなった場合の対応について、一度チームで確認してみてはいかがでしょうか。</p>
+<h2>出典・参考情報</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=AsGOnWmOmSw">ウェブロード（事業者向けWeb集客塾）｜WordPressの二要素認証、入れる前に準備すること｜スマホが使えなくなったら？｜事業者向けWeb集客塾【ウェブロード】</a></li>
+</ul>
+
+    </div>
+  </section>
+
+  <!-- 関連記事：content/articles/article-2026-11-26-5018c30f1f03.md のrelatedフィールドから自動生成 -->
+  <section style="background: var(--cream-100);">
+    <div class="container">
+      <h2 class="section-title" style="margin-bottom: 24px;">関連記事</h2>
+      <div class="blog-list">
+
+        <a class="blog-list-item reveal" href="article-2026-11-23-00f1cd1ee0e9.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero-video/dCj-t6voAvA.jpg" alt="" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">IT活用</span>
+              <span class="blog-date">2026.11.23</span>
+            </div>
+            <h3>WordPressのテーマ更新とカスタマイズの注意点：安全なホームページ保守管理のポイント</h3>
+            <p class="excerpt">WordPressのテーマを更新する際にカスタマイズが消えてしまう理由や、ファイル直接書き換えのリスク、安全なアップデー…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+        <a class="blog-list-item reveal" href="article-2026-11-22-e66e52a50da3.html">
+          <div class="blog-list-thumb">
+            <img src="../assets/images/blog-library/hero-video/vhvNOCUQZiA.jpg" alt="" style="--hero-object-position: 50% 50%;">
+          </div>
+          <div class="blog-list-body">
+            <div class="meta-row">
+              <span class="category-badge">IT活用</span>
+              <span class="blog-date">2026.11.22</span>
+            </div>
+            <h3>就労継続支援B型におけるマネジメントと組織づくりに学ぶ、ホームページを通じた運営方針の伝え方</h3>
+            <p class="excerpt">就労継続支援B型の現場で管理者が抱えがちな仕事の抱え込みとマネジメントの課題を紐解きます。動画の議論を手がかりに、組織で…</p>
+            <span class="read-more">続きを読む</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container reveal">
+      <h2>まずはお気軽にご相談ください。</h2>
+      <div class="btn-group">
+        <a href="../contact.html#google-form-embed" class="btn btn-accent js-consult-link">無料相談はこちら</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h2 class="footer-title">サイトメニュー</h2>
+        <ul>
+          <li><a href="../index.html">HOME</a></li>
+          <li><a href="../index.html#services">サービス</a></li>
+          <li><a href="../homepage-plan.html">料金プラン</a></li>
+          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>
+          <li><a href="../server-domain-guide.html">サーバー・ドメイン比較</a></li>
+          <li><a href="../php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>
+          <li><a href="../homepage-recovery.html">ホームページ再スタート 1.5万円</a></li>
+          <li><a href="../ameba-ownd-end.html">Ameba Owndの終了と移行ガイド</a></li>
+          <li><a href="../works.html">制作実績</a></li>
+          <li><a href="../flow.html">制作までの流れ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">情報発信・学び</h2>
+        <ul>
+          <li><a href="../blog.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="#4a8c6f"></rect><path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" fill="none"></path></svg>お役立ち情報</a></li>
+          <li><a href="https://www.instagram.com/fukushi_it_partner/" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igGradFooter" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FFDC80"></stop><stop offset="25%" stop-color="#FCAF45"></stop><stop offset="50%" stop-color="#E1306C"></stop><stop offset="75%" stop-color="#C13584"></stop><stop offset="100%" stop-color="#833AB4"></stop></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6" fill="url(#igGradFooter)"></rect><rect x="6.5" y="6.5" width="11" height="11" rx="3.5" fill="none" stroke="#fff" stroke-width="1.6"></rect><circle cx="17.3" cy="6.7" r="1.1" fill="#fff"></circle></svg>Instagram｜福祉ITパートナー</a></li>
+          <li><a href="https://www.youtube.com/channel/UCO008bmCPVaEV-tFV1ApXMg" target="_blank" rel="noopener noreferrer" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="5" fill="#FF0000"></rect><polygon points="10,8.5 10,15.5 16,12" fill="#fff"></polygon></svg>YouTube｜ぶひおの3分福祉</a></li>
+          <li><a href="../course.html" class="footer-sns-link"><svg class="footer-sns-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.2C5.2 4.1 8.3 4.3 11 6v13.2c-2.7-1.6-5.8-1.8-8.5-.8z" fill="#2c6b54"></path><path d="M21.5 5.2c-2.7-1.1-5.8-.9-8.5.8v13.2c2.7-1.6 5.8-1.8 8.5-.8z" fill="#4a8c6f"></path></svg>ホームページ作成講座</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-title">ご相談・運営者情報</h2>
+        <ul>
+          <li><a href="../contact.html#google-form-embed" class="js-consult-link">無料相談はこちら</a></li>
+          <li><a href="../contact.html">お問い合わせ</a></li>
+          <li><a href="../profile.html">プロフィール</a></li>
+          <li><a href="../privacy.html">プライバシーポリシー</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 福祉ITパートナー
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/article-emphasis.js" defer></script>
+</body>
+</html>

@@ -1,6 +1,18 @@
 [
   {
     "type": "column",
+    "category_label": "IT活用",
+    "title": "WordPressの二要素認証導入：スマホ紛失に備える保守管理と安全なホームページ運営のポイント",
+    "date": "2026-11-26",
+    "image": "assets/images/blog-library/hero-video/AsGOnWmOmSw.jpg",
+    "image_alt": "",
+    "object_position": "50% 50%",
+    "description": "福祉事業所のホームページを守るWordPressの二要素認証導入について、スマホ紛失や機種変更時のトラブルを防ぐ保守管理の実務的なポイントをやさしく解説します。",
+    "excerpt": "福祉事業所のホームページを守るWordPressの二要素認証導入について、スマホ紛失や機種変更時のトラブルを防ぐ保守管理の実務的なポイントをやさしく解説します。",
+    "slug": "article-2026-11-26-5018c30f1f03"
+  },
+  {
+    "type": "column",
     "category_label": "ホームページ改善",
     "title": "就労継続支援B型の生産活動と販路開拓に学ぶ、ホームページで伝える作業の工夫と工賃向上の取り組み",
     "date": "2026-11-25",
