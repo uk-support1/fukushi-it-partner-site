@@ -149,7 +149,7 @@
   font-size: 0.85rem;
   font-weight: 800;
   color: var(--white);
-  background: var(--green-900);
+  background: var(--ph-deep);
   border-radius: 999px;
   padding: 4px 12px;
   white-space: nowrap;
@@ -168,8 +168,8 @@
 .th-points,
 .th-fears {
   background:
-    radial-gradient(ellipse at 10% 0%, rgba(74, 140, 111, 0.4), transparent 50%),
-    #133528;
+    radial-gradient(ellipse at 10% 0%, rgba(150, 225, 195, 0.35), transparent 50%),
+    var(--ph-deep);
   color: var(--white);
 }
 .th-point-list {
@@ -274,7 +274,7 @@
   gap: 8px;
   padding: 12px 24px;
   border-radius: 999px;
-  background: var(--green-900);
+  background: var(--ph-deep);
   color: var(--white);
   font-weight: 700;
   transition: background var(--transition), transform var(--transition);
@@ -337,7 +337,7 @@
 .th-pyr--1 {
   width: 100%;
   padding: 22px 20px;
-  background: linear-gradient(135deg, #133528, var(--green-700));
+  background: linear-gradient(135deg, var(--ph-deep), var(--ph-light));
   border: none;
 }
 .th-pyr--1 b { color: var(--white); font-size: 1.3rem; }
@@ -427,7 +427,7 @@
 .th-zone b { font-size: 1.1rem; }
 .th-zone span { font-size: 0.85rem; }
 .th-zone--comfort { background: var(--green-100); color: var(--green-900); }
-.th-zone--learn { background: linear-gradient(135deg, #133528, var(--green-700)); color: var(--white); }
+.th-zone--learn { background: linear-gradient(135deg, var(--ph-deep), var(--ph-light)); color: var(--white); }
 .th-zone--learn b::after {
   content: "目指すのはここ";
   margin-left: 8px;
@@ -602,7 +602,7 @@
   width: 76px;
   height: 76px;
   border-radius: 50%;
-  background: var(--green-900);
+  background: var(--ph-deep);
   color: var(--white);
   font-weight: 800;
   font-size: 0.95rem;
@@ -614,7 +614,7 @@
   top: 50%;
   transform: translateY(-50%);
   border: 10px solid transparent;
-  border-left: 14px solid var(--green-900);
+  border-left: 14px solid var(--ph-deep);
   border-right: 0;
 }
 .ex-foot {
@@ -628,8 +628,8 @@
 /* ---------- チームの枠・人数 ---------- */
 .ex-team {
   background:
-    radial-gradient(ellipse at 10% 0%, rgba(74, 140, 111, 0.4), transparent 50%),
-    #133528;
+    radial-gradient(ellipse at 10% 0%, rgba(150, 225, 195, 0.35), transparent 50%),
+    var(--ph-deep);
   color: var(--white);
 }
 .ex-frame {
@@ -684,7 +684,7 @@
 }
 .ex-graph { width: 150px; height: 150px; margin: 0 auto 8px; }
 .ex-graph-lines line { stroke: var(--orange-500); stroke-width: 1.6; opacity: 0.85; }
-.ex-graph-dots circle { fill: var(--white); stroke: #133528; stroke-width: 2; }
+.ex-graph-dots circle { fill: var(--white); stroke: var(--ph-deep); stroke-width: 2; }
 .ex-size-n { font-weight: 800; }
 .ex-size-c { font-size: 0.88rem; color: rgba(255, 255, 255, 0.8); }
 .ex-size-c b { font-size: 1.8rem; color: var(--orange-500); margin: 0 2px; }
@@ -703,7 +703,7 @@
     bottom: -14px;
     transform: translateX(-50%);
     border: 10px solid transparent;
-    border-top: 14px solid var(--green-900);
+    border-top: 14px solid var(--ph-deep);
     border-bottom: 0;
   }
   .ex-arrow { padding-bottom: 6px; }
