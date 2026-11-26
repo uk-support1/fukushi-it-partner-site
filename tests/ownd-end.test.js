@@ -82,40 +82,40 @@ test("終了ガイド：公式の発表どおりの日付・条件が書かれ�
   for (const match of text.matchAll(/12月(\d+)日[^。、]{0,6}11時/g)) assert.equal(match[1], "24", "the end date is always the 24th: " + match[0]);
 });
 
-test("終了ガイド：Ameba Ownd引き継ぎの限定価格15,000円を、含まれないものと一緒に書き、あおる表現・ページ数の矛盾を入れていない", () => {
+test("終了ガイド：Ameba Ownd引き継ぎの限定価格1.5万円を、含まれないものと一緒に書き、あおる表現・ページ数の矛盾を入れていない", () => {
   const page = read(PAGE);
   const ours = textOf(sectionOf(page, "oe-ours"));
-  for (const fact of ["Ameba Ownd 引き継ぎ（限定価格）", "15,000円", "表示価格がお支払いの総額です。消費税はかかりません。", "ひな型3種から選べて、最短48時間で公開します", "お持ちの独自ドメインへの接続を、1回まで含みます",
-    "月額の管理費は0円", "ページ数が多くても、できるだけ対応します", "15,000円に含まれないもの", "ページ数が非常に多い場合は、別途お見積りになります",
+  for (const fact of ["Ameba Ownd 引き継ぎ（限定価格）", "1.5万円", "表示価格がお支払いの総額です。消費税はかかりません。", "ひな型3種から選べて、最短48時間で公開します", "お持ちの独自ドメインへの接続を、1回まで含みます",
+    "月額の管理費は0円", "ページ数が多くても、できるだけ対応します", "1.5万円に含まれないもの", "ページ数が非常に多い場合は、別途お見積りになります",
     "予約・会員などの機能", "Ameba Owndの内容をそのまま再現することや、データの復旧も含まれません",
     "独自ドメインを使う場合の年額の実費は、別にかかります", "納期は、素材がそろってから最短48時間、目安は約14日です", "将来も無料である保証はない"]) assert.ok(ours.includes(fact), "offer states: " + fact);
   assert.match(sectionOf(page, "oe-ours"), /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
   // 依頼者の指示（2026-11-05）：「含まれないもの」から、ブログ機能と納品後の修正は外した（含む・含まないは、このページでは言い切らない）
   for (const removed of ["ブログ機能", "納品後の修正", "5,500"]) assert.ok(!ours.includes(removed), "removed from the exclusions: " + removed);
-  // 19,800円のプランは1ページ。「ページ数が多い場合は19,800円」「2ページ以上は対象外」のような、矛盾する案内は書かない
+  // 2万円（旧19,800円）のプランは1ページ。「ページ数が多い場合は19,800円」「2ページ以上は対象外」のような、矛盾する案内は書かない
   const text = textOf(page);
-  for (const stale of ["2ページ以上", "19,800", "1ページの新しいホームページ", "（税込・1ページ）", "また終わる", "ペライチ"]) assert.ok(!text.includes(stale), "no stale or contradictory wording: " + stale);
+  for (const stale of ["2ページ以上", "19,800", "おまかせライト", "15,000円", "1ページの新しいホームページ", "（税込・1ページ）", "また終わる", "ペライチ"]) assert.ok(!text.includes(stale), "no stale or contradictory wording: " + stale);
   // 「限定」は、依頼者が決めた「Ameba Ownd引き継ぎ限定価格」だけ。期間・数量の限定や、あおる表現は使わない
   assert.equal((text.match(/限定/g) || []).length, (text.match(/限定価格/g) || []).length, "limited only as 'limited price for Ownd migrants'");
   for (const word of ["ぽっきり", "ポッキリ", "今だけ", "先着", "期間限定", "数量限定", "絶対", "必ず安く", "最安", "業界No", "急いで", "いますぐ", "通常価格", "本来は"]) assert.ok(!text.includes(word), "avoid: " + word);
-  assert.ok(!/15,000円(?:だけ|のみ)で/.test(text), "never imply nothing else is needed");
+  assert.ok(!/1\.5万円(?:だけ|のみ)で/.test(text), "never imply nothing else is needed");
   // 最終CTAは、1ページの再スタートではなく、料金プランへ（ページ数の違うプランと混同させない）
   const cta = page.match(/<section class="cta-section">[\s\S]*?<\/section>/)[0];
   assert.match(cta, /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
   assert.match(cta, /<a href="homepage-plan\.html" class="btn btn-outline">料金プランを見る<\/a>/);
-  // FAQ：15,000円の範囲（表示と構造化データは、別のテストで一致を確認）
+  // FAQ：1.5万円の範囲（表示と構造化データは、別のテストで一致を確認）
   assert.match(text, /ページ数が多くても、できるだけ対応します。ただし、ページ数が非常に多い場合は、別途お見積りになります。/);
 });
 
-test("無料の移行先の表：Googleサイト・アメブロ・Wixを、列と行の表（PCもスマホも）で、○△×ーの印とコメントで比べ、当社の15,000円はそのあとに出る", () => {
+test("無料の移行先の表：Googleサイト・アメブロ・Wixを、列と行の表（PCもスマホも）で、○△×ーの印とコメントで比べ、当社の1.5万円はそのあとに出る", () => {
   const page = read(PAGE);
   const free = sectionOf(page, "oe-free");
   const table = free.match(/<table class="oe-tbl" role="table">[\s\S]*?<\/table>/)[0];
   assert.ok(!/oe-svc|oe-scale|oe-fit|--ours|oe-tbl-who/.test(page) && !/oe-svc|oe-scale|oe-fit|--ours|oe-tbl-who/.test(read("assets/css/ownd-end.css")), "old cards, company column and mobile chips are gone");
-  // 順番：やること → 無料の移行先の表 → 当社の15,000円 → FAQ。表のあるsectionに、当社・料金は出てこない
+  // 順番：やること → 無料の移行先の表 → 当社の1.5万円 → FAQ。表のあるsectionに、当社・料金は出てこない
   const order = ['id="oe-todo"', 'id="oe-free"', 'id="oe-ours"', 'id="oe-faq"'].map(marker => page.indexOf(marker));
   assert.ok(order.every((position, index) => position > 0 && (index === 0 || position > order[index - 1])), "section order: " + order);
-  assert.ok(!/15,000|当社|ホームページ再スタート|19,800/.test(textOf(free)), "the free-options section never mentions the company plan");
+  assert.ok(!/15,000|1\.5万円|当社|ホームページ再スタート|19,800|2万円/.test(textOf(free)), "the free-options section never mentions the company plan");
   assert.match(table, /<caption class="visually-hidden">/, "the table has a caption for screen readers");
   // 見出しと説明文には、「○△×」の文字は書かない（表の中の印は、そのまま）
   assert.equal(textOf(free.match(/<h2[\s\S]*?<\/h2>/)[0]), "主な移行先を比較する");
