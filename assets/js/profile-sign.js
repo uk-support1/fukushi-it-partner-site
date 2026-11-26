@@ -9,7 +9,7 @@
   var role = el.querySelector(".profile-sign-role").textContent.trim();
   var name = el.querySelector(".profile-sign-name").textContent.trim();
 
-  document.fonts.load('40px "Yuji Syuku"', role + name).then(function () {
+  document.fonts.load('40px "Yuji Mai"', role + name).then(function () {
     var svg = document.createElementNS(SVG_NS, "svg");
     svg.setAttribute("class", "profile-sign-svg");
     svg.setAttribute("aria-hidden", "true");
@@ -28,7 +28,7 @@
         t.appendChild(span);
       });
     }
-    add(role, 52, 0);
+    add(role, 64, 0);
     delay += 0.2;
     add(name, 100, 36);
     svg.appendChild(t);
