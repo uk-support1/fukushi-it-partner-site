@@ -1,7 +1,7 @@
 "use strict";
 // PHP脆弱性をきっかけにした集客施策（記事12本・比較ページ・既存LPへの追記）のテスト。
 // 記事は事実（修正版の番号・サポート期限）を扱うため、番号の書き間違いと、
-// 「4.95万円（旧49,500円）で一律に移行できる」と誤解させる表現が入り込まないことを重点的に確認する。
+// 「5万円（旧49,500円）で一律に移行できる」と誤解させる表現が入り込まないことを重点的に確認する。
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
@@ -118,11 +118,11 @@ test("比較ページ（下部のくわしい比較表）：A-①・A-②・B・
   assert.ok(!/絶対に安全(?:です|だ)(?!か)|必ず安くなります|必ず解決/.test(visibleText(page)));
 });
 
-test("誤認防止：4.95万円は標準範囲の料金で、PHPフォーム・会員・予約やページ数が非常に多い場合は追加料金の可能性があると明記。診断は脆弱性診断・侵害調査ではないと明記している", () => {
+test("誤認防止：5万円は標準範囲の料金で、PHPフォーム・会員・予約やページ数が非常に多い場合は追加料金の可能性があると明記。診断は脆弱性診断・侵害調査ではないと明記している", () => {
   for (const file of [COMPARE, "homepage-cost-reduction.html"]) {
     const text = visibleText(read(file));
-    assert.match(text, /4\.95万円の範囲を超え、追加料金が発生することがあります/, file);
-    assert.match(text, /ページ数が非常に多い場合は、4\.95万円の範囲を超え/, file);
+    assert.match(text, /5万円の範囲を超え、追加料金が発生することがあります/, file);
+    assert.match(text, /ページ数が非常に多い場合は、5万円の範囲を超え/, file);
     assert.match(text, /Googleフォームなどの外部サービスに切り替えます/, file);
     assert.match(text, /脆弱性診断や、攻撃を受けたかどうかの調査は行っていません/, file);
   }
@@ -131,17 +131,17 @@ test("誤認防止：4.95万円は標準範囲の料金で、PHPフォーム・�
     assert.match(text, /脆弱性診断/, slug);
     assert.match(text, /攻撃を受けたかどうか/, slug);
   }
-  // 49,500円・4.95万円に触れる記事は、必ず「追加料金が発生することがある」旨を添えている
+  // 49,500円・5万円に触れる記事は、必ず「追加料金が発生することがある」旨を添えている
   for (const slug of SLUGS) {
     const text = visibleText(read("blog/" + slug + ".html"));
-    if (text.includes("49,500円") || text.includes("4.95万円")) assert.match(text, /追加料金/, slug + " caveat");
+    if (text.includes("49,500円")) assert.match(text, /追加料金/, slug + " caveat");
   }
 });
 
 test("既存LP：料金・サポートの金額は変わらず、PHP向けの説明とFAQが追加され、FAQは表示と構造化データが一致している", () => {
   const page = read("homepage-cost-reduction.html");
   const text = visibleText(page);
-  for (const price of ["4.95万円", "5,500円〜", "月額4,400円", "月額9,900円", "118,800", "356,400"]) assert.ok(text.includes(price), "LP still shows " + price);
+  for (const price of ["5万円", "5,500円〜", "月額4,400円", "月額9,900円", "118,800", "356,400"]) assert.ok(text.includes(price), "LP still shows " + price);
   assert.match(page, /<title>ホームページ維持費削減・乗り換えプラン｜福祉ITパートナー<\/title>/);
   assert.match(page, /<link rel="canonical" href="https:\/\/fukushi-it-partner\.com\/homepage-cost-reduction\.html">/);
   assert.match(page, /id="cs-php"/);
@@ -330,19 +330,19 @@ test("視覚的な比較：A・B・Cを横に固定し、費用・管理の手�
   assert.match(css, /\.pc-mx tbody th\s*\{[^}]*grid-column:\s*1 \/ -1/);
 });
 
-test("福祉ITパートナーの提案：4.95万円と、フォーム・予約・会員・ページ数が非常に多い場合は追加料金の可能性があること、無料相談ボタンが同じ場所にある", () => {
+test("福祉ITパートナーの提案：5万円と、フォーム・予約・会員・ページ数が非常に多い場合は追加料金の可能性があること、無料相談ボタンが同じ場所にある", () => {
   const proposal = sectionOf(read(COMPARE), "pc-proposal");
   const text = textOf(proposal);
   assert.ok(text.includes("ホームページの管理をもっと簡単にしませんか？"));
-  assert.ok(/4\.95\s*万円/.test(text) && !text.includes("4.95万円〜"));
-  assert.match(text, /PHPで動くお問い合わせフォームは、Googleフォームなどへの切り替えまで4\.95万円に含まれます。/);
-  assert.match(text, /会員機能・予約機能・ネットショップ・データベースを使った機能などがある場合や、ページ数が非常に多い場合は、4\.95万円の範囲を超え、追加料金が発生することがあります。/);
+  assert.ok(/5\s*万円/.test(text) && !text.includes("5万円〜"));
+  assert.match(text, /PHPで動くお問い合わせフォームは、Googleフォームなどへの切り替えまで5万円に含まれます。/);
+  assert.match(text, /会員機能・予約機能・ネットショップ・データベースを使った機能などがある場合や、ページ数が非常に多い場合は、5万円の範囲を超え、追加料金が発生することがあります。/);
   assert.match(text, /脆弱性診断や、攻撃を受けたかどうかの調査は行っていません/);
   assert.match(proposal, /<a href="contact\.html#google-form-embed" class="btn btn-accent js-consult-link">無料で相談する<\/a>/);
   assert.match(proposal, /<a href="homepage-cost-reduction\.html" class="btn btn-outline">乗り換えプランと費用の比較例を見る<\/a>/);
   // 料金の注意書きは、金額と同じカードの中にある（金額だけが目に入らない）
   const card = proposal.match(/<div class="pc-proposal-card">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/) || proposal.match(/<div class="pc-proposal-card">[\s\S]*$/);
-  assert.ok(card[0].includes("4.95") && card[0].includes("追加料金が発生することがあります"));
+  assert.ok(/5(?:<[^>]+>)*万円/.test(card[0]) && card[0].includes("追加料金が発生することがあります"));
 });
 
 test("専門的な内容は、下部の閉じたアコーディオンにまとまり、記事12本へのリンクも残っている", () => {
