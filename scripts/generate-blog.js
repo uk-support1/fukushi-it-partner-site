@@ -56,6 +56,7 @@ const STATIC_PAGES_AFTER_ARTICLES = [
   "https://fukushi-it-partner.com/profile.html",
   "https://fukushi-it-partner.com/philosophy.html",
   "https://fukushi-it-partner.com/strength-exchange.html",
+  "https://fukushi-it-partner.com/comparative-advantage.html",
   "https://fukushi-it-partner.com/psychological-safety.html",
   "https://fukushi-it-partner.com/contact.html",
   "https://fukushi-it-partner.com/privacy.html",
