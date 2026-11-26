@@ -276,6 +276,83 @@
   border-radius: var(--radius-sm);
 }
 
+
+/* 店長の章：お寿司理論の囲み */
+.ph-sushi {
+  margin: 24px 0;
+  padding: 28px 28px 24px;
+  border-radius: var(--radius-md);
+  background: var(--orange-100);
+  border-left: 4px solid var(--orange-500);
+}
+.ph-sushi > p + p { margin-top: 10px; }
+.ph-sushi-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: var(--orange-600);
+  margin-bottom: 6px;
+}
+.ph-sushi-title {
+  font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+  font-weight: 800;
+  line-height: 1.6;
+  color: var(--green-900);
+  margin-bottom: 4px;
+}
+.ph-sushi strong { background: none !important; }
+.ph-sushi-link,
+.ph-chapter-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--green-900);
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: background var(--transition), transform var(--transition);
+}
+.ph-sushi-link:hover,
+.ph-chapter-link:hover { background: var(--orange-600); transform: translateY(-2px); }
+.ph-chapter-body > .ph-chapter-link { margin-top: 20px; }
+.ph-chapter-body p a:not(.ph-value-link) {
+  color: var(--green-700);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 現在の志：最後の章だけ濃い色で締める */
+.ph-chapter--now .ph-chapter-num { -webkit-text-stroke-color: var(--orange-600); }
+.ph-chapter--now .ph-chapter-body {
+  background: linear-gradient(135deg, var(--ph-deep), var(--green-700));
+  border-color: transparent;
+  color: var(--white);
+}
+.ph-chapter--now .ph-chapter-title {
+  color: var(--white);
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+.ph-chapter--now .ph-chapter-body p { color: rgba(255, 255, 255, 0.9); }
+.ph-chapter--now .ph-chapter-kicker { color: var(--orange-500) !important; }
+.ph-chapter--now .ph-chapter-body strong {
+  color: var(--white);
+  background: linear-gradient(transparent 62%, rgba(232, 150, 90, 0.45) 62%);
+}
+.ph-chapter--now .ph-chapter-body p a:not(.ph-value-link) { color: #bfe0cf; }
+
+.ph-value-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--green-700);
+}
+.ph-value-link:hover { color: var(--orange-600); }
+
 /* ---------- ミッション・ビジョン ---------- */
 .ph-mv {
   background:
