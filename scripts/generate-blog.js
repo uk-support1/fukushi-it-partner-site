@@ -379,7 +379,7 @@ function renderArticlePage(article, articlesBySlug, published, imagePositions = 
     '          <li><a href="../homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="../server-domain-guide.html">サーバー・ドメイン比較</a></li>\n' +
     '          <li><a href="../php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>\n' +
-    '          <li><a href="../homepage-recovery.html">ホームページ再スタート 15,000円</a></li>\n' +
+    '          <li><a href="../homepage-recovery.html">ホームページ再スタート 1.5万円</a></li>\n' +
     '          <li><a href="../ameba-ownd-end.html">Ameba Owndの終了と移行ガイド</a></li>\n' +
     '          <li><a href="../works.html">制作実績</a></li>\n' +
     '          <li><a href="../flow.html">制作までの流れ</a></li>\n' +
@@ -637,7 +637,7 @@ function buildBlogHtml(blogIndex) {
     '          <li><a href="homepage-cost-reduction.html">HP維持費の見直し</a></li>\n' +
     '          <li><a href="server-domain-guide.html">サーバー・ドメイン比較</a></li>\n' +
     '          <li><a href="php-homepage-comparison.html">PHP・WordPress乗り換え比較</a></li>\n' +
-    '          <li><a href="homepage-recovery.html">ホームページ再スタート 15,000円</a></li>\n' +
+    '          <li><a href="homepage-recovery.html">ホームページ再スタート 1.5万円</a></li>\n' +
     '          <li><a href="ameba-ownd-end.html">Ameba Owndの終了と移行ガイド</a></li>\n' +
     '          <li><a href="works.html">制作実績</a></li>\n' +
     '          <li><a href="flow.html">制作までの流れ</a></li>\n' +

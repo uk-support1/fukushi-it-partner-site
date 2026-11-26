@@ -1,5 +1,5 @@
 "use strict";
-// ホームページ再スタート（15,000円）キャンペーン：LP・記事7本・導線のテスト。
+// ホームページ再スタート（1.5万円）キャンペーン：LP・記事7本・導線のテスト。
 // 価格・提供範囲の誤認（データ復旧と誤解させる表現、原因をPHPと決めつける表現）が入り込まないことを重点的に確認する。
 const test = require("node:test");
 const assert = require("node:assert/strict");
@@ -18,10 +18,10 @@ const SLUGS = [
 ];
 const jsonLd = html => [...html.matchAll(/<script type="application\/ld\+json">\n([\s\S]*?)\n<\/script>/g)].map(m => JSON.parse(m[1]));
 
-test("LP：15,000円が明示され（消費税はかからない旨を注記し、税込とは書かない）、データ復旧と誤解させる記載がある", () => {
+test("LP：1.5万円が明示され（消費税はかからない旨を注記し、税込とは書かない）、データ復旧と誤解させる記載がある", () => {
   const html = read(LP);
   const text = visibleText(html);
-  assert.match(text, /15,000円/);
+  assert.match(text, /1\.5万円/);
   // 依頼者の指示（2026-11-16）：消費税を請求しないため「税込」とは書かず、総額である旨を注記する
   assert.match(text, /表示価格がお支払いの総額です。消費税はかかりません。/);
   assert.ok(!/税込|税別|税抜/.test(text), "no tax-included/excluded wording");
@@ -42,13 +42,13 @@ test("LP：復旧・復元を保証する表現と、原因をPHPと断定する
 
 test("LP：既存プランの価格表記が公開ページと一致している", () => {
   const text = visibleText(read(LP));
-  assert.match(text, /19,800円/);
-  assert.match(text, /49,500円/);
-  assert.doesNotMatch(text, /49,500円〜/);
+  assert.match(text, /2万円/);
+  assert.match(text, /4\.95万円/);
+  assert.doesNotMatch(text, /4\.95万円〜/);
   assert.match(text, /5,500円〜/);
   assert.match(text, /4,400円/);
-  assert.match(read("homepage-plan.html"), /19,800/);
-  assert.match(read("homepage-cost-reduction.html"), /49,500円/);
+  assert.match(read("homepage-plan.html"), /<b>2<\/b>万円/);
+  assert.match(read("homepage-cost-reduction.html"), /4\.95万円/);
 });
 
 test("LP：FAQの構造化データが表示内容と同じ数、BreadcrumbListがある", () => {
@@ -91,7 +91,7 @@ test("記事7本が公開済みで、説明文・画像・関連記事が揃い�
 test("記事：データ復旧ではないこと・日付付きの注意が書かれ、断定表現がない", () => {
   for (const slug of SLUGS) {
     const text = visibleText(read("blog/" + slug + ".html")).replace(/\s+/g, "");
-    if (/15,000円/.test(text)) assert.match(text, /データ復旧ではなく/, slug);
+    if (/15,000円|1\.5万円/.test(text)) assert.match(text, /データ復旧ではなく/, slug);
     // Ameba Owndの終了だけは、2026-11-02に公式ブログで発表された事実なので、日付つきで書いてよい（下で確認する）。
     // そのほかの記事・サービスについては、これまでどおり「終了します」と断定しない。
     const officialEnd = slug === "ameba-ownd-cannot-view";
@@ -117,10 +117,10 @@ test("導線：サイトマップ・フッター・PHP比較ページ・維持�
   assert.match(read("scripts/generate-course.js"), /homepage-recovery\.html/);
 });
 
-test("乗り換えプランは49,500円と言い切り、追加料金の条件を併記している。PHP比較ページのFAQ数は変わっていない", () => {
+test("乗り換えプランは4.95万円と言い切り、追加料金の条件を併記している。PHP比較ページのFAQ数は変わっていない", () => {
   const cmp = visibleText(read("php-homepage-comparison.html"));
-  assert.match(cmp, /49,500円/);
-  assert.doesNotMatch(cmp, /49,500円〜/);
+  assert.match(cmp, /4\.95万円/);
+  assert.doesNotMatch(cmp, /4\.95万円〜/);
   assert.match(cmp, /ページ数が非常に多い場合/);
   assert.match(cmp, /追加料金が発生することがあります/);
   assert.equal(jsonLd(read("php-homepage-comparison.html"))[0]["@graph"].find(n => n["@type"] === "FAQPage").mainEntity.length, 8);
@@ -143,13 +143,13 @@ test("ひな型の見本3種：LPから到達でき、noindexでサイトマッ�
 
 test("ドメイン接続の標準範囲と追加料金の条件が、LPとサービス情報に明記されている", () => {
   const text = visibleText(read(LP)).replace(/\s+/g, "");
-  assert.match(text, /接続設定（1回）まで15,000円に含まれます/);
+  assert.match(text, /接続設定（1回）まで1\.5万円に含まれます/);
   assert.match(text, /1時間以内/);
   assert.match(text, /2回目以降/);
   assert.match(text, /移管/);
   assert.match(text, /スポットサポート（5,500円〜／回）/);
   const catalog = read("docs/ai-shared/service-catalog.md");
-  assert.match(catalog, /\*\*15,000円\*\*/);
+  assert.match(catalog, /\*\*1\.5万円\*\*/);
   assert.match(catalog, /1時間以内目安/);
   assert.match(read("docs/ai-shared/decision-log.md"), /2026-10-30｜「ホームページ再スタート/);
 });
@@ -159,7 +159,7 @@ test("追加料金の説明：PHPフォームのGoogleフォーム等への切�
   for (const file of files) {
     const text = visibleText(read(file));
     assert.doesNotMatch(text, /数百ページ/, file);
-    if (/49,500円/.test(text)) assert.doesNotMatch(text, /(?:フォーム[^。]{0,40}(?:通常の範囲を超える|追加料金が発生))/, file + " must not treat PHP forms as extra-cost");
+    if (/49,500円|4\.95万円/.test(text)) assert.doesNotMatch(text, /(?:フォーム[^。]{0,40}(?:通常の範囲を超える|追加料金が発生))/, file + " must not treat PHP forms as extra-cost");
   }
   const cost = visibleText(read("homepage-cost-reduction.html"));
   assert.match(cost, /PHPで動くお問い合わせフォームの、Googleフォームなどへの切り替え/);
