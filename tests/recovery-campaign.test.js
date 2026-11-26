@@ -43,12 +43,12 @@ test("LP：復旧・復元を保証する表現と、原因をPHPと断定する
 test("LP：既存プランの価格表記が公開ページと一致している", () => {
   const text = visibleText(read(LP));
   assert.match(text, /2万円/);
-  assert.match(text, /4\.95万円/);
-  assert.doesNotMatch(text, /4\.95万円〜/);
+  assert.match(text, /5万円/);
+  assert.doesNotMatch(text, /5万円〜/);
   assert.match(text, /5,500円〜/);
   assert.match(text, /4,400円/);
   assert.match(read("homepage-plan.html"), /<b>2<\/b>万円/);
-  assert.match(read("homepage-cost-reduction.html"), /4\.95万円/);
+  assert.match(read("homepage-cost-reduction.html"), /5万円/);
 });
 
 test("LP：FAQの構造化データが表示内容と同じ数、BreadcrumbListがある", () => {
@@ -117,10 +117,10 @@ test("導線：サイトマップ・フッター・PHP比較ページ・維持�
   assert.match(read("scripts/generate-course.js"), /homepage-recovery\.html/);
 });
 
-test("乗り換えプランは4.95万円と言い切り、追加料金の条件を併記している。PHP比較ページのFAQ数は変わっていない", () => {
+test("乗り換えプランは5万円と言い切り、追加料金の条件を併記している。PHP比較ページのFAQ数は変わっていない", () => {
   const cmp = visibleText(read("php-homepage-comparison.html"));
-  assert.match(cmp, /4\.95万円/);
-  assert.doesNotMatch(cmp, /4\.95万円〜/);
+  assert.match(cmp, /5万円/);
+  assert.doesNotMatch(cmp, /5万円〜/);
   assert.match(cmp, /ページ数が非常に多い場合/);
   assert.match(cmp, /追加料金が発生することがあります/);
   assert.equal(jsonLd(read("php-homepage-comparison.html"))[0]["@graph"].find(n => n["@type"] === "FAQPage").mainEntity.length, 8);
@@ -159,7 +159,7 @@ test("追加料金の説明：PHPフォームのGoogleフォーム等への切�
   for (const file of files) {
     const text = visibleText(read(file));
     assert.doesNotMatch(text, /数百ページ/, file);
-    if (/49,500円|4\.95万円/.test(text)) assert.doesNotMatch(text, /(?:フォーム[^。]{0,40}(?:通常の範囲を超える|追加料金が発生))/, file + " must not treat PHP forms as extra-cost");
+    if (/49,500円|5万円/.test(text)) assert.doesNotMatch(text, /(?:フォーム[^。]{0,40}(?:通常の範囲を超える|追加料金が発生))/, file + " must not treat PHP forms as extra-cost");
   }
   const cost = visibleText(read("homepage-cost-reduction.html"));
   assert.match(cost, /PHPで動くお問い合わせフォームの、Googleフォームなどへの切り替え/);
