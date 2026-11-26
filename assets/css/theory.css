@@ -1,0 +1,520 @@
+/* ===========================================================
+   お寿司理論・心理的安全性（図解ページ共通）
+=========================================================== */
+
+.th-hero { padding-bottom: 104px; }
+.th-hero-title { font-size: clamp(1.9rem, 5.4vw, 3.8rem); }
+
+.th-note {
+  max-width: 760px;
+  color: var(--text-600);
+  margin-top: 28px;
+}
+.th-caption {
+  margin-top: 24px;
+  font-size: 0.82rem;
+  color: var(--text-600);
+}
+.th-sub {
+  font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+  font-weight: 800;
+  color: var(--green-900);
+  margin: 56px 0 20px;
+}
+
+/* ---------- 前提の数字 ---------- */
+.th-stats {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.th-stats li {
+  background: var(--cream-100);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  text-align: center;
+}
+.th-stat-num {
+  display: block;
+  font-size: clamp(2.6rem, 6vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--green-900);
+}
+.th-stat-num small { font-size: 0.35em; margin-left: 4px; }
+.th-stat-label { font-size: 0.88rem; color: var(--text-600); }
+
+/* ---------- Before / After ---------- */
+.th-compare { background: var(--cream-100); }
+.th-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  font-size: 0.85rem;
+  color: var(--text-600);
+  margin-bottom: 20px;
+}
+.th-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.th-legend .th-chip { width: 28px; padding: 0; font-style: normal; }
+.th-boards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.th-board {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 28px 24px;
+  border: 1px solid var(--border-soft);
+}
+.th-board--after { border: 2px solid var(--orange-500); }
+.th-board-tag {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green-500);
+}
+.th-board--after .th-board-tag { color: var(--orange-600); }
+.th-board-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--green-900);
+  margin-bottom: 16px;
+}
+.th-family { display: grid; gap: 12px; }
+.th-person {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border-soft);
+}
+.th-person-name { font-size: 0.85rem; font-weight: 800; color: var(--green-900); }
+.th-plate {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.th-chip {
+  display: inline-grid;
+  place-items: center;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 6px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+.th-chip--plain { background: var(--green-100); color: var(--green-700); }
+.th-chip--love { background: var(--orange-500); color: var(--white); }
+.th-chip--give { background: #e6e6e6; color: #777; }
+.th-chip--gone {
+  background: transparent;
+  border: 1.5px dashed #bdbdbd;
+  color: #b0b0b0;
+  text-decoration: line-through;
+}
+.th-board-foot {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-900);
+}
+.th-board--after .th-board-foot { color: var(--orange-600); }
+
+.th-trades {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.th-trade {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 18px 16px;
+  box-shadow: var(--shadow-soft);
+}
+.th-who {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--white);
+  background: var(--green-900);
+  border-radius: 999px;
+  padding: 4px 12px;
+  white-space: nowrap;
+}
+.th-swap {
+  display: grid;
+  gap: 2px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--green-900);
+}
+.th-swap b { color: var(--orange-600); }
+
+/* ---------- ポイント（濃い背景） ---------- */
+.th-points,
+.th-fears {
+  background:
+    radial-gradient(ellipse at 10% 0%, rgba(74, 140, 111, 0.4), transparent 50%),
+    #133528;
+  color: var(--white);
+}
+.th-point-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.th-point {
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 32px 28px;
+}
+.th-point-num {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
+  margin-bottom: 14px;
+}
+.th-point h3 { font-size: 1.15rem; font-weight: 800; line-height: 1.5; margin-bottom: 10px; }
+.th-point p:last-child { font-size: 0.92rem; color: rgba(255, 255, 255, 0.82); }
+.th-point a { color: #bfe0cf; text-decoration: underline; text-underline-offset: 3px; font-weight: 700; }
+
+.th-point-list--light .th-point {
+  background: var(--white);
+  border-color: var(--border-soft);
+  box-shadow: var(--shadow-soft);
+}
+.th-point-list--light .th-point-num { -webkit-text-stroke-color: var(--green-700); }
+.th-point-list--light .th-point h3 { color: var(--green-900); }
+.th-point-list--light .th-point p:last-child { color: var(--text-600); }
+
+/* ---------- 仕事に置き換える ---------- */
+.th-map {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--green-900);
+}
+.th-map > div {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) 40px minmax(0, 3fr);
+  align-items: center;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.th-map > div::after { content: none; }
+.th-map dt { font-weight: 700; color: var(--text-600); grid-column: 1; }
+.th-map dt::after {
+  content: "→";
+  position: relative;
+  float: right;
+  color: var(--orange-600);
+  margin-right: -28px;
+}
+.th-map dd { grid-column: 3; font-weight: 800; color: var(--green-900); }
+
+.th-shop-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+.th-shop-person {
+  background: var(--cream-100);
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  text-align: center;
+}
+.th-shop-name { font-size: 1.2rem; font-weight: 800; color: var(--green-900); }
+.th-shop-tag {
+  display: inline-block;
+  margin: 8px 0;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.th-shop-tag--love { background: var(--orange-500); color: var(--white); }
+.th-shop-person p:last-child { font-size: 0.9rem; color: var(--text-600); }
+.th-shop-arrow { font-size: 2rem; font-weight: 800; color: var(--orange-600); }
+.th-shop-result {
+  margin-top: 16px;
+  font-weight: 700;
+  color: var(--green-900);
+  text-align: center;
+}
+.th-welfare p { color: var(--text-900); max-width: 820px; }
+
+.th-nav {
+  margin-top: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  align-items: center;
+}
+.th-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: var(--green-900);
+  color: var(--white);
+  font-weight: 700;
+  transition: background var(--transition), transform var(--transition);
+}
+.th-nav-link:hover { background: var(--orange-600); transform: translateY(-2px); }
+.th-nav-back { font-weight: 700; color: var(--green-700); border-bottom: 1px solid currentColor; }
+.th-nav-back:hover { color: var(--orange-600); }
+
+/* ---------- 心理的安全性：定義 ---------- */
+.th-quote {
+  position: relative;
+  padding: 40px 40px 32px 72px;
+  background: var(--cream-100);
+  border-radius: var(--radius-lg);
+}
+.th-quote::before {
+  content: "“";
+  position: absolute;
+  left: 20px;
+  top: 0;
+  font-size: 6rem;
+  line-height: 1;
+  color: var(--orange-500);
+  font-family: Georgia, serif;
+}
+.th-quote p {
+  font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+  font-weight: 800;
+  line-height: 1.7;
+  color: var(--green-900);
+}
+.th-quote strong { background: linear-gradient(transparent 62%, rgba(232, 150, 90, 0.4) 62%); }
+.th-quote cite { display: block; margin-top: 14px; font-style: normal; font-size: 0.82rem; color: var(--text-600); }
+
+/* ---------- ピラミッド ---------- */
+.th-google { background: var(--cream-100); }
+.th-google .ph-head-lead strong { color: var(--green-900); }
+.th-pyramid {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.th-pyr {
+  display: grid;
+  gap: 2px;
+  text-align: center;
+  padding: 14px 20px;
+  border-radius: 10px;
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+}
+.th-pyr b { color: var(--green-900); font-size: 1rem; }
+.th-pyr span { font-size: 0.8rem; color: var(--text-600); }
+.th-pyr--5 { width: 52%; }
+.th-pyr--4 { width: 64%; }
+.th-pyr--3 { width: 76%; }
+.th-pyr--2 { width: 88%; }
+.th-pyr--1 {
+  width: 100%;
+  padding: 22px 20px;
+  background: linear-gradient(135deg, #133528, var(--green-700));
+  border: none;
+}
+.th-pyr--1 b { color: var(--white); font-size: 1.3rem; }
+.th-pyr--1 span { color: rgba(255, 255, 255, 0.85); }
+
+/* ---------- 4つの不安 ---------- */
+.th-fear-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.th-fear {
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  padding: 24px 20px;
+}
+.th-fear-head { font-weight: 800; font-size: 1rem; margin-bottom: 12px; }
+.th-fear-voice {
+  font-size: 0.9rem;
+  background: var(--white);
+  color: var(--text-900);
+  border-radius: 12px;
+  padding: 10px 12px;
+  position: relative;
+  margin-bottom: 14px;
+}
+.th-fear-voice::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  bottom: -8px;
+  border: 8px solid transparent;
+  border-top-color: var(--white);
+  border-bottom: 0;
+}
+.th-fear-result { font-size: 0.88rem; font-weight: 700; color: var(--orange-500); }
+.th-fear-foot { margin-top: 28px; color: rgba(255, 255, 255, 0.85); }
+
+/* ---------- マトリクス ---------- */
+.th-matrix {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 10px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+.th-axis-y {
+  grid-row: 1;
+  grid-column: 1;
+  writing-mode: vertical-rl;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  color: var(--green-900);
+  font-size: 0.9rem;
+}
+.th-axis-y span,
+.th-axis-x span { font-weight: 500; color: var(--text-600); font-size: 0.78rem; }
+.th-axis-x {
+  grid-row: 2;
+  grid-column: 2;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  color: var(--green-900);
+  font-size: 0.9rem;
+}
+.th-matrix-grid {
+  grid-row: 1;
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.th-zone {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  min-height: 150px;
+  padding: 20px;
+  border-radius: var(--radius-md);
+}
+.th-zone b { font-size: 1.1rem; }
+.th-zone span { font-size: 0.85rem; }
+.th-zone--comfort { background: var(--green-100); color: var(--green-900); }
+.th-zone--learn { background: linear-gradient(135deg, #133528, var(--green-700)); color: var(--white); }
+.th-zone--learn b::after {
+  content: "目指すのはここ";
+  margin-left: 8px;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--orange-500);
+  vertical-align: middle;
+}
+.th-zone--apathy { background: #eeeeee; color: #555; }
+.th-zone--anxiety { background: var(--orange-100); color: #8a4a1c; }
+
+/* ---------- 福祉の現場 ---------- */
+.th-fukushi { background: var(--cream-100); }
+.th-check {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.th-check li {
+  position: relative;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 22px 22px 22px 56px;
+  font-size: 0.92rem;
+  color: var(--text-600);
+  box-shadow: var(--shadow-soft);
+}
+.th-check li::before {
+  content: "✓";
+  position: absolute;
+  left: 18px;
+  top: 20px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green-700);
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+.th-check b { display: block; color: var(--green-900); font-size: 1rem; margin-bottom: 4px; }
+.th-link-card {
+  margin-top: 40px;
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  border: 2px solid var(--orange-500);
+}
+.th-link-label { font-size: 0.8rem; font-weight: 800; color: var(--orange-600); letter-spacing: 0.12em; margin-bottom: 6px; }
+.th-link-card .th-nav-link { margin-top: 16px; }
+
+/* ---------- スマホ ---------- */
+@media (max-width: 960px) {
+  .th-boards,
+  .th-trades,
+  .th-point-list { grid-template-columns: 1fr; }
+  .th-fear-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .th-stats { gap: 8px; }
+  .th-stats li { padding: 16px 6px; border-radius: var(--radius-md); }
+  .th-stat-num { font-size: 2.2rem; }
+  .th-stat-label { display: block; font-size: 0.72rem; line-height: 1.5; }
+  .th-board { padding: 22px 14px; }
+  .th-person { grid-template-columns: 1fr; gap: 6px; }
+  .th-chip { height: 26px; font-size: 0.64rem; padding: 0 5px; }
+  .th-map > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .th-map dt::after { content: none; }
+  .th-map dd { grid-column: 1; }
+  .th-map dd::before { content: "→ "; color: var(--orange-600); }
+  .th-shop-grid { grid-template-columns: 1fr; }
+  .th-shop-arrow { text-align: center; transform: rotate(90deg); }
+  .th-quote { padding: 36px 22px 24px 22px; }
+  .th-quote::before { left: 12px; top: -12px; font-size: 4rem; }
+  .th-pyr--5 { width: 76%; }
+  .th-pyr--4 { width: 84%; }
+  .th-pyr--3 { width: 92%; }
+  .th-pyr--2 { width: 100%; }
+  .th-fear-list,
+  .th-check { grid-template-columns: 1fr; }
+  .th-matrix { grid-template-columns: 28px minmax(0, 1fr); }
+  .th-zone { min-height: 130px; padding: 14px; }
+  .th-zone b { font-size: 0.95rem; }
+  .th-zone span { font-size: 0.78rem; }
+  .th-zone--learn b::after { display: block; margin: 4px 0 0; width: max-content; }
+}
