@@ -518,3 +518,27 @@
     border-left: none;
   }
 }
+
+/* 国家試験合格の強調 */
+.ph-pass {
+  margin-top: 18px !important;
+  display: grid;
+  gap: 4px;
+  padding: 22px 24px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--ph-deep), var(--green-700));
+  color: var(--white) !important;
+}
+.ph-pass-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--orange-500);
+}
+.ph-pass-text {
+  font-size: clamp(1.25rem, 3vw, 1.7rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
