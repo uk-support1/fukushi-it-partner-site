@@ -1,0 +1,443 @@
+/* ===========================================================
+   代表の理念・想い（philosophy.html）
+=========================================================== */
+
+.ph-page {
+  --ph-ink: #16352a;
+  --ph-deep: #133528;
+  --ph-script-font: "Caveat", "Segoe Script", cursive;
+  background: var(--white);
+}
+
+.ph-br-pc { display: inline; }
+.ph-br-sp { display: none; }
+@media (max-width: 720px) {
+  .ph-br-pc { display: none; }
+  .ph-br-sp { display: inline; }
+}
+
+/* ---------- ヒーロー ---------- */
+.ph-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 85% 10%, rgba(74, 140, 111, 0.45), transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(232, 150, 90, 0.16), transparent 50%),
+    var(--ph-deep);
+  color: var(--white);
+  padding: 72px 0 120px;
+}
+.ph-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 85%);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 85%);
+  pointer-events: none;
+}
+.ph-hero-inner { position: relative; z-index: 1; }
+
+.ph-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 56px;
+}
+.ph-breadcrumb a { color: rgba(255, 255, 255, 0.75); }
+.ph-breadcrumb a:hover { color: var(--white); text-decoration: underline; }
+
+.ph-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--orange-500);
+  margin-bottom: 24px;
+}
+.ph-eyebrow::before {
+  content: "";
+  width: 32px;
+  height: 2px;
+  background: var(--orange-500);
+}
+
+.ph-hero-title {
+  font-size: clamp(2.1rem, 6.4vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  margin-bottom: 32px;
+}
+.ph-line { display: block; }
+.ph-nowrap { white-space: nowrap; }
+.ph-accent {
+  position: relative;
+  color: var(--white);
+  background: linear-gradient(transparent 68%, rgba(232, 150, 90, 0.85) 68%, rgba(232, 150, 90, 0.85) 90%, transparent 90%);
+}
+
+/* ヒーローの文字を1行ずつ浮かび上がらせる */
+@media (prefers-reduced-motion: no-preference) {
+  .ph-hero .ph-eyebrow,
+  .ph-hero .ph-line,
+  .ph-hero-lead,
+  .ph-hero-sign {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: ph-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+  .ph-hero .ph-eyebrow { animation-delay: 0.1s; }
+  .ph-hero .ph-line:nth-child(1) { animation-delay: 0.3s; }
+  .ph-hero .ph-line:nth-child(2) { animation-delay: 0.5s; }
+  .ph-hero-lead { animation-delay: 0.8s; }
+  .ph-hero-sign { animation-delay: 1s; }
+}
+@keyframes ph-rise { to { opacity: 1; transform: none; } }
+
+.ph-hero-lead {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  line-height: 2;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 760px;
+  word-break: auto-phrase;
+}
+.ph-hero-sign {
+  margin-top: 40px;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.7);
+}
+.ph-hero-word {
+  position: absolute;
+  right: -0.05em;
+  bottom: -0.22em;
+  font-family: var(--ph-script-font);
+  font-size: clamp(4rem, 13vw, 10rem);
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.07);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ---------- 共通の見出し ---------- */
+.ph-section { padding: 104px 0; }
+.ph-head { margin-bottom: 56px; }
+.ph-script {
+  display: inline-block;
+  font-family: var(--ph-script-font);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  line-height: 1.05;
+  color: var(--green-500);
+  opacity: 0.6;
+  margin-bottom: 4px;
+  padding-right: 0.2em;
+  transform: rotate(-4deg);
+  transform-origin: left bottom;
+}
+.ph-script-svg { display: block; overflow: visible; height: 1.1em; width: auto; }
+.ph-script-svg text,
+.ph-script-svg tspan {
+  font-family: var(--ph-script-font);
+  fill: currentColor;
+  fill-opacity: 0;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+}
+.ph-script.is-drawn .ph-script-svg tspan {
+  animation: ph-stroke 1.6s cubic-bezier(0.5, 0.1, 0.3, 1) forwards, ph-fill 0.8s ease forwards;
+}
+@keyframes ph-stroke { to { stroke-dashoffset: 0; } }
+@keyframes ph-fill { to { fill-opacity: 1; stroke-width: 0.5; } }
+
+.ph-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--green-700);
+}
+.ph-title {
+  font-size: clamp(1.55rem, 3.2vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.5;
+  color: var(--green-900);
+  letter-spacing: 0.02em;
+}
+.ph-head-lead {
+  margin-top: 16px;
+  max-width: 680px;
+  color: var(--text-600);
+}
+
+/* ---------- パーパス ---------- */
+.ph-purpose {
+  background: var(--cream-100);
+  text-align: center;
+}
+.ph-purpose .ph-head { margin-bottom: 32px; }
+.ph-purpose .ph-script { transform-origin: center bottom; }
+.ph-statement {
+  font-size: clamp(1.7rem, 4.6vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--ph-ink);
+  margin-bottom: 32px;
+}
+.ph-statement-note {
+  max-width: 720px;
+  margin: 0 auto;
+  color: var(--text-600);
+  line-height: 2;
+}
+
+/* ---------- 原体験（タイムライン） ---------- */
+.ph-timeline {
+  list-style: none;
+  position: relative;
+  display: grid;
+  gap: 24px;
+}
+.ph-timeline::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 59px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--green-500), rgba(74, 140, 111, 0.1));
+}
+.ph-chapter {
+  position: relative;
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+.ph-chapter-num {
+  position: relative;
+  z-index: 1;
+  width: 120px;
+  text-align: center;
+  font-size: 3.4rem;
+  font-weight: 800;
+  line-height: 1;
+  padding: 8px 0;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--green-700);
+  background: var(--white);
+  letter-spacing: 0.02em;
+}
+.ph-chapter-body {
+  background: var(--white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 36px 40px;
+}
+.ph-chapter-body > p + p { margin-top: 14px; }
+.ph-chapter-kicker {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--orange-600);
+  margin-bottom: 8px;
+}
+.ph-chapter-title {
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  font-weight: 800;
+  line-height: 1.55;
+  color: var(--green-900);
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.ph-chapter-body p { color: var(--text-900); }
+.ph-chapter-body strong {
+  color: var(--green-900);
+  background: linear-gradient(transparent 62%, var(--orange-100) 62%);
+}
+.ph-chapter-note {
+  margin-top: 20px !important;
+  font-size: 0.88rem;
+  color: var(--text-600) !important;
+  padding: 12px 16px;
+  background: var(--green-100);
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- ミッション・ビジョン ---------- */
+.ph-mv {
+  background:
+    radial-gradient(ellipse at 10% 0%, rgba(74, 140, 111, 0.4), transparent 50%),
+    var(--ph-deep);
+  color: var(--white);
+}
+.ph-head--light .ph-script { color: #9fd2b8; opacity: 0.8; }
+.ph-head--light .ph-title { color: var(--white); }
+.ph-mv-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+.ph-mv-card {
+  position: relative;
+  overflow: hidden;
+  padding: 44px 40px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+}
+.ph-mv-en {
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.45);
+  margin-bottom: 18px;
+}
+.ph-mv-ja {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--orange-500);
+  margin-bottom: 14px;
+}
+.ph-mv-title {
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+  font-weight: 800;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.ph-mv-card > p:last-child {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.95rem;
+}
+
+/* ---------- バリュー ---------- */
+.ph-values-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--green-900);
+}
+.ph-value {
+  position: relative;
+  padding: 40px 36px 44px 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+.ph-value:nth-child(even) {
+  padding-left: 36px;
+  padding-right: 0;
+  border-left: 1px solid var(--border-soft);
+}
+.ph-value-num {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--orange-600);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.ph-value-en {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green-500);
+  margin-bottom: 8px;
+}
+.ph-value-title {
+  font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+  font-weight: 800;
+  color: var(--green-900);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.ph-value > p:last-child { color: var(--text-600); font-size: 0.95rem; }
+
+/* ---------- メッセージ ---------- */
+.ph-message { background: var(--cream-100); }
+.ph-message-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 64px;
+  align-items: center;
+}
+.ph-message-photo img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 30%;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 48px rgba(19, 53, 40, 0.16);
+}
+.ph-message-body .ph-title { margin-bottom: 24px; }
+.ph-message-body > p:not(.ph-script) + p { margin-top: 16px; }
+.ph-message-sign {
+  margin-top: 32px !important;
+  font-size: 0.9rem;
+  color: var(--text-600);
+  letter-spacing: 0.08em;
+}
+.ph-message-sign span {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--green-900);
+  letter-spacing: 0.2em;
+  margin-top: 4px;
+}
+.ph-message-back { margin-top: 28px !important; }
+.ph-message-back a {
+  font-weight: 700;
+  color: var(--green-700);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+.ph-message-back a:hover { color: var(--orange-600); }
+
+/* ---------- スマホ ---------- */
+@media (max-width: 900px) {
+  .ph-mv-grid,
+  .ph-message-grid { grid-template-columns: 1fr; }
+  .ph-message-grid { gap: 40px; }
+  .ph-message-photo { max-width: 420px; }
+}
+@media (max-width: 720px) {
+  .ph-hero { padding: 40px 0 96px; }
+  .ph-breadcrumb { margin-bottom: 40px; }
+  .ph-section { padding: 72px 0; }
+  .ph-head { margin-bottom: 36px; }
+  .ph-timeline::before { left: 22px; }
+  .ph-chapter { grid-template-columns: 1fr; gap: 0; }
+  .ph-chapter-num {
+    width: auto;
+    text-align: left;
+    font-size: 2.6rem;
+    padding: 0 0 8px;
+    background: transparent;
+  }
+  .ph-timeline::before { display: none; }
+  .ph-chapter-body { padding: 28px 22px; border-radius: var(--radius-md); }
+  .ph-mv-card { padding: 32px 24px; }
+  .ph-values-list { grid-template-columns: 1fr; }
+  .ph-value,
+  .ph-value:nth-child(even) {
+    padding: 32px 0;
+    border-left: none;
+  }
+}
