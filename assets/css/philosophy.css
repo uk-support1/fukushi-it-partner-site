@@ -4,7 +4,8 @@
 
 .ph-page {
   --ph-ink: #16352a;
-  --ph-deep: #133528;
+  --ph-deep: #23785d;
+  --ph-light: #45ad8b;
   --ph-script-font: "Caveat", "Segoe Script", cursive;
   background: var(--white);
 }
@@ -21,7 +22,7 @@
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 85% 10%, rgba(74, 140, 111, 0.45), transparent 55%),
+    radial-gradient(ellipse at 85% 10%, rgba(150, 225, 195, 0.4), transparent 55%),
     radial-gradient(ellipse at 0% 100%, rgba(232, 150, 90, 0.16), transparent 50%),
     var(--ph-deep);
   color: var(--white);
@@ -309,7 +310,7 @@
   margin-top: 16px;
   padding: 10px 20px;
   border-radius: 999px;
-  background: var(--green-900);
+  background: var(--ph-deep);
   color: var(--white);
   font-size: 0.9rem;
   font-weight: 700;
@@ -328,7 +329,7 @@
 /* 現在の志：最後の章だけ濃い色で締める */
 .ph-chapter--now .ph-chapter-num { -webkit-text-stroke-color: var(--orange-600); }
 .ph-chapter--now .ph-chapter-body {
-  background: linear-gradient(135deg, var(--ph-deep), var(--green-700));
+  background: linear-gradient(135deg, var(--ph-deep), var(--ph-light));
   border-color: transparent;
   color: var(--white);
 }
@@ -356,7 +357,7 @@
 /* ---------- ミッション・ビジョン ---------- */
 .ph-mv {
   background:
-    radial-gradient(ellipse at 10% 0%, rgba(74, 140, 111, 0.4), transparent 50%),
+    radial-gradient(ellipse at 10% 0%, rgba(150, 225, 195, 0.35), transparent 50%),
     var(--ph-deep);
   color: var(--white);
 }
@@ -460,7 +461,7 @@
   object-fit: cover;
   object-position: center 30%;
   border-radius: var(--radius-lg);
-  box-shadow: 0 24px 48px rgba(19, 53, 40, 0.16);
+  box-shadow: 0 24px 48px rgba(35, 120, 93, 0.16);
 }
 .ph-message-body .ph-title { margin-bottom: 24px; }
 .ph-message-body > p:not(.ph-script) + p { margin-top: 16px; }
@@ -526,7 +527,7 @@
   gap: 4px;
   padding: 22px 24px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--ph-deep), var(--green-700));
+  background: linear-gradient(135deg, var(--ph-deep), var(--ph-light));
   color: var(--white) !important;
 }
 .ph-pass-label {
@@ -541,4 +542,11 @@
   font-weight: 800;
   letter-spacing: 0.04em;
   line-height: 1.4;
+}
+
+/* プロフィール・理念まわりは爽やかな緑に（2026-11-26） */
+.ph-page .cta-section {
+  background:
+    radial-gradient(ellipse at 85% 0%, rgba(150, 225, 195, 0.35), transparent 55%),
+    linear-gradient(135deg, var(--ph-deep), var(--ph-light));
 }

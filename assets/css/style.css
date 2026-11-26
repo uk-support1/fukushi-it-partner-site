@@ -2488,6 +2488,13 @@ section {
   text-align: center;
 }
 
+/* プロフィールページのCTAは爽やかな緑に */
+.profile-page .cta-section {
+  background:
+    radial-gradient(ellipse at 85% 0%, rgba(150, 225, 195, 0.35), transparent 55%),
+    linear-gradient(135deg, #23785d, #45ad8b);
+}
+
 /* プロフィール：手書き風の署名 */
 .profile-sign {
   margin-top: 28px;
@@ -2526,7 +2533,7 @@ section {
   margin-top: 32px;
   padding: 28px 72px 28px 28px;
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, #133528, var(--green-700));
+  background: linear-gradient(135deg, #23785d, #45ad8b);
   color: var(--white);
   box-shadow: var(--shadow-soft);
   transition: transform var(--transition), box-shadow var(--transition);
