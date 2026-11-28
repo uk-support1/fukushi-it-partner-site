@@ -1,6 +1,18 @@
 [
   {
     "type": "column",
+    "category_label": "Googleマップ／Googleビジネスプロフィール",
+    "title": "複数店舗のGoogleマップ管理に学ぶ、複数事業所を持つ福祉施設のビジネスプロフィール活用術",
+    "date": "2026-11-28",
+    "image": "assets/images/blog-library/hero-video/NOu8BOI1QVA.jpg",
+    "image_alt": "",
+    "object_position": "50% 50%",
+    "description": "複数の障害福祉事業所やグループホームを運営する法人に向けて、Googleマップ（Googleビジネスプロフィール）の複数店舗管理ノウハウを解説します。情報や口コミ返信の基準をそろえ、地域からの相談をスムーズにする方法をご紹介します。",
+    "excerpt": "複数の障害福祉事業所やグループホームを運営する法人に向けて、Googleマップ（Googleビジネスプロフィール）の複数店舗管理ノウハウを解説します。情報や口コ…",
+    "slug": "article-2026-11-28-41322be19690"
+  },
+  {
+    "type": "column",
     "category_label": "ホームページ改善",
     "title": "就労継続支援B型におけるスモールステップの支援と、ホームページで伝える通所日数・時間の整え方",
     "date": "2026-11-27",
